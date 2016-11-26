@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "LinkStack.h"
+#include "LinkStack1.0.h"
 int main()
 {
     int i=0;
@@ -36,6 +36,6 @@ int main()
     //销毁栈
     printf("\n###########销毁栈###########\n"); 
     s=Push(s,10);
-    Destroy(s);
+    s=Destroy(s);
     Top(s);
 }

@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "DynamicStack.h"
+#include "LinkStack.h"
 int main()
 {
     int i=0;
@@ -20,7 +20,7 @@ int main()
     printf("----------------------------------");    
     //出栈操作
     printf("\n###########出栈操作###########\n");
-    for(i=0;i<=10;i++)
+    for(i=0;i<=12;i++)
     {
         Pop();
     }  

@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "LinkStack.h"
+#include "LinkStack2.0.h"
 int main()
 {
     int i=0;

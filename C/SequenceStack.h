@@ -1,25 +1,21 @@
 #include<stdbool.h>
-#include<stdlib.h>
 #define maxsize 10
 typedef int datatype;
 
 //Sequence Stack 实现顺序栈，使用数组来实现
 struct stack
 {
-    datatype *data;
+    datatype data[maxsize];
     int top;
 };
 
 typedef struct stack Stack;
 //创建栈
 
-int realsize=maxsize;
-
 Stack s;
 //初始化栈
 void init()
 {
-    s.data = (datatype *)malloc(sizeof(datatype)*maxsize);
     s.top=-1;
 }
 
@@ -37,21 +33,30 @@ bool Empty()
 }
 
 //判断栈是否已满了
-void full()
+bool full()
 {
-    if(s.top==realsize-1)
+    if(s.top==maxsize-1)
     {
-        realsize++;
-        s.data=(datatype *)realloc(s.data,realsize);
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
 //入栈
 void Push(datatype element)
 {
-    full();
-    s.top++;
-    s.data[s.top]=element;
+    if(!full())
+    {
+        s.top++;
+        s.data[s.top]=element;
+    }
+    else
+    {
+        printf("栈满\n");
+    }
 }
 
 //出栈
@@ -84,5 +89,4 @@ datatype Top()
 void Destroy()
 {
     s.top=-1;
-    // free(s.data);  //这里使用malloc函数容易出错
 }
