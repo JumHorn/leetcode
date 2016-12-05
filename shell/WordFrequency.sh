@@ -4,7 +4,7 @@ while read line
 do 
 for n in $line
 do 
-map["$n"]=expr'map["$n"]+1'
+map["$n"]=`expr map["$n"] + 1`
 done
 done < words.txt
 for n in ${!map[@]}
