@@ -16,12 +16,11 @@ int main()
 int ** generate(int numRows,int ** columnSizes)
 {
     int **result,i,j;
-    result=(int **)malloc(sizeof(int *)*numRows);
-    columnSizes=(int **)malloc(sizeof(int *)*numRows);
+    result=(int **)malloc(sizeof(int *)*numRows);  //要分配空间才能使用
+    *columnSizes=(int *)malloc(sizeof(int)*numRows);
     for(i=1;i<=numRows;i++)
     {
-        columnSizes[i-1]=(int *)malloc(sizeof(int));
-        *columnSizes[i-1]=i;
+        (*columnSizes)[i-1]=i;  //这里[]的优先级高于*，所以要加括号
         result[i-1]=(int*)malloc(sizeof(int)*i);
         result[i-1][0]=1;
         result[i-1][i-1]=1;
