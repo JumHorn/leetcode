@@ -27,11 +27,6 @@ class KthSmallestinLexicographicalOrder(object):
             i+=1
         return l[i]    
     def find1(self,n,k):
-        """
-        :type n:int 
-        :type k:int
-        :rtype:int
-        """
         i=n-1
         j=0
         l=range(1,n+1)
