@@ -35,17 +35,38 @@ public class StrongPasswordChecker
         else
         {
             temp=repeat_check(pwd);
-            t=number_check(pwd)+uppercase_check(pwd)+lowercase_check(pwd)+len-20;
-            if(temp>=t)
+            t=number_check(pwd)+uppercase_check(pwd)+lowercase_check(pwd);
+            if(temp>t)
             {
-                return temp;
+                int i=0,t1=0,k,k1=temp;
+                while(i<s.Length-3)
+                {
+                    if(s[i]==s[i+1]&&s[i]==s[i+2])
+                    {
+                        if(s[i+3]==s[i])
+                        {
+                            k=i;
+                            i++;
+                            while(i<s.Length-3&&s[i]==s[i+3])
+                            {
+                                i++;
+                            }
+                            t1+=(i+3-k)/3;
+                            k1--;
+                        }
+                        i+=3;
+                        continue;
+                    }
+                    i++;
+                }
+                return len-20+Math.Max(3-t,t1+k1);
             }
             else
             {
-                return t;
+                return t+len-20;
             }
         }
-        return 0;
+        // return 0;
     }
     // public int length_check(int s)
     // {
