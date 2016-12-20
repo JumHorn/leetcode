@@ -1,9 +1,11 @@
+using System;
+using System.Collections.Generic;
 public class StrongPasswordChecker
 {
     public int strongPasswordChecker(string s)
     {
         char[] pwd;
-        int len,temp,t;
+        int len,temp=0,t=0;
         pwd=s.ToCharArray();
         len=s.Length;
         if(len<6)
@@ -34,48 +36,78 @@ public class StrongPasswordChecker
         }
         else
         {
-            temp=repeat_check(pwd);
+            List<int> repeat = new List<int>();
+            int i=0,j;
             t=number_check(pwd)+uppercase_check(pwd)+lowercase_check(pwd);
-            if(temp>t)
+            while(i<s.Length-1)
             {
-                int i=0,t1=0,k,k1=temp;
-                while(i<s.Length-3)
+                j=i+1;
+                while(j<s.Length)
                 {
-                    if(s[i]==s[i+1]&&s[i]==s[i+2])
+                    if(s[i]==s[j])
                     {
-                        if(s[i+3]==s[i])
-                        {
-                            k=i;
-                            i++;
-                            while(i<s.Length-3&&s[i]==s[i+3])
-                            {
-                                i++;
-                            }
-                            t1+=(i+3-k)/3;
-                            k1--;
-                        }
-                        i+=3;
-                        continue;
+                        j++;
                     }
-                    i++;
+                    else
+                    {
+                        break;
+                    }
                 }
-                return len-20+Math.Max(3-t,t1+k1);
+                if(j-i>2)
+                {
+                    repeat.Add(j-i);
+                }
+                i=j;
             }
-            else
+            int delete=len-20;
+            repeat.Sort();
+            for(int m=0;m<repeat.Count;m++)
             {
-                return t+len-20;
+                if(delete>=(repeat[m]%3+1))
+                {
+                    delete-=1+repeat[m]%3;
+                    repeat[m]-=1+repeat[m]%3;
+                }
+                if(delete==0)
+                {
+                    break;
+                }
+            }   
+            Console.WriteLine(repeat[0]+" "+delete);
+            if(delete>0)
+            {
+                for(int n=0;n<repeat.Count;n++)
+                {
+                    while(repeat[n]>2)
+                    {
+                        if(delete>2)
+                        {
+                            repeat[n]-=3;
+                            delete-=3;
+                        }
+                        else
+                        {
+                            repeat[n]-=delete;
+                            delete=0;
+                        }
+                        if(delete==0)
+                        {
+                            break;
+                        }
+                    }
+                    if(delete==0)
+                    {
+                        break;
+                    }
+                }
             }
+            foreach (var item in repeat)
+            {
+                temp+=item/3;
+            }           
+            return len-20+(temp>t?temp:t);
         }
-        // return 0;
     }
-    // public int length_check(int s)
-    // {
-    //     if( s<6 || s>20 )
-    //     {
-    //         return 1;
-    //     }
-    //     return 0;
-    // }
     public int repeat_check(char[] s)
     {   
         int i=0,t=0;
@@ -129,5 +161,8 @@ public class StrongPasswordChecker
     }
     static void Main(string[] args)
     {
+        string s = "aaaaaa1234567890123Ubefg";
+        StrongPasswordChecker sp = new StrongPasswordChecker {};
+        Console.WriteLine(sp.strongPasswordChecker(s));
     }
 }
