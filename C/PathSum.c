@@ -10,20 +10,31 @@ int main()
 {
     bool hasPathSum(struct TreeNode * root);
 }
-int pathSum(struct TreeNode * root,int sum)
+bool pathSum(struct TreeNode * root,int sum,int value)
 {
     if(root->left==NULL&&root->right==NULL)
     {
-        return sum+root->val;
+        if(root->val+sum==value)
+            return true;
+        return false;
+    }
+    else if(root->left!=NULL&&root->right!=NULL)
+    {
+        return pathSum(root->left,sum+root->val,value)||pathSum(root->right,sum+root->val,value);
+    }
+    else if(root->left!=NULL)
+    {
+        return pathSum(root->left,sum+root->val,value);
+    }
+    else
+    {
+        return pathSum(root->right,sum+root->val,value);        
     }
 }
 
 bool hasPathSum(struct TreeNode *root,int sum)
 {
-    static int m=sum;
-    if(root->val+sum>sum)
-    {
+    if(root==NULL)
         return false;
-    }
-    else if()
+    return pathSum(root,0,sum);
 }
