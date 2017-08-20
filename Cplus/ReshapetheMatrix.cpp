@@ -4,13 +4,14 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+    //这里加空格，避免误认为>>符号
+    vector<vector<int> > matrixReshape(vector<vector<int> >& nums, int r, int c) {
         if(nums.size()==0||nums[0].size()*nums.size()!=r*c)
         {
             return nums;
         }
         int i,j,m,n;
-        vector<vector<int>> newnums(r);//初始化
+        vector<vector<int> > newnums(r);//初始化
         //newnums.resize(r);   //同上
         cout<<nums.size()<<","<<nums[0].size()<<endl;
         for(i=0;i<r;i++)
@@ -31,7 +32,7 @@ public:
     }
 };
 
-void print(vector<vector<int>> vec)
+void print(vector<vector<int> > vec)
 {
     for(int i=0;i<vec.size();i++) 
     {
@@ -43,7 +44,7 @@ void print(vector<vector<int>> vec)
 
 int main()
 {
-    vector<vector<int>>  array(2); 
+    vector<vector<int> >  array(2); 
     for(int i=0;i<2;i++) 
     {
         array[i].resize(3);
