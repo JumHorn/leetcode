@@ -1,2 +1,2 @@
-  I will do some exercises when I learn a new program language.So this reposity include all my methods for leetcode's diffenrent kind of 
-questions.these were all accepted methods.I am glad to get your suggestions.
+  I will do some exersises when I learn a new program language.So this reposity includes all my methods for leetcode's different kind of 
+questions.these are all accepted methods.I am glad to get your suggestions.
