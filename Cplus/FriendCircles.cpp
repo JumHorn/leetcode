@@ -8,7 +8,7 @@ public:
  		int iresult=1;
 		for(int i=0;i<M.size();i++)
 		{
-			for(int j=0;j<M[0].size();j++)
+			for(int j=i;j<M.size();j++)
 			{
 				if(M[i][j]==1)
 					markfriends(M,++iresult,i,j);
@@ -19,38 +19,23 @@ public:
 
 	void markfriends(vector<vector<int> >& M,int mark, int i, int j)
 	{
+		if(i<0||j<0||i>=M.size()||j>=M.size()||j<i)
+		{
+			return;
+		}
+		if(M[i][j]!=1)
+		{
+			return;
+		}
 		M[i][j]=mark;
-		if(i-1<0||M[i-1][j]!=1)
+		for(int m=i;m<M.size();m++)
 		{
+			if(M[i][m]==1)
+			{
+				M[i][m]=mark;
+				for(int n=0;n<=m;n++)
+					markfriends(M,mark,n,m);
+			}
 		}
-		else
-		{
-			markfriends(M,mark,i-1,j);
-		}
-
-		if(i+1>=M.size()||M[i+1][j]!=1)
-		{
-		}
-		else
-		{
-			markfriends(M,mark,i+1,j);
-		}
-
-		if(j-1<0||M[i][j-1]!=1)
-		{
-		}
-		else
-		{
-			markfriends(M,mark,i,j-1);
-		}
-
-		if(j+1>=M[0].size()||M[i][j+1]!=1)
-		{
-		}
-		else
-		{
-			markfriends(M,mark,i,j+1);
-		}
-		return;
 	}
 };
