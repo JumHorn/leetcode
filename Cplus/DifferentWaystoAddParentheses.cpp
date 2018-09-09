@@ -6,84 +6,68 @@ using namespace std;
 class Solution {
 public:
     vector<int> diffWaysToCompute(string input) {
-        vector<int> res;
-		Compute(res,input);
-	    return res;
-    }
-
-	void Compute(vector<int>& res,string input)
-	{
-		int front=0,middle=0,back=1;
-		while(back!=input.length())
-		{
-			if(input[back]=='+'||input[back]=='-'||input[back]=='*')
-			{
-				middle=back;
-				break;
-			}
-			back++;
-		}
-		back++;
-		if(back!=input.length()&&input[back]=='-')
-		{
-			back++;
-		}
-		while(back!=input.length())
-		{
-			if(input[back]=='+'||input[back]=='-'||input[back]=='*')
-			{
-				Calculate(res,input,input[middle],front,middle,back);
-			}
-			else
-			{
-				back++;
-			}
-		}
-		res.push_back(stoi(deleteSymbol(add(input,input[middle],front,middle,back))));
-	}
-
-	void Calculate(vector<int>& res,string& input,char symbol,int& front,int& middle,int& back)
-	{
-		Compute(res,add(input,symbol,front,middle,back));
-		front=middle+1;
-		middle=back;
-		back++;
-		if(back!=input.length()&&input[back]=='-')
-		{
-			back++;
-		}
-	}
-
-	string add(string input,char symbol,int front,int middle,int back)
-	{
-		int a=stoi(input.substr(front,middle-front));
-		int b=stoi(input.substr(middle+1,back-middle-1));
-		int c;
-		switch(symbol)
-		{
-		case '+':
-			c=a+b;
-			break;
-		case '-':
-			c=a-b;
-			break;
-		case '*':
-			c=a*b;
-			break;
-		}
-		string tmp=input.replace(front,back-front,to_string(c));
-		return tmp;
-	}
-
-	string deleteSymbol(string input)
-	{
+		vector<int> res;
+		vector<int> numbers;
+		vector<char> symbols;
 		for(int i=1;i<input.length();i++)
 		{
 			if(input[i]=='+'||input[i]=='-'||input[i]=='*')
 			{
-				return add(input,input[i],0,i,input.length());
+				symbols.push_back(input[i]);
+				numbers.push_back(stoi(input.substr(0,i)));
+				input=input.substr(i+1);
+				i=0;
+			}
+			else
+			{
+				i++;
 			}
 		}
-		return input;
+		numbers.push_back(stoi(input));
+		Compute(res,numbers,symbols);
+	    return res;
+	}
+	
+	void Compute(vector<int>& res,vector<int>& numbers,vector<char>& symbols)
+	{
+		if(symbols.empty())
+		{
+			res.push_back(numbers.back());
+			return;
+		}
+		int i=0;
+		while(i!=symbols.size())
+		{
+			int c;
+			switch(symbols[i])
+			{
+			case '+':
+				c=numbers[i]+numbers[i+1];
+			break;
+			case '-':
+				c=numbers[i]-numbers[i+1];
+			break;
+			case '*':
+				c=numbers[i]*numbers[i+1];
+			break;
+			}
+			vector<int> num=numbers;
+			vector<char> sym=symbols;
+			num[i++]=c;
+			num.erase(num.begin()+i);
+			sym.erase(sym.begin()+i-1);
+			Compute(res,num,sym);
+		}
 	}
 };
+
+// template<typename T>
+// ostream& operator<<(ostream& os,T& t)
+// {
+// 	for(typename T::iterator iter=t.begin();iter!=t.end();iter++)
+// 	{
+// 		os<<*iter<<" ";
+// 	}
+// 	os<<endl;
+// 	return os;
+// }
