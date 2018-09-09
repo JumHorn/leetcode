@@ -30,56 +30,60 @@ public:
 		}
 		while(back!=input.length())
 		{
-			if(input[back]=='+')
+			if(input[back]=='+'||input[back]=='-'||input[back]=='*')
 			{
-				int a=stoi(input.substr(front,middle-front));
-				int b=stoi(input.substr(middle+1,back-middle-1));
-				int c=a+b;
-				string tmp=input.replace(front,back-front,to_string(c));
-				Compute(res,tmp);
-				front=middle+1;
-				middle=back;
-				back++;
-				if(back!=input.length()&&input[back]=='-')
-				{
-					back++;
-				}
-			}
-			else if(input[back]=='-')
-			{
-				int a=stoi(input.substr(front,middle-front));
-				int b=stoi(input.substr(middle+1,back-middle-1));
-				int c=a-b;
-				string tmp=input.replace(front,back-front,to_string(c));
-				Compute(res,tmp);
-				front=middle+1;
-				middle=back;
-				back++;
-				if(back!=input.length()&&input[back]=='-')
-				{
-					back++;
-				}
-			}
-			else if(input[back]=='*')
-			{
-				int a=stoi(input.substr(front,middle-front));
-				int b=stoi(input.substr(middle+1,back-middle-1));
-				int c=a*b;
-				string tmp=input.replace(front,back-front,to_string(c));
-				Compute(res,tmp);
-				front=middle+1;
-				middle=back;
-				back++;
-				if(back!=input.length()&&input[back]=='-')
-				{
-					back++;
-				}
+				Calculate(res,input,input[middle],front,middle,back);
 			}
 			else
 			{
 				back++;
 			}
 		}
-		res.push_back(stoi(input));
+		res.push_back(stoi(deleteSymbol(add(input,input[middle],front,middle,back))));
+	}
+
+	void Calculate(vector<int>& res,string& input,char symbol,int& front,int& middle,int& back)
+	{
+		Compute(res,add(input,symbol,front,middle,back));
+		front=middle+1;
+		middle=back;
+		back++;
+		if(back!=input.length()&&input[back]=='-')
+		{
+			back++;
+		}
+	}
+
+	string add(string input,char symbol,int front,int middle,int back)
+	{
+		int a=stoi(input.substr(front,middle-front));
+		int b=stoi(input.substr(middle+1,back-middle-1));
+		int c;
+		switch(symbol)
+		{
+		case '+':
+			c=a+b;
+			break;
+		case '-':
+			c=a-b;
+			break;
+		case '*':
+			c=a*b;
+			break;
+		}
+		string tmp=input.replace(front,back-front,to_string(c));
+		return tmp;
+	}
+
+	string deleteSymbol(string input)
+	{
+		for(int i=1;i<input.length();i++)
+		{
+			if(input[i]=='+'||input[i]=='-'||input[i]=='*')
+			{
+				return add(input,input[i],0,i,input.length());
+			}
+		}
+		return input;
 	}
 };
