@@ -1,5 +1,5 @@
 #include<iostream>
-#include<list>
+#include<vector>
 using namespace std;
 // Definition for singly-linked list.
 struct ListNode {
@@ -11,7 +11,7 @@ struct ListNode {
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        list<int> n1,n2;
+        vector<int> n1,n2;
 	    while(l1!=NULL)
 		{
 			n1.push_back(l1->val);
