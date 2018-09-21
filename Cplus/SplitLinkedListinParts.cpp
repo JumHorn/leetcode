@@ -25,7 +25,7 @@ public:
 			while(tmp)
 			{
 				res.push_back(tmp);
-				tmp=tmp->next;
+				tmp=advance(tmp,1);
 			}
 			for(int i=0;i<k-len;i++)
 			{
@@ -39,12 +39,12 @@ public:
 			for(int i=0;i<remain;i++)
 			{
 				res.push_back(tmp);
-				advance(tmp,step+1);
+				tmp=advance(tmp,step+1);
 			}
 			res.push_back(tmp);
 			for(int i=0;i<k-remain-1;i++)
 			{
-				advance(tmp,step);
+				tmp=advance(tmp,step);
 				res.push_back(tmp);
 			}
 		}
@@ -53,10 +53,14 @@ public:
 
 	ListNode* advance(ListNode* l,int n)
 	{
-		for(int i=0;i<n;i++)
+		ListNode* t=l;
+		l=l->next;
+		for(int i=1;i<n;i++)
 		{
+			t=t->next;
 			l=l->next;
 		}
+		t->next=NULL;
 		return l;
 	}
 };
