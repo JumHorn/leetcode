@@ -13,7 +13,7 @@ public:
 			addOne(bricks);
 			height++;
 			int len=0;
-			for(vector<int>::iterator it=iter->begin();it!=iter->end()-1;iter++)
+			for(vector<int>::iterator it=iter->begin();it!=iter->end()-1;it++)
 			{
 				len+=*it;
 				if(bricks.count(len)==0)
@@ -28,6 +28,10 @@ public:
 		}
 		//find min
 		int res=INT_MAX;
+		if(bricks.size()==0)
+		{
+			res=wall.size();
+		}
 		for(map<int,int>::iterator iter=bricks.begin();iter!=bricks.end();iter++)
 		{
 			if(iter->second<res)
