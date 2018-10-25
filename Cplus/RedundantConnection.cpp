@@ -1,5 +1,4 @@
 #include<vector>
-#include<map>
 using namespace std;
 //  For all the node
 //  traverse the graph to find the value appeared three times 
@@ -7,46 +6,35 @@ using namespace std;
 //  If we can, return the value last appeared
 class Solution {
 public:
+	vector<int> parent;
     vector<int> findRedundantConnection(vector<vector<int> >& edges) {
-		vector<vector<int> >::iterator iter=edges.begin(),tmp;
-		map<int,int> statistics;
-		while(true)
+		parent.reserve(1001);
+		for(int i=0;i<1001;i++)
+			parent[i]=i;
+		vector<vector<int> >::iterator iter;
+		for(iter=edges.begin();iter!=edges.end();iter++)
 		{
-			int flag=2;
-			for(;iter!=edges.end();iter++)
+			if(!Union(iter->at(0),iter->at(1)))
 			{
-				if(++statistics[iter->at(0)]==3)
-				{
-					flag=0;
-					++statistics[iter->at(1)];
-					break;
-				}
-				if(++statistics[iter->at(1)]==3)
-				{
-					flag=1;
-					break;
-				}
-			}
-			if(flag!=2)
-			{
-				for(tmp=iter;tmp!=edges.begin()-1;tmp--)
-				{
-					if(tmp->at(0)==iter->at(flag)&&statistics[tmp->at(1)]==2)
-					{
-						return *tmp;
-					}
-					if(tmp->at(1)==iter->at(flag)&&statistics[tmp->at(0)]==2)
-					{
-						return *tmp;
-					}
-				}
-				iter++;
-			}
-			else
-			{
-				break;
+				return *iter;
 			}
 		}
-		return *(iter-1);
+		return vector<int>();
     }
+
+	int Find(int x)
+	{
+		if(parent[x]!=x)
+			parent[x]=Find(parent[x]);
+		return parent[x];
+	}
+
+	bool Union(int x,int y)
+	{
+		int xr=Find(x),yr=Find(y);
+		if(xr==yr)
+			return false;
+		parent[yr]=xr;
+		return true;
+	}
 };
