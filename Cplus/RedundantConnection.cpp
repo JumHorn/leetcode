@@ -8,8 +8,8 @@ class Solution {
 public:
 	vector<int> parent;
     vector<int> findRedundantConnection(vector<vector<int> >& edges) {
-		parent.reserve(1001);
-		for(int i=0;i<1001;i++)
+		parent.reserve(edges.size()+1);
+		for(int i=0;i<edges.size()+1;i++)
 			parent[i]=i;
 		vector<vector<int> >::iterator iter;
 		for(iter=edges.begin();iter!=edges.end();iter++)
@@ -24,9 +24,10 @@ public:
 
 	int Find(int x)
 	{
-		if(parent[x]!=x)
-			parent[x]=Find(parent[x]);
-		return parent[x];
+		int tmp=x;
+		while(parent[x]!=x)
+			x=parent[x];
+		return parent[tmp]=x;
 	}
 
 	bool Union(int x,int y)
