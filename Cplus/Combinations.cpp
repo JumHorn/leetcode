@@ -17,10 +17,6 @@ public:
 			res.push_back(sol);
 			return;
 		}
-		if(i>n)
-		{
-			return;
-		}
 		for(int j=i;j<=n-k+1;j++)
 		{
 			sol.push_back(j);
