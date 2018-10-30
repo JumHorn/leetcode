@@ -2,6 +2,7 @@
 A(m)=max{A(m-1),A(m-2)+x}
 */
 #include<vector>
+#include<algorithm>
 using namespace std;
 
 class Solution {
@@ -12,35 +13,23 @@ public:
 		if(nums.size()==1)
 			return nums[0];
 		if(nums.size()==2)
-			return nums[0]>nums[1]?nums[0]:nums[1];
-		vector<bool> flag(nums.size(),true);
-		if(nums[0]>nums[1])
-			nums[1]=nums[0];
-		else
-			flag[1]=false;
-		int i;
-		for(i=2;i<nums.size()-1;i++)
+			return max(nums[0],nums[1]);
+		if(nums.size()==3)
+			return max(nums[0],max(nums[1],nums[2]));
+		vector<int> dp0_n_1(nums.size()-1);
+		dp0_n_1[0]=nums[0];
+		dp0_n_1[1]=max(nums[0],nums[1]);
+		for(int i=2;i<dp0_n_1.size();i++)
 		{
-			if(nums[i-1]==nums[i-2]+nums[i])
-			{
-				nums[i]=nums[i-1];
-				flag[i]=flag[i-1]&&flag[i-2];
-			}
-			else if(nums[i-1]>nums[i-2]+nums[i])
-			{
-				nums[i]=nums[i-1];
-				flag[i]=flag[i-1];
-			}
-			else
-			{
-				nums[i]=nums[i-2]+nums[i];
-				flag[i]=flag[i-2];
-			}
+			dp0_n_1[i]=max(dp0_n_1[i-1],dp0_n_1[i-2]+nums[i]);
 		}
-		if(!flag[i-2])
-			nums[i]=nums[i-1]>nums[i-2]+nums[i]?nums[i-1]:(nums[i-2]+nums[i]);
-		else
-			nums[i]=nums[i-1];
-		return nums[i];
-    }
+		vector<int> dp1_n(nums.size()-1);
+		dp1_n[0]=nums[1];
+		dp1_n[1]=max(nums[1],nums[2]);
+		for(int i=2;i<dp1_n.size();i++)
+		{
+			dp1_n[i]=max(dp1_n[i-1],dp1_n[i-2]+nums[i+1]);
+		}
+		return max(dp1_n[dp1_n.size()-1],dp0_n_1[dp0_n_1.size()-1]);
+	}
 };
