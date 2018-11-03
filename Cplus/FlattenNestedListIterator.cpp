@@ -19,35 +19,19 @@ class NestedInteger {
 
 class NestedIterator {
 public:
-    NestedIterator(vector<NestedInteger> &nestedList):v(nestedList),index(0) {
-        
+    NestedIterator(vector<NestedInteger> &nestedList){
+		nindex=0;
+        nestedToVector(nestedList); 
     }
 
     int next() {
-		return nested[nindex];
+		return nested[nindex++];
     }
 
     bool hasNext() {
 		if(nindex!=nested.size())
-		{
 			return true;
-		}
-		nindex=0;
-		nested.clear();
-		while(nested.empty()&&index!=v.size())
-		if(v[index].isInteger())
-		{
-			nested.push_back(v[index++].getInteger());
-			return true;
-		}
-		else
-		{
-			nestedToVector(v[index++].getList());
-		}
-		if(nested.empty())
-			return false;
-		else
-			return true;
+		return false;
     }
 private:
 	void nestedToVector(const vector<NestedInteger>& n)
@@ -66,9 +50,7 @@ private:
 	}
 
 private:
-	vector<NestedInteger>& v;
 	vector<int> nested;
-	int index;
 	int nindex;
 };
 
