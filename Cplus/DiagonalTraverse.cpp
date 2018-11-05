@@ -16,13 +16,15 @@ public:
 				break;
 			if(dir)//up-right
 			{
-				if(i==0||j==matrix[0].size()-1)
+				if(j==matrix[0].size()-1)
 				{
 					dir=false;
-					if(j==matrix[0].size()-1)
-						i++;
-					else
-						j++;
+					i++;
+				}
+				else if(i==0)
+				{
+					dir=false;
+					j++;
 				}
 				else
 				{
@@ -32,13 +34,15 @@ public:
 			}	
 			else//down-left
 			{
-				if(i==matrix.size()-1||j==0)
+				if(i==matrix.size()-1)
 				{
 					dir=true;
-					if(i==matrix.size()-1)
-						j++;
-					else
-						i++;
+					j++;
+				}
+				else if(j==0)
+				{
+					dir=true;
+					i++;
 				}
 				else
 				{
