@@ -8,15 +8,15 @@ public:
 		if(points.empty())
 			return 0;
 		ascending(points);
-       	return countArrow(points);
+       	return countArrow(points,0);
     }
 
-	int countArrow(vector<pair<int,int> >& points)
+	int countArrow(vector<pair<int,int> >& points,int start)
 	{
-        if(points.size()<2)
-			return points.size();
+        if(points.size()-start<2)
+			return points.size()-start;
 		int i=0,minindex=0,minsecond=INT_MAX;
-		for(i=0;i<points.size();i++)
+		for(i=start;i<points.size();i++)
 		{
 			if(points[i].second<minsecond)
 			{
@@ -30,8 +30,7 @@ public:
 			if(points[j].first>minsecond)
 				break;
 		}
-		vector<pair<int,int> > tmp(points.begin()+j,points.end());
-		return 1+countArrow(tmp);
+		return 1+countArrow(points,j);
 	}
 
 	void ascending(vector<pair<int,int> >& points)
