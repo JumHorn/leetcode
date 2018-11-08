@@ -42,7 +42,12 @@ public:
 			{
 				if(points[j].first<points[j-1].first)
 				{
-					swap(points[j],points[j-1]);
+					int tmp=points[j].first;
+                    points[j].first=points[j-1].first;
+                    points[j-1].first=tmp;
+					tmp=points[j].second;
+                    points[j].second=points[j-1].second;
+                    points[j-1].second=tmp;
 					s=false;
 				}
 			}
