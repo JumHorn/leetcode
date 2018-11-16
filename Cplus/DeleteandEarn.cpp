@@ -12,9 +12,7 @@ public:
         int good=hash.size()-1;
         while(hash[good]==0)good--;
 		for(int i=1;i<=good;i++)
-        {
 			hash[i]*=i;
-        }
 		hash[2]=max(hash[1],hash[2]);
 		for(int i=3;i<=good;i++)
 			hash[i]=max(hash[i-1],hash[i-2]+hash[i]);
