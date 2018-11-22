@@ -4,8 +4,6 @@ using namespace std;
 class Solution {
 public:
     int minPathSum(vector<vector<int> >& grid) {
-		if(grid.size()==0)
-			return 0;
         for(int i=1;i<grid[0].size();i++)
 			grid[0][i]+=grid[0][i-1];
 		for(int j=1;j<grid.size();j++)
