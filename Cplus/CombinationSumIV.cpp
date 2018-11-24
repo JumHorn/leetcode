@@ -2,6 +2,7 @@
 #include<algorithm>
 using namespace std;
 
+//top down with memorization
 class Solution {
 public:
     int combinationSum4(vector<int>& nums, int target) {
@@ -33,3 +34,18 @@ public:
 		return sum;
 	}
 };
+
+//dynamic programming
+//int combinationSum4(vector<int>& nums, int target) 
+//{
+//    vector<int> result(target + 1);
+//    result[0] = 1;
+//    for (int i = 1; i <= target; ++i) {
+//        for (int x : nums) {
+//            if (i >= x) {
+//                result[i] += result[i - x];
+//            }
+//        }
+//    }
+//    return result[target];
+//}
