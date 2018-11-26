@@ -15,7 +15,7 @@ public:
 		for(int j=k;j<s.length();j++)
 		{
 			hash[s[j]-'A']++;
-			maxcount=*max_element(hash.begin(),hash.end());
+			maxcount=max(hash[s[j]-'A'],maxcount);//this trick makes the algorithm the best
 			if(window-maxcount<k)
 				window++;
 			else
