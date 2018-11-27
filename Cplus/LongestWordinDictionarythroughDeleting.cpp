@@ -7,21 +7,17 @@ class Solution {
 public:
     string findLongestWord(string s, vector<string>& d) {
 		string res;
-		vector<int> hash(26);
-		for(int i=0;i<s.length();i++)
-			hash[s[i]-'a']++;
 		sort(d.begin(),d.end(),*this);
 		for(int i=0;i<d.size();i++)
 		{
-			vector<int> tmp(26);
-			for(int j=0;j<d[i].length();j++)
-				tmp[d[i][j]-'a']++;
-			int k;
-			for(k=0;k<tmp.size();k++)
-				if(tmp[k]>hash[k])
-					break;
-			if(k==tmp.size())
-				return d[i];
+			int j=0,k=0;
+			for(j=0;j<s.length();j++)
+			{
+				if(d[i][k]==s[j])
+					k++;
+				if(k==d[i].length())
+					return d[i];
+			}
 		}
 		return res;
     }
