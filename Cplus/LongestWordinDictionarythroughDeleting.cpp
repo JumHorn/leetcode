@@ -10,8 +10,7 @@ public:
 		sort(d.begin(),d.end(),*this);
 		for(int i=0;i<d.size();i++)
 		{
-			int j=0,k=0;
-			for(j=0;j<s.length();j++)
+			for(int j=0,k=0;j<s.length();j++) //this little optimization lead to 40%
 			{
 				if(d[i][k]==s[j])
 					k++;
