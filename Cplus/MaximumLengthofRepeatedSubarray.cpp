@@ -18,6 +18,8 @@ public:
 					len++;
 				res=max(res,len);
 			}
+			if(res>A.size()-1-i)
+                return res;
 		}
 		return res;
     }
