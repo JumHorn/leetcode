@@ -1,5 +1,6 @@
 #include<vector>
 #include<string>
+#include<unordered_set>
 #include<list>
 using namespace std;
 
@@ -10,10 +11,11 @@ public:
 			return 0;
 		if(find(deadends.begin(),deadends.end(),"0000")!=deadends.end())
 			return -1;
+		unordered_set<string> dds(deadends.begin(), deadends.end());
+        unordered_set<string> visited;
 		list<string> bfs;
-		list<string> visited;
 		bfs.push_back("0000");
-		visited.push_back("0000");
+		visited.insert("0000");
 		int res=0;
 		while(bfs.size()!=0)
 		{
@@ -29,19 +31,19 @@ public:
 					tmp[i]=(tmp[i]+1)>9+'0'?'0':(tmp[i]+1);
 					if(tmp==target)
 						return res;
-					if(find(visited.begin(),visited.end(),tmp)==visited.end()&&find(deadends.begin(),deadends.end(),tmp)==deadends.end())
+					if(visited.find(tmp)==visited.end()&&dds.find(tmp)==dds.end())
 					{
 						bfs.push_back(tmp);
-						visited.push_back(tmp);
+						visited.insert(tmp);
 					}
 					tmp=t;
 					tmp[i]=(tmp[i]-1)<'0'?'9':(tmp[i]-1);
 					if(tmp==target)
 						return res;
-					if(find(visited.begin(),visited.end(),tmp)==visited.end()&&find(deadends.begin(),deadends.end(),tmp)==deadends.end())
+					if(visited.find(tmp)==visited.end()&&dds.find(tmp)==dds.end())
 					{
 						bfs.push_back(tmp);
-						visited.push_back(tmp);
+						visited.insert(tmp);
 					}
 				}
 			}
