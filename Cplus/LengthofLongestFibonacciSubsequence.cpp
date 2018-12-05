@@ -14,6 +14,7 @@ i=8 5
 class Solution {
 public:
     int lenLongestFibSubseq(vector<int>& A) {
+        int res=2;
         vector<vector<int> > v;
 	 	vector<int> tmp(4);
 		tmp[0]=A[0];
@@ -31,6 +32,8 @@ public:
 					v[j][1]=v[j][2];
 					v[j][2]=v[j][1]+v[j][0];
 					v[j][3]++;
+                    if(v[j][3]>res)
+                        res=v[j][3];
 				}
 			}
 			for(int j=0;j<i;j++)
@@ -41,12 +44,6 @@ public:
 				tmp[3]=2;
 				v.push_back(tmp);
 			}
-		}
-		int res=2;
-		for(int i=0;i<v.size();i++)
-		{
-			if(v[i][3]>res)
-				res=v[i][3];
 		}
 		return res==2?0:res;
     }
