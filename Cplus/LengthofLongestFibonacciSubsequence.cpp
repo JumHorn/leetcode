@@ -1,48 +1,43 @@
 #include<vector>
 #include<list>
+#include<unordered_map>
 using namespace std;
 /*
-[1,2,3,4,5,6,7,8]
-dp[i]
-i=3 3
-i=4 3
-i=5 4
-i=6 4
-i=7 4
-i=8 5
+dp[i][j]
+	1	2	3	4	5	6	7	8
+1	X	X	X	X	X	X	X	X			
+2	2	X	X	X	X	X	X	X
+3	2	3	X	X	X	X	X	X
+4	2			X	X	X	X	X
+5	2				X	X	X	X
+6	2					X	X	X
+7	2						X	X
+8	2							X
 */
 
 class Solution {
 public:
     int lenLongestFibSubseq(vector<int>& A) {
-        int res=2;
-        list<vector<int> > v;
-	 	vector<int> tmp(3);
-		tmp[0]=A[0];
-		tmp[1]=A[1];
-        tmp[2]=2;
-		v.push_back(tmp);
-		list<vector<int> >::iterator iter=v.begin();
-		iter++;
-		for(int i=2;i<A.size();i++)
+		unordered_map<int,int> index;
+		for(int i=0;i<A.size();i++)
+			index[A[i]]=i;
+		int res=0;
+		vector<vector<int> > dp(A.size(),vector<int>(A.size(),2));
+		for(int i=1;i<A.size();i++)
 		{
-			for(iter++;iter!=v.end();iter++)
-			{
-				if(A[i]==(*iter)[0]+(*iter)[1])
-				{
-					(*iter)[0]=(*iter)[1];
-					(*iter)[1]=A[i];
-					(*iter)[2]++;
-                    if((*iter)[2]>res)
-                        res=(*iter)[2];
-				}
-			}
 			for(int j=0;j<i;j++)
 			{
-				tmp[0]=A[j];
-				tmp[1]=A[i];
-				tmp[2]=2;
-				v.push_back(tmp);
+				if(A[i]-A[j]<A[j]&&index.count(A[i]-A[j]))
+				{
+					int k=index[A[i]-A[j]];
+					dp[i][j]=dp[j][k]+1;
+					if(dp[i][j]>res)
+						res=dp[i][j];
+				}
+				else
+				{
+					dp[i][j]=2;
+				}
 			}
 		}
 		return res==2?0:res;
