@@ -5,32 +5,23 @@ using namespace std;
 class Solution {
 public:
     int minEatingSpeed(vector<int>& piles, int H) {
- 		sort(piles.begin(),piles.end());
-		int index=0,i;
-	    for(i=piles.size()-2;i>=0;i--)
+		int low=1,high=1000000000;
+		while(low<high)
 		{
-			if(!eatAll(piles,piles[i],H))
-			{
-				index=i;
-				break;
-			}
+			int middle=(low+high)/2;
+			if(eatAll(piles,middle,H))
+				high=middle;
+			else
+				low=middle+1;
 		}
-		for(int i=piles[index];i<=piles[index+1];i++)
-		{
-			if(eatAll(piles,i,H))
-				return i;
-		}
-		return 0;
+		return low;
     }
 
 	bool eatAll(vector<int>& piles,int k,int H)
 	{
-		int hour=0,sum=0,i=0;
-		while(i<piles.size())
-		{
-			hour+=piles[i]/k+(piles[i]%k?1:0);
-		    i++;
-		}
+		int hour=0;
+		for(int i=0;i<piles.size();i++)
+			hour+=(piles[i]-1)/k+1;
 		return hour<=H;
 	}
 };
