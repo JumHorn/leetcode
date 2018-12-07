@@ -8,7 +8,7 @@ public:
 		int low=1,high=1000000000;
 		while(low<high)
 		{
-			int middle=(low+high)/2;
+			int middle=low+(high-low)/2;
 			if(eatAll(piles,middle,H))
 				high=middle;
 			else
