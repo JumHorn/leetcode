@@ -9,12 +9,10 @@ dp[i][j]=max{ dp[i-1][j],dp[i][j-1],(j-i)*min{height[i],height[j]} }
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        vector<int> dp(height.size());
-		for(int j=1;j<height.size();j++)
-			dp[j]=max(dp[j-1],j*min(height[0],height[j]));
-		for(int i=1;i<height.size();i++)
+		int res=0;
+		for(int i=0;i<height.size();i++)
 			for(int j=i+1;j<height.size();j++)
-                dp[j]=max(max(dp[j],dp[j-1]),(j-i)*min(height[i],height[j]));
-		return dp.back();
+                res=max(res,(j-i)*min(height[i],height[j]));
+		return res;
     }
 };
