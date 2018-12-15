@@ -5,6 +5,8 @@ using namespace std;
 class Solution {
 public:
     void gameOfLife(vector<vector<int> >& board) {
+		if(board.empty()||board[0].empty())
+			return;
 		if(board.size()==1)//only one row
 		{
 			if(board[0].size()==1)
@@ -25,17 +27,17 @@ public:
 			return;
 		}
         vector<int> v(board[0].size());
+        vector<int> tmp(board[0].size());
 		int i=0,j=0;
 		v[j]=getNext(board[i][j],board[i+1][j]+board[i][j+1]+board[i+1][j+1]);
 		for(j=1;j<(int)(board[0].size()-1);j++)
 		{
-			v[j]=getNext(board[i][j],board[i][j+1]+board[i][j-1]+board[i+1][j]);
+			v[j]=getNext(board[i][j],board[i][j+1]+board[i][j-1]+board[i+1][j]+board[i+1][j-1]+board[i+1][j+1]);
 		}
 		v[j]=getNext(board[i][j],board[i+1][j]+board[i][j-1]+board[i+1][j-1]);
 		for(i=1;i<(int)(board.size()-1);i++)//the first and last row not included
 		{
 			j=0;
-			vector<int> tmp(board[0].size());
 			tmp[j]=getNext(board[i][j],board[i-1][j]+board[i+1][j]+board[i][j+1]+board[i-1][j+1]+board[i+1][j+1]);
 			for(j=1;j<(int)(board[0].size()-1);j++)//the first and last column not included
 			{
@@ -50,12 +52,14 @@ public:
 			v=tmp;
 		}
 		j=0;
-		board[i][j]=getNext(board[i][j],board[i-1][j]+board[i][j+1]+board[i-1][j+1]);
+		tmp[j]=getNext(board[i][j],board[i-1][j]+board[i][j+1]+board[i-1][j+1]);
 		for(j=1;j<(int)(board[0].size()-1);j++)
 		{
-			board[i][j]=getNext(board[i][j],board[i][j+1]+board[i][j-1]+board[i-1][j]);
+			tmp[j]=getNext(board[i][j],board[i][j+1]+board[i][j-1]+board[i-1][j]+board[i-1][j-1]+board[i-1][j+1]);
 		}
+        tmp[j]=getNext(board[i][j],board[i-1][j]+board[i][j-1]+board[i-1][j-1]);
 		board[i-1]=v;
+        board[i]=tmp;
     }
 
 	int getNext(int cell,int live)
