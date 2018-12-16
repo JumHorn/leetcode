@@ -5,43 +5,16 @@ using namespace std;
 class Solution {
 public:
     int nthSuperUglyNumber(int n, vector<int>& primes) {
-		unordered_set<int> visited(primes.begin(),primes.end());
-		int ugly=1;
-		for(int i=1;i<n;i++)
+		vector<int> ugly(n,INT_MAX);
+		vector<int> leastIndex(primes.size(),0);
+		ugly[0]=1;
+		for(int i=0;i<n;i++)
 		{
-			ugly++;
-			int j,tmp=ugly;
-            if(visited.find(tmp)!=visited.end())
-            {
-                visited.insert(ugly);
-                continue;
-            }
-			for(j=0;j<primes.size();j++)
-			{
-				if(tmp%primes[j]==0)
-				{
-					tmp=tmp/primes[j];
-					if(visited.find(tmp)!=visited.end())
-					{
-						visited.insert(ugly);
-						break;
-					}
-                    if(tmp==1)
-                    {
-						visited.insert(ugly);
-                        break;
-                    }
-					j=-1;
-				}
-                else if(tmp<primes[j])
-                {
-                    i--;
-                    break;
-                }
-			}
-			if(j==primes.size())
-				i--;
+			for(int j=0;j<primes.size();j++)
+				ugly[i]=min(ugly[i],primes[j]*ugly[leastIndex[j]]);
+			for(int j=0;j<primes.size();j++)
+				leastIndex[j]+=(ugly[i]==primes[j]*ugly[leastIndex[j]]?1:0);
 		}
-		return ugly;
-    }
+		return ugly[n-1];
+	}
 };
