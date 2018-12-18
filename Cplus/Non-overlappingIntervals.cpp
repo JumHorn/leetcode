@@ -37,11 +37,11 @@ public:
 
 	bool operator()(const Interval& i1,const Interval& i2)
 	{
-		if(i1.start<i2.start)
-			return true;
-		else if(i1.start>i2.start)
-			return false;
 		if(i1.end<i2.end)
+			return true;
+		else if(i1.end>i2.end)
+			return false;
+		if(i1.start<i2.start)
 			return true;
 		return false;
 	}
