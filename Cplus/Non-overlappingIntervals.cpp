@@ -14,6 +14,10 @@ public:
     int eraseOverlapIntervals(vector<Interval>& intervals) {
 		int res=0,len=0;
         sort(intervals.begin(),intervals.end(),*this);
+        // for(int i=0;i<intervals.size();i++)
+        // {
+        //     cout<<intervals[i].start<<" "<<intervals[i].end<<endl;
+        // }
 		while(len<intervals.size())
 		{
             int i;
@@ -38,10 +42,6 @@ public:
 	bool operator()(const Interval& i1,const Interval& i2)
 	{
 		if(i1.end<i2.end)
-			return true;
-		else if(i1.end>i2.end)
-			return false;
-		if(i1.start<i2.start)
 			return true;
 		return false;
 	}
