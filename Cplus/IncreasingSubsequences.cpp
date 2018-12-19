@@ -1,5 +1,6 @@
 #include<vector>
 #include<algorithm>
+#include<unordered_set>
 #include<set>
 using namespace std;
 
@@ -18,7 +19,7 @@ public:
 		{
 		    res.push_back(tmp);
 		}
-		set<int> visited;
+		unordered_set<int> visited;
 		for(int i=start;i<nums.size();i++)
 		{
 			if((tmp.empty()||nums[i]>=tmp.back())&&visited.find(nums[i])==visited.end())
