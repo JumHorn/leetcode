@@ -1,5 +1,6 @@
 #include<vector>
 #include<algorithm>
+#include<set>
 using namespace std;
 
 class Solution {
@@ -15,36 +16,18 @@ public:
 	{
 		if(tmp.size()>1)
 		{
-			if(tmp.back()<tmp[tmp.size()-2])
-				return;
-            if(find(res.begin(),res.end(),tmp)==res.end())
-			{
-				if(isExist(res,tmp))
-			    	res.push_back(tmp);
-			}
+		    res.push_back(tmp);
 		}
+		set<int> visited;
 		for(int i=start;i<nums.size();i++)
 		{
-			tmp.push_back(nums[i]);
-			findSubsequences(res,nums,tmp,i+1);
-			tmp.pop_back();
-		}
-	}
-
-	bool isExist(vector<vector<int> >& res,vector<int>& tmp)
-	{
-		for(int i=0;i<res.size();i++)
-		{
-			if(res[i].size()==tmp.size())
+			if((tmp.empty()||nums[i]>=tmp.back())&&visited.find(nums[i])==visited.end())
 			{
-				int j=0;
-				for(j=0;j<tmp.size();j++)
-					if(res[i][j]!=tmp[j])
-						break;
-				if(j==tmp.size())
-					return false;
+				tmp.push_back(nums[i]);
+				findSubsequences(res,nums,tmp,i+1);
+				tmp.pop_back();
+				visited.insert(nums[i]);
 			}
 		}
-		return true;
 	}
 };
