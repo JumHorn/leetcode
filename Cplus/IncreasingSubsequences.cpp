@@ -18,7 +18,10 @@ public:
 			if(tmp.back()<tmp[tmp.size()-2])
 				return;
             if(find(res.begin(),res.end(),tmp)==res.end())
-			    res.push_back(tmp);
+			{
+				if(isExist(res,tmp))
+			    	res.push_back(tmp);
+			}
 		}
 		for(int i=start;i<nums.size();i++)
 		{
@@ -26,5 +29,22 @@ public:
 			findSubsequences(res,nums,tmp,i+1);
 			tmp.pop_back();
 		}
+	}
+
+	bool isExist(vector<vector<int> >& res,vector<int>& tmp)
+	{
+		for(int i=0;i<res.size();i++)
+		{
+			if(res[i].size()==tmp.size())
+			{
+				int j=0;
+				for(j=0;j<tmp.size();j++)
+					if(res[i][j]!=tmp[j])
+						break;
+				if(j==tmp.size())
+					return false;
+			}
+		}
+		return true;
 	}
 };
