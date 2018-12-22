@@ -11,7 +11,7 @@ public:
 
     bool book(int start, int end) {
 		for(list<pair<int,int> >::iterator iter=_double.begin();iter!=_double.end();iter++)
-			if((start<=iter->first&&end>=iter->first)||(start<iter->second&&end>=iter->second))
+            if((start<=iter->first&&end>iter->first)||(start<iter->second&&start>=iter->first))
 				return false;
         for(list<pair<int,int> >::iterator iter=_single.begin();iter!=_single.end();iter++)
         {
