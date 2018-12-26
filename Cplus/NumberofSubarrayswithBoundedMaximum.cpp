@@ -1,54 +1,28 @@
 #include<vector>
 using namespace std;
 
+//do not consider duplicate array like 2,2,2,2,2  
 class Solution {
 public:
     int numSubarrayBoundedMax(vector<int>& A, int L, int R) {
-		int res=0;
-		int index=0;
-		for(int j=0;j<A.size();j++)
+		int index=0,count=0,res=0;
+		for(int i=0;i<A.size();i++)
 		{
-			if(A[j]>A[index])
-				index=j;
-            int tmp=isValid(L,R,A[index]);
-			res+=tmp;
-            int partmax=index;
-			for(int i=1;i<=j;i++)
+			if(A[i]>=L&&A[i]<=R)
 			{
-                if(tmp==0)
-                {
-                    i=partmax;
-                    tmp=1;
-                    continue;
-                }
-				if(i-1==partmax)
-				{
-					partmax=maxIndex(A,i,j);
-                    tmp=isValid(L,R,A[partmax]);
-                }
-				res+=tmp;
+				count=i-index+1;
+				res+=count;
+			}
+			else if(A[i]<L)
+			{
+				res+=count;
+			}
+			else
+			{
+				count=0;
+				index=i+1;
 			}
 		}
 		return res;
     }
-
-	int isValid(int L,int R,int val)
-	{
-		if(val<=R&&val>=L)
-			return 1;
-		else
-			return 0;
-	}
-
-	int maxIndex(vector<int>& A,int i,int j)
-	{
-		int res=i++;
-		while(i<=j)
-        {
-			if(A[i]>A[res])
-				res=i;
-            i++;
-        }
-		return res;
-	}
 };
