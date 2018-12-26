@@ -15,6 +15,12 @@ public:
             int partmax=index;
 			for(int i=1;i<=j;i++)
 			{
+                if(tmp==0)
+                {
+                    i=partmax;
+                    tmp=1;
+                    continue;
+                }
 				if(i-1==partmax)
 				{
 					partmax=maxIndex(A,i,j);
