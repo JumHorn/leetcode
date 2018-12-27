@@ -6,28 +6,27 @@ using namespace std;
 class Solution {
 public:
     vector<int> eventualSafeNodes(vector<vector<int> >& graph) {
-        unordered_set<int> safe,unsafe,visited;
+        vector<int> state(graph.size());//0 unvisited 1 safe 2 unsafe
 		vector<int> res;
-		eventualSafeNodes(graph,safe,unsafe,res,0,visited);
-		sort(res.begin(),res.end());
+		for(int i=0;i<graph.size();i++)
+			if(eventualSafeNodes(graph,state,i))
+				res.push_back(i);
 		return res;
     }
-	void eventualSafeNodes(vector<vector<int> >& graph,unordered_set<int>& safe,unordered_set<int>& unsafe,vector<int>& res,int start,unordered_set<int>& visited)
+	bool eventualSafeNodes(vector<vector<int> >& graph,vector<int>& state,int start)
 	{
-		if(safe.find(start)!=safe.end())
-			return;
-		if(unsafe.find(start)!=unsafe.end())
-			return;
-		if(visited.find(start)!=visited.end())
+		if(state[start]!=0)
+			return state[start]==1;
+        state[start]=2;
+		for(int i=0;i<graph[start].size();i++)
 		{
-			unsafe.insert(start);
-			return;
+			if(!eventualSafeNodes(graph,state,graph[start][i]))
+			{
+				state[start]=2;
+				return false;
+			}
 		}
-		for(int i=start;i<graph[start].size();i++)
-		{
-			visited.insert(i);
-			eventualSafeNodes(graph,safe,unsafe,res,graph[start][i],visited);
-			visited.erase(visited.find(i));
-		}
+		state[start]=1;
+		return true;
 	}
 };
