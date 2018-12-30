@@ -6,17 +6,18 @@ class Solution {
 public:
     int numRescueBoats(vector<int>& people, int limit) {
 		sort(people.begin(),people.end());
-		return numRescueBoats(people,limit,0,people.size());
+		int i=0,j=people.size()-1,res=0;
+		while(i<=j)
+		{
+			if(people[i]+people[j]>limit)
+				j--;
+			else
+			{
+				i++;
+				j--;
+			}
+			res++;
+		}
+		return res;
     }
-
-	int numRescueBoats(vector<int>& people,int limit,int start,int end)
-	{
-		if(end-start<=1)
-			return end-start;
-		for(int i=start+1;i<end;i++)
-			if(people[start]+people[i]>limit)
-				return end-i+numRescueBoats(people,limit,start,i);
-		return 1+numRescueBoats(people,limit,start+1,end-1);
-
-	}
 };
