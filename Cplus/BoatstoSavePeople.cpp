@@ -5,23 +5,18 @@ using namespace std;
 class Solution {
 public:
     int numRescueBoats(vector<int>& people, int limit) {
-		int res=0;
-        make_heap(people.begin(),people.end(),greater<int>());
-		while(people.size()>=2)
-		{
-			pop_heap(people.begin(),people.end(),greater<int>());
-			int p1=people.back();
-			people.pop_back();
-			pop_heap(people.begin(),people.end(),greater<int>());
-			int p2=people.back();
-			people.pop_back();
-			if(p1+p2>limit)
-			{
-				return res+people.size()+2;
-			}
-			res++;
-		}
-		res+=people.size();
-		return res;
+		sort(people.begin(),people.end());
+		return numRescueBoats(people,limit,0,people.size());
     }
+
+	int numRescueBoats(vector<int>& people,int limit,int start,int end)
+	{
+		if(end-start<=1)
+			return end-start;
+		for(int i=start+1;i<end;i++)
+			if(people[start]+people[i]>limit)
+				return end-i+numRescueBoats(people,limit,start,i);
+		return 1+numRescueBoats(people,limit,start+1,end-1);
+
+	}
 };
