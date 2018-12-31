@@ -43,7 +43,8 @@ public:
 		for(int k=i;k<j;k++)
         {
 			res+=min(height[k],low);
-            height[k]=low;
+            if(height[k]<low)
+                height[k]=low;
         }
 		return res;
 	}
