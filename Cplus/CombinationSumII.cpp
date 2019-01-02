@@ -16,11 +16,12 @@ public:
 	{
 		for(int i=start;i<(int)candidates.size();i++)
 		{
+			if(i>start&&candidates[i]==candidates[i-1])
+				continue;
 			if(target-candidates[i]==0)
 			{
 				tmp.push_back(candidates[i]);
-				if(find(res.begin(),res.end(),tmp)==res.end())
-					res.push_back(tmp);
+				res.push_back(tmp);
                 tmp.pop_back();
 				return;
 			}
