@@ -10,25 +10,27 @@ public:
 			return vector<vector<string> >();
         vector<vector<string> > res;
 		vector<string> tmp;
-		partition(res,s,tmp,0,0);
+		partition(res,s,tmp,0);
 		return res;
     }
 
-	void partition(vector<vector<string> >& res,const string& s,vector<string>& tmp,int start,int end)
+	void partition(vector<vector<string> >& res,const string& s,vector<string> tmp,int start)
 	{
-		for(int i=end;i<(int)s.length();i++)
+        if(start==s.length())
+            res.push_back(tmp);
+		for(int i=start+1;i<=(int)s.length();i++)
 		{
-			if(!isPalindromic(s,start,end))
-				return;
-			tmp.push_back(s.substr(start,end-start+1));
-			partition(res,s,tmp,end,i);
-			tmp.pop_back();
+            if(!isPalindromic(s,start,i))
+			    continue;
+            tmp.push_back(s.substr(start,i-start));
+			partition(res,s,tmp,i);
+            tmp.pop_back();
 		}
-		res.push_back(tmp);
 	}
-	
+
 	bool isPalindromic(const string& s,int start,int end)
 	{
+        --end;
 		while(start<end)
 			if(s[start++]!=s[end--])
 				return false;
