@@ -14,7 +14,7 @@ public:
 		return res;
     }
 
-	void partition(vector<vector<string> >& res,const string& s,vector<string> tmp,int start)
+	void partition(vector<vector<string> >& res,const string& s,vector<string>& tmp,int start)
 	{
         if(start==s.length())
             res.push_back(tmp);
