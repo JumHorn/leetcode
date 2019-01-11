@@ -15,9 +15,9 @@ public:
 
 	int numIslands(vector<vector<char> >& grid,int i,int j)
 	{
-		if(grid[i][j]=='0'||grid[i][j]=='2')
+		if(grid[i][j]=='0')
 			return 0;
-		grid[i][j]='2';
+		grid[i][j]='0';
 		if(i+1<(int)grid.size())
 			numIslands(grid,i+1,j);
 		if(i-1>=0)
