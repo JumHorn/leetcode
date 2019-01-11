@@ -22,7 +22,7 @@ public:
 			numIslands(grid,i+1,j);
 		if(i-1>=0)
 			numIslands(grid,i-1,j);
-		if(j+1<(int)grid[i].size())
+		if(j+1<(int)grid[0].size())
 			numIslands(grid,i,j+1);
 		if(j-1>=0)
 			numIslands(grid,i,j-1);
