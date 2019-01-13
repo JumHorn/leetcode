@@ -9,26 +9,24 @@ public:
 		if(n<2)
 			return 1;
 		vector<int> queen(n);
- 		return totalNQueens(queen,n,0,0);		
+ 		return totalNQueens(queen,0,0);
     }
 
-	int totalNQueens(vector<int>& queen,int n,int row,int column)
+	int totalNQueens(vector<int>& queen,int row,int column)
 	{
-		if(row==0&&column==n)
+		if(row==0&&column==queen.size())
 			return 0;
 		queen[row]=column;
-		for(int i=column;i<n;i++)
-		{
+		for(int i=column;i<queen.size();i++)
 			if(queenCheck(queen,row,i))
 			{
 				queen[row]=i;
-				if(row==n-1)
-					return 1+totalNQueens(queen,n,row-1,queen[row-1]+1);
+				if(row==queen.size()-1)
+					return 1+totalNQueens(queen,row-1,queen[row-1]+1);
 				else
-					return totalNQueens(queen,n,row+1,0);
+					return totalNQueens(queen,row+1,0);
 			}
-		}
-		return totalNQueens(queen,n,row-1,queen[row-1]+1);
+		return totalNQueens(queen,row-1,queen[row-1]+1);
 	}
 
 	bool queenCheck(vector<int>& queen,int row,int column)
