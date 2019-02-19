@@ -1,5 +1,7 @@
 #include<vector>
 #include<numeric>
+#include<algorithm>
+#include<functional>
 using namespace std;
 
 class Solution {
@@ -9,22 +11,21 @@ public:
 		if(all&0x1)
 			return false;
 		all/=2;
-		return combination(nums,0,0,all);
+		sort(nums.begin(),nums.end(),greater<int>());
+		if(nums.front()>all)
+			return false;
+		return combination(nums,0,all);
     }
 
-	bool combination(vector<int>& nums,int tmp,int start,int all)
+	bool combination(vector<int>& nums,int start,int all)
 	{
-		if(tmp==all)
+		if(0==all)
 			return true;
-		if(tmp>all)
+		if(all<0)
 			return false;
 		for(int i=start;i<(int)nums.size();i++)
-		{
-			tmp+=nums[i];
-			if(combination(nums,tmp,i+1,all))
+			if(combination(nums,i+1,all-nums[i]))
 				return true;
-			tmp-=nums[i];
-		}
 		return false;
 	}
 };

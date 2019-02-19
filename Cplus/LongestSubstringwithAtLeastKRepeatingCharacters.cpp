@@ -9,7 +9,7 @@ public:
 
 	int longestSubstring(const string& s,int k,int left,int right)
 	{
-		if(left>=right)
+		if(left>=right||right-left<k)
 			return 0;
 		int hash[26]={0};
 		for(int i=left;i<right;i++)
