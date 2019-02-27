@@ -11,7 +11,7 @@ public:
         kth=k;
 		v=nums;
 		sort(v.begin(),v.end(),greater<int>());
-        if(k<(int)v.size())
+		if(k<(int)v.size())
 		    v.erase(v.begin()+k,v.end());
     }
 
@@ -21,12 +21,12 @@ public:
             v.push_back(val);
             return v[kth-1];
         }
-        if(val<=v.back())
+        if(kth==v.size()&&val<=v.back())
             return v[kth-1];
 		int i=0,j=v.size()-1;
 		while(j>=i)
 		{
-			int mid=(j-i)/2+i;
+			int mid=(j-i)/2+i+(j-i)%2;
 			if(val==v[mid])
 			{
 				v.insert(v.begin()+mid,val);
@@ -41,6 +41,7 @@ public:
                     v.insert(v.begin()+j,val);
                     if(kth<(int)v.size())
 		                v.pop_back();
+                    return v[kth-1];
                 }
 				j=mid-1;
 			}
@@ -51,10 +52,14 @@ public:
                     v.insert(v.begin()+j+1,val);
                     if(kth<(int)v.size())
 		                v.pop_back();
+                    return v[kth-1];
                 }
 				i=mid+1;
 			}
 		}
+        v.insert(v.begin()+i,val);
+        if(kth<(int)v.size())
+            v.pop_back();
         return v[kth-1];
     }
 };
