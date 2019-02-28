@@ -13,52 +13,43 @@ struct TreeNode {
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-		int res=0;
 		if(root==NULL)
-			return res;		
-		res=1;
-		vector<TreeNode*> *v=new vector<TreeNode*>(1,root);
-		vector<TreeNode*> *tmp=new vector<TreeNode*>();
-		//乒乓操作
-		while(!v->empty()||!tmp->empty())
+			return 0;
+		if(root->left==NULL)
 		{
-			for(int i=0;i<(int)v->size();i++)
-			{
-				if((*v)[i]!=NULL)
-				{
-					if((*v)[i]->left==NULL)
-					{
-						if(!tmp->empty())
-							tmp->push_back((*v)[i]->left);
-					}
-					else
-						tmp->push_back((*v)[i]->left);
-
-					if((*v)[i]->right==NULL)
-					{
-						if(!tmp->empty())
-							tmp->push_back((*v)[i]->right);
-					}
-					else
-						tmp->push_back((*v)[i]->right);
-				}
-			}
-			res=max(res,calcuWidth(*tmp));
-			v->clear();
-			vector<TreeNode*> *s=v;
-			v=tmp;
-			tmp=s;
+			int tmp=widthOfBinaryTree(root->right);
+			return tmp>1?tmp:1;
 		}
+		if(root->right==NULL)
+		{
+			int tmp=widthOfBinaryTree(root->left);
+			return tmp>1?tmp:1;
+		}
+		int res=1;
+		vector<int> layer;
+		encode(root,0,0);
+		calcuWidth(root,layer,0,res);
 		return res;
     }
-
-	int calcuWidth(vector<TreeNode*>& v)
+	
+	void calcuWidth(TreeNode* root,vector<int>& layer,int level,int& res)
 	{
-		if(v.empty())
-			return 0;
-		int res=v.size()-1;
-		while(v[res]==NULL)
-			--res;
-		return res+1;
+		if(root==NULL)
+			return;
+		if(level==(int)layer.size())
+			layer.push_back(root->val);
+		else
+			res=max(res,root->val-layer[level]+1);
+		calcuWidth(root->left,layer,level+1,res);
+		calcuWidth(root->right,layer,level+1,res);
+	}
+
+	void encode(TreeNode* root,int num,int leftright)
+	{
+		if(root==NULL)
+			return;
+		root->val=num*2+leftright;
+		encode(root->left,root->val,0);
+		encode(root->right,root->val,1);
 	}
 };
