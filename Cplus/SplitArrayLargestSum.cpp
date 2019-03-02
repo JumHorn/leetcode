@@ -21,10 +21,11 @@ public:
 		}
     	for(int i=start;i<=(int)nums.size()-m;i++)
 		{
-			tmp=0;
-			for(int j=start;j<=i;j++)
-				tmp+=nums[j];
-			splitArray(nums,m-1,i+1,max(tmp,sum),res);
+			tmp+=nums[i];
+			int n=max(tmp,sum);
+			if(n>=res)
+				return;
+			splitArray(nums,m-1,i+1,n,res);
 		}	
     }
 };
