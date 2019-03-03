@@ -2,11 +2,13 @@
 using namespace std;
 
 class MyHashMap {
-	vector<int> hash;
+	int* hash;
 public:
     /** Initialize your data structure here. */
-    MyHashMap() : hash(1000000,-1){
-        
+    MyHashMap() {
+		hash=new int[1000000];
+		for(int i=0;i<1000000;i++)
+			hash[i]=-1;
     }
     
     /** value will always be non-negative. */
