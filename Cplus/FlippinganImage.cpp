@@ -7,7 +7,7 @@ public:
         for(int i=0;i<(int)A.size();i++)
 		{
 			int tmp=A[0].size();
-		    for(int j=0;j<tmp/2+(tmp&1);j++)
+		    for(int j=0;j*2<tmp;j++)
 		    {
 		        if(A[i][j]==A[i][tmp-j-1])
                 {
