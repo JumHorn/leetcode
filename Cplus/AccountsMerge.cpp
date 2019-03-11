@@ -27,6 +27,19 @@ public:
 						{
 							v[j].second.insert(accounts[i][k]);
 						}
+						for(int n=j+1;n<(int)v.size();n++)
+						{
+							if(v[j].first==v[n].first)
+							{
+								if(canBeMerged(v[j].second,v[n].second))
+								{
+									for(set<string>::iterator iter=v[n].second.begin();iter!=v[n].second.end();++iter)
+										v[j].second.insert(*iter);
+									v.erase(v.begin()+n);
+									//n--;
+								}
+							}
+						}
 						break;
 					}
 				}
@@ -53,10 +66,18 @@ public:
 		}
 		return res;
     }
+	
+	bool canBeMerged(set<string>& src,set<string>& tmp)
+	{
+		for(set<string>::iterator iter=tmp.begin();iter!=tmp.end();++iter)
+			if(src.find(*iter)!=tmp.end())
+				return true;
+		return false;
+	}
 
 	bool canBeMerged(vector<string>& account,set<string>& tmp)
 	{
-		for(int i=0;i<(int)account.size();i++)
+		for(int i=1;i<(int)account.size();i++)
 			if(tmp.find(account[i])!=tmp.end())
 				return true;
 		return false;
