@@ -70,7 +70,7 @@ public:
 	bool canBeMerged(set<string>& src,set<string>& tmp)
 	{
 		for(set<string>::iterator iter=tmp.begin();iter!=tmp.end();++iter)
-			if(src.find(*iter)!=tmp.end())
+			if(src.find(*iter)!=src.end())
 				return true;
 		return false;
 	}
