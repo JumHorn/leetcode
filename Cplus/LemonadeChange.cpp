@@ -1,37 +1,35 @@
 #include<vector>
-#include<map>
 using namespace std;
 
 class Solution {
 public:
     bool lemonadeChange(vector<int>& bills) {
-        map<int,int> money;
+		int five=0,ten=0;
 		for(int i=0;i<(int)bills.size();i++)
 		{
 			if(bills[i]==5)
-				++money[5];
+				++five;
 			else if(bills[i]==10)
 			{
-				if(money[5]<=0)
+				if(five<=0)
 					return false;
-				--money[5];
-				++money[10];
+				--five;
+				++ten;
 			}
 			else
 			{
-				++money[20];
-				if(money[10]>0)
+				if(ten>0)
 				{
-					--money[10];
-					if(money[5]<=0)
+					--ten;
+					if(five<=0)
 						return false;
-					--money[5];
+					--five;
 				}
 				else
 				{
-					if(money[5]<3)
+					if(five<3)
 						return false;
-					money[5]-=3;
+					five-=3;
 				}
 			}
 		}
