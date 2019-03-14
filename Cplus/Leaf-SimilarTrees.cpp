@@ -12,25 +12,11 @@ struct TreeNode {
 class Solution {
 public:
     bool leafSimilar(TreeNode* root1, TreeNode* root2) {
-		vector<int> sequence;
-		getSequence(root1,sequence);
-		int tmp=0;
-		return judge(root2,sequence,tmp);
+		vector<int> sequence1,sequence2;
+		getSequence(root1,sequence1);
+		getSequence(root2,sequence2);
+		return sequence1==sequence2;
     }
-
-	bool judge(TreeNode* root,vector<int>& v,int& start)
-	{
-		if(root==NULL)
-			return start==(int)v.size();
-		if(root->left==NULL&&root->right==NULL)
-			if(root->val!=v[start++])
-				return false;
-		if(!judge(root->left,v,start))
-			return false;
-		if(!judge(root->right,v,start))
-			return false;
-		return true;
-	}
 
 	void getSequence(TreeNode* root,vector<int>& v)
 	{
