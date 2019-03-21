@@ -1,5 +1,6 @@
 #include<vector>
 #include<algorithm>
+#include<iostream>
 using namespace std;
 
 class Solution {
@@ -13,33 +14,21 @@ public:
 		for(int i=1;i<=(int)nums.size()-k;i++)
 			v[i]=v[i-1]-nums[i-1]+nums[i+k-1];
 
-		vector<vector<int> > res(v.size()+k,vector<int>(3));
+		vector<int> res(3);
 		vector<vector<int> > dp(4,vector<int>(v.size()+k));
 		//dp[i][j] i 0,1,2,3 j 0~v.size()+k
-		//dp[i][j]=max(dp[i-1][j-k]+v[j],dp[i][j-k])
+		//dp[i][j]=max(dp[i-1][j-k]+v[j],dp[i][j-1])	
 		for(int i=1;i<(int)dp.size();i++)
 			for(int j=k;j<(int)dp[0].size();j++)
-			{
-				if(dp[i-1][j-k]+v[j-k]>dp[i][j-k])
-				{
-					for(int m=0;m<i-1;m++)
-						res[j][m]=res[j-k][m];
-					res[j][i-1]=j;
-					dp[i][j]=dp[i-1][j-k]+v[j-k];
-				}
-				else
-				{
-					for(int m=0;m<i;m++)
-						res[j][m]=res[j-k][m];
-					dp[i][j]=dp[i][j-k];
-				}
-			}
-		int index=(int)dp[0].size()-1;
-		for(;index>0;index--)
+					dp[i][j]=max(dp[i-1][j-k]+v[j-k],dp[i][j-1]);
+        
+		int j=dp[0].size()-1;
+		for(int i=2;i>=0;i--)
 		{
-			if(dp.back()[index]!=dp.back().back())
-				return res[index+1];
+			while(--j>=k&&dp[i+1][j]==dp[i+1][j+1]);
+			res[i]=j+1-k;
+			j=j+1-k;
 		}
-		return res[index];
+		return res;
     }
 };
