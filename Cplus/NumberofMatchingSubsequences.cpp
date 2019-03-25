@@ -5,20 +5,18 @@ using namespace std;
 class Solution {
 public:
     int numMatchingSubseq(string S, vector<string>& words) {
-		int res=0;
-		vector<int> index(words.size());
+		vector<vector<pair<int,int> > > index(128);
+		for(int i=0;i<(int)words.size();i++)
+			index[words[i][0]].push_back(pair<int,int>(i,0));
 		for(int i=0;i<(int)S.size();i++)
 		{
-			for(int j=0;j<(int)words.size();j++)
+			vector<pair<int,int> > v=index[S[i]];
+			index[S[i]].clear();
+			for(int j=0;j<(int)v.size();j++)
 			{
-				if(index[j]==(int)words[j].size())
-					continue;
-				if(S[i]==words[j][index[j]])
-					++index[j];
+				index[words[v[j].first][++v[j].second]].push_back(pair<int,int>(v[j].first,v[j].second));
 			}
 		}
-		for(int i=0;i<(int)words.size();i++)
-			res+=((int)words[i].size()==index[i])?1:0;
-		return res;		
+		return index[0].size();		
     }
 };
