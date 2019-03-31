@@ -5,28 +5,40 @@ using namespace std;
 class Solution {
 public:
     int maxChunksToSorted(vector<int>& arr) {
-        int res=0,i=0;
-		while(i<arr.size())
+        int res=0;
+		for(int i=0;i<(int)arr.size();i++)
 		{
-			int tmp = i;
-			for(int j=i+1;j<arr.size();j++)
-			{
-				if(arr[i]>arr[j])
-				{
-					tmp=j;
-				}
-			}
-			int t = *max_element(arr.begin()+i,arr.begin()+tmp+1);
-			i=tmp+1;
-			for(int j=tmp+1;j<arr.size();j++)
-			{
-				if(t>arr[j])
-				{
-					i=j+1;
-				}
-			}
 			res++;
-		}	
+			int right=getIndex(arr,i);
+            int rightvalue=arr[i];
+			if(right<=i)
+			{
+				continue;
+			}
+			for(int j=i+1;j<=right;j++)
+			{
+				int tmp=getIndex(arr,j);
+				if(tmp>right)
+                {
+					right=tmp;
+                    rightvalue=arr[j];
+                }
+                else if(arr[j]==rightvalue)
+                    right++;
+				if(right==(int)arr.size())
+					return res;
+			}
+			i=right;
+		}
 		return res;
     }
+
+	int getIndex(vector<int>& arr,int start)
+	{
+		int res=0;
+		for(int i=0;i<(int)arr.size();i++)
+			if(arr[start]>arr[i])
+				res++;
+		return res;
+	}
 };
