@@ -12,6 +12,8 @@ struct Interval {
 class Solution {
 public:
     vector<Interval> merge(vector<Interval>& intervals) {
+        if(intervals.empty())
+            return intervals;
 		vector<Interval> res;
         sort(intervals.begin(),intervals.end(),*this);
 		Interval tmp(intervals[0]);
@@ -25,7 +27,7 @@ public:
 				tmp=intervals[i];
 			}
 		}
-		if(tmp!=res.back())
+		if(res.empty()||tmp.start!=res.back().start||tmp.end!=res.back().end)
 			res.push_back(tmp);
 		return res;
     }
