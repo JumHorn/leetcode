@@ -6,19 +6,31 @@ class Solution {
 	static const int mode=1000000000+7;
 public:
     int rectangleArea(vector<vector<int> >& rectangles) {
-        vector<vector<int> > v(INT_MAX,vector<int>(INT_MAX));
-		int h=0,w=0,res=0;
-		for(int k=0;k<(int)rectangles.size();k++)
+		sort(rectangles.begin(),rectangles.end(),*this);
+		int h=0,y=-1,x=0;
+		unsigned long long res=0;
+		for(int i=0;i<(int)rectangles.size();i++)
+			h=max(h,rectangles[i][3]);
+		while(++y<h)
 		{
-			w=max(w,rectangles[k][2]);
-			h=max(h,rectangles[k][3]);
-			for(int i=rectangles[k][0];i<rectangles[k][2];i++)
-				for(int j=rectangles[k][1];j<rectangles[k][3];j++)
-					v[i][j]=1;
+			x=0;
+			for(int i=0;i<(int)rectangles.size();i++)
+			{
+				if(y>=rectangles[i][1]&&y<rectangles[i][3]&&rectangles[i][2]>x)
+				{
+					x=max(x,rectangles[i][0]);
+					res+=rectangles[i][2]-x;
+					x=rectangles[i][2];
+				}
+			}
 		}
-		for(int i=0;i<w;i++)
-			for(int j=0;j<h;j++)
-				res+=v[i][j]%mode;
-		return res;
+		return res%mode;
     }
+
+	bool operator()(vector<int>& left,vector<int>& right)
+	{
+		if(left[0]<right[0])
+			return true;
+		return false;
+	}
 };
