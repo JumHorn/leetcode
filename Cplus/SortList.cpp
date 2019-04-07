@@ -10,54 +10,45 @@ struct ListNode {
 class Solution {
 public:
     ListNode* sortList(ListNode* head) {
-        divide(head,NULL);
-		return head;
-    }
-
-	ListNode* divide(ListNode* start,ListNode* end)
-	{
-		if(start==end||start->next==end)
-			return start;
-		ListNode* mid=start,*quicker=start->next;
-		while(quicker!=end&&quicker->next!=end)
+        if(head==NULL||head->next==NULL)
+			return head;
+		ListNode* mid=head,*quicker=head->next;
+		while(quicker!=NULL&&quicker->next!=NULL)
 		{
 			quicker=quicker->next->next;
 			mid=mid->next;
 		}
-		mid=divide(start,mid->next);
-		mid=divide(mid->next,end);
-		return conquer(start,mid,end);
-	}
+		ListNode* root=mid->next;
+		mid->next=NULL;
+		ListNode* first=sortList(head);
+		ListNode* second=sortList(root);
+		return merge(first,second);
+    }
 
-	ListNode* conquer(ListNode* start,ListNode* mid,ListNode* end)
+	ListNode* merge(ListNode* first,ListNode* second)
 	{
-		ListNode* s=start,*m=mid->next;
-		while(s!=mid->next&&m!=end)
+		ListNode* tmp=new ListNode(0);
+		ListNode* res=tmp;
+		while(first!=NULL&&second!=NULL)
 		{
-			if(s->val>m->val)
+			if(first->val>second->val)
 			{
-                ListNode* tmp=m;
-                m=m->next;
-                mid->next=m;
-                tmp->next=s->next;
-                s->next=tmp;
-                    
-				int t=s->val;
-				s->val=tmp->val;
-				tmp->val=t;
-				mid=mid->next;
+				tmp->next=second;
+				second=second->next;
+				tmp=tmp->next;
 			}
-			s=s->next;
+			else
+			{
+				tmp->next=first;
+				first=first->next;
+				tmp=tmp->next;
+			}
 		}
-        
-        // ListNode* p=start;
-        // while(p!=end)
-        // {
-        //     cout<<p->val<<" ";
-        //     p=p->next;
-        // }
-        // cout<<endl;
-		return mid;
+		if(first==NULL)
+			tmp->next=second;
+		if(second==NULL)
+			tmp->next=first;
+		return res->next;
 	}
 };
 
