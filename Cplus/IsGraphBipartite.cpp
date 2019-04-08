@@ -5,21 +5,23 @@ using namespace std;
 class Solution {
 public:
     bool isBipartite(vector<vector<int> >& graph) {
-		vector<int> nodecolor(graph.size(),0);//all initial nodes are not colored
-		for(int i=0;i<graph.size();i++)
-			if(nodecolor[i]==0&&!validColor(graph,nodecolor,1,i))
-				return false;
+		vector<char> color(graph.size());
+        for(int i=0;i<(int)graph.size();i++)
+		    if(color[i]==0&&!isBipartite(graph,color,i,1))
+                return false;
         return true;
 	}
 
-	bool validColor(vector<vector<int> >& graph,vector<int>& nodecolor,int color,int node)
+	bool isBipartite(vector<vector<int> >& graph,vector<char>& color,int n,char c)
 	{
-		if(nodecolor[node]!=0)
-			return nodecolor[node]==color;
-		nodecolor[node]=color;
-		for(int i=0;i<graph[node].size();i++)
-			if(!validColor(graph,nodecolor,-color,graph[node][i]))
-                return false;
-        return true;
+		if(color[n]!=0)
+			return color[n]==c;
+		color[n]=c;
+		for(int i=0;i<(int)graph[n].size();i++)
+		{
+			if(!isBipartite(graph,color,graph[n][i],-c))
+				return false;
+		}
+		return true;
 	}
 };
