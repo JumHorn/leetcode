@@ -1,56 +1,41 @@
 #include<vector>
 #include<algorithm>
-#include<set>
+#include<queue>
 using namespace std;
 
 class Solution {
-	struct node
+	struct Node
 	{
-		int max;
-		int x,y;//current coordinate
-		set<pair<int,int> > visited;
-        bool operator<(const node& n) const
-        {
-            return n.max>max;
-        }
+		int elevation;
+		int x,y;//coordinate
+		Node(int t,int i,int j):elevation(t),x(i),y(j){}
+		bool operator<(const Node& n) const { return elevation>n.elevation; }
 	};
-
 public:
     int swimInWater(vector<vector<int> >& grid) {
-        int res=-1;
-		vector<pair<int,int> > v;
-		set<node> visited;
-		swimInWater(grid,visited,v,0,0,res);
+		vector<vector<int> > visited(grid.size(),vector<int>(grid.size(),0));
+		int dir[4][2]={{-1,0},{1,0},{0,-1},{0,1}};
+		priority_queue<Node> pq;
+		pq.push(Node(grid[0][0],0,0));
+		visited[0][0]=1;
+		int res=0;
+		while(!pq.empty())
+		{
+			Node tmp=pq.top();
+			pq.pop();
+			res=max(res,tmp.elevation);
+			if(tmp.x==(int)grid.size()-1&&tmp.y==(int)grid.size()-1)
+				return res;
+			for(int i=0;i<4;i++)
+			{
+				int x=tmp.x+dir[i][0],y=tmp.y+dir[i][1];
+				if(x>=0&&x<(int)grid.size()&&y>=0&&y<(int)grid.size()&&visited[x][y]==0)
+				{
+					visited[x][y]=1;
+					pq.push(Node(grid[x][y],x,y));
+				}
+			}
+		}
 		return res;
     }
-
-	void swimInWater(vector<vector<int> >& grid,set<node>& visited,vector<pair<int,int> >& v,int i,int j,int& res)
-	{
-		if(i<0||i>=(int)grid.size()||j<0||j>=(int)grid[0].size())
-			return;
-		if(i==(int)grid.size()-1&&j==(int)grid[0].size()-1)
-		{
-			v.push_back(pair<int,int>(i,j));
-			int tmp=0;
-			for(int j=0;j<(int)v.size();j++)
-				tmp=max(tmp,grid[v[j].first][v[j].second]);
-			res=min(res,tmp);
-			return;
-		}
-		node n;
-		n.x=i;
-		n.y=j;
-		for(int i=0;i<(int)v.size();i++)
-			n.visited.insert(v[i]);
-		n.max=max(n.max,grid[i][j]);
-		if(visited.find(n)!=visited.end())
-			return;
-		visited.insert(n);
-		v.push_back(pair<int,int>(i,j));
-		swimInWater(grid,visited,v,i-1,j,res);
-		swimInWater(grid,visited,v,i+1,j,res);
-		swimInWater(grid,visited,v,i,j-1,res);
-		swimInWater(grid,visited,v,i,j+1,res);
-		v.pop_back();
-	}
 };
