@@ -32,7 +32,7 @@ public:
 			return res;
 		}
 		unordered_set<string> result;
-		removeInvalidParentheses(result,s,open,close);
+		removeInvalidParentheses(result,s,open,close,0);
 		for(unordered_set<string>::iterator iter=result.begin();iter!=result.end();++iter)
 			res.push_back(*iter);
 		return res;
@@ -53,7 +53,7 @@ public:
 		return count==0;
 	}
 
-	void removeInvalidParentheses(unordered_set<string>& res,string s,int open,int close)
+	void removeInvalidParentheses(unordered_set<string>& res,string s,int open,int close,int start)
 	{
 		if(open==0&&close==0)
 		{
@@ -61,7 +61,7 @@ public:
 				res.insert(s);
 			return;
 		}
-		for(int i=0;i<(int)s.length();i++)
+		for(int i=start;i<(int)s.length();i++)
 		{
 			if(s[i]=='(')
 			{
@@ -69,7 +69,7 @@ public:
 				{
 					string tmp=s;
 					tmp.erase(tmp.begin()+i);
-					removeInvalidParentheses(res,tmp,open-1,close);
+					removeInvalidParentheses(res,tmp,open-1,close,i);
 				}
 			}
 			else if(s[i]==')')
@@ -78,7 +78,7 @@ public:
 				{
 					string tmp=s;
 					tmp.erase(tmp.begin()+i);
-					removeInvalidParentheses(res,tmp,open,close-1);
+					removeInvalidParentheses(res,tmp,open,close-1,i);
 				}
 			}
 		}
