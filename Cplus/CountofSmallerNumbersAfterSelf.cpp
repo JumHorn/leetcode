@@ -24,25 +24,20 @@ public:
 		int mid=(end-start)/2+start;
 		mergeSort(res,pairs,start,mid);
 		mergeSort(res,pairs,mid,end);
-		merge(res,pairs,start,mid,end);
+        for(int i=start,j=mid;i<mid;i++)
+        {
+            while(j!=end&&pairs[i].first>pairs[j].first)
+                j++;
+            res[pairs[i].second]+=j-mid;
+        }
+		merge(pairs,start,mid,end);
 	}
 
-	void merge(vector<int>& res,vector<pair<int,int> >& pairs,int start,int mid,int end)
+	void merge(vector<pair<int,int> >& pairs,int start,int mid,int end)
 	{
 		int s=start,m=mid,d=0,d1=0;
 		while(s!=mid&&m!=end)
-		{
-			if(pairs[s].first>pairs[m].first)
-			{
-				for(int i=s;i!=mid;i++)
-					res[pairs[i].second]++;
-				tmp[d++]=pairs[m++];
-			}
-			else
-			{
-				tmp[d++]=pairs[s++];
-			}
-		}
+		    tmp[d++]=(pairs[s].first>pairs[m].first)?pairs[m++]:pairs[s++];
 		while(s!=mid)
 			tmp[d++]=pairs[s++];
 		while(m!=end)
