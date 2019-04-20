@@ -2,9 +2,11 @@
 using namespace std;
 
 class Solution {
+    vector<pair<int,int> > tmp;
 public:
     vector<int> countSmaller(vector<int>& nums) {
 		vector<int> res(nums.size());
+        tmp.resize(nums.size());
 		vector<pair<int,int> > pairs(nums.size());
 		for(int i=0;i<(int)nums.size();i++)
 		{
@@ -12,7 +14,7 @@ public:
 			pairs[i].second=i;
 		}
 		mergeSort(res,pairs,0,nums.size());
-		return res;		
+		return res;
     }
 
 	void mergeSort(vector<int>& res,vector<pair<int,int> >& pairs,int start,int end)
@@ -27,7 +29,6 @@ public:
 
 	void merge(vector<int>& res,vector<pair<int,int> >& pairs,int start,int mid,int end)
 	{
-		vector<pair<int,int> > tmp(res.size());
 		int s=start,m=mid,d=0,d1=0;
 		while(s!=mid&&m!=end)
 		{
