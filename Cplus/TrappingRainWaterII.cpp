@@ -1,5 +1,6 @@
 #include<vector>
 #include<set>
+#include<iostream>
 using namespace std;
 
 class Solution {
@@ -47,7 +48,7 @@ public:
 			f=true;
 			return 0;
 		}
-		if(i==0||i==(int)heightMap.size()-1||j==0||j==(int)heightMap[0].size())
+		if(i==0||i==(int)heightMap.size()-1||j==0||j==(int)heightMap[0].size()-1)
 			return -1;
 		visited.insert(pair<int,int>(i,j));
 		int res=1;
@@ -66,14 +67,15 @@ public:
 
 int main()
 {
-	int a[]={1,0,1};
-	vector<int> tmp(a,a+3);
+	int a[][6]={{14,17,12,13,20,14},{12,10,5,8,9,5},{16,1,4,7,2,1},{17,4,3,1,7,2},{16,6,5,8,7,6},{17,10,4,8,5,6}};
 	vector<vector<int> > rain;
-	rain.push_back(tmp);
-	rain.push_back(tmp);
-	rain.push_back(tmp);
-	rain[1][1]=0;
+	for(int i=0;i<6;i++)
+	{
+		vector<int> tmp(a[i],a[i]+6);
+		rain.push_back(tmp);
+	}
 	Solution sol;
-	sol.trapRainWater(rain);
+	int n=sol.trapRainWater(rain);
+	cout<<n<<endl;
 	return 0;
 }
