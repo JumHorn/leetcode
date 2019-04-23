@@ -14,16 +14,25 @@ public:
 		while(flag)
 		{
 			flag=false;
-			height++;
-			for(int i=1;i<(int)heightMap.size()-1;i++)
-				for(int j=1;j<(int)heightMap[0].size()-1;j++)
+            int area=0;
+            int nextheight=INT_MAX;
+			for(int i=0;i<(int)heightMap.size();i++)
+				for(int j=0;j<(int)heightMap[0].size();j++)
 				{
-					int tmp=trapRainWater(heightMap,visited,i,j,height,flag);
+                    if(heightMap[i][j]==-1)
+                        continue;
+                    if(heightMap[i][j]>height)
+                    {
+                        nextheight=min(nextheight,heightMap[i][j]);
+                        flag=true;
+                        continue;
+                    }
+					int tmp=trapRainWater(heightMap,visited,i,j,height);
 					if(tmp>=0)
 					{
 						for(set<pair<int,int> >::iterator iter=visited.begin();iter!=visited.end();++iter)
 							heightMap[iter->first][iter->second]=height+1;
-						res+=tmp;
+						area+=tmp;
 					}
 					else
 					{
@@ -33,21 +42,20 @@ public:
 					}
 					visited.clear();
 				}
+            res+=(nextheight-height)*area;
+            height=nextheight;
 		}
 		return res;
     }
 
-	int trapRainWater(vector<vector<int> >& heightMap,set<pair<int,int> >& visited,int i,int j,int h,bool& f)
+	int trapRainWater(vector<vector<int> >& heightMap,set<pair<int,int> >& visited,int i,int j,int h)
 	{
 		if(heightMap[i][j]==-1)
 			return -1;
 		if(visited.find(pair<int,int>(i,j))!=visited.end())
 			return 0;
 		if(heightMap[i][j]>h)
-		{
-			f=true;
 			return 0;
-		}
 		if(i==0||i==(int)heightMap.size()-1||j==0||j==(int)heightMap[0].size()-1)
 			return -1;
 		visited.insert(pair<int,int>(i,j));
@@ -56,7 +64,7 @@ public:
 		for(int k=0;k<4;k++)
 		{
 			int x=i+direction[k][0],y=j+direction[k][1];
-			int tmp=trapRainWater(heightMap,visited,x,y,h,f);
+			int tmp=trapRainWater(heightMap,visited,x,y,h);
 			if(tmp<0)
 				return -1;
 			res+=tmp;
@@ -67,7 +75,7 @@ public:
 
 int main()
 {
-	int a[][6]={{14,17,12,13,20,14},{12,10,5,8,9,5},{16,1,4,7,2,1},{17,4,3,1,7,2},{16,6,5,8,7,6},{17,10,4,8,5,6}};
+	int a[][3]={{11,21,31},{81,9,4},{17,61,51}};
 	vector<vector<int> > rain;
 	for(int i=0;i<6;i++)
 	{
