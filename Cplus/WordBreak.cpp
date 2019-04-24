@@ -5,20 +5,34 @@ using namespace std;
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-		if(s=="")
-			return true;
-		for(int i=0;i<(int)wordDict.size();i++)
+		vector<bool> dp(s.size()+1,false);
+		dp[0]=true;
+		for(int i=0;i<s.size();i++)
 		{
-			if(wordDict[i].size()>s.size())
-				continue;
-			int j=0;
-			while(j<wordDict[i].size()&&wordDict[i][j]==s[j])
-				j++;
-			if(j!=wordDict[i].size())
-				continue;
-			if(wordBreak(s.substr(j),wordDict))
-				return true;
-		}		
-		return false;
+			for(int j=0;j<(int)wordDict.size();j++)
+			{
+				if(wordDict[j].size()<=i+1)
+				{
+					int tmp=i+1-wordDict[j].size();
+					if(dp[tmp]&&s.substr(tmp,i+1-tmp)==wordDict[j])
+					{
+						dp[i+1]=true;
+						break;
+					}
+				}
+			}
+		}
+		return dp.back();
     }
 };
+
+int main()
+{
+	string s1="apple",s2="pen";
+	vector<string> v;
+	v.push_back(s1);
+	v.push_back(s2);
+	Solution sol;
+	sol.wordBreak("applepenapple",v);
+	return 0;
+}
