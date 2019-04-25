@@ -1,33 +1,30 @@
 #include<vector>
 #include<algorithm>
-#include<map>
 using namespace std;
 
 class Solution {
 public:
 	int removeBoxes(vector<int>& boxes)
 	{
-		map<vector<int>,int> visited;
-		return removeBoxes(boxes,visited);
+		vector<vector<vector<int> > > visited(100,vector<vector<int> >(100,vector<int>(100)));
+		return removeBoxes(boxes,visited,0,boxes.size()-1,0);
 	}
 
-    int removeBoxes(vector<int>& boxes,map<vector<int>,int>& visited) {
-		int res=0;
-		for(int i=0;i<(int)boxes.size();)
+    int removeBoxes(vector<int>& boxes,vector<vector<vector<int> > >& visited,int l,int r,int k)
+	{
+		if(l>r)
+			return 0;
+		if(visited[l][r][k]!=0)
+			return visited[l][r][k];
+		int res=(k+1)*(k+1)+removeBoxes(boxes,visited,l+1,r,0);
+		for(int j=l+1;j<=r;j++)
 		{
-			int j=i+1;
-			while(j<(int)boxes.size()&&boxes[i]==boxes[j])
-				j++;
-			vector<int> tmp(boxes);
-			tmp.erase(tmp.begin()+i,tmp.begin()+j);
-			if(visited.find(tmp)!=visited.end())
+			if(boxes[l]==boxes[j])
 			{
-				return visited[tmp];
+				res=max(res,removeBoxes(boxes,visited,l+1,j-1,0)+removeBoxes(boxes,visited,j,r,k+1));
 			}
-			res=max(res,(j-i)*(j-i)+removeBoxes(tmp));
-			i=j;
-		}		
-		visited[boxes]=res;
+		}
+		visited[l][r][k]=res;
 		return res;
     }
 };
