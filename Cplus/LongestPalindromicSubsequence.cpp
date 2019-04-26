@@ -7,29 +7,24 @@ using namespace std;
 class Solution {
 public:
     int longestPalindromeSubseq(string s) {
-		int res=0;
 		vector<vector<int> > dp(s.length(),vector<int>(s.length()));
-		for(int i=0;i<(int)s.length();i++)
-		{
-			res=max(res,longestPalindromeSubseq(s,i-1,i+1,dp)+1);
-			res=max(res,longestPalindromeSubseq(s,i-1,i,dp));
-			res=max(res,longestPalindromeSubseq(s,i,i+1,dp));
-		}
-		return res;
+		return longestPalindromeSubseq(s,0,s.length()-1,dp);
     }
 
-	int longestPalindromeSubseq(const string& s,int i,int j,vector<vector<int> >& dp)
+	int longestPalindromeSubseq(const string& s,int l,int r,vector<vector<int> >& dp)
 	{
-		if(i<0||j>=(int)s.length())
+		if(l>r)
 			return 0;
-		if(dp[i][j]>0)
-			return dp[i][j];
+		if(l==r)
+			return 1;
+		if(dp[l][r]>0)
+			return dp[l][r];
 		int res;
-		if(s[i]==s[j])
-			res=longestPalindromeSubseq(s,i-1,j+1,dp)+2;
+		if(s[l]==s[r])
+			res=longestPalindromeSubseq(s,l+1,r-1,dp)+2;
 		else
-			res=max(longestPalindromeSubseq(s,i-1,j,dp),longestPalindromeSubseq(s,i,j+1,dp));
-		dp[i][j]=res;
+			res=max(longestPalindromeSubseq(s,l+1,r,dp),longestPalindromeSubseq(s,l,r-1,dp));
+		dp[l][r]=res;
 		return res;
 	}
 };
