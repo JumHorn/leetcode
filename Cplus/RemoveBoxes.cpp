@@ -6,7 +6,7 @@ class Solution {
 public:
 	int removeBoxes(vector<int>& boxes)
 	{
-		int visited[100][100][100]={0};
+		int visited[100][100][100]={{{0}}};
 		return removeBoxes(boxes,visited,0,boxes.size()-1,0);
 	}
 

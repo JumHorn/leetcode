@@ -7,11 +7,11 @@ using namespace std;
 class Solution {
 public:
     int longestPalindromeSubseq(string s) {
-		vector<vector<int> > dp(s.length(),vector<int>(s.length()));
+		int dp[1000][1000]={{0}};
 		return longestPalindromeSubseq(s,0,s.length()-1,dp);
     }
 
-	int longestPalindromeSubseq(const string& s,int l,int r,vector<vector<int> >& dp)
+	int longestPalindromeSubseq(const string& s,int l,int r,int (*dp)[1000])
 	{
 		if(l>r)
 			return 0;
