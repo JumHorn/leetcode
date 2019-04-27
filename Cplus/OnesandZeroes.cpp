@@ -1,5 +1,7 @@
 #include<vector>
 #include<string>
+#include<algorithm>
+#include<iostream>
 using namespace std;
 
 class Solution {
@@ -7,30 +9,33 @@ public:
     int findMaxForm(vector<string>& strs, int m, int n) {
 		if(strs.empty())
 			return 0;
-		vector<vector<int> > data(strs.size(),vector<int>(2));
+		vector<vector<int> > dp(m+1,vector<int>(n+1));
+		vector<vector<int> > binstr(strs.size(),vector<int>(2));
 		for(int i=0;i<(int)strs.size();i++)
-			for(int j=0;j<(int)strs[i].length();j++)
-				data[i][strs[i][j]-'0']++;		
-		vector<vector<int> > dp1(strs.size()+1,vector<int>(m+1));
-		for(int j=1;j<=m;j++)
-			for(int i=1;i<=(int)strs.size();i++)
-			{
-				if(j<data[i-1][0]||data[i-1][0]>0)
-					dp1[i][j]=dp1[i-1][j];
-				else
-					dp1[i][j]=max(dp1[i-1][j],dp1[i-1][j-data[i-1][0]]+1);
-			}
-		vector<vector<int> > dp2(strs.size()+1,vector<int>(n+1));
-		for(int j=1;j<=n;j++)
-		{
-			for(int i=1;i<=(int)strs.size();i++)
-			{
-				if(m<data[i-1][0]||j<data[i-1][1])
-					dp2[i][j]=dp2[i-1][j];
-				else
-					dp2[i][j]=max(dp2[i-1][j],dp2[i-1][j-data[i-1][1]]+1);
-			}
-		}
-		return dp2.back().back();
+			for(int j=0;j<(int)strs[i].size();j++)
+				strs[i][j]=='1'? binstr[i][1]++:binstr[i][0]++;
+		for(int i=1;i<=m;i++)
+			for(int j=1;j<=n;j++)
+				for(int k=0;k<(int)binstr.size();k++)
+				{
+					int tmp=max(dp[i-1][j],dp[i][j-1]);
+					if(i>=binstr[k][0]&&j>=binstr[k][1])
+						dp[i][j]=max(1+dp[i-binstr[k][0]][j-binstr[k][1]],tmp);
+					else
+						dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+				}
+		return dp.back().back();
     }
 };
+
+int main()
+{
+	vector<string> v;
+	v.push_back("10");
+	v.push_back("0001");
+	v.push_back("111001");
+	v.push_back("1");
+	v.push_back("0");
+	Solution sol;
+	cout<<sol.findMaxForm(v,5,3)<<endl;
+}
