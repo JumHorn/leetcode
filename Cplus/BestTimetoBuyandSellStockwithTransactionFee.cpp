@@ -1,23 +1,19 @@
 #include<vector>
+#include<algorithm>
 using namespace std;
-
+/*
+buy[i]=sold[i-1]-price[i]
+sold[i]=buy[i-1]+price[i]-fee
+*/
 class Solution {
 public:
     int maxProfit(vector<int>& prices, int fee) {
-        int len=prices.size();
-	    vector<int> M(len,0);
-		for(int i=1;i<len;i++)
+		int buy=-prices.front(),sold=0;
+		for(int i=1;i<(int)prices.size();i++)
 		{
-			int max=M[i-1];
-			for(int j=0;j<i;j++)
-			{
-				if(prices[i]-prices[j]+M[j]-fee>max)
-				{
-					max=prices[i]-prices[j]+M[j]-fee;
-				}
-			}
-			M[i]=max;
+			sold=max(buy+prices[i]-fee,sold);
+			buy=max(sold-prices[i],buy);
 		}
-		return M[len-1];
+		return sold;
     }
 };
