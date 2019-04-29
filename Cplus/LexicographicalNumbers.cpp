@@ -6,12 +6,13 @@ using namespace std;
 class Solution {
 public:
     vector<int> lexicalOrder(int n) {
-		vector<int> res;
-		lexicalOrder(res,1,n);
+		vector<int> res(n);
+        int tmp=0;
+		lexicalOrder(res,1,n,tmp);
 		return res;
     }
 
-	void lexicalOrder(vector<int>& res,int start,int n)
+	void lexicalOrder(vector<int>& res,int start,int n,int& index)
 	{
 		if(start>n)
 			return;
@@ -19,8 +20,8 @@ public:
 		{
             if(start+i>n||start%10+i==10)
                 break;
-            res.push_back(start+i);
-			lexicalOrder(res,(start+i)*10,n);
+            res[index++]=start+i;
+			lexicalOrder(res,(start+i)*10,n,index);
 		}
 	}
 };
