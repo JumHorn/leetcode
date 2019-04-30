@@ -1,7 +1,7 @@
 #include<vector>
 #include<string>
-#include<deque>
-#include<queue>
+#include<algorithm>
+#include<cmath>
 using namespace std;
 //Definition for a binary tree node.
 struct TreeNode {
@@ -14,54 +14,27 @@ struct TreeNode {
 class Solution {
 public:
     vector<vector<string> > printTree(TreeNode* root) {
-		vector<vector<string> > res;
-		if(root==NULL)
-			return res;
-        queue<TreeNode*> *p=new queue<TreeNode*>();
-        queue<TreeNode*> *q=new queue<TreeNode*>();
-		p->push(root);
-		vector<deque<string> > v;
-		int layer=-1;
-		bool flag=true;
-		while(flag)
-		{
-			layer++;
-			flag=false;
-			deque<string> d;
-			while(!p->empty())
-			{
-				TreeNode* node=p->front();
-				if(node==NULL)
-				{
-					q->push(node);
-					q->push(node);
-					d.push_back("");
-                    d.push_back("");
-				}
-				else
-				{
-                    if(node->left||node->right)
-					    flag=true;
-					q->push(node->left);
-					q->push(node->right);
-					d.push_back(to_string(node->val));
-				}
-				p->pop();
-			}
-			v.push_back(d);
-			for(int i=0;i<layer;i++)
-			{
-				v[i].push_back("");
-				v[i].push_front("");
-			}
-			queue<TreeNode*> *tmp=p;
-			p=q;
-			q=tmp;
-		}
-		for(int i=0;i<(int)v.size();i++)
-		{
-			res.emplace_back(vector<string>(v[i].begin(),v[i].end()));
-		}
+		int layer=getTreeHeight(root);
+		int len=pow(2,layer)-1;
+		vector<vector<string> > res(layer,vector<string>(len,""));
+		printTree(res,root,0,len,0);
 		return res;
     }
+
+	void printTree(vector<vector<string> >& res,TreeNode* root,int l,int r,int h)
+	{
+		if(root==NULL)
+			return;
+		int mid=(r-l)/2+l;
+		res[h][mid]=to_string(root->val);
+		printTree(res,root->left,l,mid,h+1);
+		printTree(res,root->right,mid,r,h+1);
+	}
+
+	int getTreeHeight(TreeNode* root)
+	{
+		if(root==NULL)
+			return 0;
+		return 1+max(getTreeHeight(root->left),getTreeHeight(root->right));
+	}
 };
