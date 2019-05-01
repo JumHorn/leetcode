@@ -7,18 +7,17 @@ class Trie {
 	{
 		char val;
 		int count;
-		TreeNode* node[26]; 
+		TreeNode* node[26];
 		TreeNode(char v):val(v),count(0)
 		{
-			for(int i=0;i<26;i++)
-				node[i]=NULL;
+			memset(node,0,sizeof(node));
 		}
-		~TreeNode()
-		{
-			for(int i=0;i<26;i++)
-				if(node[i]!=NULL)
-					delete node[i];
-		}
+		// ~TreeNode()
+		// {
+		// 	for(int i=0;i<26;i++)
+		// 		if(node[i]!=NULL)
+		// 			delete node[i];
+		// }
 	};
 
 	TreeNode* root;
@@ -28,12 +27,12 @@ public:
         root=new TreeNode('\0');
     }
 
-	~Trie()
-	{
-		if(root!=NULL)
-			delete root;
-	}
-    
+	// ~Trie()
+	// {
+	// 	if(root!=NULL)
+	// 		delete root;
+	// }
+
     /** Inserts a word into the trie. */
     void insert(string word) {
         TreeNode* tmp=root;
@@ -48,7 +47,7 @@ public:
 		}
 		tmp->count++;
     }
-    
+
     /** Returns if the word is in the trie. */
     bool search(string word) {
 		TreeNode* tmp=root;
@@ -61,7 +60,7 @@ public:
 		}
 		return tmp->count>0;
     }
-    
+
     /** Returns if there is any word in the trie that starts with the given prefix. */
     bool startsWith(string prefix) {
         TreeNode* tmp=root;
