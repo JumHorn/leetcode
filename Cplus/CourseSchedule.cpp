@@ -1,31 +1,33 @@
 #include<vector>
+#include<unordered_set>
 using namespace std;
 
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int> >& prerequisites) {
-        vector<int> color(numCourses);
+        unordered_set<int> visited(numCourses);
 		vector<vector<int> > adjacencymetrices(numCourses);
 		for(int i=0;i<(int)prerequisites.size();i++)
-		{
 			adjacencymetrices[prerequisites[i][0]].push_back(prerequisites[i][1]);
-		}
-		for(int i=0;i<(int)color.size();i++)
+		for(int i=0;i<numCourses;i++)
 		{
-			if(color[i]==0&&!canFinish(color,adjacencymetrices,i,1))
+			if(visited.find(i)==visited.end()&&!canFinish(visited,adjacencymetrices,i))
 				return false;
 		}
 		return true;
     }
 
-	bool canFinish(vector<int>& color,vector<vector<int> >& graph,int start,int c)
+	bool canFinish(unordered_set<int> visited,vector<vector<int> >& graph,int start)
 	{
-		if(color[start]!=0)
-			return color[start]==c;
-		color[start]=c;
+		visited.insert(start);
 		for(int i=0;i<(int)graph[start].size();i++)
-			if(!canFinish(color,graph,graph[start][i],-c))
+		{
+			if(visited.find(graph[start][i])!=visited.end())
 				return false;
+			if(!canFinish(visited,graph,graph[start][i]))
+				return false;
+		}
 		return true;
 	}
 };
+
