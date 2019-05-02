@@ -17,7 +17,7 @@ public:
 		return true;
     }
 
-	bool canFinish(unordered_set<int> visited,vector<vector<int> >& graph,int start)
+	bool canFinish(unordered_set<int>& visited,vector<vector<int> >& graph,int start)
 	{
 		visited.insert(start);
 		for(int i=0;i<(int)graph[start].size();i++)
@@ -27,7 +27,7 @@ public:
 			if(!canFinish(visited,graph,graph[start][i]))
 				return false;
 		}
+        visited.erase(visited.find(start));
 		return true;
 	}
 };
-
