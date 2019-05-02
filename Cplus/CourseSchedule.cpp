@@ -5,29 +5,32 @@ using namespace std;
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int> >& prerequisites) {
-        unordered_set<int> visited(numCourses);
+        vector<int> visited(numCourses);
+		vector<int> mem(numCourses);
 		vector<vector<int> > adjacencymetrices(numCourses);
 		for(int i=0;i<(int)prerequisites.size();i++)
 			adjacencymetrices[prerequisites[i][0]].push_back(prerequisites[i][1]);
 		for(int i=0;i<numCourses;i++)
 		{
-			if(visited.find(i)==visited.end()&&!canFinish(visited,adjacencymetrices,i))
+			if(visited[i]==0&&!canFinish(visited,mem,adjacencymetrices,i))
 				return false;
 		}
 		return true;
     }
 
-	bool canFinish(unordered_set<int>& visited,vector<vector<int> >& graph,int start)
+	bool canFinish(vector<int>& visited,vector<int>& mem,vector<vector<int> >& graph,int start)
 	{
-		visited.insert(start);
+		if(mem[start]==1)
+			return false;
+		if(visited[start]==1)
+			return true;
+		visited[start]=mem[start]=1;
 		for(int i=0;i<(int)graph[start].size();i++)
 		{
-			if(visited.find(graph[start][i])!=visited.end())
-				return false;
-			if(!canFinish(visited,graph,graph[start][i]))
+			if(!canFinish(visited,mem,graph,graph[start][i]))
 				return false;
 		}
-        visited.erase(visited.find(start));
+        mem[start]=0;
 		return true;
 	}
 };
