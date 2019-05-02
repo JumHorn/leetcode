@@ -8,8 +8,10 @@ public:
 		vector<int> res;
 		if(nums.empty())
 			return res;
-		sort(nums.begin(),nums.end());       
-		vector<vector<int> > dp(nums.size(),vector<int>(2,1));
+		sort(nums.begin(),nums.end());
+        int (*dp)[2] = new int[nums.size()][2];
+        for(int i=0;i<(int)nums.size();i++)
+            dp[i][0]=1;
 		int maxnum=1,maxindex=0;
 		for(int i=1;i<(int)nums.size();i++)
 		{
@@ -26,14 +28,14 @@ public:
 				}
 		}
         if(maxnum==1)
-            res.push_back(nums[maxindex]);  
+            res.push_back(nums[maxindex]);
 		while(maxnum!=1)
 		{
 			res.push_back(nums[maxindex]);
 			maxnum=dp[maxindex][0];
 			maxindex=dp[maxindex][1];
 		}
-		
+
 		return res;
     }
 };
