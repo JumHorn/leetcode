@@ -18,21 +18,18 @@ public:
 
 	bool makesquare(vector<int>& nums,int matchlen,vector<int>& square,int start)
 	{
-		for(int i=start;i<(int)nums.size();i++)
+		if(start==(int)nums.size())
+			return square[0]==matchlen&&square[1]==matchlen&&square[2]==matchlen&&square[3]==matchlen;
+		for(int j=0;j<4;j++)
 		{
-			for(int j=0;j<4;j++)
+			if(square[j]+nums[start]<=matchlen)
 			{
-				if(square[j]+nums[i]<=matchlen)
-				{
-					square[j]+=nums[i];
-					if(makesquare(nums,matchlen,square,i+1))
-						return true;
-					square[j]-=nums[i];
-				}
+				square[j]+=nums[start];
+				if(makesquare(nums,matchlen,square,start+1))
+					return true;
+				square[j]-=nums[start];
 			}
 		}
-		if(square[0]!=matchlen||square[1]!=matchlen||square[2]!=matchlen||square[3]!=matchlen)
-			return false;
-		return true;
+		return false;
 	}
 };
