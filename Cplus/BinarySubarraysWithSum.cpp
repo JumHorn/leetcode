@@ -2,6 +2,15 @@
 #include<unordered_map>
 using namespace std;
 
+/*
+if A contains the negetive number
+
+dp[i]=A[0]+A[1]+...A[i]
+
+S[i,j] = dp[j]-dp[i-1]
+0<i<=j<n
+*/
+
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& A, int S) {
