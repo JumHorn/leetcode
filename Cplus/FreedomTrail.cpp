@@ -7,32 +7,36 @@ class Solution {
 public:
     int findRotateSteps(string ring, string key) {
 		vector<vector<int> > dp(key.length(),vector<int>(ring.length()));
-		return findRotateSteps(dp,ring,0,key,0);
-    }
+		//dp first row
+		int n=ring.length();
+		for(int i=0;i<n;i++)
+        {
+            dp[0][i]=INT_MAX;
+			if(ring[i]==key[0])
+				dp[0][i]=min(i,n-i);
+        }
 
-	int findRotateSteps(vector<vector<int> >& dp,const string& ring,int r,const string& key,int k)
-	{
-		if(k==(int)key.length())
-			return 0;
-		if(dp[k][r]!=0)
-			return dp[k][r];
-		int n=ring.size(),res=INT_MAX,tmp,radius=0;
-		if(ring[r]==key[k])
-			return findRotateSteps(dp,ring,r,key,k+1)+1;
-		while(++radius<=(int)ring.size()/2)
-		{
-			tmp=(r+radius)%n;
-			if(ring[tmp]==key[k])
+		for(int i=1;i<(int)key.length();i++)
+			for(int j=0;j<(int)ring.length();j++)
 			{
-				res=min(res,findRotateSteps(dp,ring,tmp,key,k+1)+radius+1);
+				dp[i][j]=INT_MAX;
+				if(ring[j]==key[i])
+				{
+					for(int k=0;k<(int)ring.length();k++)
+					{
+						if(dp[i-1][k]!=INT_MAX)
+						{
+							int step=abs(j-k);
+							dp[i][j]=min(dp[i][j],dp[i-1][k]+min(step,n-step));
+						}
+					}
+				}
 			}
-			tmp=(r-radius+n)%n;
-			if(ring[tmp]==key[k])
-			{
-				res=min(res,findRotateSteps(dp,ring,tmp,key,k+1)+radius+1);
-			}
-		}
-		dp[k][r]=res;
-		return res;
-	}
+
+		int m=key.length(),res=INT_MAX;
+		for(int i=0;i<(int)ring.length();i++)
+			res=min(res,dp[m-1][i]);
+
+		return res+key.length();
+    }
 };
