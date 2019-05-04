@@ -8,15 +8,9 @@ public:
 		while(++i<(int)nums.size())
 		{
 			product*=nums[i];
-			if(product<k)
-				res+=i-j+1;
-			else
-			{
-				while(j<=i&&product>=k)
-					product/=nums[j++];
-				if(j<=i)
-					res+=i-j+1;
-			}
+            while(j<=i&&product>=k)
+                product/=nums[j++];
+            res+=i-j+1;
 		}
 		return res;
     }
