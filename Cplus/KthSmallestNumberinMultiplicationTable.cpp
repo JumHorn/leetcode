@@ -1,11 +1,6 @@
 #include<algorithm>
 using namespace std;
 
-/*
-tmp=min(mid/(i+1),n); this is much faster than cnt+=min(mid/(i+1),n);
-cnt+=tmp;
-*/
-
 class Solution {
 public:
     int findKthNumber(int m, int n, int k) {
@@ -14,9 +9,10 @@ public:
 		{
 			cnt=0;
 			mid=(high-low)/2+low;
+            tmp=n;
 			for(int i=0;i<m;i++)
 			{
-				tmp=min(mid/(i+1),n);
+                while(tmp >=1 && (i+1)*tmp > mid) tmp--;
 				cnt+=tmp;
 			}
 			if(cnt>=k)
