@@ -18,51 +18,59 @@ public:
 		for(int i=0;i<(int)stickers.size();i++)
 			for(int j=0;j<(int)stickers[i].size();j++)
 				++s[i][stickers[i][j]];
+		map<map<char,int>,int> dp;
+		return minStickers(s,t,targetchar,dp);
+    }
+
+	int minStickers(vector<map<char,int> >& stickers, map<char,int>& target,int targetchar,map<map<char,int>,int>& dp)
+	{
+		if(dp.find(target)!=dp.end())
+			return dp[target];
+		if(targetchar==0)
+			return 1;
 		int res=0,tmpchar,minchar=INT_MAX;
 		map<char,int> tmpmap,minmap;
-		while(true)
+		vector<map<char,int> > grandient;
+		for(int i=0;i<(int)stickers.size();i++)
 		{
-			for(int i=0;i<(int)s.size();i++)
+			tmpchar=targetchar;
+			for(map<char,int>::iterator iter=target.begin();iter!=target.end();++iter)
 			{
-				tmpchar=targetchar;
-				for(map<char,int>::iterator iter=t.begin();iter!=t.end();++iter)
+				if(iter->second>=stickers[i][iter->first])
 				{
-					if(iter->second>=s[i][iter->first])
-					{
-						tmpmap[iter->first]=iter->second-s[i][iter->first];
-						tmpchar-=s[i][iter->first];
-					}
-					else
-					{
-						tmpmap[iter->first]=0;
-						tmpchar-=iter->second;
-					}
+					tmpmap[iter->first]=iter->second-stickers[i][iter->first];
+					tmpchar-=stickers[i][iter->first];
 				}
-				if(tmpchar<minchar)
+				else
 				{
-					minchar=tmpchar;
-					minmap=tmpmap;
+					tmpmap[iter->first]=0;
+					tmpchar-=iter->second;
 				}
 			}
-			if(targetchar==0)
-				break;
-			if(targetchar==minchar)
-				return -1;
-			t=minmap;
-			targetchar=minchar;
-			res++;
+			if(tmpchar==minchar)
+			{
+				grandient.push_back(tmpmap);
+			}
+			if(tmpchar<minchar)
+			{
+				grandient.clear();
+				grandient.push_back(tmpmap);
+				minchar=tmpchar;
+				minmap=tmpmap;
+			}
 		}
+		if(targetchar==minchar)
+			return -1;
+		targetchar=minchar;
+		int res=INT_MAX;
+		for(int i=0;i<(int)grandient.size();i++)
+		{
+			int tmp=minStickers(stickers,grandient[i],targetchar,dp);
+			if(tmp==-1)
+				return -1;
+			res=min(res,1+tmp);
+		}
+		dp[target]=res;
 		return res;
-    }
+	}
 };
-
-int main()
-{
-	vector<string> v;
-	v.push_back("with");
-	v.push_back("example");
-	v.push_back("science");
-	Solution sol;
-	sol.minStickers(v,"thehat");
-	return 0;
-}
