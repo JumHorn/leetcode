@@ -27,10 +27,9 @@ public:
 		if(dp.find(target)!=dp.end())
 			return dp[target];
 		if(targetchar==0)
-			return 1;
-		int res=0,tmpchar,minchar=INT_MAX;
+			return 0;
+		int res=INT_MAX,tmpchar;
 		map<char,int> tmpmap,minmap;
-		vector<map<char,int> > grandient;
 		for(int i=0;i<(int)stickers.size();i++)
 		{
 			tmpchar=targetchar;
@@ -47,29 +46,15 @@ public:
 					tmpchar-=iter->second;
 				}
 			}
-			if(tmpchar==minchar)
+			if(tmpchar<targetchar)
 			{
-				grandient.push_back(tmpmap);
-			}
-			if(tmpchar<minchar)
-			{
-				grandient.clear();
-				grandient.push_back(tmpmap);
-				minchar=tmpchar;
-				minmap=tmpmap;
+				int tmp=minStickers(stickers,tmpmap,tmpchar,dp);
+				if(tmp!=-1)
+					res=min(res,1+tmp);
 			}
 		}
-		if(targetchar==minchar)
+		if(targetchar==tmpchar)
 			return -1;
-		targetchar=minchar;
-		int res=INT_MAX;
-		for(int i=0;i<(int)grandient.size();i++)
-		{
-			int tmp=minStickers(stickers,grandient[i],targetchar,dp);
-			if(tmp==-1)
-				return -1;
-			res=min(res,1+tmp);
-		}
 		dp[target]=res;
 		return res;
 	}
