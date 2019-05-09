@@ -5,6 +5,8 @@ using namespace std;
 class Solution {
 public:
     int numBusesToDestination(vector<vector<int> >& routes, int S, int T) {
+		if(S==T)
+			return 0;
 		set<int> terminal,visitedStation,visitedBus;
 		for(int i=0;i<(int)routes.size();i++)
 			for(int j=0;j<(int)routes[i].size();j++)
@@ -22,9 +24,11 @@ public:
 				visitedStation.insert(routes[*iter][i]);
 		}
 		bool flag=true;
-		int res=0;
+		int res=1;
+		set<int> tmp;
 		while(flag)
 		{
+            tmp.clear();
 			res++;
 			flag=false;
 			for(int i=0;i<(int)routes.size();i++)
@@ -33,16 +37,19 @@ public:
 					continue;
 				for(int j=0;j<(int)routes[i].size();j++)
 				{
-					if(visitedStation.find(routes[i][j])==visitedStation.end())
+					if(visitedStation.find(routes[i][j])!=visitedStation.end())
 					{
 						visitedBus.insert(i);
 						if(terminal.find(i)!=terminal.end())
 							return res;
-						visitedStation.insert(routes[i][j]);
+						for(int k=0;k<(int)routes[i].size();k++)
+						 	tmp.insert(routes[i][k]);
 						flag=true;
+						break;
 					}
 				}
 			}
+			visitedStation.insert(tmp.begin(),tmp.end());
 		}
 		return -1;
     }
