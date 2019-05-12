@@ -5,13 +5,14 @@ using namespace std;
 class Solution {
 public:
     vector<int> sumOfDistancesInTree(int N, vector<vector<int> >& edges) {
-        vector<vector<int> > graph(N,vector<int>());
+        vector<vector<int> > graph(N,vector<int>()),dp(N,vector<int>(N));
 		for(int i=0;i<(int)edges.size();i++)
 		{
 			graph[edges[i][0]].push_back(edges[i][1]);
 			graph[edges[i][1]].push_back(edges[i][0]);
+            dp[edges[i][0]][edges[i][1]]=1;
+            dp[edges[i][1]][edges[i][0]]=1;
 		}
-		vector<vector<int> > dp(N,vector<int>(N));
 		for(int i=0;i<N;i++)
 			for(int j=i+1;j<N;j++)
 			{
