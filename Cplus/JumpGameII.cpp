@@ -5,18 +5,19 @@ using namespace std;
 class Solution {
 public:
     int jump(vector<int>& nums) {
-		vector<int> dp(nums.size(),INT_MAX);        
-		dp[0]=0;
-		for(int i=0;i<(int)dp.size();i++)
+        if(nums.size()==1)
+            return 0;
+		int i=0,j=0,res=0,tmp=0;
+		for(j=0;j<(int)nums.size();)
 		{
-			int tmp=min(nums[i],(int)nums.size()-i-1);
-			for(int j=1;j<=tmp;j++)
-			{
-				dp[i+j]=min(dp[i+j],dp[i]+1);
-				if(i+j==(int)nums.size()-1)
-					return dp[i+j];
-			}
+			for(int k=i;k<=j;k++)
+				tmp=max(tmp,k+nums[k]);
+			if(tmp>=(int)nums.size()-1)
+				return res+1;
+			i=j+1;
+			j=tmp;
+			res++;
 		}
-		return dp.back();
+		return res;
     }
 };
