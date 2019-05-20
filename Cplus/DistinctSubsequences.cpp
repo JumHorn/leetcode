@@ -5,11 +5,12 @@ using namespace std;
 class Solution {
 public:
     int numDistinct(string s, string t) {
-		vector<vector<int> > dp(s.size()+1,vector<int>(t.size()+1,-1));
+		int (*dp)[50]=new int[s.size()+1][50];
+		memset((void*)dp,-1,sizeof(int)*50*(s.size()+1));
 		return numDistinct(s,0,t,0,dp);
     }
 
-	int numDistinct(const string& s,int i,const string& t,int j,vector<vector<int> >& dp)
+	int numDistinct(const string& s,int i,const string& t,int j,int (*dp)[50])
 	{
 		if(j>=(int)t.size())
 			return 1;
