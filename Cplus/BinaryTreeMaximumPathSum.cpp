@@ -20,11 +20,14 @@ public:
 	{
 		if(root==NULL)
 			return 0;
-		res=max(res,root->val);
 		int leftmaxv=maxPathSum(root->left,res);
+        if(leftmaxv<0)
+            leftmaxv=0;
 		int rightmaxv=maxPathSum(root->right,res);
+        if(rightmaxv<0)
+            rightmaxv=0;
 		res=max(res,leftmaxv+rightmaxv+root->val);
-		root->val=max(root->val,max(leftmaxv,rightmaxv)+root->val);
+		root->val+=max(leftmaxv,rightmaxv);
 		res=max(res,root->val);
 		return root->val;
 	}
