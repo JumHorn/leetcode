@@ -1,32 +1,33 @@
 #include<vector>
+#include<unordered_set>
 #include<string>
 using namespace std;
 
 class Solution {
 public:
     vector<string> wordBreak(string s, vector<string>& wordDict) {
-		vector<string> res;
-		wordBreak(s,0,res,"",wordDict);
-		return res;
+		vector<unordered_set<string> > dp(s.length()+1,unordered_set<string>());
+		for(int i=0;i<(int)s.length();i++)
+			wordBreak(s,i,dp,wordDict);
+		return vector<string>(dp.back().begin(),dp.back().end());
     }
 
-	void wordBreak(const string& s,int index,vector<string>& res,string tmp,vector<string>& wordDict)
+	void wordBreak(const string& s,int index,vector<unordered_set<string> >& dp,vector<string>& wordDict)
 	{
-		if(index>(int)s.size()-1)
-		{
-			res.push_back(tmp);
-			return;
-		}
 		for(int i=0;i<(int)wordDict.size();i++)
 		{
-			string tmp1=tmp;
-			if(s.substr(index,wordDict[i].size())==wordDict[i])
+			if(index+1<(int)wordDict[i].length())
+				continue;
+			else if(index+1==(int)wordDict[i].length())
 			{
-				if(tmp1=="")
-					tmp1=wordDict[i];
-				else
-					tmp1+=" "+wordDict[i];
-				wordBreak(s,index+wordDict[i].size(),res,tmp1,wordDict);
+				if(s.substr(0,index+1)==wordDict[i])
+					dp[index+1].insert(wordDict[i]);
+			}
+			else if(s.substr(index-wordDict[i].size()+1,wordDict[i].size())==wordDict[i])
+			{
+				int tmp=index-wordDict[i].size()+1;
+				for(unordered_set<string>::iterator iter=dp[tmp].begin();iter!=dp[tmp].end();++iter)
+					dp[index+1].insert(*iter+" "+wordDict[i]);
 			}
 		}
 	}
