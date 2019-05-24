@@ -6,11 +6,31 @@ using namespace std;
 class Solution {
 public:
     vector<string> wordBreak(string s, vector<string>& wordDict) {
+		if(!canBreak(s,wordDict))
+			return vector<string>();
 		vector<unordered_set<string> > dp(s.length()+1,unordered_set<string>());
 		for(int i=0;i<(int)s.length();i++)
 			wordBreak(s,i,dp,wordDict);
 		return vector<string>(dp.back().begin(),dp.back().end());
     }
+
+	bool canBreak(const string& s,vector<string>& wordDict)
+	{
+		vector<bool> dp(s.length()+1);
+		unordered_set<string> dict(wordDict.begin(),wordDict.end());
+		dp[0]=true;
+		for(int i=0;i<(int)s.length();i++)
+		{
+			for(int j=i;j>=0;j--)
+			{
+				if(dict.find(s.substr(j,i-j+1))!=dict.end())
+					dp[i+1]=dp[i+1]||dp[j];
+				if(dp[i+1])
+					break;
+			}
+		}
+		return dp.back();
+	}
 
 	void wordBreak(const string& s,int index,vector<unordered_set<string> >& dp,vector<string>& wordDict)
 	{
