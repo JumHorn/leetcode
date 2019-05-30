@@ -30,31 +30,32 @@ public:
         root=new TreeNode();
 		for(int i=0;i<(int)words.size();i++)
 			insert(words[i]);
-		unordered_set<int> visited;
 		for(int i=0;i<(int)board.size();i++)
 			for(int j=0;j<(int)board[0].size();j++)
-				findWords(board,root,i,j,visited);
+				findWords(board,root,i,j);
 		dfs(res,"",root);
 		return res;
     }
 
-	void findWords(vector<vector<char> >& board,TreeNode* root,int i,int j,unordered_set<int> visited)
+	void findWords(vector<vector<char> >& board,TreeNode* root,int i,int j)
 	{
 		int M=board.size(),N=board[0].size();
 		if(i<0||i>=M||j<0||j>=N)
 			return;
-		root=root->node[board[i][j]-'a'];
-		if(visited.find(i*N+j)!=visited.end())
+		char c=board[i][j];
+		if(c=='#')
 			return;
-		visited.insert(i*N+j);
+		root=root->node[c-'a'];
 		if(root==NULL)
 			return;
         if(root->count==1)
 			root->count=2;
-		findWords(board,root,i+1,j,visited);
-		findWords(board,root,i-1,j,visited);
-		findWords(board,root,i,j+1,visited);
-		findWords(board,root,i,j-1,visited);
+		board[i][j]='#';
+		findWords(board,root,i+1,j);
+		findWords(board,root,i-1,j);
+		findWords(board,root,i,j+1);
+		findWords(board,root,i,j-1);
+		board[i][j]=c;
 	}
 
 	void dfs(vector<string>& res,string s,TreeNode* root)
