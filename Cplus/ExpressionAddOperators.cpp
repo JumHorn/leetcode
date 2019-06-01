@@ -10,14 +10,16 @@ public:
 		for(int i=0;i<(int)num.size();i++)
 		{
 			string str=num.substr(0,i+1);
-			int val=stoi(num.substr(0,i+1));
+			long val=stol(num.substr(0,i+1));
 			addOperators(num,i+1,val,val,target,str,res);
+            if(num[0]=='0')
+                break;
 		}
 		return res;
     }
 
 	//cv:current value pv:previous value
-	void addOperators(const string& num,int i,int cv,int pv,int target,string str,vector<string>& res)
+	void addOperators(const string& num,int i,long cv,long pv,int target,string str,vector<string>& res)
 	{
 		if(i>=(int)num.size())
 		{
@@ -29,7 +31,7 @@ public:
 		for(int j=i+1;j<=(int)num.size();j++)
 		{
 			string tmp=num.substr(i,j-i);
-			int k=stoi(tmp);
+			long k=stol(tmp);
 			addOperators(num,j,cv+k,k,target,str+'+'+tmp,res);
 			addOperators(num,j,cv-k,-k,target,str+'-'+tmp,res);
 			addOperators(num,j,cv-pv+k*pv,k*pv,target,str+'*'+tmp,res);
