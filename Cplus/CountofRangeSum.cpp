@@ -23,14 +23,14 @@ public:
 			return 0;
 		int mid=start+(end-start)/2;
 		res=divide(sums,start,mid)+divide(sums,mid,end);
+        int j=mid,k=mid;
 		for(int i=start;i<mid;i++)
 		{
-			int j=mid,k=mid;
 			while(j<end&&sums[j]-sums[i]<low)
 				j++;
-			while(k<end&&sums[k]-sums[i]>=up)
+			while(k<end&&sums[k]-sums[i]<=up)
 				k++;
-			res+=j-k;
+			res+=k-j;
 		}
 		merge(sums,start,mid,end);
 		return res;
