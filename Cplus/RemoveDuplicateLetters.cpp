@@ -30,24 +30,50 @@ public:
 			else if(m[s[i]]==1)
 			{
 				set<char>::iterator iter=visited.begin();
-				int k=j;
+				int k=j,n=j;
 				while(k<i&&iter!=visited.end()&&*iter<s[i])
 				{
 					while(k<i)
 					{
-						if(s[k++]==*iter)
+						if(s[k]==*iter)
                         {
                             res[index++]=*iter;
 						    m[*iter]=0;
 						    ++iter;
+							n=k+1;
 							break;
                         }
+						k++;
 					}
+					if(k==i)
+						++iter;
+					k=n;
 				}
-				visited.clear();
-				res[index++]=s[i];
-				m[s[i]]=0;
-				j=i+1;
+				bool flag=true;
+				while(k<i)
+				{
+					if(s[k]==s[i])
+					{
+						flag=false;
+						visited.clear();
+						res[index++]=s[i];
+						int tmp=i;
+						m[s[tmp]]=0;
+						i=k;
+						while (++k<tmp)
+							if(m[s[k]]!=0)
+								++m[s[k]];
+						j=i+1;
+					}
+					k++;
+				}
+				if(flag)
+				{
+					visited.clear();
+					res[index++]=s[i];
+					m[s[i]]=0;
+					j=i+1;
+				}
 			}
 			else
 			{
@@ -58,9 +84,3 @@ public:
 		return res;
     }
 };
-
-int main()
-{
-	Solution sol;
-	cout<<sol.removeDuplicateLetters("thesqtitxyetpxloeevdeqifkz")<<endl;
-}
