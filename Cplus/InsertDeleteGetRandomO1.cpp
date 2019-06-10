@@ -16,8 +16,8 @@ public:
     bool insert(int val) {
         if(modify.find(val)!=modify.end())
 			return false;
-		randaccesss.push_back(val);
-		modify[val]=randaccesss.size()-1;
+		randaccess.push_back(val);
+		modify[val]=randaccess.size()-1;
 		return true;
     }
 
@@ -25,20 +25,20 @@ public:
     bool remove(int val) {
         if(modify.find(val)==modify.end())
 			return false;
-		modify[randaccesss.back()]=modify[val];
-		randaccesss[modify[val]]=randaccesss[randaccesss.size()-1];
-		randaccesss.pop_back();
+		modify[randaccess.back()]=modify[val];
+		randaccess[modify[val]]=randaccess[randaccess.size()-1];
+		randaccess.pop_back();
 		modify.erase(val);
 		return true;
     }
 
     /** Get a random element from the set. */
     int getRandom() {
-        return randaccesss[rand()%randaccesss.size()];
+        return randaccess[rand()%randaccess.size()];
     }
 
 private:
-	vector<int> randaccesss;
+	vector<int> randaccess;
 	map<int,int> modify;
 };
 
