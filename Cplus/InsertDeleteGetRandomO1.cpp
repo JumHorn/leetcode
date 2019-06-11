@@ -26,7 +26,7 @@ public:
         if(modify.find(val)==modify.end())
 			return false;
 		modify[randaccess.back()]=modify[val];
-		randaccess[modify[val]]=randaccess[randaccess.size()-1];
+		randaccess[modify[val]]=randaccess.back();
 		randaccess.pop_back();
 		modify.erase(val);
 		return true;
