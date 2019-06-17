@@ -8,8 +8,7 @@ public:
     int scheduleCourse(vector<vector<int> >& courses) {
 		if(courses.empty())
 			return 0;
-		sort(courses.begin(),courses.end(),*this);        
-		int res=1;
+		sort(courses.begin(),courses.end(),*this);
 		priority_queue<vector<int> > q;
 		q.push(courses.front());
 		int start=courses.front().front();
@@ -18,7 +17,6 @@ public:
 			if(start+courses[i][0]<=courses[i][1])
 			{
 				start+=courses[i][0];
-				res++;
 				q.push(courses[i]);
 			}
 			else
@@ -27,10 +25,11 @@ public:
 				{
 					start+=courses[i][0]-q.top()[0];
 					q.pop();
+                    q.push(courses[i]);
 				}
 			}
 		}
-		return res;
+		return q.size();
     }
 
 	bool operator()(vector<int>& lhs,vector<int>& rhs)
