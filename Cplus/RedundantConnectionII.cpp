@@ -5,44 +5,28 @@ using namespace std;
 class Solution {
 public:
     vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
-		vector<vector<int>> parent(edges.size()+1);
 		vector<vector<int>> graph(edges.size()+1);
+		vector<int> res;
+		int twoparents=-1;
+		unordered_set<int> visited;
 		for(int i=0;i<(int)edges.size();i++)
 		{
-			parent[edges[i][1]].push_back(edges[i][0]);
-			graph[edges[i][0]].push_back(edges[i][1]);
+			if(visited.count(edges[i][0])>0&&visited.count(edges[i][1])>0)
+				res=edges[i];
+			visited.insert(edges[i][0]);
+			visited.insert(edges[i][1]);
+			graph[edges[i][1]].push_back(edges[i][0]);
+			if(graph[edges[i][1]].size()>1)
+				twoparents=edges[i][1];
 		}
-		vector<int> res;
-		unordered_set<int> visited;
-		for(int i=1;i<=(int)graph.size();i++)
-		{
-			if(visited.find(i)==visited.end())
-			{
-				visited.insert(i);
-				if(DFS(res,graph,i,visited))
-				{
-					res[0]=parent[res[1]].back();
-					return res;
-				}
-			}
-		}
-		return res;
+		if(twoparents==-1)
+			return res;
+		int id=graph[twoparents][0];
+		while((int)graph[id].size()>0&&id!=twoparents)
+			id=graph[id][0];
+		if(id==twoparents)
+			return {graph[twoparents][0],twoparents};
+		else
+			return {graph[twoparents][1],twoparents};
     }
-
-	bool DFS(vector<int>& res,vector<vector<int>>& graph,int n,unordered_set<int>& visited)
-	{
-		for(int i=0;i<(int)graph[n].size();i++)
-		{
-			if(visited.find(graph[n][i])!=visited.end())
-			{
-				res.push_back(n);
-				res.push_back(graph[n][i]);
-				return true;
-			}
-			visited.insert(graph[n][i]);
-			if(DFS(res,graph,graph[n][i],visited))
-				return true;
-		}
-		return false;
-	}
 };
