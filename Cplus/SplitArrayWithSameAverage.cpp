@@ -15,14 +15,19 @@ public:
 	{
         if(A.size()>20)
         {
-            if(num>(int)A.size()/4)
+            if(num>A.size()/4)
                 return false;
         }
-		if(num!=0&&num!=(int)A.size()&&sum*1.0/num==target)
+        if(num>A.size()/2)
+            return false;
+		if(num!=0&&sum*1.0/num==target)
 			return true;
 		for(int i=start;i<(int)A.size();i++)
-			if(combinaton(A,i+1,sum+A[start],num+1))
+        {
+
+			if(combinaton(A,i+1,sum+A[i],num+1))
 				return true;
+        }
 		return false;
 	}
 };
