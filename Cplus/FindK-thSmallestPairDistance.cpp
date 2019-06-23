@@ -12,9 +12,9 @@ public:
 			int mid=(high-low)/2+low,count=0,i=0,j=0;
 			for(;i<(int)nums.size();i++)
 			{
-				while(j<(int)nums.size()&&nums[j]-nums[i]<=mid)
+				while(nums[i]-nums[j]>mid)
 					j++;
-				count+=j-i-1;
+				count+=i-j;
 			}
             if(count<k)
                 low=mid+1;
