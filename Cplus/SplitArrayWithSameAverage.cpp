@@ -13,7 +13,12 @@ public:
 	
 	bool combinaton(vector<int>& A,int start,int sum,int num)
 	{
-		if(num!=0&&num!=A.size()&&sum*1.0/num==target)
+        if(A.size()>20)
+        {
+            if(num>(int)A.size()/4)
+                return false;
+        }
+		if(num!=0&&num!=(int)A.size()&&sum*1.0/num==target)
 			return true;
 		for(int i=start;i<(int)A.size();i++)
 			if(combinaton(A,i+1,sum+A[start],num+1))
