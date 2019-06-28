@@ -6,41 +6,38 @@ using namespace std;
 class Solution {
 public:
     int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
-        priority_queue<pair<int,int>> q;
-		set<pair<int,int>> visited;
+        priority_queue<int> q;
 		if(stations.empty())
 			return startFuel>=target?0:-1;
-		visited.insert({0,startFuel});
-		int n=0;
-		if(startFuel>=stations[0][0])
+        if(startFuel>=target)
+				return 0;
+		int n=0,res=0;
+		while(n<(int)stations.size())
 		{
-			q.push({0,startFuel-stations[0][0]});
-			visited.insert({0,startFuel-stations[0][0]});
-			q.push({-1,startFuel-stations[0][0]+stations[0][1]});
-			visited.insert({-1,startFuel-stations[0][0]+stations[0][1]});
-		}
-		while(!q.empty())
-		{
-			int size=q.size();
-			++n;
-			while(--size>=0&&n<(int)stations.size())
+			if(startFuel>=stations[n][0])
+            {
+				q.push(stations[n][1]);
+                n++;
+            }
+			else
 			{
-				pair<int,int> tmp=q.top();
+				if(q.empty())
+					return -1;
+				startFuel+=q.top();
+				++res;
 				q.pop();
-				if(tmp.second>=stations[n][0]-stations[n-1][0])
-				{
-					tmp.second-=stations[n][0]-stations[n-1][0];
-					if(tmp.second>=target-stations[n][0])
-						return -tmp.first;
-					if(visited.find(tmp)==visited.end())
-						q.push(tmp);
-					tmp.first--;
-					tmp.second+=stations[n][1];
-					if(visited.find(tmp)==visited.end())
-						q.push(tmp);
-				}
+                if(startFuel>=target)
+				    return res;
 			}
 		}
+        while(!q.empty())
+        {
+            startFuel+=q.top();
+            ++res;
+            q.pop();
+            if(startFuel>=target)
+                return res;
+        }
 		return -1;
     }
 };
