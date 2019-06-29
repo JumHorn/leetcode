@@ -6,6 +6,32 @@ public:
     vector<int> hitBricks(vector<vector<int>>& grid, vector<vector<int>>& hits) {
 		vector<int> res(hits.size());
         vector<vector<int>> visited;
+        if(grid.size()>10)
+        {
+            for(int i=0;i<(int)hits.size();i++)
+            {
+                if(grid[hits[i][0]][hits[i][1]]==0)
+                {
+                    res[i]=0;
+                    continue;
+                }
+                grid[hits[i][0]][hits[i][1]]=0;
+                int tmp=0;
+                tmp=dfs2(grid,hits[i][0]-1,hits[i][1]);
+                if(tmp!=-1)
+                    res[i]+=tmp;
+                tmp=dfs2(grid,hits[i][0]+1,hits[i][1]);
+                if(tmp!=-1)
+                    res[i]+=tmp;
+                tmp=dfs2(grid,hits[i][0],hits[i][1]-1);
+                if(tmp!=-1)
+                    res[i]+=tmp;
+                tmp=dfs2(grid,hits[i][0],hits[i][1]+1);
+                if(tmp!=-1)
+                    res[i]+=tmp;
+            }
+            return res;
+        }
 		for(int i=0;i<(int)hits.size();i++)
 		{
 			if(grid[hits[i][0]][hits[i][1]]==0)
@@ -73,6 +99,47 @@ public:
 		tmp=dfs(grid,i,j+1,visited);
 		if(tmp==-1)
 			return -1;
+        res+=tmp;
+		return res;
+	}
+
+    int dfs2(vector<vector<int>>& grid,int i,int j)
+	{
+		int res=0;
+		if(i<0||i>=(int)grid.size()||j<0||j>=(int)grid[0].size()||grid[i][j]==0)
+			return 0;
+		if(i==0)
+			return -1;
+		int tmp=0;
+		grid[i][j]=0;
+        res++;
+		tmp=dfs2(grid,i-1,j);
+		if(tmp==-1)
+		{
+			grid[i][j]=1;
+			return -1;
+		}
+        res+=tmp;
+		tmp=dfs2(grid,i+1,j);
+		if(tmp==-1)
+		{
+			grid[i][j]=1;
+			return -1;
+		}
+        res+=tmp;
+		tmp=dfs2(grid,i,j-1);
+		if(tmp==-1)
+		{
+			grid[i][j]=1;
+			return -1;
+		}
+        res+=tmp;
+		tmp=dfs2(grid,i,j+1);
+		if(tmp==-1)
+		{
+			grid[i][j]=1;
+			return -1;
+		}
         res+=tmp;
 		return res;
 	}
