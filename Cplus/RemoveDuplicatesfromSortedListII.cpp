@@ -17,8 +17,7 @@ public:
 			{
 				while((*indirect)!=NULL&&(*indirect)->next!=NULL&&(*indirect)->val==(*indirect)->next->val)
 					*indirect=(*indirect)->next;
-				if((*indirect)!=NULL)
-					*indirect=(*indirect)->next;
+				*indirect=(*indirect)->next;
 			}
 			else
 				indirect=&((*indirect)->next);
