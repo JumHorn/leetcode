@@ -11,10 +11,13 @@ public:
 		{
 			if(symbol.find(s[i])!=symbol.end())
 			{
-				pre=res=stoi(s.substr(index,i-index));
+				res=stoi(s.substr(index,i-index));
+                pre=-res;
 				break;
 			}
 		}
+        if(i==(int)s.length())
+            return stoi(s.substr(index,i-index));
 		while(i<(int)s.length())
 		{
 			if(s[i]=='+')
@@ -34,7 +37,6 @@ public:
 					j++;
 				pre=stoi(s.substr(i+1,j-i-1));
 				res-=pre;
-				pre=-pre;
 				i=j;
 			}
 			else if(s[i]=='*')
@@ -45,7 +47,7 @@ public:
 				res+=pre;
 				pre=(-pre)*stoi(s.substr(i+1,j-i-1));
 				res+=pre;
-				pre-=pre;
+				pre=-pre;
 				i=j;
 			}
 			else if(s[i]=='/')
@@ -56,7 +58,7 @@ public:
 				res+=pre;
 				pre=(-pre)/stoi(s.substr(i+1,j-i-1));
 				res+=pre;
-				pre-=pre;
+				pre=-pre;
 				i=j;
 			}
 			else
@@ -65,10 +67,3 @@ public:
 		return res;
     }
 };
-
-int main()
-{
-    Solution sol;
-    sol.calculate(" 3/2 ");
-    return 0;
-}
