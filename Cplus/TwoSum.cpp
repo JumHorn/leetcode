@@ -5,23 +5,14 @@ using namespace std;
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_multimap<int,int> indexmap;
-		unordered_multimap<int,int>::iterator iter;
-		for(int i=0;i<(int)nums.size();i++)
-			indexmap.insert({nums[i],i});
+        unordered_map<int,int> indexmap;
+		unordered_map<int,int>::iterator iter;
 		for(int i=0;i<(int)nums.size();i++)
 		{
             iter=indexmap.find(target-nums[i]);
             if(iter!=indexmap.end())
-            {
-                if(target-nums[i]==nums[i])
-                {
-                    if(indexmap.count(nums[i])>=2)
-                        return {i,iter->second};
-                }
-                else
-                    return {i,iter->second};
-            }
+                return {iter->second,i};
+            indexmap.insert({nums[i],i});
 		}
 		return vector<int>();
     }
