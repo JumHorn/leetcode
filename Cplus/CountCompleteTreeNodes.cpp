@@ -26,16 +26,11 @@ public:
 		{
 			int lh=height(root->left);
 			int rh=height(root->right);
-			if(lh==rh&&complete(root->left))
+			if(lh-rh<=1)
 			{
 				++res;
 				return true;
-			}
-			if(lh-rh==1&&complete(root->right))
-			{
-				++res;
-				return true;
-			}
+            }
 		}
 		return false;
     }
@@ -44,17 +39,6 @@ public:
 	{
 		if(root==NULL)
 			return 0;
-		return max(height(root->left),height(root->right))+1;
-	}
-
-	bool complete(TreeNode* root)
-	{
-		if(root==NULL)
-			return true;
-		if(root->left!=NULL&&root->right!=NULL)
-			return complete(root->left)&&complete(root->right);
-		if(root->left==NULL&&root->right==NULL)
-			return true;
-		return false;
+		return height(root->left)+1;
 	}
 };
