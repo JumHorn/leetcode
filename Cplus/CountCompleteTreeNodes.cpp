@@ -10,14 +10,34 @@ struct TreeNode {
 
 class Solution {
 public:
-    int countNodes(TreeNode* root) {
+	int countNodes(TreeNode* root)
+	{
+		int res=0;
+		countNodes(root,res);
+		return res;
+	}
+
+    bool countNodes(TreeNode* root,int& res) {
         if(root==NULL)
-			return 0;
-		int l=height(root->left);
-		int r=height(root->right);
-		if(l==r)
-			return l+r+1;
-		return l+r;
+			return true;
+		bool l=countNodes(root->left,res);
+		bool r=countNodes(root->right,res);
+		if(l&&r)
+		{
+			int lh=height(root->left);
+			int rh=height(root->right);
+			if(lh==rh&&complete(root->left))
+			{
+				++res;
+				return true;
+			}
+			if(lh-rh==1&&complete(root->right))
+			{
+				++res;
+				return true;
+			}
+		}
+		return false;
     }
 
 	int height(TreeNode* root)
@@ -29,8 +49,12 @@ public:
 
 	bool complete(TreeNode* root)
 	{
+		if(root==NULL)
+			return true;
+		if(root->left!=NULL&&root->right!=NULL)
+			return complete(root->left)&&complete(root->right);
 		if(root->left==NULL&&root->right==NULL)
 			return true;
-		return complete(root->left)&&complete(root->right);
+		return false;
 	}
 };
