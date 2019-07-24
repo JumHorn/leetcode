@@ -22,10 +22,7 @@ public:
 		{
 			if(!monoqueue.empty()&&i-monoqueue.front()>N)
 				monoqueue.pop_front();
-			if(!monoqueue.empty())
-				res=max(res,sum[i]-sum[monoqueue.front()]);
-			else
-				res=max(res,sum[i]-sum[i-1]);
+			res=max(res,sum[i]-sum[monoqueue.front()]);
 			while(!monoqueue.empty()&&sum[i]<=sum[monoqueue.back()])
 				monoqueue.pop_back();
 			monoqueue.push_back(i);
