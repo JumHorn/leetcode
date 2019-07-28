@@ -1,43 +1,94 @@
 #include<vector>
+#include<iostream>
 using namespace std;
 
 class NumArray {
 private:
-	vector<int> tree;
-	vector<int> v;
+	struct TreeNode
+	{
+		int l,r,sum;
+		TreeNode* left;
+		TreeNode* right;
+		TreeNode(int x,int y,int z=0):l(x),r(y),sum(z),left(NULL),right(NULL){}
+	};
+
+	TreeNode* root;
+	vector<int>& data;
+
+	void buildTree(TreeNode* root)
+	{
+		if(root==NULL||root->r-root->l<=1)
+			return;
+		root->left=new TreeNode(root->l,root->l+(root->r-root->l)/2);
+		buildTree(root->left);
+		root->right=new TreeNode(root->l+(root->r-root->l)/2,root->r);
+		buildTree(root->right);
+	}
+
+	int calcSum(TreeNode* root)
+	{
+		if(root==NULL)
+			return 0;
+		if(root->left==NULL&&root->right==NULL)
+			root->sum=data[root->l];
+        else
+		    root->sum=calcSum(root->left)+calcSum(root->right);
+		return root->sum;
+	}
+
+	int query(int i) const
+	{
+		if(i<0)
+			return 0;
+		TreeNode* tmp=root;
+		int res=0;
+		while(tmp!=NULL)
+		{
+			if(i==tmp->r-1)
+			{
+				res+=tmp->sum;
+				break;
+			}
+			int mid=(tmp->r-tmp->l)/2+tmp->l;
+			if(i<mid)
+				tmp=tmp->left;
+			else
+			{
+				res+=tmp->left->sum;
+				tmp=tmp->right;
+			}
+		}
+		return res;
+	}
+
 public:
-    NumArray(vector<int>& nums):tree(nums.size()+1),v(nums.size()) {
-        for(int i=0;i<(int)nums.size();i++)
-			update(i,nums[i]);
+    NumArray(vector<int>& nums): data(nums){
+        if(!nums.empty())
+        {
+            root=new TreeNode(0,nums.size());
+            buildTree(root);
+            calcSum(root);
+        }
     }
     
     void update(int i, int val) {
-        int delta=val-v[i];
-        v[i]=val;
-		i++;
-		while(i<(int)tree.size())
+        int delta=val-data[i];
+		data[i]=val;
+		TreeNode* tmp=root;
+		while(tmp!=NULL)
 		{
-			tree[i]+=delta;
-			i+=i&(-i);
+			tmp->sum+=delta;
+			int mid=(tmp->r-tmp->l)/2+tmp->l;
+			if(i<mid)
+				tmp=tmp->left;
+			else
+				tmp=tmp->right;
 		}
     }
     
     int sumRange(int i, int j) {
-        return query(j)-query(i-1);
+ 		return query(j)-query(i-1); 
     }
-
-private:
-	int query(int i)
-	{
-		int res=0;
-		i++;
-		while(i!=0)
-		{
-			res+=tree[i];
-			i-=i&(-i);
-		}
-		return res;
-	}
 };
 
 /**
