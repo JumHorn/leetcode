@@ -4,90 +4,58 @@ using namespace std;
 
 class NumArray {
 private:
-	struct TreeNode
-	{
-		int l,r,sum;
-		TreeNode* left;
-		TreeNode* right;
-		TreeNode(int x,int y,int z=0):l(x),r(y),sum(z),left(NULL),right(NULL){}
-	};
-
-	TreeNode* root;
 	vector<int>& data;
+    vector<int> tree;
 
-	void buildTree(TreeNode* root)
+	void buildTree()
 	{
-		if(root==NULL||root->r-root->l<=1)
-			return;
-		root->left=new TreeNode(root->l,root->l+(root->r-root->l)/2);
-		buildTree(root->left);
-		root->right=new TreeNode(root->l+(root->r-root->l)/2,root->r);
-		buildTree(root->right);
-	}
-
-	int calcSum(TreeNode* root)
-	{
-		if(root==NULL)
-			return 0;
-		if(root->left==NULL&&root->right==NULL)
-			root->sum=data[root->l];
-        else
-		    root->sum=calcSum(root->left)+calcSum(root->right);
-		return root->sum;
-	}
-
-	int query(int i) const
-	{
-		if(i<0)
-			return 0;
-		TreeNode* tmp=root;
-		int res=0;
-		while(tmp!=NULL)
-		{
-			if(i==tmp->r-1)
-			{
-				res+=tmp->sum;
-				break;
-			}
-			int mid=(tmp->r-tmp->l)/2+tmp->l;
-			if(i<mid)
-				tmp=tmp->left;
-			else
-			{
-				res+=tmp->left->sum;
-				tmp=tmp->right;
-			}
-		}
-		return res;
+        for(int i=data.size(),j=0;i<2*data.size(); i++,j++)
+            tree[i]=data[j];
+        for(int i=data.size()-1;i>0;i--)
+            tree[i]=tree[i*2]+tree[i*2+1];
 	}
 
 public:
-    NumArray(vector<int>& nums): data(nums){
-        if(!nums.empty())
-        {
-            root=new TreeNode(0,nums.size());
-            buildTree(root);
-            calcSum(root);
-        }
+    NumArray(vector<int>& nums): data(nums),tree(nums.size()*2){
+        buildTree();
     }
     
     void update(int i, int val) {
-        int delta=val-data[i];
-		data[i]=val;
-		TreeNode* tmp=root;
-		while(tmp!=NULL)
-		{
-			tmp->sum+=delta;
-			int mid=(tmp->r-tmp->l)/2+tmp->l;
-			if(i<mid)
-				tmp=tmp->left;
-			else
-				tmp=tmp->right;
-		}
+        i+=data.size();
+        tree[i]=val;
+        while(i>0)
+        {
+            int left,right;
+            left=right=i;
+            if(i%2==0)
+                right=i+1;
+            else
+                left=i-1;
+            tree[i/2]=tree[left]+tree[right];
+            i/=2;
+        }
     }
     
     int sumRange(int i, int j) {
- 		return query(j)-query(i-1); 
+ 		i+=data.size();
+        j+=data.size();
+        int res=0;
+        while(i<=j)
+        {
+            if(i%2==1)
+            {
+                res+=tree[i];
+                i++;
+            }
+            if(j%2==0)
+            {
+                res+=tree[j];
+                j--;
+            }
+            i/=2;
+            j/=2;
+        }
+        return res;
     }
 };
 
