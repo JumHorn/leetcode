@@ -22,11 +22,11 @@ public:
 		}
 		for(int i=start;i<(int)nums.size();i++)
 		{
-			if(i>0&&nums[i]==nums[i-1])
-				continue;
 			tmp.push_back(nums[i]);
 			threeSum(res,tmp,nums,i+1,sum+nums[i],n,target);
 			tmp.pop_back();
+			while(i>0&&i<(int)nums.size()&&nums[i]==nums[i-1])
+				i++;
 		}
 	}
 };
