@@ -6,18 +6,21 @@ using namespace std;
 class Solution {
 public:
     string longestPalindrome(string s) {
-        int n=s.length();
-	    vector<vector<int>> dp(n,vector<int>(n,-1));
-		string res;
-		for(int i=0;i<n;i++)
-			for(int j=i;j<n;j++)
+        int len=s.length();
+	    vector<vector<int>> dp(len,vector<int>(len,-1));
+		int m=0,n=0;
+		for(int i=0;i<len;i++)
+			for(int j=i;j<len;j++)
 			{
 				if(dp[i][j]==-1)
 					palindrome(dp,i,j,s);
-				if(dp[i][j]!=0&&j-i+1>(int)res.size())
-					res=s.substr(i,j-i+1);
+				if(dp[i][j]!=0&&j-i>n-m)
+				{
+					m=i;
+					n=j;
+				}
 			}
-		return res;
+		return s.substr(m,n-m+1);
     }
 
 	bool palindrome(vector<vector<int>>& dp,int i,int j,const string& s)
