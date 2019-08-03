@@ -20,11 +20,12 @@ public:
 				res.push_back(tmp);
 			return;
 		}
-		for(int i=start;i<(int)nums.size();i++)
+		for(int i=start;i<(int)nums.size();)
 		{
 			tmp.push_back(nums[i]);
 			threeSum(res,tmp,nums,i+1,sum+nums[i],n,target);
 			tmp.pop_back();
+			i++;
 			while(i>0&&i<(int)nums.size()&&nums[i]==nums[i-1])
 				i++;
 		}
