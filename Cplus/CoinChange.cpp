@@ -8,18 +8,18 @@ using namespace std;
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
-        unordered_map<int,int> dp;
+        vector<int> dp(amount+1);
 		return coinChange(coins,amount,dp);
     }
 
-	int coinChange(vector<int>& coins,int amount,unordered_map<int,int>& dp)
+	int coinChange(vector<int>& coins,int amount,vector<int>& dp)
 	{
-        if(dp.find(amount)!=dp.end())
-            return dp[amount];
-		if(amount<0)
+        if(amount<0)
 			return -1;
-		if(amount==0)
+        if(amount==0)
 			return 0;
+        if(dp[amount]!=0)
+            return dp[amount];
         int res=INT_MAX;
 		for(int i=0;i<(int)coins.size();i++)
 		{
