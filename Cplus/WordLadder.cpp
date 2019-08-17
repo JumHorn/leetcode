@@ -6,9 +6,8 @@ using namespace std;
 class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-		unordered_set<string> words(wordList.begin(),wordList.end()),visited;
+		unordered_set<string> words(wordList.begin(),wordList.end());
 	    queue<string> q;
-		visited.insert(beginWord);
 		q.push(beginWord);	
 		if(words.find(endWord)==words.end())
 			return 0;
@@ -27,12 +26,12 @@ public:
 					for(char c='a';c<='z';c++)
 					{
 						tmp[i]=c;
-						if(words.find(tmp)!=words.end()&&visited.find(tmp)==visited.end())
+						if(words.find(tmp)!=words.end())
 						{
 							if(tmp==endWord)
 								return res;
 							q.push(tmp);
-							visited.insert(tmp);
+							words.erase(tmp);
 						}
 					}
 					tmp[i]=origin;
