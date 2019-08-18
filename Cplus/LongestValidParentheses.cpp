@@ -17,14 +17,9 @@ public:
 				while(j>=0&&dp[j]!=0)
 					j-=dp[j];
 				if(j>=0&&s[j]=='(')
-					dp[i]=i-j+1;
+					dp[i]=i-j+1+(j>=1?dp[j-1]:0);
 			}
 		}
-        for(int i=1;i<(int)s.length();i++)
-        {
-            if(dp[i]!=0&&i-dp[i]>=0)
-                dp[i]+=dp[i-dp[i]];
-        }
         return *max_element(dp.begin(),dp.end());
     }
 };
