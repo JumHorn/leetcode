@@ -1,62 +1,25 @@
 #include<vector>
 using namespace std;
 
+// math period problem
+// same problem
+// Count The Repetitions
+
 class Solution {
 public:
     bool isSelfCrossing(vector<int>& x) {
 		if(x.size()<4)
-			return false;		
-		int bottom,left,top,right;
-		right=0;
-		bottom=0;
-		top=x[0];
-		left=-x[1];
-		bool alive=true;
-		int coor=top-x[2];
-		if(coor>=bottom)
-			alive=false;
-		bottom=coor;
+			return false;
 		for(int i=3;i<(int)x.size();i++)
 		{
-			switch((i-3)%4)
-			{
-			case 0:
-				//-->
-				coor=left+x[i];
-				if(!alive&&coor>=right)
-					return true;
-				if(coor<=right)
-					alive=false;
-				right=coor;
-				break;
-			case 1:
-				// ^
-				coor=bottom+x[i];
-				if(!alive&&coor>=top)
-					return true;
-				if(coor<=top)
-					alive=false;
-				break;
-			case 2:
-				//<--
-				coor=right-x[i];
-				if(!alive&&coor<=left)
-					return true;
-				if(coor>=left)
-					alive=false;
-				break;
-			case 3:
-				// V
-				coor=top-x[i];
-				if(!alive&&coor<=bottom)
-					return true;
-				if(coor>=bottom)
-					alive=false;
-				bottom=coor;
-				break;
-			default:
-				break;
-			}
+            if(x[i]>=x[i-2]&&x[i-1]<=x[i-3])
+                return true;
+            if(i>3)
+                if(x[i-1]==x[i-3]&&x[i]+x[i-4]>=x[i-2])
+                    return true;
+            if(i>4)
+                if(x[i-2]>=x[i-4]&&x[i-1]<=x[i-3]&&x[i-1]>=x[i-3]-x[i-5]&&x[i]>=x[i-2]-x[i-4])
+                    return true;
 		}
 		return false;
     }
