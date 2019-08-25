@@ -5,26 +5,23 @@ class Solution {
 	static const int MOD = 1e9+7;
 public:
     int nthMagicalNumber(int N, int A, int B) {
-		if(A>B)
-			swap(A,B);			
-		if(N==1)
-			return A;
-		if(B%A==0)
-			return (long long)A*(long long)N%MOD;
-		long long head=A,a=A,b=0;
-		for(int i=1;i<N;)
+		long long lo=0,hi=1e15,mi;
+		int L=A*B/gcd(A,B);
+		while(lo<hi)
 		{
-			long long tmp=min(a+A,b+B);
-			if(tmp==a+A)
-				a=(a+A)%MOD;
-			if(tmp==b+B)
-				b=(b+B)%MOD;
-			if(tmp!=head)
-            {
-                head=tmp;
-				i++;
-            }
+			mi=(hi-lo)/2+lo;
+			if(mi/A+mi/B-mi/L<N)
+				lo=mi+1;
+			else
+				hi=mi;
 		}
-		return head%MOD;
+		return lo%MOD;
     }
+
+	int gcd(int x,int y)
+	{
+		if(x==0)
+			return y;
+		return gcd(y%x,x);
+	}
 };
