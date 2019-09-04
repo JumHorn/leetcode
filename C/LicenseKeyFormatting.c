@@ -4,11 +4,11 @@
 
 char * licenseKeyFormatting(char * S, int K){
 	int count=0;
-	for(int i=0;i<(int)strlen(S);i++)
+    int len=strlen(S);
+	for(int i=0;i<len;i++)
 	{
 		if(S[i]!='-')
 			count++;
-		S[i]=(char)toupper(S[i]);
 	}
     if(count==0||K==0)
         return "";
@@ -20,10 +20,10 @@ char * licenseKeyFormatting(char * S, int K){
 	while(j<first)
 	{
 		if(S[i]!='-')
-			p[j++]=S[i];
+			p[j++]=toupper(S[i]);
 		i++;
 	}
-	while(i<(int)strlen(S))
+	while(i<len)
 	{
 		if(S[i]!='-')
 		{
@@ -32,7 +32,7 @@ char * licenseKeyFormatting(char * S, int K){
                 p[j++]='-';
                 k=0;
             }
-			p[j++]=S[i];
+			p[j++]=toupper(S[i]);
 			k++;
 		}
 		i++;
