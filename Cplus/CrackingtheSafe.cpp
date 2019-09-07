@@ -7,16 +7,15 @@ using namespace std;
 class Solution {
 public:
     string crackSafe(int n, int k) {
-        int len=pow(k,n)+2*(n-2);
         unordered_set<string> visited;
         string node(n-1,'0'),res;
         dfs(node,n,k,visited,res);
-        return res+string(n-1,'0');
+        return res+node;
     }
 
     void dfs(string node,int n,int k,unordered_set<string>& visited,string& res)
     {
-        for(int i=0;i<n;i++)
+        for(int i=0;i<k;i++)
         {
             string tmp=node+to_string(i);
             if(visited.find(tmp)==visited.end())
