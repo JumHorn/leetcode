@@ -4,10 +4,10 @@ using namespace std;
 class Solution {
 public:
     int preimageSizeFZF(int K) {
-		int lo=0,hi=INT_MAX;
+		long lo=0,hi=5L*(K+1);
 		while(lo<hi)
 		{
-			int mi=(hi-lo)/2+lo;
+			long mi=(hi-lo)/2+lo;
 			int zero=getSuffixZero(mi);
 			if(zero<K)
 				lo=mi+1;
@@ -19,19 +19,14 @@ public:
 		return 0;
     }
 
-	int getSuffixZero(int n)
+	int getSuffixZero(long n)
 	{
 		int res=0,d=5,t=n/d;
-		while(true)
+		while(n>0)
 		{
 			res+=t;
             n/=d;
 			t=n/d;
-            if(t==1||t==0)
-            {
-                res+=t;
-                break;
-            }
 		}
 		return res;
 	}
