@@ -9,16 +9,12 @@ public:
 		int res=0;
 		for(int i=0;i<(int)S.length();i++)
         {
-            vector<int> v(26);
-            int unique=0;            
-			for(int j=i;j<(int)S.length();j++)
-			{
-				if(++v[S[j]-'A']==1)
-					unique++;
-				if(v[S[j]-'A']==2)
-					unique--;
-				res=(res+unique)%MOD;
-			}
+            int left=1,right=1;
+            while(i-left>=0&&S[i]!=S[i-left])
+                left++;
+            while(i+right<(int)S.length()&&S[i]!=S[i+right])
+                right++;
+            res=(res+left*right)%MOD;
         }
 		return res;
     }
