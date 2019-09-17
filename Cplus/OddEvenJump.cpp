@@ -1,16 +1,34 @@
 #include<vector>
 #include<algorithm>
+#include<set>
 using namespace std;
 
+class Comp
+{
+public:
+    bool operator()(const pair<int,int>& lhs,const pair<int,int>& rhs) const
+    {
+        if(lhs.first!=rhs.first)
+            return lhs.first<rhs.first;
+        return lhs.second<rhs.second;
+    }
+};
+
 class Solution {
+    set<pair<int,int>,Comp> s;
 public:
     int oddEvenJumps(vector<int>& A) {
+        s.clear();
 		vector<vector<int>> dp(A.size(),vector<int>(2));        
 		dp.back()[0]=1;
 		dp.back()[1]=1;
-		for(int i=(int)A.size()-1;i>=0;i--)
-			if(dp[i][1]==0)
-				dp[i][1]=jumps(A,i,1,dp);
+        s.insert({A.back(),A.size()-1});
+		for(int i=A.size()-2;i>=0;i--)
+        {
+            dp[i][0]=jumps(A,i,0,dp);
+            dp[i][1]=jumps(A,i,1,dp);
+            s.insert({A[i],i});
+        }
         int res=0;
 		for(int i=0;i<(int)dp.size();i++)
             if(dp[i][1]==1)
@@ -22,44 +40,45 @@ public:
 	{
 		if(i==-1)
 			return -1;
-		if(dp[i][oddeven]!=0)
-			return dp[i][oddeven];
+        if(dp[i][oddeven]!=0)
+            return dp[i][oddeven];
+        int res;
 		if(oddeven==0)//even
-			dp[i][oddeven]=jumps(A,getEven(A,i),(oddeven+1)&1,dp);
+			res=jumps(A,getEven(A,i),(oddeven+1)&1,dp);
 		else
-			dp[i][oddeven]=jumps(A,getOdd(A,i),(oddeven+1)&1,dp);
-		return dp[i][oddeven];
+			res=jumps(A,getOdd(A,i),(oddeven+1)&1,dp);
+		return res;
 	}
 
 	int getOdd(vector<int>& A,int i)
 	{
-		int res=-1,val=A[i];
-		for(int j=i+1;j<(int)A.size();j++)
-		{
-			if(A[j]>=val)
-			{
-                if(res==-1)
-				    res=j;
-                else if(A[j]<A[res])
-                    res=j;
-			}
-		}
-		return res;
+        auto iter=s.lower_bound({A[i],i});
+        if(iter==s.end())
+            return -1;
+		return iter->second;
 	}
 
 	int getEven(vector<int>& A,int i)
 	{
-		int res=-1,val=A[i];
-		for(int j=i+1;j<(int)A.size();j++)
-		{
-			if(A[j]<=val)
+        auto iter=s.lower_bound({A[i],i});
+        if(iter==s.end())
+            --iter;
+        while(iter!=s.begin())
+        {
+            if(iter->first<=A[i])
             {
-                if(res==-1)
-				    res=j;
-                else if(A[j]>A[res])
-                    res=j;
+                int val=iter->first;
+                --iter;
+                while(iter!=s.begin()&&val==iter->first)
+                    --iter;
+                if(iter->first!=val)
+                    return (++iter)->second;
+                return iter->second;
             }
-		}
-		return res;
+            --iter;
+        }
+        if(iter->first<=A[i])
+            return iter->second;
+        return -1;
 	}
 };
