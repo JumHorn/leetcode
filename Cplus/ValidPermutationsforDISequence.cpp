@@ -3,61 +3,29 @@
 using namespace std;
 
 class Solution {
-    static const int MOD = 1e9;
+    static const int MOD = 1e9+7;
 public:
     int numPermsDISequence(string S) {
-		int n=S.length(),res=0;
-		vector<bool> visited(n+1,false);
-		vector<int> p(n+1);
+		int n=S.length();
+		vector<vector<int>> dp(n+1,vector<int>(n+1));
+		dp[0][0]=1;
+		for(int i=1;i<=n;i++)
+			for(int j=0;j<=i;j++)
+			{
+				if(S[i-1]=='D')
+				{
+					for(int k=j;k<=i-1;k++)
+						dp[i][j]=(dp[i][j]+dp[i-1][k])%MOD;
+				}
+				else
+				{
+					for(int k=0;k<=j-1;k++)
+						dp[i][j]=(dp[i][j]+dp[i-1][k])%MOD;
+				}
+			}
+		int res=0;
 		for(int i=0;i<=n;i++)
-		{
-			visited[i]=true;
-			p[0]=i;
-			res=(res+count(p,1,S,visited))%MOD;
-			visited[i]=false;
-		}
+			res=(res+dp[n][i])%MOD;
 		return res;
     }
-
-	int count(vector<int>& permutation,int index,const string& s,vector<bool>& visited)
-	{
-		int n=permutation.size();
-		if(index==n)
-			return 1;
-		int res=0;
-		if(s[index-1]=='D')
-		{
-			for(int i=0;i<n;i++)
-			{
-				if(!visited[i]&&i<permutation[index-1])
-				{
-					visited[i]=true;
-					permutation[index]=i;
-					res=(res+count(permutation,index+1,s,visited))%MOD;
-					visited[i]=false;
-				}
-			}
-		}
-		else
-		{
-			for(int i=0;i<n;i++)
-			{
-				if(!visited[i]&&i>permutation[index-1])
-				{
-					visited[i]=true;
-					permutation[index]=i;
-					res=(res+count(permutation,index+1,s,visited))%MOD;
-					visited[i]=false;
-				}
-			}
-		}
-		return res;
-	}
 };
-
-int main()
-{
-    Solution sol;
-    sol.numPermsDISequence("DID");
-    return 0;
-}
