@@ -6,33 +6,22 @@ class Solution {
 public:
     string orderlyQueue(string S, int K) {
 		int N=S.length();	        
-		if(K>=N)
+		if(K>=2)
 		{
 			sort(S.begin(),S.end());
 			return S;
 		}
-		for(int i=0;i<K;i++)
-		{
-			auto iter=min_element(S.begin()+i,S.end());
-			int d=distance(S.begin(),iter);
-			for(int j=i;j<N;j++)
-			{
-				if(j!=d&&S[j]==S[d])
-				{
-					if(i==K-1)
-					{
-						if(minReverse(S,N-i,j,d))
-							d=j;
-					}
-					else
-					{
-						if(!minReverse(S,N-i,j,d))
-							d=j;
-					}
-				}
-			}
-			strReverse(S,i,d);
-		}
+        auto iter=min_element(S.begin(),S.end());
+        int d=distance(S.begin(),iter);
+        for(int j=0;j<N;j++)
+        {
+            if(j!=d&&S[j]==S[d])
+            {
+                if(minReverse(S,N,j,d))
+                    d=j;
+            }
+        }
+        strReverse(S,0,d);
 		return S;
     }
 
@@ -53,10 +42,3 @@ public:
 		return false;
 	}
 };
-
-int main()
-{
-    Solution sol;
-    sol.orderlyQueue("xmvzi",2);
-    return 0;
-}
