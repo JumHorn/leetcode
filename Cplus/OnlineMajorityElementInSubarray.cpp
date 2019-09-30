@@ -1,34 +1,31 @@
+#include<cstdlib>
 #include<vector>
+#include<unordered_map>
+#include<algorithm>
 using namespace std;
 
 class MajorityChecker {
+	unordered_map<int,vector<int>> hashmap;
 	vector<int> v;
 public:
-    MajorityChecker(vector<int>& arr) {
-        v=arr;
+    MajorityChecker(vector<int>& arr):v(arr) {
+        for(int i=0;i<(int)arr.size();i++)
+			hashmap[arr[i]].push_back(i);
     }
     
     int query(int left, int right, int threshold) {
-		int count=0,res=-1;
-        for(int i=left;i<=right;i++)
+		for(int i=0;i<7;i++)
 		{
-			if(count==0)
+			int tmp=v[left+rand()%(right-left+1)];
+			if(hashmap[tmp].size()>=threshold)
 			{
-				res=v[i];
-				count=1;
+				auto it1=lower_bound(hashmap[tmp].begin(),hashmap[tmp].end(),left);
+				auto it2=upper_bound(hashmap[tmp].begin(),hashmap[tmp].end(),right);
+				if(it2-it1>=threshold)
+					return tmp;
 			}
-			else if(res!=v[i])
-				count--;
-			else
-				count++;
 		}
-		count=0;
-		for(int i=left;i<=right;i++)
-			if(res==v[i])
-				count++;
-		if(count<threshold)
-			return -1;
-		return res;
+		return -1;
     }
 };
 
