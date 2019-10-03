@@ -1,4 +1,5 @@
 #include<vector>
+#include<unordered_map>
 using namespace std;
 
 class DSU
@@ -45,13 +46,28 @@ class Solution {
 public:
     int largestComponentSize(vector<int>& A) {
 		DSU dsu(A.size());
-	    for(int i=0;i<(int)A.size()-1;i++)
-			for(int j=i+1;j<(int)A.size();j++)
+		unordered_map<int,int> factor;
+	    for(int i=0;i<(int)A.size();i++)
+		{
+			for(int j=2;j*j<=A[i];j++)
 			{
-                int tmp=gcd(A[i],A[j]);
-				if(gcd(A[i],A[j])>1)
-					dsu.Union(i,j);
-			}	
+				if(A[i]%j==0)
+				{
+					if(factor.find(j)==factor.end())
+						factor[j]=i;
+					else
+						dsu.Union(i,factor[j]);
+					if(factor.find(A[i]/j)==factor.end())
+						factor[A[i]/j]=i;
+					else
+						dsu.Union(i,factor[A[i]/j]);
+				}
+			}
+			if(factor.find(A[i])==factor.end())
+				factor[A[i]]=i;
+			else
+				dsu.Union(i,factor[A[i]]);
+		}	
 		return dsu.getMaxCluster();
     }
 private:
