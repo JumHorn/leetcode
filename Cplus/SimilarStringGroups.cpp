@@ -5,10 +5,11 @@ using namespace std;
 class DSU
 {
 public:
-	DSU(int size):parent(size),rank(size,1)
+	DSU(int s):parent(s)
 	{
-		for(int i=0;i<size;i++)
+		for(int i=0;i<s;i++)
 			parent[i]=i;
+		size=s;
 	}
 
 	int Find(int x)
@@ -23,22 +24,18 @@ public:
 		int xr=Find(x),yr=Find(y);
 		if(xr==yr)
 			return false;
+		size--;
 		parent[yr]=xr;
-		rank[xr]+=rank[yr];
 		return true;
 	}
 
 	int countGroup()
 	{
-		int res=0;
-		for(int i=0;i<(int)parent.size();i++)
-			if(parent[i]==i)
-				res++;
-		return res;
+		return size;
 	}
 private:
 	vector<int> parent;
-	vector<int> rank;
+	int size;
 };
 
 class Solution {
