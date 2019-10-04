@@ -6,21 +6,21 @@ class Solution {
 public:
     vector<int> addToArrayForm(vector<int>& A, int K) {
 		reverse(A.begin(),A.end());        
-		int flag=0,i=0;
-		while(K!=0||flag==1)
+		int carry=0,i=0;
+		while(K!=0||carry==1)
 		{
 			if(i==(int)A.size())
 				A.push_back(0);
-			int tmp=A[i]+K%10+flag;
+			int tmp=A[i]+K%10+carry;
 			if(tmp>=10)
 			{
 				A[i]=tmp-10;
-				flag=1;
+				carry=1;
 			}
 			else
 			{
 				A[i]=tmp;
-				flag=0;
+				carry=0;
 			}
 			K/=10;
 			i++;
