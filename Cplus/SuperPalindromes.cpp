@@ -1,15 +1,35 @@
 #include<string>
 #include<cmath>
+#include<algorithm>
 using namespace std;
 
 class Solution {
 public:
     int superpalindromesInRange(string L, string R) {
-		long long l=stoll(L),r=stoll(R),lr=sqrt(l),rr=sqrt(r);
-		int res=0;
-		for(long long i=lr;i<=rr;i++)
+		long long l=stoll(L),r=stoll(R);
+		int res=0,magic=1e5;
+		for(long long i=1;i<magic;i++)
 		{
-			if(isPalindrome(i)&&isPalindrome(i*i))
+			string tmp=to_string(i),retmp=tmp;
+			reverse(retmp.begin(),retmp.end());
+			tmp+=retmp;
+			long long v=stoll(tmp);
+			v*=v;
+			if(v>r)
+				break;
+			if(v>=l&&isPalindrome(v))
+				res++;
+		}
+		for(long long i=1;i<magic;i++)
+		{
+			string tmp=to_string(i),retmp=tmp.substr(0,tmp.length()-1);
+			reverse(retmp.begin(),retmp.end());
+			tmp+=retmp;
+			long long v=stoll(tmp);
+			v*=v;
+			if(v>r)
+				break;
+			if(v>=l&&isPalindrome(v))
 				res++;
 		}
 		return res;
@@ -25,19 +45,5 @@ public:
 				return false;
 		}
 		return true;
-	}
-
-	long long sqrtimproved(long long x)
-	{
-		long long lo=1,hi=x,mi;
-		while(lo<hi)
-		{
-			mi=lo+(hi-lo)/2;
-			if(mi*mi<x)
-				lo=mi+1;
-			else
-				hi=mi;
-		}
-		return lo;
 	}
 };
