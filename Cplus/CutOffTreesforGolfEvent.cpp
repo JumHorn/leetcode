@@ -14,7 +14,7 @@ public:
 				if(forest[i][j]>1)
 					height.push_back(forest[i][j]);
 		sort(height.begin(),height.end());
-		int cut=0,res=0,i=0,j=0,steps=0;
+		int cut=0,res=0,i=0,j=0;
 		if(forest[0][0]==height[cut])
 			cut++;
 		int dir[][2]={{-1,0},{1,0},{0,-1},{0,1}};
@@ -23,6 +23,7 @@ start:
 		{
 			queue<int> q;
 			unordered_set<int> visited;
+			int steps=0;
 			visited.insert(i*M+j);
 			q.push(i*M+j);
 			while(!q.empty())
@@ -37,7 +38,7 @@ start:
 					for(int k=0;k<4;k++)
 					{
 						int x=i+dir[k][0],y=j+dir[k][1];
-						if(x>0&&x<M&&y>0&&y<N&&forest[x][y]!=0)
+						if(x>=0&&x<N&&y>=0&&y<M&&forest[x][y]!=0)
 						{
 							if(visited.find(x*M+y)==visited.end())
 							{
@@ -64,16 +65,3 @@ start:
 		return res;
     }
 };
-
-int main()
-{
-	vector<vector<int>> v=
-	{
-		{1,2,3},
-		{0,0,4},
-		{7,6,5}
-	};
-	Solution sol;
-	sol.cutOffTree(v);
-	return 0;
-}
