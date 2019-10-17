@@ -7,39 +7,27 @@ struct TreeNode {
     struct TreeNode *right;
 };
 
-struct LinkedList{
-	int val;
-	struct LinkedList* next;
-};
-
-void addLevel(struct TreeNode* root,struct LinkedList** list)
+void addLevel(struct TreeNode* root,int* arr,int layer,int* h)
 {
 	if(!root)
-		return;
-	if(!*list)
-	{
-		*list=(struct LinkedList*)malloc(sizeof(struct LinkedList));
-		(*list)->val=0;
-		(*list)->next=NULL;
-	}
-	(*list)->val+=root->val;
-	addLevel(root->left,&(*list)->next);
-	addLevel(root->right,&(*list)->next);
+		return 0;
+	arr[layer]+=root->val;
+	if(layer>*h)
+		*h=layer;
+	addLevel(root->left,arr,layer+1,h);
+	addLevel(root->right,arr,layer+1,h);
 }
 
 int maxLevelSum(struct TreeNode* root){
 	struct LinkedList *list=NULL;
-	addLevel(root,&list);
-	int res=1,val=list->val,level=1;
-	while(list)
-	{
-		if(list->val>val)
+	int arr[100]={0},height;
+	addLevel(root,arr,0,&height);
+	int res=1,tmp=arr[0];
+	for(int i=1;i<height;i++)
+		if(arr[i]>tmp)
 		{
-			val=list->val;
-			res=level;
+			tmp=arr[i];
+			res=i+1;
 		}
-		list=list->next;
-		level+=1;
-	}
 	return res;
 }
