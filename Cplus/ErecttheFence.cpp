@@ -1,4 +1,5 @@
 #include<vector>
+#include<set>
 using namespace std;
 
 class Solution {
@@ -7,7 +8,7 @@ public:
 		if(points.size()<=3)
 			return points;
         int leftmost=INT_MAX,index,origin;
-		vector<vector<int>> res;
+		set<vector<int>> res;
 		for(int i=0;i<(int)points.size();i++)
 		{
 			if(points[i][0]<leftmost)
@@ -20,23 +21,26 @@ public:
 		do
 		{
 			int newindex=0,cross=0;
-			res.push_back(points[index]);
-			if(newindex==index)
-				newindex++;
+			res.insert(points[index]);
+            newindex=(index+1)%points.size();
 			for(int i=0;i<(int)points.size();i++)
 			{
+                int tmp=crossProduct(points[index],points[i],points[newindex]);
+                if(tmp>0)
+                {
+                    newindex=i;
+                }
+            }
+            for(int i=0;i<(int)points.size();i++)
+            {
 				if(i!=index&&i!=newindex)
 				{
 					int tmp=crossProduct(points[index],points[i],points[newindex]);
-					if(tmp>0)
-					{
-						newindex=i;
-					}
-					else if(tmp==0)
+					if(tmp==0)
 					{
 						if(between(points[index],points[i],points[newindex]))
 						{
-							newindex=i;
+							res.insert(points[i]);
 						}
 					}
 				}
@@ -44,7 +48,7 @@ public:
 			index=newindex;
 		}
 		while(index!=origin);
-		return res;
+		return vector<vector<int>>(res.begin(),res.end());
     }
 	
 	bool between(vector<int>& A,vector<int>& B,vector<int>& C)
@@ -62,11 +66,3 @@ public:
 		return x1*y2-x2*y1;
 	}
 };
-
-int main()
-{
-	vector<vector<int>> v={{3,0},{4,0},{5,0},{6,1}};
-	Solution sol;
-	sol.outerTrees(v);
-	return 0;
-}
