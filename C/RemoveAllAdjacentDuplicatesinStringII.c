@@ -19,7 +19,7 @@ char * removeDuplicates(char * s, int k){
 				break;
 		}
 		char *p1=p;
-		while(*p1&&*p1==c)
+		while(*p1&&*p1==c&&count!=k)
 		{
 			p1++;
 			count++;
@@ -32,7 +32,7 @@ char * removeDuplicates(char * s, int k){
 					*top++=*p++;
 			}
 			else
-				top++;
+				top=p1;
 		}
 		else
 		{
@@ -46,12 +46,4 @@ char * removeDuplicates(char * s, int k){
 	}
 	*top='\0';
 	return s;
-}
-
-int main()
-{
-	char p[]="deeedbbcccbdaa";
-	// char p[]="abcd";
-	removeDuplicates(p,3);
-	return 0;
 }
