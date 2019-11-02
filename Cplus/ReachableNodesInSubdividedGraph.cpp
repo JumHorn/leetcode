@@ -7,13 +7,13 @@ using namespace std;
 class Solution {
 public:
     int reachableNodes(vector<vector<int>>& edges, int M, int N) {
-		vector<unordered_map<int,int>> graph(N);      
+		vector<vector<pair<int,int>>> graph(N);     
 		vector<vector<int>> visited(N,vector<int>(N));
 		vector<int> v(N,-1);
 		for(int i=0;i<(int)edges.size();i++)
 		{
-			graph[edges[i][0]][edges[i][1]]=edges[i][2];
-			graph[edges[i][1]][edges[i][0]]=edges[i][2];
+			graph[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+			graph[edges[i][1]].push_back({edges[i][0],edges[i][2]});
 		}
 		
 		int res=0;
@@ -34,7 +34,8 @@ public:
 				if(weight>n.second)
 				{
 					visited[node][n.first]=n.second;
-					q.push({weight-n.second-1,n.first});
+                    if(weight-n.second-1>v[n.first])
+					    q.push({weight-n.second-1,n.first});
 				}
 				else
 					visited[node][n.first]=max(visited[node][n.first],weight);
