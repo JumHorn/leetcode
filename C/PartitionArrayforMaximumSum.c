@@ -1,7 +1,9 @@
 #include<stdlib.h>
+#include<string.h>
 
 int maxSumAfterPartitioning(int* A, int ASize, int K){
-	int *dp=(int*)calloc(ASize+1,sizeof(int));
+	int *dp=(int*)malloc((ASize+1)*sizeof(int));
+    memset(dp,0,sizeof(int)*(ASize+1));
 	dp[1]=A[0];
 	for(int i=1;i<ASize;i++)
 	{
@@ -16,3 +18,4 @@ int maxSumAfterPartitioning(int* A, int ASize, int K){
 	}
 	return dp[ASize];
 }
+
