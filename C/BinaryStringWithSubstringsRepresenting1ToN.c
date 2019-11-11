@@ -14,6 +14,8 @@ int toInt(char* S,int start,int end)
 
 bool queryString(char * S, int N){
 	int len=strlen(S);
+	if(N>2*len)
+		return false;
 	char* p=(char*)malloc(N*sizeof(char));
 	memset(p,0,N*sizeof(char));
 	for(int i=0;i<len;i++)
