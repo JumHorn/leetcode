@@ -44,7 +44,18 @@ int divide(int dividend, int divisor)
 	}
 	int res = 0;
 	while (dv >= di)
-		res += doublingSearch(&dv, di);
+	{
+		unsigned long d = di;
+		int tmp = 1;
+		d <<= 1;
+		while (d <= dv)
+		{
+			tmp <<= 1;
+			d <<= 1;
+		}
+		dv -= d >> 1;
+		res += tmp;
+	}
 	return res * sign;
 }
 
