@@ -1,26 +1,22 @@
 #include <stdlib.h>
 
-int cmp(const void* lhs, const void* rhs)
-{
-	int* t1 = *(int**)lhs;
-	int* t2 = *(int**)rhs;
-	if (t1[1] != t2[1])
-		return t1[1] - t2[1];
-	return t1[2] - t2[2];
-}
-
 bool carPooling(int** trips, int tripsSize, int* tripsColSize, int capacity)
 {
-	qsort(trips, tripsSize, sizeof(int*), cmp);
-	int map[1001] = {0};
-	for (int i = 0, j = 0; i < tripsSize; i++)
+	int map[1001] = {0}, start = 1001, end = 0;
+	for (int i = 0; i < tripsSize; i++)
 	{
-		while (j <= trips[i][1])
-			capacity += map[j++];
-		if (capacity < trips[i][0])
-			return false;
-		capacity -= trips[i][0];
+		map[trips[i][1]] -= trips[i][0];
 		map[trips[i][2]] += trips[i][0];
+		if (trips[i][1] < start)
+			start = trips[i][1];
+		if (trips[i][2] > end)
+			end = trips[i][2];
+	}
+	for (int i = start; i <= end; i++)
+	{
+		capacity += map[i];
+		if (capacity < 0)
+			return false;
 	}
 	return true;
 }
