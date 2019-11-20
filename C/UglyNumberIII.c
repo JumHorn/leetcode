@@ -1,19 +1,28 @@
 
-#define min(a, b) (((a) < (b)) ? (a) : (b))
+long gcd(long x, long y)
+{
+	if (x == 0)
+		return y;
+	return gcd(y % x, x);
+}
 
 int nthUglyNumber(int n, int a, int b, int c)
 {
-	long i = 1, j = 1, k = 1, res, la = a, lb = b, lc = c;
-	while (--n >= 0)
+	long la = a, lb = b, lc = c;
+	long ab = la * lb / gcd(la, lb);
+	long ac = la * lc / gcd(la, lc);
+	long bc = lb * lc / gcd(lb, lc);
+	long abc = la * bc / gcd(la, bc);
+	int lo = 1, hi = 2e9, mi;
+	while (lo < hi)
 	{
-		res = min(la * i, min(lb * j, lc * k));
-		if (res == la * i)
-			i++;
-		if (res == lb * j)
-			j++;
-		if (res == lc * k)
-			k++;
+		mi = (hi - lo) / 2 + lo;
+		int tmp = mi / a + mi / b + mi / c - mi / ab - mi / ac - mi / bc + mi / abc;
+		if (tmp < n)
+			lo = mi + 1;
+		else
+			hi = mi;
 	}
-	return res;
+	return lo;
 }
 
