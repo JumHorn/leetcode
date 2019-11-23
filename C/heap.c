@@ -34,19 +34,3 @@ void makeheap(int* data, int size)
 	for (int i = 1; i < size; i++)
 		pushheap(data, i);
 }
-
-bool containsDuplicate(int* nums, int numsSize)
-{
-	if (numsSize == 0)
-		return false;
-	makeheap(nums, numsSize);
-	popheap(nums, numsSize - 1);
-	for (int i = numsSize - 2; i >= 0; i--)
-	{
-		popheap(nums, i);
-		if (nums[i] == nums[i + 1])
-			return true;
-	}
-	return false;
-}
-
