@@ -8,27 +8,18 @@ bool* canMakePaliQueries(char* s, int** queries, int queriesSize, int* queriesCo
 {
 	bool* res = (bool*)malloc(queriesSize * sizeof(bool));
 	*returnSize = queriesSize;
-	int len = strlen(s);
-	int** dp = (int**)malloc(len * sizeof(int*));
-	for (int i = 0; i < len; i++)
-	{
-		dp[i] = (int*)malloc(len * sizeof(int));
-		dp[i][i] = 0;
-		if (i != 0)
-			dp[i][i - 1] = 0;
-	}
-	for (int j = 1; j < len; j++)
-		for (int i = j - 1; i >= 0; i--)
-		{
-			if (s[i] == s[j])
-				dp[i][j] = dp[i + 1][j - 1];
-			else
-				dp[i][j] = dp[i + 1][j - 1] + 1;
-		}
-
 	for (int i = 0; i < queriesSize; i++)
 	{
-		if (queries[i][2] >= dp[queries[i][0]][queries[i][1]])
+		char map[26] = {0};
+		for (int j = queries[i][0]; j <= queries[i][1]; j++)
+			++map[s[j] - 'a'];
+		int r = 0;
+		for (int j = 0; j < 26; j++)
+			r += (map[j] & 1);
+		if ((queries[i][1] - queries[i][0]) % 2 == 0)
+			r -= 1;
+		r /= 2;
+		if (r <= queries[i][2])
 			res[i] = true;
 		else
 			res[i] = false;
