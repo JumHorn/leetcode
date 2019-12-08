@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <map>
 #include <set>
 #include <string>
@@ -10,20 +11,33 @@ class Solution
 public:
 	vector<string> findItinerary(vector<vector<string>> &tickets)
 	{
-		unordered_map<string, set<string>> graph;
-		vector<string> res;
-		res.push_back("JFK");
-		map<pair<string, string>, int> visited;
+		unordered_map<int, set<int>> graph;
+		vector<int> res;
+		map<pair<int, int>, int> visited;
+		unordered_map<string, int> m;
+		set<string> s;
 		for (auto &v : tickets)
 		{
-			graph[v[0]].insert(v[1]);
-			++visited[{v[0], v[1]}];
+			s.insert(v[0]);
+			s.insert(v[1]);
+		}
+		vector<string> pos(s.begin(), s.end());
+		for (int i = 0; i < (int)pos.size(); i++)
+			m[pos[i]] = i;
+		res.push_back(m["JFK"]);
+		for (auto &v : tickets)
+		{
+			graph[m[v[0]]].insert(m[v[1]]);
+			++visited[{m[v[0]], m[v[1]]}];
 		}
 		dfs(graph, res, visited, tickets.size());
-		return res;
+		vector<string> res1(res.size());
+		for (int i = 0; i < (int)res.size(); i++)
+			res1[i] = pos[res[i]];
+		return res1;
 	}
 
-	bool dfs(unordered_map<string, set<string>> &graph, vector<string> &res, map<pair<string, string>, int> &visited, int n)
+	bool dfs(unordered_map<int, set<int>> &graph, vector<int> &res, map<pair<int, int>, int> &visited, int n)
 	{
 		if (n == 0)
 			return true;
