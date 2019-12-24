@@ -1,5 +1,3 @@
-#define max(a, b) (((a) > (b)) ? (a) : (b))
-
 //Definition for a binary tree node.
 struct TreeNode
 {
@@ -8,32 +6,38 @@ struct TreeNode
 	struct TreeNode* right;
 };
 
-int height(struct TreeNode* root)
+struct NodeDepth
 {
-	if (!root)
-		return 0;
-	return 1 + max(height(root->left), height(root->right));
-}
+	struct TreeNode* node;
+	int height;
+};
 
-struct TreeNode* postorder(struct TreeNode* root, int layer, int maxheight)
+struct NodeDepth postorder(struct TreeNode* root)
 {
 	if (!root)
-		return root;
-	if (layer == maxheight)
-		return root;
-	struct TreeNode* leftnode = postorder(root->left, layer + 1, maxheight);
-	struct TreeNode* rightnode = postorder(root->right, layer + 1, maxheight);
-	if (!leftnode && !rightnode)
-		return root;
-	if (!leftnode)
-		return leftnode;
-	return rightnode;
+	{
+		struct NodeDepth res = {root, 0};
+		return res;
+	}
+	struct NodeDepth leftnode = postorder(root->left);
+	struct NodeDepth rightnode = postorder(root->right);
+	if (leftnode.height < rightnode.height)
+	{
+		struct NodeDepth res = {rightnode.node, rightnode.height + 1};
+		return res;
+	}
+	if (leftnode.height > rightnode.height)
+	{
+		struct NodeDepth res = {leftnode.node, leftnode.height + 1};
+		return res;
+	}
+	struct NodeDepth res = {root, leftnode.height + 1};
+	return res;
 }
 
 struct TreeNode* lcaDeepestLeaves(struct TreeNode* root)
 {
 	if (!root)
 		return root;
-	int h = height(root);
-	return postorder(root, 1, h);
+	return postorder(root).node;
 }
