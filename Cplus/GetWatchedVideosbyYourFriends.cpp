@@ -1,4 +1,5 @@
 #include <map>
+#include <queue>
 #include <set>
 #include <string>
 #include <unordered_set>
@@ -10,15 +11,34 @@ class Solution
 public:
 	vector<string> watchedVideosByFriends(vector<vector<string>>& watchedVideos, vector<vector<int>>& friends, int id, int level)
 	{
-		unordered_set<int> visited;
-		set<int> levelfriends;
-		visited.insert(id);
-		dfs(friends, id, level, visited, levelfriends);
-		map<string, int> m;
-		for (auto n : levelfriends)
+		vector<bool> visited(friends.size(), false);
+		queue<int> q;
+		visited[id] = true;
+		q.push(id);
+		while (!q.empty() && level > 0)
 		{
-			for (auto v : watchedVideos[n])
+			level--;
+			int size = q.size();
+			while (--size >= 0)
+			{
+				int tmp = q.front();
+				q.pop();
+				for (auto n : friends[tmp])
+				{
+					if (!visited[n])
+					{
+						q.push(n);
+						visited[n] = true;
+					}
+				}
+			}
+		}
+		map<string, int> m;
+		while (!q.empty())
+		{
+			for (auto v : watchedVideos[q.front()])
 				m[v]++;
+			q.pop();
 		}
 		map<int, set<string>> tmp;
 		for (auto n : m)
@@ -29,22 +49,5 @@ public:
 				res.push_back(s);
 		return res;
 	}
-
-	void dfs(vector<vector<int>>& friends, int id, int level, unordered_set<int>& visited, set<int>& res)
-	{
-		if (level == 0)
-		{
-			res.insert(id);
-			return;
-		}
-
-		for (int i = 0; i < (int)friends[id].size(); i++)
-		{
-			if (visited.find(friends[id][i]) == visited.end())
-			{
-				visited.insert(friends[id][i]);
-				dfs(friends, friends[id][i], level - 1, visited, res);
-			}
-		}
-	}
 };
+
