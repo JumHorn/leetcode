@@ -9,6 +9,7 @@ public:
 	int lengthLongestPath(string input)
 	{
 		stack<int> s;
+		s.push(0);	//dummy node
 		int index = 0, res = 0, len = input.size();
 		while (index < len)
 		{
@@ -18,7 +19,7 @@ public:
 				++t;
 				++index;
 			}
-			while (!s.empty() && t < (int)s.size())
+			while (!s.empty() && t + 1 < (int)s.size())
 				s.pop();
 			int count = 0;
 			bool flag = false;
@@ -31,9 +32,9 @@ public:
 			}
 			++index;
 			if (flag)
-				res = max(res, (s.empty() ? 0 : s.top()) + count);
+				res = max(res, s.top() + count);
 			else
-				s.push(count + (s.empty() ? 0 : s.top()) + 1);
+				s.push(count + s.top() + 1);
 		}
 		return res;
 	}
