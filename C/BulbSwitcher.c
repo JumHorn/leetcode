@@ -4,23 +4,15 @@
 int bulbSwitch(int n)
 {
 	if (n == 1)
-		return n;
-	int *bulb = (int *)malloc(sizeof(int) * n);
-	for (int i = 0; i < n; i++)
-		bulb[i] = 1;
-	for (int i = 1; i < n; i++)
+		return 1;
+	long lo = 1, hi = n, mi;
+	while (lo < hi)
 	{
-		int j = i;
-		while (j < n)
-		{
-			bulb[j] = !bulb[j];
-			j += i + 1;
-		}
+		mi = (hi - lo) / 2 + lo;
+		if (mi * mi <= n)
+			lo = mi + 1;
+		else
+			hi = mi;
 	}
-	int res = 0;
-	for (int i = 0; i < n; i++)
-		if (bulb[i] != 0)
-			res++;
-	return res;
+	return lo - 1;
 }
-
