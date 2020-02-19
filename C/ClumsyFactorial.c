@@ -1,19 +1,27 @@
 
-
-int clumsy(int N)
+int recursive(int N, int flag, int pre, int res)
 {
-	int arr[] = {1, 2, 6, 7, 7, 8};
-	if (N <= 6)
-	{
-		return arr[N - 1];
-	}
-	int dp[] = {0, 1, 1, 1, -2, 0, 1};
-	int k = N / 7;
-	int res = (N + 1 + (N + 8 - 7 * k)) * k / 2 + dp[N % 7];
-	if (N == 7)
-		res -= 2;
-	else if (N == 8)
-		res -= 1;
+	if (N == 0)
+		return res;
+	flag %= 4;
+	if (flag == 0) //*
+		res = recursive(N - 1, flag + 1, pre * N, res - pre + pre * N);
+	else if (flag == 1) // /
+		res = recursive(N - 1, flag + 1, pre / N, res - pre + pre / N);
+	else if (flag == 2) // +
+		res = recursive(N - 1, flag + 1, N, res + N);
+	else // -
+		res = recursive(N - 1, flag + 1, -N, res - N);
 	return res;
 }
 
+int clumsy(int N)
+{
+	return recursive(N - 1, 0, N, N);
+}
+
+int main()
+{
+	clumsy(5);
+	return 0;
+}
