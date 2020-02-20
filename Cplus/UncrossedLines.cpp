@@ -14,12 +14,10 @@ public:
 		{
 			for (int j = 0; j < m; j++)
 			{
-				for (int index = 0; index <= i; index++)
-				{
-					if (A[index] == B[j])
-						dp[index + 1][j + 1] = max(dp[index + 1][j + 1], dp[index][j] + 1);
-				}
-				dp[i + 1][j + 1] = max(dp[i + 1][j + 1], max(dp[i + 1][j], dp[i][j + 1]));
+				if (A[i] == B[j])
+					dp[i + 1][j + 1] = max(dp[i + 1][j + 1], dp[i][j] + 1);
+				else
+					dp[i + 1][j + 1] = max(dp[i + 1][j + 1], max(dp[i + 1][j], dp[i][j + 1]));
 			}
 		}
 		return dp.back().back();
