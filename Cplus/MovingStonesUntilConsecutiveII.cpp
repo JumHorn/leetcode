@@ -7,35 +7,26 @@ class Solution
 public:
 	vector<int> numMovesStonesII(vector<int> &stones)
 	{
-		vector<int> res(2);
-		sort(stones.begin(), stones.end());
 		int n = stones.size();
+		int minimum_moves = n, maximum_moves = 0;
+		sort(stones.begin(), stones.end());
 		for (int i = 2; i < n - 1; i++)
-			res[1] += stones[i] - stones[i - 1] - 1;
-		res[1] += max(stones[1] - stones[0], stones[n - 1] - stones[n - 2]) - 1;
-		int i = 0, j = n - 1, move = 0, gap = 0;
-		while (i < j)
+			maximum_moves += stones[i] - stones[i - 1] - 1;
+		maximum_moves += max(stones[1] - stones[0], stones[n - 1] - stones[n - 2]) - 1;
+		int end = stones[0] + n;
+		for (int i = 0, j = 0; i < n;)
 		{
-			if (stones[j] - stones[i] == n - 1)
-				break;
-			if (stones[j] - stones[i] < n - 1)
+			if (stones[i] < end)
 			{
-				move += (gap >= 2 ? 1 : 0);
-				break;
-			}
-			if (stones[j] - stones[j - 1] > stones[i + 1] - stones[i])
-			{
-				gap = stones[j] - stones[j - 1] - 1;
-				j--;
-			}
-			else
-			{
-				gap = stones[i + 1] - stones[i] - 1;
+				if (stones[i] - stones[j] + 1 == n - 1 && i - j + 1 == n - 1)
+					minimum_moves = min(minimum_moves, 2);
+				else
+					minimum_moves = min(minimum_moves, n - (i - j + 1));
 				i++;
 			}
-			move++;
+			else
+				end = stones[++j] + n;
 		}
-		res[0] = move;
-		return res;
+		return {minimum_moves, maximum_moves};
 	}
 };
