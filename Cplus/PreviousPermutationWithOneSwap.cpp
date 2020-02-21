@@ -11,10 +11,29 @@ public:
 		{
 			if (A[i] < A[i - 1])
 			{
-				int j = i + 1;
-				while (j < (int)A.size() && A[j] < A[i - 1] && A[j] > A[i])
-					j++;
-				swap(A[i - 1], A[j - 1]);
+				int lo = i - 1, hi = A.size() - 1;
+				if (A[hi] < A[i - 1])
+				{
+					if (A[hi] == A[i])
+						swap(A[i - 1], A[i]);
+					else
+						swap(A[i - 1], A[hi]);
+				}
+				else
+				{
+					while (lo < hi)
+					{
+						int mi = (hi - lo) / 2 + lo;
+						if (A[mi] < A[i - 1])
+							lo = mi + 1;
+						else
+							hi = mi;
+					}
+					if (A[lo - 1] == A[i])
+						swap(A[i - 1], A[i]);
+					else
+						swap(A[i - 1], A[lo - 1]);
+				}
 				break;
 			}
 		}
