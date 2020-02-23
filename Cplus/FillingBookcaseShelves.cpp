@@ -10,27 +10,27 @@ public:
 	int minHeightShelves(vector<vector<int>> &books, int shelf_width)
 	{
 		int n = books.size();
-		vector<int> dp(n, INT_MAX);
-		return recursive(books, dp, 0, 0, shelf_width, 0, 0);
-	}
-
-	int recursive(vector<vector<int>> &books, vector<int> &dp, int index, int width, int shelf_width, int height, int allheight)
-	{
-		int n = books.size();
-		if (index >= n)
-			return allheight;
-		// if (dp[index] != INT_MAX)
-		// 	return dp[index];
-		int res = INT_MAX;
-		if (books[index][0] + width <= shelf_width)
+		if (n == 1)
+			return books[0][1];
+		vector<int> dp(n + 1, INT_MAX);
+		dp[n] = 0;
+		dp[n - 1] = books[n - 1][1];
+		if (books[n - 1][0] + books[n - 2][0] <= shelf_width)
+			dp[n - 2] = max(books[n - 1][1], books[n - 2][1]);
+		else
+			dp[n - 2] = books[n - 1][1] + books[n - 2][1];
+		for (int i = n - 3; i >= 0; i--)
 		{
-			int tmp = height;
-			if (books[index][1] > height)
-				tmp = books[index][1];
-			res = min(res, recursive(books, dp, index + 1, books[index][0] + width, shelf_width, tmp, allheight + tmp - height));
+			int height = 0, width = 0;
+			for (int j = i; j < n; j++)
+			{
+				width += books[j][0];
+				if (width > shelf_width)
+					break;
+				height = max(height, books[j][1]);
+				dp[i] = min(dp[i], height + dp[j + 1]);
+			}
 		}
-		res = min(res, recursive(books, dp, index + 1, books[index][0], shelf_width, books[index][1], allheight + books[index][1]));
-		// dp[index] = res;
-		return res;
+		return dp[0];
 	}
 };
