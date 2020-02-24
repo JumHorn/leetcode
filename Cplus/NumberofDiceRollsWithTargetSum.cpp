@@ -6,23 +6,26 @@ class Solution
 public:
 	int numRollsToTarget(int d, int f, int target)
 	{
-		vector<vector<int>> dp(d + 1, vector<int>(target + 1, -1));
-		return memdp(d, f, target, dp);
-	}
-
-	int memdp(int d, int f, int target, vector<vector<int>>& dp)
-	{
-		if (d == 0)
-			return target == 0 ? 1 : 0;
-		if (target <= 0)
-			return 0;
-		if (dp[d][target] != -1)
-			return dp[d][target];
-		int res = 0;
+		vector<vector<int>> dp(d, vector<int>(target + 1));
 		for (int i = 1; i <= f; i++)
-			res = (res + memdp(d - 1, f, target - i, dp) % MOD) % MOD;
-		dp[d][target] = res;
-		return res;
+		{
+			if (i > target)
+				break;
+			dp[0][i] = 1;
+		}
+		for (int i = 1; i < d; i++)
+		{
+			for (int j = 1; j <= target; j++)
+			{
+				for (int k = 1; k <= f; k++)
+				{
+					if (k >= j)
+						break;
+					dp[i][j] = (dp[i][j] + dp[i - 1][j - k]) % MOD;
+				}
+			}
+		}
+		return dp[d - 1][target];
 	}
 
 private:
