@@ -21,42 +21,28 @@ public:
 		for (int i = 0; i < (int)letters.size(); i++)
 			letter[letters[i] - 'a']++;
 		vector<map<vector<int>, int>> dp(n + 1);
+		dp[0][vector<int>(26)] = 0;
 		for (int i = 1; i <= n; i++)
 		{
-			vector<int> v(26);
-			for (int j = 0; j < 26; j++)
+			for (auto iter : dp[i - 1])
 			{
-				for (int k = 0; k <= letter[j]; k++)
+				vector<int> v = iter.first;
+				dp[i][iter.first] = iter.second;
+				int j = 0;
+				for (; j < (int)words[i - 1].length(); j++)
 				{
-					//背包客问题，背包状态受到letter顺序的影响
-					v[j] = k;
-					vector<int> tmp(v);
-					if (checkContains(tmp, words[i - 1]))
-						dp[i][v] = dp[i - 1][tmp] + wordsscore[i - 1];
-					dp[i][v] = max(dp[i][v], dp[i - 1][v]);
-					if (i == 3)
-						cout << dp[i][v] << endl;
+					int index = words[i - 1][j] - 'a';
+					++v[index];
+					if (v[index] > letter[index])
+						break;
 				}
+				if (j == (int)words[i - 1].length())
+					dp[i][v] = max(dp[i][v], iter.second + wordsscore[i - 1]);
 			}
 		}
-		return dp.back()[letter];
-	}
-
-	bool checkContains(vector<int> &v, string &s)
-	{
-		for (auto n : s)
-			if (--v[n - 'a'] < 0)
-				return false;
-		return true;
+		int res = 0;
+		for (auto iter : dp.back())
+			res = max(res, iter.second);
+		return res;
 	}
 };
-
-int main()
-{
-	vector<string> words = {"xxxz", "ax", "bx", "cx"};
-	vector<char> letters = {'z', 'a', 'b', 'c', 'x', 'x', 'x'};
-	vector<int> scores = {4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 10};
-	Solution sol;
-	int res = sol.maxScoreWords(words, letters, scores);
-	return 0;
-}
