@@ -1,4 +1,5 @@
 #include <climits>
+#include <queue>
 #include <vector>
 using namespace std;
 
@@ -8,30 +9,30 @@ public:
 	int minCost(vector<vector<int>> &grid)
 	{
 		int m = grid.size(), n = grid[0].size();
-		vector<vector<int>> dp(m, vector<int>(n, -1));
-		return memdp(grid, dp, 0, 0);
-	}
-
-	int memdp(vector<vector<int>> &grid, vector<vector<int>> &dp, int i, int j)
-	{
-		int m = grid.size(), n = grid[0].size();
-		if (i < 0 || i >= m || j < 0 || j >= n)
-			return 100000;
-		if (dp[i][j] != -1)
-			return dp[i][j];
-		if (i == m - 1 && j == n - 1)
-			return 0;
-		int res = INT_MAX;
-		if (grid[i][j] == 0)
-			return 100000;
-		int sign = grid[i][j];
-		grid[i][j] = 0;
-		res = min(res, memdp(grid, dp, i - 1, j) + (sign == 4 ? 0 : 1));
-		res = min(res, memdp(grid, dp, i + 1, j) + (sign == 3 ? 0 : 1));
-		res = min(res, memdp(grid, dp, i, j - 1) + (sign == 2 ? 0 : 1));
-		res = min(res, memdp(grid, dp, i, j + 1) + (sign == 1 ? 0 : 1));
-		grid[i][j] = sign;
-		dp[i][j] = res;
+		vector<vector<int>> seen(m, vector<int>(n));
+		priority_queue<pair<int, int>> q;
+		int res = 0;
+		q.push({0, 0});
+		while (!q.empty())
+		{
+			auto tmp = q.top();
+			q.pop();
+			int i = tmp.second / n, j = tmp.second % n;
+			res = -tmp.first;
+			if (seen[i][j] == 1)
+				continue;
+			if (i == m - 1 && j == n - 1)
+				return res;
+			seen[i][j] = 1;
+			if (i - 1 >= 0)
+				q.push({tmp.first - (grid[i][j] == 4 ? 0 : 1), (i - 1) * n + j});
+			if (i + 1 < m)
+				q.push({tmp.first - (grid[i][j] == 3 ? 0 : 1), (i + 1) * n + j});
+			if (j - 1 >= 0)
+				q.push({tmp.first - (grid[i][j] == 2 ? 0 : 1), i * n + j - 1});
+			if (j + 1 < n)
+				q.push({tmp.first - (grid[i][j] == 1 ? 0 : 1), i * n + j + 1});
+		}
 		return res;
 	}
 };
