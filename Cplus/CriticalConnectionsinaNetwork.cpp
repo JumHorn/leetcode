@@ -1,4 +1,5 @@
 #include <vector>
+#include <unordered_map>
 using namespace std;
 
 class Solution
@@ -6,7 +7,7 @@ class Solution
 public:
 	vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections)
 	{
-		vector<vector<int>> graph(n, vector<int>(n));
+		vector<unordered_map<int, int>> graph(n);
 		for (auto &con : connections)
 		{
 			graph[con[0]][con[1]] = 1;
@@ -21,37 +22,29 @@ public:
 		return res;
 	}
 
-	void dfs(vector<vector<int>> &graph, vector<int> &dsc, vector<int> &low, int index, int &found, vector<vector<int>> &res)
+	void dfs(vector<unordered_map<int, int>> &graph, vector<int> &dsc, vector<int> &low, int index, int &found, vector<vector<int>> &res)
 	{
 		if (dsc[index] != 0)
 			return;
 		low[index] = dsc[index] = found++;
 		int n = graph.size();
-		for (int i = 0; i < n; i++)
+		for (auto to : graph[index])
 		{
-			if (graph[index][i] == 0)
-				continue;
-			if (dsc[i] == 0)
+			if (dsc[to.first] == 0)
 			{
-				graph[i][index] = 0;
-				dfs(graph, dsc, low, i, found, res);
+				graph[to.first].erase(index);
+				dfs(graph, dsc, low, to.first, found, res);
+				low[index] = min(low[index], low[to.first]);
+				if (dsc[index] < low[to.first])
+				{
+					if (graph[index][to.first] == 1)
+						res.push_back({index, to.first});
+					else
+						res.push_back({to.first, index});
+				}
 			}
-			low[index] = min(low[index], low[i]);
-			if (low[index] < low[i])
-			{
-				if (graph[index][i] == 1)
-					res.push_back({index, i});
-				else
-					res.push_back({i, index});
-			}
+			else
+				low[index] = min(low[index], low[to.first]);
 		}
 	}
 };
-
-int main()
-{
-	vector<vector<int>> v = {{1, 0}, {2, 0}, {3, 2}, {4, 2}, {4, 3}, {3, 0}, {4, 0}};
-	Solution sol;
-	sol.criticalConnections(5, v);
-	return 0;
-}
