@@ -41,6 +41,31 @@ public:
 
 	bool checkValid(vector<string> &words, string &result, vector<int> &digit)
 	{
+		int carry = 0, len = result.size();
+		for (int i = 0; i <= 7; i++)
+		{
+			int tmp = 0;
+			bool flag = false;
+			for (auto &word : words)
+			{
+				int n = word.size();
+				if (i >= (int)word.size())
+					continue;
+				tmp += digit[charindex[word[n - i - 1]]];
+				flag = true;
+			}
+			if (i >= (int)result.size())
+			{
+				if (flag)
+					return false;
+				break;
+			}
+			tmp += carry;
+			carry = tmp / 10;
+			tmp %= 10;
+			if (digit[charindex[result[len - i - 1]]] != tmp)
+				return false;
+		}
 		for (auto &word : words)
 		{
 			if (digit[charindex[word[0]]] == 0)
@@ -48,19 +73,7 @@ public:
 		}
 		if (digit[charindex[result[0]]] == 0)
 			return false;
-		int res = 0;
-		for (auto &c : result)
-			res = res * 10 + digit[charindex[c]];
-		for (auto &word : words)
-		{
-			int tmp = 0;
-			for (auto &c : word)
-				tmp = tmp * 10 + digit[charindex[c]];
-			res -= tmp;
-			if (res < 0)
-				return false;
-		}
-		return res == 0;
+		return carry == 0;
 	}
 
 private:
@@ -70,7 +83,7 @@ private:
 int main()
 {
 	Solution sol;
-	vector<string> v = {"SEND", "MORE"};
-	bool res = sol.isSolvable(v, "MONEY");
+	vector<string> v = {"THIS", "IS", "TOO"};
+	bool res = sol.isSolvable(v, "FUNNY");
 	return 0;
 }
