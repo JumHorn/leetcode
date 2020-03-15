@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <set>
 #include <vector>
 using namespace std;
 
@@ -7,21 +8,17 @@ class Solution
 public:
 	int lastStoneWeightII(vector<int> &stones)
 	{
-		make_heap(stones.begin(), stones.end());
-		int i = stones.size() - 1;
-		while (i > 0)
+		set<int> dp = {stones[0], -stones[0]};
+		for (int i = 1; i < (int)stones.size(); i++)
 		{
-			pop_heap(stones.begin(), stones.begin() + i + 1);
-			pop_heap(stones.begin(), stones.begin() + i);
-			if (stones[i] - stones[i - 1] == 0)
-				i -= 2;
-			else
+			set<int> tmp;
+			for (auto n : dp)
 			{
-				i -= 1;
-				stones[i] = stones[i + 1] - stones[i];
-				push_heap(stones.begin(), stones.begin() + i + 1);
+				tmp.insert(abs(n - stones[i]));
+				tmp.insert(n + stones[i]);
 			}
+			dp = tmp;
 		}
-		return i == -1 ? 0 : stones[0];
+		return *dp.begin();
 	}
 };
