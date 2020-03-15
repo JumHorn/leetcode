@@ -16,7 +16,7 @@ public:
 	TreeNode* balanceBST(TreeNode* root)
 	{
 		vector<int> v;
-		preorder(root, v);
+		inorder(root, v);
 		return buildTree(v, 0, v.size() - 1);
 	}
 
@@ -31,12 +31,12 @@ public:
 		return root;
 	}
 
-	void preorder(TreeNode* root, vector<int>& v)
+	void inorder(TreeNode* root, vector<int>& v)
 	{
 		if (root == NULL)
 			return;
-		preorder(root->left, v);
+		inorder(root->left, v);
 		v.push_back(root->val);
-		preorder(root->right, v);
+		inorder(root->right, v);
 	}
 };
