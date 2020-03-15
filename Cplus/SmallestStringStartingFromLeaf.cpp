@@ -16,19 +16,32 @@ class Solution
 public:
 	string smallestFromLeaf(TreeNode *root)
 	{
-		auto res = postorder(root);
-		return res.first;
+		string tmp, res;
+		preorder(root, tmp, res);
+		return res;
 	}
 
-	pair<string, int> postorder(TreeNode *root)
+	void preorder(TreeNode *root, string &tmp, string &res)
 	{
 		if (root == NULL)
-			return {"", -1};
-		auto left = postorder(root->left);
-		auto right = postorder(root->right);
-		if (left.first.empty())
-			return {right.first + char('a' + root->val), -1};
-		if (right.first.empty())
-			return {left.first + char('a' + root->val), -1};
+			return;
+		tmp.push_back(root->val + 'a');
+		if (root->left == NULL && root->right == NULL)
+		{
+			if (res.empty())
+			{
+				res = tmp;
+				reverse(res.begin(), res.end());
+			}
+			else
+			{
+				string t = tmp;
+				reverse(t.begin(), t.end());
+				res = min(res, t);
+			}
+		}
+		preorder(root->left, tmp, res);
+		preorder(root->right, tmp, res);
+		tmp.pop_back();
 	}
 };
