@@ -15,23 +15,24 @@ public:
 		for (int i = 0; i < n; i++)
 			v.push_back({efficiency[i], speed[i]});
 		sort(v.begin(), v.end(), greater<vector<long long>>());
-		long long res = 0, s = 0, minindex = 0;
+		long long res = 0, s = 0;
 		for (int i = 0; i < k; i++)
 		{
 			heap[i] = v[i][1];
-			if (heap[i] < heap[minindex])
-				minindex = i;
 			s += v[i][1];
 			res = max(res, v[i][0] * s);
 		}
+		make_heap(heap.begin(), heap.end(), greater<int>());
+		pop_heap(heap.begin(), heap.end(), greater<int>());
 		for (int i = k; i < n; i++)
 		{
-			if (v[i][1] > heap[minindex])
+			if (v[i][1] > heap.back())
 			{
-				s = s - heap[minindex] + v[i][1];
-				heap[minindex] = v[i][1];
-				minindex = min_element(heap.begin(), heap.end()) - heap.begin();
+				s = s - heap.back() + v[i][1];
+				heap.back() = v[i][1];
 				res = max(res, v[i][0] * s);
+				push_heap(heap.begin(), heap.end(), greater<int>());
+				pop_heap(heap.begin(), heap.end(), greater<int>());
 			}
 		}
 		return res % MOD;
