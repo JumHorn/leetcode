@@ -1,3 +1,4 @@
+#include <queue>
 #include <vector>
 using namespace std;
 
@@ -6,26 +7,48 @@ class Solution
 public:
 	int maxDistance(vector<vector<int>> &grid)
 	{
-		int res = -1, n = grid.size();
-		vector<vector<int>> zero, one;
+		int res = 0, n = grid.size();
+		queue<pair<int, int>> q;
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < n; j++)
 			{
 				if (grid[i][j] == 1)
-					one.push_back({i, j});
-				else
-					zero.push_back({i, j});
+					q.push({i, j});
 			}
 		}
-
-		for (int i = 0; i < (int)zero.size(); i++)
+		if ((int)q.size() == n * n)
+			return -1;
+		while (!q.empty())
 		{
-			int dis = INT_MAX;
-			for (int j = 0; j < (int)one.size(); j++)
-				dis = min(dis, abs(zero[i][0] - one[j][0]) + abs(zero[i][1] - one[j][1]));
-			res = max(res, dis);
+			int size = q.size();
+			++res;
+			while (--size >= 0)
+			{
+				int x = q.front().first, y = q.front().second;
+				q.pop();
+				if (x - 1 >= 0 && grid[x - 1][y] == 0)
+				{
+					grid[x - 1][y] = res;
+					q.push({x - 1, y});
+				}
+				if (x + 1 < n && grid[x + 1][y] == 0)
+				{
+					grid[x + 1][y] = res;
+					q.push({x + 1, y});
+				}
+				if (y - 1 >= 0 && grid[x][y - 1] == 0)
+				{
+					grid[x][y - 1] = res;
+					q.push({x, y - 1});
+				}
+				if (y + 1 < n && grid[x][y + 1] == 0)
+				{
+					grid[x][y + 1] = res;
+					q.push({x, y + 1});
+				}
+			}
 		}
-		return res == INT_MAX ? -1 : res;
+		return res - 1;
 	}
 };
