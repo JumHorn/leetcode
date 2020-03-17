@@ -41,22 +41,20 @@ public:
 		DSU dsu(s.length());
 		for (auto &p : pairs)
 			dsu.Union(p[0], p[1]);
-		unordered_map<int, vector<int>> m;
-		unordered_map<int, string> m2;
+		vector<int> parent(s.length());
+		unordered_map<int, string> m;
 		for (int i = 0; i < (int)s.length(); i++)
 		{
 			int p = dsu.Find(i);
-			m[p].push_back(i);
-			m2[p].push_back(s[i]);
+			parent[i] = p;
+			m[p].push_back(s[i]);
 		}
 		for (auto &n : m)
-			sort(n.second.begin(), n.second.end());
-		for (auto &n : m2)
-			sort(n.second.begin(), n.second.end());
-		for (auto &n : m)
+			sort(n.second.begin(), n.second.end(), greater<char>());
+		for (int i = 0; i < (int)s.length(); i++)
 		{
-			for (int i = 0; i < (int)n.second.size(); i++)
-				s[n.second[i]] = m2[n.first][i];
+			s[i] = m[parent[i]].back();
+			m[parent[i]].pop_back();
 		}
 		return s;
 	}
