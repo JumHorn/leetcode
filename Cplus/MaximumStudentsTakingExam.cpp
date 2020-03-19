@@ -1,41 +1,62 @@
+#include <cmath>
+#include <numeric>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int maxStudents(vector<vector<char>>& seats)
+	int maxStudents(vector<vector<char>> &seats)
 	{
-		vector<pair<int, int>> good;
-		for (int i = 0; i < (int)seats.size(); i++)
+		int n = seats.size(), m = seats[0].size();
+		vector<int> mask(n);
+		for (int i = 0; i < n; i++)
 		{
-			for (int j = 0; j < (int)seats[i].size(); j++)
-			{
-				if (seats[i][j] == '.')
-					good.push_back({i, j});
-			}
+			for (int j = 0; j < m; j++)
+				if (seats[i][j] == '#')
+					mask[i] |= 1 << j;
 		}
-		int n = good.size();
-		vector<vector<int>> dp(n, vector<int>(2));
-		dp[0][0] = 0;
-		dp[0][1] = 1;
-		for (int i = 1; i < n; i++)
+		vector<vector<int>> dp(n, vector<int>(pow(2, m)));
+		for (int i = 0; i < n; i++)
 		{
-			int row = good[i].first, column = good[i].second;
-			if (row == 0)  //first row
+			for (int j = 0; j < pow(2, m); j++)
 			{
-				int take = 1;
-				if (column - 1 >= 0)
+				//broken seat check
+				if ((j & mask[i]) != 0)
+					continue;
+				//neighber seat check
+				int k;
+				for (k = 0; k < m - 1; k++)
 				{
-					if (seats[row][column - 1])
-					{
-					}
+					if (((j >> k) & 3u) == 3)
+						break;
+				}
+				if (k != m - 1)
+					continue;
+				//front seat check
+				if (i == 0)
+				{
+					dp[i][j] = bitCount(j);
+					continue;
+				}
+				for (int l = 0; l < pow(2, m); l++)
+				{
+					if (((~j) & ((j >> 1) | (j << 1)) & l) == 0)
+						dp[i][j] = max(dp[i][j], dp[i - 1][l] + bitCount(j));
 				}
 			}
-			else
-			{
-			}
 		}
-		return max(dp[n - 1][0], dp[n - 1][1]);
+		return *max_element(dp.back().begin(), dp.back().end());
+	}
+
+	int bitCount(int x)
+	{
+		int res = 0;
+		while (x != 0)
+		{
+			res++;
+			x &= x - 1;
+		}
+		return res;
 	}
 };
