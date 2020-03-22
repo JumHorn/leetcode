@@ -1,31 +1,34 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int splitArray(vector<int>& nums, int m) {
-		int res=INT_MAX;
-		splitArray(nums,m,0,INT_MIN,res);
-		return res;
+	int splitArray(vector<int>& nums, int m)
+	{
+		vector<vector<int>> dp(nums.size(), vector<int>(m + 1));
+		return memdp(nums, 0, m, dp);
 	}
 
-    void splitArray(vector<int>& nums, int m,int start,int sum,int& res) {
-		int tmp=0;
-		if(m==1)
+	int memdp(vector<int>& nums, int start, int m, vector<vector<int>>& dp)
+	{
+		if (dp[start][m] != 0)
+			return dp[start][m];
+		int tmp = 0;
+		if (m == 1)
 		{
-			for(int i=start;i<(int)nums.size();i++)
-				tmp+=nums[i];
-			res=min(res,max(sum,tmp));
-			return;
+			for (int i = start; i < (int)nums.size(); i++)
+				tmp += nums[i];
+			return tmp;
 		}
-    	for(int i=start;i<=(int)nums.size()-m;i++)
+		int res = INT_MAX;
+		for (int i = start; i <= (int)nums.size() - m; i++)
 		{
-			tmp+=nums[i];
-			int n=max(tmp,sum);
-			if(n>=res)
-				return;
-			splitArray(nums,m-1,i+1,n,res);
-		}	
-    }
+			tmp += nums[i];
+			res = min(res, max(memdp(nums, i + 1, m - 1, dp), tmp));
+		}
+		dp[start][m] = res;
+		return res;
+	}
 };
