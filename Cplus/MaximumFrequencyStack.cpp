@@ -1,37 +1,35 @@
-#include<list>
-#include<map>
+#include <map>
+#include <stack>
+#include <unordered_map>
 using namespace std;
 
-class FreqStack {
-	map<int,int> freq;
-	list<int> s;
+class FreqStack
+{
 public:
-    FreqStack() {
-        
-    }
-    
-    void push(int x) {
-        ++freq[x];
-		s.push_front(x);
-    }
-    
-    int pop() {
-		int m=-1,val;
-        for(map<int,int>::iterator it=freq.begin();it!=freq.end();++it)
-			if(it->second>m)
-				m=it->second;
-		for(list<int>::iterator it=s.begin();it!=s.end();++it)
-		{
-			if(freq[*it]==m)
-			{
-				val=*it;
-				s.erase(it);
-				break;
-			}
-		}
-		--freq[val];
-		return val;
-    }
+	FreqStack()
+	{
+	}
+
+	void push(int x)
+	{
+		++freq[x];
+		rmstack[freq[x]].push(x);
+	}
+
+	int pop()
+	{
+		int n = rmstack.rbegin()->second.top();
+		rmstack.rbegin()->second.pop();
+		if (rmstack.rbegin()->second.empty())
+			rmstack.erase(freq[n]);
+		if (--freq[n] == 0)
+			freq.erase(n);
+		return n;
+	}
+
+private:
+	unordered_map<int, int> freq;
+	map<int, stack<int>> rmstack;
 };
 
 /**
