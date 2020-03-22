@@ -1,36 +1,27 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int bestRotation(vector<int>& A) {
-		int num=0,res=0;
-		int n=A.size();
-		for(int i=0;i<n;i++)
+	int bestRotation(vector<int>& A)
+	{
+		int n = A.size(), res = 0;
+		vector<int> dp(n);
+		for (int i = 0; i < n; i++)	 //for A[i] rotate k to lose point
+			dp[(i - A[i] + 1 + n) % n] -= 1;
+		vector<int> score(n);  //score for every k
+		for (int i = 1; i < n; i++)
+			score[i] = score[i - 1] + 1 + dp[i];
+		int maxscore = score[0];
+		for (int i = 1; i < n; i++)
 		{
-			A[i]-=n-1;
-			if(A[i]>=0)
-				num++;
-		}
-		if(num==n)
-			return 0;
-		for(int i=0;i<n;i++)
-		{
-			int tmp=0;
-			for(int j=0;j<n;j++)
+			if (score[i] > maxscore)
 			{
-				if(j==i)
-					A[j]-=n-1;
-				else
-					A[j]+=1;
-				tmp+=(A[j]>=0?1:0);
-			}
-			if(tmp>num)
-			{
-				num=tmp;
-				res=i+1;
+				maxscore = score[i];
+				res = i;
 			}
 		}
 		return res;
-    }
+	}
 };
