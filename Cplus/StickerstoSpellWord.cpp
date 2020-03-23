@@ -1,61 +1,59 @@
-#include<vector>
-#include<algorithm>
-#include<string>
-#include<map>
+#include <map>
+#include <queue>
+#include <set>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minStickers(vector<string>& stickers, string target) {
-		int targetchar=0;
-        map<char,int> t;
-		vector<map<char,int> > s(stickers.size());
-		for(int i=0;i<(int)target.size();i++)
-		{
-			targetchar++;
-			++t[target[i]];
-		}
-		for(int i=0;i<(int)stickers.size();i++)
-			for(int j=0;j<(int)stickers[i].size();j++)
-				++s[i][stickers[i][j]];
-		map<map<char,int>,int> dp;
-		return minStickers(s,t,targetchar,dp);
-    }
-
-	int minStickers(vector<map<char,int> >& stickers, map<char,int>& target,int targetchar,map<map<char,int>,int>& dp)
+	int minStickers(vector<string>& stickers, string target)
 	{
-		if(dp.find(target)!=dp.end())
-			return dp[target];
-		if(targetchar==0)
-			return 0;
-		int res=INT_MAX,tmpchar;
-		map<char,int> tmpmap,minmap;
-		for(int i=0;i<(int)stickers.size();i++)
+		int n = stickers.size(), res = 0;
+		map<char, int> targetmap;
+		vector<map<char, int>> words(n);
+		for (auto c : target)
+			++targetmap[c];
+		for (int i = 0; i < n; i++)
 		{
-			tmpchar=targetchar;
-			for(map<char,int>::iterator iter=target.begin();iter!=target.end();++iter)
+			for (auto c : stickers[i])
+				if (targetmap.find(c) != targetmap.end())
+					++words[i][c];
+		}
+		queue<map<char, int>> q;
+		set<map<char, int>> seen;
+		q.push(targetmap);
+		seen.insert(targetmap);
+		while (!q.empty())
+		{
+			++res;
+			int size = q.size();
+			while (--size >= 0)
 			{
-				if(iter->second>=stickers[i][iter->first])
+				for (int i = 0; i < n; i++)
 				{
-					tmpmap[iter->first]=iter->second-stickers[i][iter->first];
-					tmpchar-=stickers[i][iter->first];
+					targetmap = q.front();
+					for (auto c : words[i])
+					{
+						if (targetmap.find(c.first) != targetmap.end())
+						{
+							targetmap[c.first] -= c.second;
+							if (targetmap[c.first] <= 0)
+								targetmap.erase(c.first);
+						}
+					}
+					if (targetmap.empty())
+						return res;
+					if (seen.find(targetmap) == seen.end())
+					{
+						seen.insert(targetmap);
+						q.push(targetmap);
+					}
 				}
-				else
-				{
-					tmpmap[iter->first]=0;
-					tmpchar-=iter->second;
-				}
-			}
-			if(tmpchar<targetchar)
-			{
-				int tmp=minStickers(stickers,tmpmap,tmpchar,dp);
-				if(tmp!=-1)
-					res=min(res,1+tmp);
+				q.pop();
 			}
 		}
-		if(targetchar==tmpchar)
-			return -1;
-		dp[target]=res;
-		return res;
+		return -1;
 	}
 };
