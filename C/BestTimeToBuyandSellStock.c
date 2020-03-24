@@ -6,16 +6,15 @@ int main()
 
 int maxProfit(int * prices,int pricesSize)
 {
-	int i,j,max=0;
-	for(i=0;i<pricesSize-1;i++)
+	int i,min=2147483647,max=0;
+	for(i=0;i<pricesSize;i++)
 	{
-		for(j=i+1;j<pricesSize;j++)
+                min=prices[i]>min?min:prices[i];
+		if(prices[i]-min>max)
 		{
-			if(prices[j]-prices[i]>max)
-			{
-				max=prices[j]-prices[i];
-			}
+			max=prices[i]-min;
 		}
+
 	}
 	return max;
 }

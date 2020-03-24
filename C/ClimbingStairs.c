@@ -1,13 +1,20 @@
-//递归重复计算太多，采取动态规划
 #include<stdio.h>
 int main()
 {
-	int climbstairs(int n);
+	int climbStairs(int n);
 }
-
-int climbstairs(int n)
+int climbStairs(int n)
 {
-	if(n==1)return 1;
-	if(n==2)return 2;
-	return climbstairs(n-1)+climbstairs(n-2);
+	if(n<3)
+	{
+		return n;
+	}
+	int a[100];
+	a[1]=1;
+	a[2]=2;
+	for(int i=3;i<=n;i++)
+	{
+		a[i]=a[i-1]+a[i-2];
+	}
+	return a[n];
 }

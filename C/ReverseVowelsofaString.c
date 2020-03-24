@@ -1,28 +1,32 @@
 #include<stdio.h>
 #include<string.h>
+#include<stdbool.h>
 int main()
 {
 	char * reverseVowels(char *s);
+	bool check(char c);
 }
-char* reverseVowels(char* s) {
-	int temp[10000]={0};
+bool check(char c)
+{
+
+	if(c>='A'&&c<='Z')c=c+0x20;
+	if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u')
+	{
+		return true;
+	}
+	return false;
+
+}
+char * reverseVowels(char *s)
+{
 	char  c;
 	int i,j=0,len=strlen(s);
 	int m=0,n=len-1;
-	for(i=0;i<len;i++)
+
+	while(m<n)
 	{
-		c=s[i];
-		if(c>='A'&&c<='Z')c=c+0x20;
-		if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u')
-		{
-			temp[i]=1;
-			j++;
-		}
-	}
-	for(i=0;i<j/2;i++)
-	{
-		if(temp[m]!=1)m++;
-		if(temp[n]!=1)n--;
+		while(!check(s[m])&&m<n)m++;
+		while(!check(s[n])&&m<n)n--;
 
 		c=s[m];
 		s[m]=s[n];
