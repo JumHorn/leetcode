@@ -1,12 +1,14 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
 bool queenCheck(int n, int (*queen)[n], int i, int j)
 {
-	int drc[][2] = {{0, -1}, {0, 1}, {-1, 0}, {-1, -1}, {-1, 1}};
+	int drc[][2] = {{-1, 0}, {-1, -1}, {-1, 1}};
 	for (int l = 1; l < n; l++)
 	{
-		for (int m = 0; m < 5; m++)
+		for (int m = 0; m < ARRAY_SIZE(drc); m++)
 		{
 			int x = i + drc[m][0] * l, y = j + drc[m][1] * l;
 			if (x < 0 || x >= n || y < 0 || y >= n)
