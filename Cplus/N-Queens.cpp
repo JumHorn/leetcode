@@ -1,5 +1,5 @@
-#include <vector>
 #include <string>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -9,11 +9,11 @@ public:
 	{
 		vector<vector<string>> res;
 		vector<int> queen(n); //record queens in each row
-		solveNQueens(queen, 0, 0, res);
+		doSolveNQueens(queen, 0, 0, res);
 		return res;
 	}
 	//using loop to solve N queens
-	void solveNQueens(vector<int> &queen, int i, int j, vector<vector<string>> &res)
+	void doSolveNQueens(vector<int> &queen, int i, int j, vector<vector<string>> &res)
 	{
 		int n = queen.size();
 		while (i != 0 || j != n)
