@@ -21,11 +21,19 @@ struct ListNode* mergeTwoLists(struct ListNode* list0, struct ListNode* list1)
 	return list1;
 }
 
+struct ListNode* divide(struct ListNode** lists, int begin, int end)
+{
+	if (end == begin)
+		return 0;
+	if (end - begin == 1)
+		return lists[begin];
+	int mi = (end - begin) / 2 + begin;
+	struct ListNode* left = divide(lists, begin, mi);
+	struct ListNode* right = divide(lists, mi, end);
+	return mergeTwoLists(left, right);
+}
+
 struct ListNode* mergeKLists(struct ListNode** lists, int listsSize)
 {
-	if (listsSize == 0)
-		return 0;
-	for (int i = 1; i < listsSize; i++)
-		lists[0] = mergeTwoLists(lists[0], lists[i]);
-	return lists[0];
+	return divide(lists, 0, listsSize);
 }
