@@ -1,4 +1,4 @@
-#include<stdio.h>
+
 //definition for a singly-linked list
 struct ListNode
 {
@@ -6,31 +6,17 @@ struct ListNode
 	struct ListNode *next;
 };
 
-int main()
+struct ListNode *mergeTwoLists(struct ListNode *l1, struct ListNode *l2)
 {
-	struct ListNode * mergeTwoList(struct ListNode* l1,struct ListNode *l2);
-}
-
-struct ListNode * mergeTwoList(struct ListNode* l1,struct ListNode *l2)
-{
-	if(l1==NULL)
-	{
+	if (!l1)
 		return l2;
-	}
-	if(l2==NULL)
-	{
+	if (!l2)
 		return l1;
-	}
-	ListNode *ret = NULL;
 	if (l1->val < l2->val)
 	{
-		ret = l1;
-		ret->next = mergeTwoLists(l1->next, l2);
+		l1->next = mergeTwoLists(l1->next, l2);
+		return l1;
 	}
-	else
-	{
-		ret = l2;
-		ret->next = mergeTwoLists(l1, l2->next);
-	}    
-	return ret;
+	l2->next = mergeTwoLists(l1, l2->next);
+	return l2;
 }
