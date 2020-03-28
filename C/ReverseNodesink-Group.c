@@ -17,20 +17,18 @@ struct ListNode *reverseList(struct ListNode *head)
 	return res;
 }
 
-struct ListNode *doReverseKGroup(struct ListNode *head, struct ListNode *tail, int k, int count)
-{
-	if (!tail)
-		return head;
-	if (count != 0)
-		return doReverseKGroup(head, tail->next, k, count - 1);
-	struct ListNode *res = doReverseKGroup(tail->next, tail->next, k, k - 1);
-	tail->next = 0;
-	reverseList(head);
-	head->next = res;
-	return tail;
-}
-
 struct ListNode *reverseKGroup(struct ListNode *head, int k)
 {
-	return doReverseKGroup(head, head, k, k - 1);
+	struct ListNode *tail = head, *res = head;
+	int count = 0;
+	while (tail && ++count != k)
+		tail = tail->next;
+	if (count == k)
+	{
+		struct ListNode *tmp = reverseKGroup(tail->next, k);
+		tail->next = 0;
+		res = reverseList(head);
+		head->next = tmp;
+	}
+	return res;
 }
