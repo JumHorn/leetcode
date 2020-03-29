@@ -5,10 +5,8 @@ int firstMissingPositive(int *nums, int numsSize)
 {
 	for (int i = 0; i < numsSize; i++)
 	{
-		while (i + 1 != nums[i])
+		while (i + 1 != nums[i] && nums[i] > 0)
 		{
-			if (nums[i] <= 0)
-				break;
 			int j = nums[i] - 1;
 			if (j >= numsSize || nums[j] == j + 1)
 				break;
