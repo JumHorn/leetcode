@@ -1,31 +1,33 @@
 #include <string.h>
 
-#define MAXLEN 1501
+/*
+greedy solution to only expand the last * we met
+*/
 
-bool doIsMatch(char* s, int i, char* p, int j, int (*dp)[MAXLEN])
+bool isMatch(char *s, char *p)
 {
-	if (dp[i][j] != -1)
-		return dp[i][j];
-	if (!*s && !*p)
-		return dp[i][j] = 1;
-	if (!*p)
-		return dp[i][j] = 0;
-	if (!*s)
+	int i = 0, j = 0, m = 0, n = 0;	 //n is the last * position
+	while (s[i])
 	{
-		while (*p && *p == '*')
-			++p;
-		return !*p;
+		if (p[j] == '?' || p[j] == s[i])
+		{
+			i++;
+			j++;
+		}
+		else if (p[j] == '*')
+		{
+			n = j++;
+			m = i;
+		}
+		else if (p[n] == '*')
+		{
+			i = ++m;
+			j = n + 1;
+		}
+		else
+			return false;
 	}
-	if (*p == '?' || *p == *s)
-		return dp[i][j] = doIsMatch(s + 1, i + 1, p + 1, j + 1, dp);
-	if (*p == '*')
-		return dp[i][j] = doIsMatch(s + 1, i + 1, p, j, dp) || doIsMatch(s, i, p + 1, j + 1, dp) || doIsMatch(s + 1, i + 1, p + 1, j + 1, dp);
-	return dp[i][j] = 0;
-}
-
-bool isMatch(char* s, char* p)
-{
-	int dp[MAXLEN][MAXLEN];
-	memset(dp, -1, sizeof(dp));
-	return doIsMatch(s, 0, p, 0, dp);
+	while (p[j] && p[j] == '*')
+		j++;
+	return !p[j];
 }
