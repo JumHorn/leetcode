@@ -1,23 +1,30 @@
-#include<vector>
-#include<algorithm>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Solution {
+/*
+O(n) only need to check the range between max right jump and next max right jump
+*/
+
+class Solution
+{
 public:
-    int jump(vector<int>& nums) {
-        if(nums.size()==1)
-            return 0;
-		int i=0,j=0,res=0,tmp=0;
-		for(j=0;j<(int)nums.size();)
+	int jump(vector<int> &nums)
+	{
+		int n = nums.size();
+		if (n <= 1)
+			return 0;
+		int res = 1, maxright = nums[0], i = 0;
+		while (maxright < n - 1)
 		{
-			for(int k=i;k<=j;k++)
-				tmp=max(tmp,k+nums[k]);
-			if(tmp>=(int)nums.size()-1)
-				return res+1;
-			i=j+1;
-			j=tmp;
-			res++;
+			++res;
+			int right = maxright;
+			for (int j = i + 1; j <= maxright; j++)
+				if (right < nums[j] + j)
+					right = nums[j] + j;
+			i = maxright;
+			maxright = right;
 		}
 		return res;
-    }
+	}
 };
