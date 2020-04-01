@@ -1,43 +1,37 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > insert(vector<vector<int> >& intervals, vector<int>& newInterval) {
-		if(intervals.empty())
+	vector<vector<int>> insert(vector<vector<int>> &intervals, vector<int> &newInterval)
+	{
+		vector<vector<int>> res;
+		int i = 0, n = intervals.size();
+		for (i = 0; i < n; i++)
 		{
-			intervals.push_back(newInterval);
-			return intervals;
+			if (newInterval[1] < intervals[i][0])
+			{
+				res.push_back(newInterval);
+				res.push_back(intervals[i]);
+				break;
+			}
+			if (newInterval[0] > intervals[i][1])
+				res.push_back(intervals[i]);
+			else
+			{
+				newInterval[0] = min(newInterval[0], intervals[i][0]);
+				newInterval[1] = max(newInterval[1], intervals[i][1]);
+			}
 		}
-		if(newInterval[0]>intervals.back()[1])
-		{
-			intervals.push_back(newInterval);
-			return intervals;
-		}
-		if(newInterval[1]<intervals[0][0])
-		{
-			intervals.insert(intervals.begin(),newInterval);
-			return intervals;
-		}
-        vector<vector<int> > res;
-		int i=0,j=intervals.size(),m=0,n=0;
-		for(int k=0;k<(int)intervals.size();k++)
-			if(newInterval[0]>=intervals[k][0])
-				i=k;
-		for(int k=i;k<(int)intervals.size();k++)
-			if(newInterval[1]>=intervals[k][0])
-				j=k+1;
-		if(newInterval[0]<=intervals[i][1])
-			m=min(intervals[i--][0],newInterval[0]);
+		if (i == n)
+			res.push_back(newInterval);
 		else
-			m=newInterval[0];
-		n=max(newInterval[1],intervals[j-1][1]);
-		for(int k=0;k<=i;k++)
-			res.push_back(intervals[k]);
-		res.push_back(vector<int>({m,n}));
-		for(int k=j;k<(int)intervals.size();k++)
-			res.push_back(intervals[k]);
+		{
+			while (++i < n)
+				res.push_back(intervals[i]);
+		}
 		return res;
-    }
+	}
 };
