@@ -1,48 +1,34 @@
-#include<iostream>
-#include<string>
-#include<unordered_map>
+#include <string>
+#include <climits>
+#include <unordered_map>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string minWindow(string s, string t) {
-		unordered_map<char,int> charmap;
-		int i=0,j=-1,res=INT_MAX,m=0,n=0,c=t.length();
-	    for(int k=0;k<(int)t.length();k++)
+	string minWindow(string s, string t)
+	{
+		unordered_map<char, int> charmap;
+		int i = 0, j = -1, window = INT_MAX, start = 0, n = t.length();
+		for (int k = 0; k < n; k++)
 			++charmap[t[k]];
-		while(++j<(int)s.length())
+		while (++j < (int)s.length())
 		{
-			if(charmap[s[j]]-->0)
+			if (--charmap[s[j]] >= 0)
+				--n;
+			if (window <= j - i + 1 && ++charmap[s[i++]] > 0)
+				++n;
+			if (n == 0)
 			{
-				if(--c==0)
-				{
-					if(res>j-i+1)
-					{
-						res=j-i+1;
-						m=i;
-						n=j;
-					}
-					while(i<=j)
-					{
-						if(++charmap[s[i]]>0)
-						{
-							c++;
-                            i++;
-							break;
-						}
-                        i++;
-                        if(res>j-i+1)
-                        {
-                            res=j-i+1;
-                            m=i;
-                            n=j;
-                        }
-					}
-				}
+				while (i <= j && ++charmap[s[i]] <= 0)
+					++i;
+				++n;
+				window = j - i + 1;
+				start = i++;
 			}
 		}
-		if(res==INT_MAX)
+		if (window == INT_MAX)
 			return "";
-		return s.substr(m,n-m+1);
-    }
+		return s.substr(start, window);
+	}
 };
