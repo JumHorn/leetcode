@@ -1,46 +1,47 @@
-#include<iostream>
-#include<vector>
+#include <algorithm>
+#include <climits>
 using namespace std;
 
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    void recoverTree(TreeNode* root) {
-		TreeNode* pre=new TreeNode(INT_MIN);
-		vector<TreeNode*> v(2);
-		int tmp=0;
-		recoverTree(root,v,tmp,pre);
-		tmp=v[0]->val;
-		v[0]->val=v[1]->val;
-		v[1]->val=tmp;
-    }
-
-	void recoverTree(TreeNode* root,vector<TreeNode*>& v,int& i,TreeNode*& pre)
+	void recoverTree(TreeNode *root)
 	{
-		if(root==NULL||i>=2)
+		TreeNode *pre = new TreeNode(INT_MIN);
+		TreeNode *node[2];
+		int count = 0;
+		inorder(root, node, count, pre);
+		swap(node[0]->val, node[1]->val);
+	}
+
+	void inorder(TreeNode *root, TreeNode **node, int &count, TreeNode *&pre)
+	{
+		if (root == NULL || count >= 2)
 			return;
-		recoverTree(root->left,v,i,pre);
-		if(pre->val>root->val)
+		inorder(root->left, node, count, pre);
+		if (pre->val > root->val)
 		{
-			if(i==0)
+			if (count == 0)
 			{
-				v[0]=pre;
-				v[1]=root;
+				node[0] = pre;
+				node[1] = root;
 			}
-			else if(i==1)
+			else if (count == 1)
 			{
-				v[1]=root;
+				node[1] = root;
 			}
-            i++;
+			++count;
 		}
-        pre=root;
-		recoverTree(root->right,v,i,pre);
+		pre = root;
+		inorder(root->right, node, count, pre);
 	}
 };
