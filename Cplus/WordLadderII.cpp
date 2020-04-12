@@ -10,29 +10,22 @@ class Solution
 public:
 	vector<vector<string>> findLadders(string beginWord, string endWord, vector<string> &wordList)
 	{
-		int n = wordList.size();
-		vector<vector<int>> graph(n + 1);
-		vector<int> seen(n + 1);
-		unordered_map<string, int> words; //{str,index}
-		for (int i = 0; i < n; i++)
-			words[wordList[i]] = i;
-		wordList.push_back(beginWord);
-		words[beginWord] = n;
-
-		//BFS
+		unordered_map<string, unordered_set<string>> graph;
+		unordered_set<string> seen;
+		unordered_set<string> words(wordList.begin(), wordList.end());
+		//BSF
 		queue<string> q;
-		seen[words[beginWord]] = 1;
-		int depth = 1;
+		int depth = 0;
 		q.push(beginWord);
+		seen.insert(beginWord);
 		bool flag = true;
-		unordered_set<int> seennew;
 		while (!q.empty() && flag)
 		{
-			++depth;
+			for (auto &str : seen)
+				words.erase(str);
+			seen.clear();
 			int size = q.size();
-			for (auto n : seennew)
-				seen[n] = 1;
-			seennew.clear();
+			++depth;
 			while (--size >= 0)
 			{
 				string tmp = q.front();
@@ -41,11 +34,11 @@ public:
 					for (char c = 'a'; c <= 'z'; c++)
 					{
 						tmp[i] = c;
-						if (words.find(tmp) != words.end() && seen[words[tmp]] == 0)
+						if (words.find(tmp) != words.end())
 						{
-							seennew.insert(words[tmp]);
-							graph[words[q.front()]].push_back(words[tmp]);
+							graph[q.front()].insert(tmp);
 							q.push(tmp);
+							seen.insert(tmp);
 							if (tmp == endWord)
 							{
 								flag = false;
@@ -62,31 +55,24 @@ public:
 			return {};
 
 		//DFS
-		vector<int> onepath = {words[beginWord]};
 		vector<vector<string>> res;
-		dfs(graph, wordList, res, onepath, words[endWord], depth);
+		vector<string> onepath = {beginWord};
+		dfs(graph, res, onepath, endWord);
 		return res;
 	}
 
-	//DFS
-	void dfs(vector<vector<int>> &graph, vector<string> &wordlist, vector<vector<string>> &res, vector<int> &onepath, int dst, int depth)
+	void dfs(unordered_map<string, unordered_set<string>> &graph, vector<vector<string>> &res, vector<string> &tmp, const string &dst)
 	{
-		if (depth <= 1)
+		if (tmp.back() == dst)
 		{
-			if (onepath.back() == dst)
-			{
-				res.push_back({});
-				for (auto n : onepath)
-					res.back().push_back(wordlist[n]);
-			}
+			res.push_back(tmp);
 			return;
 		}
-		int n = graph.size();
-		for (auto to : graph[onepath.back()])
+		for (auto &str : graph[tmp.back()])
 		{
-			onepath.push_back(to);
-			dfs(graph, wordlist, res, onepath, dst, depth - 1);
-			onepath.pop_back();
+			tmp.push_back(str);
+			dfs(graph, res, tmp, dst);
+			tmp.pop_back();
 		}
 	}
 };
