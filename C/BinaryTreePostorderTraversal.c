@@ -17,29 +17,24 @@ int *postorderTraversal(struct TreeNode *root, int *returnSize)
 {
 	struct TreeNode *stack[MAXNODE];
 	int top = -1, array[MAXNODE], size = 0;
-	struct TreeNode *pre = 0, *cur = root;
-	while (top != -1 || cur)
+	if (root)
+		stack[++top] = root;
+	struct TreeNode *pre, *cur = root;
+	while (top != -1)
 	{
-		while (cur && ((!cur->left && !cur->right) || (pre && (cur->left == pre || cur->right == pre))))
+		pre = cur;
+		cur = stack[top];
+		if ((!cur->left && !cur->right) || (cur->left == pre || cur->right == pre))
 		{
 			array[size++] = cur->val;
-			pre = cur;
-			if (top >= 0)
-				cur = stack[top--];
-			else
-				cur = 0;
-		}
-		if (cur)
-		{
-			stack[++top] = cur;
-			if (cur->right)
-				stack[++top] = cur->right;
-			cur = cur->left;
+			--top;
 		}
 		else
 		{
-			if (top >= 0)
-				cur = stack[top--];
+			if (cur->right)
+				stack[++top] = cur->right;
+			if (cur->left)
+				stack[++top] = cur->left;
 		}
 	}
 
