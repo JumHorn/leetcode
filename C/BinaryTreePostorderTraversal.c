@@ -19,13 +19,13 @@ int *postorderTraversal(struct TreeNode *root, int *returnSize)
 	int top = -1, array[MAXNODE], size = 0;
 	if (root)
 		stack[++top] = root;
-	struct TreeNode *pre, *cur = root;
+	struct TreeNode *pre = root, *cur = root;
 	while (top != -1)
 	{
-		pre = cur;
 		cur = stack[top];
 		if ((!cur->left && !cur->right) || (cur->left == pre || cur->right == pre))
 		{
+			pre = cur;
 			array[size++] = cur->val;
 			--top;
 		}

@@ -21,13 +21,13 @@ public:
 		if (root == NULL)
 			return res;
 		s.push(root);
-		TreeNode *pre, *curr = root;
+		TreeNode *pre = root, *curr = root;
 		while (!s.empty())
 		{
-			pre = curr;
 			curr = s.top();
 			if ((curr->left == NULL && curr->right == NULL) || (curr->left == pre || curr->right == pre))
 			{
+				pre = curr;
 				res.push_back(curr->val);
 				s.pop();
 			}
