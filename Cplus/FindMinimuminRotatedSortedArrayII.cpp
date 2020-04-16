@@ -7,10 +7,23 @@ class Solution
 public:
 	int findMin(vector<int> &nums)
 	{
-		int res = nums[0];
-		for (int i = (int)nums.size() - 1; i > 0; i--)
-			if (nums[i] - nums[i - 1] < 0)
-				res = min(res, nums[i]);
-		return res;
+		int lo = 0, hi = nums.size() - 1;
+		while (lo < hi)
+		{
+			int mi = (hi - lo) / 2 + lo;
+			if (nums[mi] > nums[hi])
+			{
+				lo = mi + 1;
+			}
+			else if (nums[mi] < nums[hi])
+			{
+				hi = mi;
+			}
+			else // when num[mid] and num[hi] are same
+			{
+				hi--;
+			}
+		}
+		return nums[lo];
 	}
 };
