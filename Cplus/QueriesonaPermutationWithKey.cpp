@@ -1,28 +1,61 @@
 #include <vector>
+#include <unordered_map>
 using namespace std;
+
+//Fenwick tree
+class Fenwick
+{
+public:
+	Fenwick(int size) : tree(size + 1) {}
+
+	int sum(int index) const
+	{
+		int res = 0;
+		++index;
+		while (index > 0)
+		{
+			res += tree[index];
+			index -= index & -index;
+		}
+		return res;
+	}
+
+	void update(int index, int delta)
+	{
+		++index;
+		int size = tree.size();
+		while (index < size)
+		{
+			tree[index] += delta;
+			index += index & -index;
+		}
+	}
+
+private:
+	vector<int> tree;
+};
 
 class Solution
 {
 public:
-	vector<int> processQueries(vector<int>& queries, int m)
+	vector<int> processQueries(vector<int> &queries, int m)
 	{
-		vector<int> permutation(m), res;
+		int size = queries.size();
+		Fenwick bit(size + m); //binary index tree
+		vector<int> res;
+		unordered_map<int, int> indexmap; //{val,index}
 		for (int i = 0; i < m; i++)
-			permutation[i] = i + 1;
+		{
+			indexmap[i + 1] = i + size;
+			bit.update(i + size, 1);
+		}
 		for (auto n : queries)
 		{
-			for (int i = 0; i < m; i++)
-			{
-				if (n == permutation[i])
-				{
-					res.push_back(i);
-					int tmp = n;
-					while (--i >= 0)
-						permutation[i + 1] = permutation[i];
-					permutation[0] = tmp;
-					break;
-				}
-			}
+			int index = indexmap[n];
+			res.push_back(bit.sum(index) - 1);
+			bit.update(index, -1);
+			indexmap[n] = --size;
+			bit.update(size, 1);
 		}
 		return res;
 	}
