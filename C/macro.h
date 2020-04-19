@@ -7,9 +7,14 @@
 #define trimin(a, b, c) (min(min(a, b), c))	 //the minimum of a,b,c
 
 /*
+//frequently used items
+
 //cmp function don't consider overflow
 int cmp(const void* lhs,const void* rhs)
 {
 	return *(int*)lhs-*(int*)rhs;
 }
+
+//board dfs direction
+int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 */
