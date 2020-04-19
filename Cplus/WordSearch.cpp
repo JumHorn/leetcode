@@ -1,39 +1,39 @@
-#include<vector>
-#include<string>
+#include <vector>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool exist(vector<vector<char>>& board, string word) {
-		if(board.empty()||board[0].empty())
-			return false;
-		for(int i=0;i<(int)board.size();i++)
-			for(int j=0;j<(int)board[0].size();j++)
-			{
-				if(dfs(board,word,0,i,j))
-					return true;
-			}
-		return false;
-    }
-
-	bool dfs(vector<vector<char>>& board,const string& word,int index,int i,int j)
+	bool exist(vector<vector<char>> &board, string word)
 	{
-		if(board[i][j]!=word[index])
+		for (int i = 0; i < (int)board.size(); i++)
+		{
+			for (int j = 0; j < (int)board[0].size(); j++)
+				if (dfs(board, word, 0, i, j))
+					return true;
+		}
+		return false;
+	}
+
+	bool dfs(vector<vector<char>> &board, const string &word, int index, int i, int j)
+	{
+		if (board[i][j] != word[index])
 			return false;
 		++index;
-		if(index>=(int)word.length())
+		if (index >= (int)word.length())
 			return true;
-		char c=board[i][j];
-		board[i][j]='\0';
-		if(i+1<(int)board.size()&&dfs(board,word,index,i+1,j))
+		char c = board[i][j];
+		board[i][j] = '\0';
+		if (i + 1 < (int)board.size() && dfs(board, word, index, i + 1, j))
 			return true;
-		if(i-1>=0&&dfs(board,word,index,i-1,j))
+		if (i - 1 >= 0 && dfs(board, word, index, i - 1, j))
 			return true;
-		if(j+1<(int)board[0].size()&&dfs(board,word,index,i,j+1))
+		if (j + 1 < (int)board[0].size() && dfs(board, word, index, i, j + 1))
 			return true;
-		if(j-1>=0&&dfs(board,word,index,i,j-1))
+		if (j - 1 >= 0 && dfs(board, word, index, i, j - 1))
 			return true;
-		board[i][j]=c;
+		board[i][j] = c;
 		return false;
 	}
 };
