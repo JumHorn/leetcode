@@ -1,29 +1,28 @@
-#include<string>
-#include<algorithm>
-#include<vector>
+#include <string>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
 //kmp next array
 
-class Solution {
+class Solution
+{
 public:
-    string shortestPalindrome(string s) {
-        if(s.empty())
-            return "";
-		string rev=s;
-		reverse(rev.begin(),rev.end());
-		string t=s+'#'+rev;
-		vector<int> next(t.length());
-		int k=0;
-		for(int i=1;i<(int)next.size();i++)
+	string shortestPalindrome(string s)
+	{
+		string dump = s;
+		reverse(dump.begin(), dump.end());
+		string pattern = s + "#" + dump;
+		int n = pattern.length();
+		vector<int> next(n);
+		for (int i = 1, j = 0; i < n; i++)
 		{
-            k=next[i-1];
-            while(k>0&&t[k]!=t[i])
-                k=next[k-1];
-            if(t[k]==t[i])
-                ++k;
-            next[i]=k;
+			while (j > 0 && pattern[i] != pattern[j])
+				j = next[j - 1];
+			if (pattern[i] == pattern[j])
+				++j;
+			next[i] = j;
 		}
-		return rev.substr(0,rev.length()-next.back())+s;
-    }
+		return dump.substr(0, n / 2 - next[n - 1]) + s;
+	}
 };
