@@ -1,43 +1,43 @@
-#include<vector>
-#include<string>
-#include<iostream>
+#include <vector>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<string> addOperators(string num, int target) {
+	vector<string> addOperators(string num, int target)
+	{
 		vector<string> res;
-		for(int i=0;i<(int)num.size();i++)
+		string sub;
+		for (int i = 0; i < (int)num.length(); i++)
 		{
-			string str=num.substr(0,i+1);
-			long val=stol(num.substr(0,i+1));
-			addOperators(num,i+1,val,val,target,str,res);
-            if(num[0]=='0')
-                break;
+			sub.push_back(num[i]);
+			long n = stol(sub);
+			dfs(res, sub, num, i + 1, n, n, target);
+			if (num[0] == '0')
+				break;
 		}
 		return res;
-    }
+	}
 
-	//cv:current value pv:previous value
-	void addOperators(const string& num,int i,long cv,long pv,int target,string str,vector<string>& res)
+	void dfs(vector<string> &res, string exp, string &num, int index, long cur, long pre, long target)
 	{
-		if(i>=(int)num.size())
+		if (index >= (int)num.length())
 		{
-			if(target==cv)
-				res.push_back(str);
+			if (cur == target)
+				res.push_back(exp);
 			return;
 		}
-
-		for(int j=i+1;j<=(int)num.size();j++)
+		string sub;
+		for (int i = index; i < (int)num.length(); i++)
 		{
-			string tmp=num.substr(i,j-i);
-			long k=stol(tmp);
-			addOperators(num,j,cv+k,k,target,str+'+'+tmp,res);
-			addOperators(num,j,cv-k,-k,target,str+'-'+tmp,res);
-			addOperators(num,j,cv-pv+k*pv,k*pv,target,str+'*'+tmp,res);
-
-            if(num[i]=='0')
-                break;
+			sub.push_back(num[i]);
+			int n = stol(sub);
+			dfs(res, exp + "+" + sub, num, i + 1, cur + n, n, target);
+			dfs(res, exp + "-" + sub, num, i + 1, cur - n, -n, target);
+			dfs(res, exp + "*" + sub, num, i + 1, cur - pre + n * pre, n * pre, target);
+			if (num[index] == '0')
+				break;
 		}
 	}
 };
