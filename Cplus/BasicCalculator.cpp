@@ -1,78 +1,41 @@
-#include<string>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-	int calculate(string s) {
-		return calculate(s,0,s.length());
+	int calculate(string s)
+	{
+		int index = 0;
+		return doCalculate(s, index);
 	}
 
-	int calculate(const string& s,int i,int j)
+	int doCalculate(string &s, int &index)
 	{
-		if(i>=j)
-			return 0;
-		int res=0,tmp=i,flag=0,newflag=0,n=0;
-		while(i<j)
+		int res = 0, flag = 1;
+		while (index < (int)s.length())
 		{
-			if(s[i]=='(')
+			if (s[index] == ')')
+				break;
+			if (s[index] == '(')
+				res += flag * doCalculate(s, ++index);
+			else if (s[index] == '+')
+				flag = 1;
+			else if (s[index] == '-')
+				flag = -1;
+			else if (s[index] != ' ')
 			{
-				int parenthesis=1;
-				while(++i<j)
-				{
-					if(s[i]=='(')
-						parenthesis++;
-					else if(s[i]==')')
-						parenthesis--;
-					if(parenthesis==0)
-						break;
-				}
-				n=calculate(s,tmp+1,i);
-				while(++i<j&&s[i]==' ');
-				if(i<j)
-				{
-					if(s[i]=='+')
-						newflag=0;
-					else
-						newflag=1;
-				}
-				i++;
-				tmp=i;
-			}
-			else if(s[i]=='+')
-			{
-				newflag=0;
-				i++;
-				tmp=i;
-			}
-			else if(s[i]=='-')
-			{
-				newflag=1;
-				i++;
-				tmp=i;
-			}
-			else
-			{
-				while(i<j&&s[i]!='('&&s[i]!='+'&&s[i]!='-')
+				int i = index + 1;
+				while (s[i] <= '9' && s[i] >= '0')
 					i++;
-				if((i<j&&s[i]!='(')||i>=j)
-					n=stoi(s.substr(tmp,i-tmp));
-				else
-					tmp=i+1;
-				continue;
+				char tmp = s[i];
+				s[i] = '\0';
+				res += flag * atoi(&s[index]);
+				s[i] = tmp;
+				index = i - 1;
 			}
-			if(i<j)
-			{
-				if(flag==0)
-					res+=n;
-				else
-					res-=n;
-			}
-			flag=newflag;
+			++index;
 		}
-		if(flag==0)
-			res+=n;
-		else
-			res-=n;
 		return res;
 	}
 };
