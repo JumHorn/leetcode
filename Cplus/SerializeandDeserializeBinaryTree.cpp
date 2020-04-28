@@ -1,43 +1,90 @@
-#include<string>
+#include <string>
+#include <deque>
+#include <queue>
 using namespace std;
 
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-class Codec {
+/*
+leetcode json format tree serialize/deserialize
+*/
+
+class Codec
+{
 public:
-
-    // Encodes a tree to a single string.
-    string serialize(TreeNode* root) {
- 		if(root==NULL)
-	 		return "n";
-		return to_string(root->val)+"|"+serialize(root->left)+"|"+serialize(root->right);
-    }
-
-    // Decodes your encoded data to tree.
-    TreeNode* deserialize(string data) {
-		int tmp=0;
-        return deserialize(data,tmp);
-    }
-
-	TreeNode* deserialize(const string& data,int& index)
+	// Encodes a tree to a single string.
+	string serialize(TreeNode *root)
 	{
-		if(data[index]=='n')
-        {
-            index+=2;
+		deque<TreeNode *> q;
+		q.push_back(root);
+		string res;
+		bool flag = true;
+		while (!q.empty() && flag)
+		{
+			flag = false;
+			int size = q.size();
+			while (--size >= 0)
+			{
+				TreeNode *node = q.front();
+				q.pop_front();
+				if (node == NULL)
+				{
+					res += ",n";
+					continue;
+				}
+				res += "," + to_string(node->val);
+				q.push_back(node->left);
+				q.push_back(node->right);
+				if (node->left || node->right)
+					flag = true;
+			}
+		}
+		return res.substr(1);
+	}
+
+	// Decodes your encoded data to tree.
+	TreeNode *deserialize(string data)
+	{
+		if (data[0] == 'n')
 			return NULL;
-        }
-		int tmp=0;
-		while(data[++tmp+index]!='|');
-		TreeNode* root=new TreeNode(stoi(data.substr(index,tmp)));
-		index=index+tmp+1;
-		root->left=deserialize(data,index);
-		root->right=deserialize(data,index);
+		int n = data.length(), index = 0, tmp = 0;
+		while (tmp < n && data[tmp] != ',')
+			tmp++;
+		TreeNode *root = new TreeNode(stoi(data.substr(index, tmp - index)));
+		queue<TreeNode *> q;
+		q.push(root);
+		index = tmp + 1;
+		while (index < n)
+		{
+			TreeNode *node = q.front();
+			q.pop();
+			tmp = index;
+			while (tmp < n && data[tmp] != ',')
+				tmp++;
+			if (index < n && data[index] != 'n')
+			{
+				node->left = new TreeNode(stoi(data.substr(index, tmp - index)));
+				q.push(node->left);
+			}
+			index = tmp + 1;
+
+			tmp = index;
+			while (tmp < n && data[tmp] != ',')
+				tmp++;
+			if (index < n && data[index] != 'n')
+			{
+				node->right = new TreeNode(stoi(data.substr(index, tmp - index)));
+				q.push(node->right);
+			}
+			index = tmp + 1;
+		}
 		return root;
 	}
 };
