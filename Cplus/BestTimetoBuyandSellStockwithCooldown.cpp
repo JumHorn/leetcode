@@ -1,24 +1,33 @@
 #include <vector>
 using namespace std;
 
+/*
+the original dp function
+dp[i]=max{prices[i]-prices[j]-fee+dp[j-2]} (1<j<i)
+
+optimization
+dp[i]=max{prices[i]-fee+(dp[j-2]-prices[j])} (1<j<i)
+dp1[j]=max{dp[j-2]-prices[j]} record max dp[j-2]-prices[j]
+dp[i]=max(dp[i-1],dp1[i-1]+prices[i]-fee)
+*/
+
 class Solution
 {
 public:
 	int maxProfit(vector<int> &prices)
 	{
 		int n = prices.size();
-		if (prices.size() < 2)
+		if (n < 2)
 			return 0;
-		vector<int> hold(n), sold(n);
-		hold[0] = -prices[0];
-		sold[0] = 0;
-		hold[1] = max(sold[0] - prices[1], hold[0]);
-		sold[1] = max(0, prices[1] - prices[0]);
+		int sell = max(0, prices[1] - prices[0]), sell_pre0 = 0, sell_pre1 = 0;
+		int buy = max(-prices[0], -prices[1]);
 		for (int i = 2; i < n; i++)
 		{
-			sold[i] = max(hold[i - 1] + prices[i], sold[i - 1]);
-			hold[i] = max(sold[i - 2] - prices[i], hold[i - 1]);
+			sell_pre1 = sell_pre0;
+			sell_pre0 = sell;
+			sell = max(sell, buy + prices[i]);
+			buy = max(buy, sell_pre1 - prices[i]);
 		}
-		return sold.back();
+		return sell;
 	}
 };

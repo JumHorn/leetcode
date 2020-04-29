@@ -3,8 +3,13 @@
 using namespace std;
 
 /*
-buy[i]=sold[i-1]-price[i]
-sold[i]=buy[i-1]+price[i]-fee
+the original dp function
+dp[i]=max{prices[i]-prices[j]-fee+dp[j-1]} (0<j<i)
+
+optimization
+dp[i]=max{prices[i]-fee+(dp[j-1]-prices[j])} (0=<j<i)
+dp1[j]=max{dp[j-1]-prices[j]} record max dp[j-1]-prices[j]
+dp[i]=max(dp[i-1],dp1[i-1]+prices[i]-fee)
 */
 
 class Solution
@@ -12,12 +17,12 @@ class Solution
 public:
 	int maxProfit(vector<int> &prices, int fee)
 	{
-		int buy = -prices.front(), sold = 0;
+		int buy = -prices.front(), sell = 0;
 		for (int i = 1; i < (int)prices.size(); i++)
 		{
-			sold = max(sold, buy + prices[i] - fee);
-			buy = max(buy, sold - prices[i]);
+			sell = max(sell, buy + prices[i] - fee);
+			buy = max(buy, sell - prices[i]);
 		}
-		return sold;
+		return sell;
 	}
 };
