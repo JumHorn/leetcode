@@ -1,23 +1,25 @@
-#include<vector>
-#include<algorithm>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int maxCoins(vector<int>& nums) {
-		int len=nums.size();
-		nums.insert(nums.begin(),1);
+	int maxCoins(vector<int> &nums)
+	{
+		nums.insert(nums.begin(), 1);
 		nums.push_back(1);
-		vector<vector<int> > dp(nums.size(),vector<int>(nums.size()));
-		for(int n=1;n<=len;n++)
-			for(int i=1;i<=len-n+1;i++)
+		int n = nums.size();
+		vector<vector<int>> dp(n, vector<int>(n));
+		for (int len = 2; len < n; len++)
+		{
+			for (int i = 0; i < n - len; i++)
 			{
-				int j=i+n-1;
-				for(int k=i;k<=j;k++)
-				{
-					dp[i][j]=max(dp[i][j],nums[i-1]*nums[k]*nums[j+1]+dp[i][k-1]+dp[k+1][j]);
-				}
+				int j = i + len;
+				for (int k = i + 1; k < j; k++)
+					dp[i][j] = max(dp[i][j], nums[i] * nums[k] * nums[j] + dp[i][k] + dp[k][j]);
 			}
-		return dp[1][len];
-    }
+		}
+		return dp[0][n - 1];
+	}
 };
