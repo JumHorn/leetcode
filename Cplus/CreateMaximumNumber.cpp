@@ -1,75 +1,68 @@
-#include<vector>
-#include<numeric>
-#include<algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> maxNumber(vector<int>& nums1, vector<int>& nums2, int k) {
-		vector<int> res(k);
-        int m_i=0,m_j=0,m_k=0;
-        while(m_k<k)
-		    twoVectorMaxNumber(nums1,m_i,nums1.size(),nums2,m_j,nums2.size(),res,m_k,k);
-		return res;
-    }
-
-	void twoVectorMaxNumber(vector<int>& nums1,int& m_i,int M,vector<int>& nums2,int& m_j,int N,vector<int>& res,int& m_k,int K)
+	vector<int> maxNumber(vector<int> &nums1, vector<int> &nums2, int k)
 	{
-		if(m_k==K)
-			return;
-		if(m_i>=M)
-            return oneVectorMaxNumber(nums2,m_j,N,res,m_k,K);
-		if(m_j>=N)
-            return oneVectorMaxNumber(nums1,m_i,M,res,m_k,K);
-        
-        int tmp=(K-m_k-1)-(N-m_j);
-        if(tmp>0)
-            tmp=M-tmp;
-        else
-            tmp=M;
-		vector<int>::iterator iter1=max_element(nums1.begin()+m_i,nums1.begin()+tmp);
-        tmp=(K-m_k-1)-(M-m_i);
-        if(tmp>0)
-            tmp=N-tmp;
-        else
-            tmp=N;
-		vector<int>::iterator iter2=max_element(nums2.begin()+m_j,nums2.begin()+tmp);
-
-		if(*iter1>*iter2)
+		int n1 = nums1.size(), n2 = nums2.size();
+		vector<int> res(k);
+		for (int i = 0; i <= k && i <= n1; i++)
 		{
-			m_i=distance(nums1.begin(),iter1)+1;
-			res[m_k++]=*iter1;
+			if (k - i > n2)
+				continue;
+			vector<int> left = maxKNumber(nums1, i);
+			vector<int> right = maxKNumber(nums2, k - i);
+			vector<int> tmp = merge(left, right);
+			if (res < tmp)
+				res.swap(tmp);
 		}
-		else if(*iter1<*iter2)
-		{
-            m_j=distance(nums2.begin(),iter2)+1;
-			res[m_k++]=*iter2;
-        }
-        else
-        {
-            res[m_k++]=*iter1;
-            vector<int> v1(iter1+1,nums1.end());
-            vector<int> v2(nums2.begin()+m_j,nums2.end());
-            vector<int> res1=maxNumber(v1,v2,K-m_k);
-            vector<int> v3(nums1.begin()+m_i,nums1.end());
-            vector<int> v4(iter2+1,nums2.end());
-            vector<int> res2=maxNumber(v3,v4,K-m_k);
-            if(res1>=res2)
-                copy(res1.begin(),res1.end(),res.begin()+m_k);
-            else
-                copy(res2.begin(),res2.end(),res.begin()+m_k);
-            m_k=K;
-        }
-        
+		return res;
 	}
 
-	void oneVectorMaxNumber(vector<int>& v,int i,int M,vector<int>& res,int& m_k,int K)
+	bool less(vector<int> &left, int i, vector<int> &right, int j)
 	{
-		if(m_k>=K)
-			return;
-		vector<int>::iterator iter=max_element(v.begin()+i,v.begin()+M-(K-m_k)+1);
-		int index=distance(v.begin(),iter)+1;
-		res[m_k++]=*iter;
-        oneVectorMaxNumber(v,index,M,res,m_k,K);
+		int n1 = left.size(), n2 = right.size();
+		for (; i < n1 && j < n2; i++, j++)
+		{
+			if (left[i] != right[j])
+				return left[i] < right[j];
+		}
+		return n1 - i < n2 - j;
+	}
+
+	vector<int> merge(vector<int> &left, vector<int> &right)
+	{
+		vector<int> res;
+		int i = 0, j = 0, n1 = left.size(), n2 = right.size();
+		while (i < n1 && j < n2)
+		{
+			if (less(left, i, right, j))
+				res.push_back(right[j++]);
+			else
+				res.push_back(left[i++]);
+		}
+		while (i < n1)
+			res.push_back(left[i++]);
+		while (j < n2)
+			res.push_back(right[j++]);
+		return res;
+	}
+
+	vector<int> maxKNumber(vector<int> &num, int k)
+	{
+		if (k == 0)
+			return {};
+		vector<int> res;
+		int n = num.size();
+		for (int i = 0; i < n; i++)
+		{
+			while (!res.empty() && res.size() + n - i > k && res.back() < num[i])
+				res.pop_back();
+			if (res.size() < k)
+				res.push_back(num[i]);
+		}
+		return res;
 	}
 };
