@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 
 void maxKNumber(int *nums, int size, int k, int *res)
@@ -11,52 +11,33 @@ void maxKNumber(int *nums, int size, int k, int *res)
 	{
 		while (top != -1 && top + 1 + size - i > k && res[top] < nums[i])
 			--top;
-		res[++top] = nums[i];
+		if (top + 1 < k)
+			res[++top] = nums[i];
 	}
 }
 
-bool compare(int *lhs, int *rhs, int size)
+bool less(int *nums1, int size1, int *nums2, int size2)
 {
-	for (int i = 0; i < size; i++)
-		if (lhs[i] != rhs[i])
-			return lhs[i] < rhs[i];
-	return false;
+	for (int i = 0, j = 0; i < size1 && j < size2; i++, j++)
+		if (nums1[i] != nums2[j])
+			return nums1[i] < nums2[j];
+	return size1 < size2;
 }
 
-void merge(int *left, int leftsize, int *right, int rightsize, int *dup, int r, int *res, int k)
+void merge(int *left, int leftsize, int *right, int rightsize, int *dup)
 {
-	if (leftsize == 0)
+	int i = 0, j = 0, d = 0;
+	while (i < leftsize && j < rightsize)
 	{
-		memcpy(dup + r, right, sizeof(int) * rightsize);
-		if (compare(res, dup, k))
-			memcpy(res, dup, sizeof(int) * k);
-		return;
+		if (less(left + i, leftsize - i, right + j, rightsize - j))
+			dup[d++] = right[j++];
+		else
+			dup[d++] = left[i++];
 	}
-	if (rightsize == 0)
-	{
-		memcpy(dup + r, left, sizeof(int) * leftsize);
-		if (compare(res, dup, k))
-			memcpy(res, dup, sizeof(int) * k);
-		return;
-	}
-
-	if (left[0] > right[0])
-	{
-		dup[r] = left[0];
-		merge(left + 1, leftsize - 1, right, rightsize, dup, r + 1, res, k);
-	}
-	else if (left[0] < right[0])
-	{
-		dup[r] = right[0];
-		merge(left, leftsize, right + 1, rightsize - 1, dup, r + 1, res, k);
-	}
-	else
-	{
-		dup[r] = left[0];
-		merge(left + 1, leftsize - 1, right, rightsize, dup, r + 1, res, k);
-		dup[r] = right[0];
-		merge(left, leftsize, right + 1, rightsize - 1, dup, r + 1, res, k);
-	}
+	while (i < leftsize)
+		dup[d++] = left[i++];
+	while (j < rightsize)
+		dup[d++] = right[j++];
 }
 
 /**
@@ -74,7 +55,9 @@ int *maxNumber(int *nums1, int nums1Size, int *nums2, int nums2Size, int k, int 
 			continue;
 		maxKNumber(nums1, nums1Size, i, left);
 		maxKNumber(nums2, nums2Size, k - i, right);
-		merge(left, i, right, k - i, tmp, 0, res, k);
+		merge(left, i, right, k - i, tmp);
+		if (less(res, k, tmp, k))
+			memcpy(res, tmp, sizeof(int) * k);
 	}
 	return res;
 }
