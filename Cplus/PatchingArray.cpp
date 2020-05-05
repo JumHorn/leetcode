@@ -1,34 +1,27 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minPatches(vector<int>& nums, int n) {
-		long m=1;
-        int res=0;
-		for(int i=0;i<(int)nums.size();i++)
+	int minPatches(vector<int> &nums, int n)
+	{
+		long m = 0, res = 0, size = nums.size();
+		for (int i = 0; i < size && m < n;)
 		{
-			if(nums[i]>m)
+			if (nums[i] - m > 1)
 			{
-				res++;
-				m+=m;
-                i--;
+				++res;
+				m = 2 * m + 1;
 			}
 			else
-				m+=nums[i];
-			if(m-1>=n)
-				return res;
+				m += nums[i++];
 		}
-		if(m==1)
+		while (m < n)
 		{
-            res=1;
-            m=2;
-		}
-		while(m-1<n)
-		{
-			res++;
-			m+=m;
+			m = 2 * m + 1;
+			++res;
 		}
 		return res;
-    }
+	}
 };
