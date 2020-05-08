@@ -1,77 +1,80 @@
-#include<vector>
-#include<list>
+#include <vector>
+#include <map>
 using namespace std;
 
-//Definition for an interval.
-struct Interval {
-    int start;
-    int end;
-    Interval() : start(0), end(0) {}
-    Interval(int s, int e) : start(s), end(e) {}
-};
-
-class SummaryRanges {
-	list<Interval> l;
+class SummaryRanges
+{
 public:
-    /** Initialize your data structure here. */
-    SummaryRanges() {
+	/** Initialize your data structure here. */
+	SummaryRanges()
+	{
+	}
 
-    }
-
-    void addNum(int val) {
-        if(l.empty())
-        {
-            l.push_back(Interval(val,val));
-            return;
-        }
-		bool flag=true;
-        for(list<Interval>::iterator iter=l.begin();iter!=l.end();++iter)
+	void addNum(int val)
+	{
+		if (data.empty())
 		{
-			if(iter->start>val)
+			data[val] = val;
+			return;
+		}
+		auto iter = data.upper_bound(val);
+		if (iter == data.begin())
+		{
+			if (iter->first == val + 1)
 			{
-				flag=false;
-				if(iter==l.begin())
+				data[val] = iter->second;
+				data.erase(iter);
+			}
+			else
+				data[val] = val;
+		}
+		else if (iter == data.end())
+		{
+			--iter;
+			if (val <= iter->second + 1)
+				data[iter->first] = max(val, iter->second);
+			else
+				data[val] = val;
+		}
+		else
+		{
+			auto preiter = iter;
+			--preiter;
+			if (preiter->second < val)
+			{
+				if (iter->first == val + 1 && preiter->second + 1 == val)
 				{
-					if(iter->start-val==1)
-						iter->start=val;
-					else
-						l.insert(iter,Interval(val,val));
+					data[preiter->first] = iter->second;
+					data.erase(iter);
 				}
+				else if (iter->first == val + 1)
+				{
+					data[val] = iter->second;
+					data.erase(iter);
+				}
+				else if (preiter->second + 1 == val)
+					data[preiter->first] = val;
 				else
-				{
-					if(iter->start-val==1)
-					{
-						iter->start=val;
-						int tmp=iter->end;
-						--iter;
-						if(val-iter->end==1)
-						{
-							iter->end=tmp;
-							l.erase(++iter);
-						}
-					}
-					else
-					{
-						--iter;
-						if(val-iter->end==1)
-							iter->end=val;
-						else if(val>iter->end+1)
-							l.insert(++iter,Interval(val,val));
-					}
-				}
-                return;
+					data[val] = val;
 			}
 		}
-		if(flag)
-		{
-			if(val>l.back().end+1)
-				l.push_back(Interval(val,val));
-			else if(val-l.back().end==1)
-				l.back().end=val;
-		}
-    }
+	}
 
-    vector<Interval> getIntervals() {
-        return vector<Interval>(l.begin(),l.end());
-    }
+	vector<vector<int>> getIntervals()
+	{
+		vector<vector<int>> res;
+		for (auto &n : data)
+			res.push_back({n.first, n.second});
+		return res;
+	}
+
+private:
+	map<int, int> data;
 };
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges* obj = new SummaryRanges();
+ * obj->addNum(val);
+ * vector<vector<int>> param_2 = obj->getIntervals();
+ */
