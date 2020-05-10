@@ -1,23 +1,24 @@
-#include<vector>
-#include<algorithm>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int lengthOfLIS(vector<int>& nums) {
-		if(nums.empty())
+	int lengthOfLIS(vector<int> &nums)
+	{
+		if (nums.empty())
 			return 0;
-		vector<int> dp(nums.size(),1);
-		dp[0]=1;
-		int res=1;
-		for(int i=1;i<(int)nums.size();i++)
+		vector<int> LIS;
+		LIS.push_back(nums.front());
+		for (int i = 1; i < (int)nums.size(); i++)
 		{
-			for(int j=0;j<i;j++)
-				if(nums[i]>nums[j])
-					dp[i]=max(dp[i],dp[j]+1);
-			if(dp[i]>res)
-				res=dp[i];
-		}		
-		return res;
-    }
+			auto iter = lower_bound(LIS.begin(), LIS.end(), nums[i]);
+			if (iter == LIS.end())
+				LIS.push_back(nums[i]);
+			else
+				*iter = nums[i];
+		}
+		return LIS.size();
+	}
 };
