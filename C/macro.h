@@ -17,4 +17,10 @@ int cmp(const void* lhs,const void* rhs)
 
 //board dfs direction
 int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+//monoqueue deque
+int deque[k], front = 0, rear = 0;
+front = (front + k - 1) % k; //pop front
+rear = (rear + 1) % k; // pop rear
+front == rear; //is empty
 */
