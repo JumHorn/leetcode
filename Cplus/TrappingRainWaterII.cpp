@@ -1,96 +1,47 @@
-#include <unordered_set>
 #include <vector>
 #include <queue>
 using namespace std;
-
-/*
-step 1. find the cell with minimum height and the connected same height cell using priority queue
-step 2. find the minimum height around these cell(maximum water trap)
-step 3. add these water to result and fill these cell to the mimimum height in step 2
-step 4. go on to 1 until no cell left in the queue
-*/
 
 class Solution
 {
 public:
 	int trapRainWater(vector<vector<int>> &heightMap)
 	{
-		int res = 0, m = heightMap.size(), n = heightMap[0].size();
-		if (m < 3 || n < 3)
+		int m = heightMap.size(), n = heightMap[0].size();
+		if (m <= 2 || n <= 2)
 			return 0;
-		priority_queue<pair<int, int>> q; //height,position queue
+		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+		vector<vector<int>> seen(m, vector<int>(n));
 		for (int i = 0; i < m; i++)
-			for (int j = 0; j < n; j++)
-				q.push({-heightMap[i][j], i * n + j});
+		{
+			q.push({heightMap[i][0], i * n + 0});
+			q.push({heightMap[i][n - 1], i * n + n - 1});
+			seen[i][0] = seen[i][n - 1] = 1;
+		}
+		for (int j = 1; j < n - 1; j++)
+		{
+			q.push({heightMap[0][j], 0 * n + j});
+			q.push({heightMap[m - 1][j], (m - 1) * n + j});
+			seen[0][j] = seen[m - 1][j] = 1;
+		}
+		int res = 0, maxheight = 0;
+		int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 		while (!q.empty())
 		{
-			unordered_set<int> visited;
-			pair<int, int> top = q.top();
+			auto top = q.top();
 			q.pop();
-			int area = 0, height = -top.first, i = top.second / n, j = top.second % n;
-			if (heightMap[i][j] == -1 || heightMap[i][j] != height)
-				continue;
-			pair<int, int> tmp = dfs(heightMap, visited, i, j, height);
-			if (tmp.first >= 0)
+			maxheight = max(maxheight, top.first);
+			for (int i = 0; i < 4; i++)
 			{
-				for (auto number : visited)
-				{
-					heightMap[number / n][number % n] = tmp.second;
-					q.push({-tmp.second, number});
-				}
-				area += tmp.first;
-				res += (tmp.second - height) * area;
-			}
-			else
-			{
-				//fill all the hole
-				fillHoles(heightMap, i, j, height);
+				int x = top.second / n + path[i][0], y = top.second % n + path[i][1];
+				if (x < 0 || x >= m || y < 0 || y >= n || seen[x][y] == 1)
+					continue;
+				seen[x][y] = 1;
+				if (heightMap[x][y] < maxheight)
+					res += maxheight - heightMap[x][y];
+				q.push({heightMap[x][y], x * n + y});
 			}
 		}
 		return res;
-	}
-
-	void fillHoles(vector<vector<int>> &heightMap, int i, int j, int h)
-	{
-		int m = heightMap.size(), n = heightMap[0].size();
-		if (i < 0 || i >= m || j < 0 || j >= n)
-			return;
-		if (heightMap[i][j] != h)
-			return;
-		heightMap[i][j] = -1;
-		int direction[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-		for (int k = 0; k < 4; k++)
-		{
-			int x = i + direction[k][0], y = j + direction[k][1];
-			fillHoles(heightMap, x, y, h);
-		}
-	}
-
-	//dfs to find the number of the same height
-	//return the number of the same height and minimum higher cell height
-	pair<int, int> dfs(vector<vector<int>> &heightMap, unordered_set<int> &visited, int i, int j, int h)
-	{
-		int m = heightMap.size(), n = heightMap[0].size();
-		if (heightMap[i][j] == -1)
-			return {-1, INT_MAX};
-		if (visited.find(i * n + j) != visited.end())
-			return {0, INT_MAX};
-		if (heightMap[i][j] > h)
-			return {0, heightMap[i][j]};
-		if (i <= 0 || i >= m - 1 || j <= 0 || j >= n - 1)
-			return {-1, INT_MAX};
-		visited.insert(i * n + j);
-		int numer = 1, height = INT_MAX;
-		int direction[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-		for (int k = 0; k < 4; k++)
-		{
-			int x = i + direction[k][0], y = j + direction[k][1];
-			pair<int, int> tmp = dfs(heightMap, visited, x, y, h);
-			if (tmp.first < 0)
-				return {-1, INT_MAX};
-			numer += tmp.first;
-			height = min(height, tmp.second);
-		}
-		return {numer, height};
 	}
 };
