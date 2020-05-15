@@ -1,31 +1,33 @@
-#include<vector>
-#include<climits>
+#include <vector>
+#include <climits>
+#include <set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
-        int M=matrix.size()+1,N=matrix[0].size()+1;
-		vector<vector<int> > dp(M,vector<int>(N));
-		for(int i=1;i<M;i++)
-			for(int j=1;j<N;j++)
-				dp[i][j]=dp[i-1][j]+dp[i][j-1]-dp[i-1][j-1]+matrix[i-1][j-1];
-		int res=INT_MIN;
-		for(int i=1;i<M;i++)
-			for(int j=i;j<M;j++)
+	int maxSumSubmatrix(vector<vector<int>> &matrix, int k)
+	{
+		int m = matrix.size(), n = matrix[0].size(), res = INT_MIN;
+		for (int col = 0; col < n; col++)
+		{
+			vector<int> sums(m);
+			for (int j = col; j < n; j++)
 			{
-				for(int m=1;m<N;m++)
-                    for(int n=m;n<N;n++)
-                    {
-					    int tmp=dp[j][n]-dp[j][m-1]-dp[i-1][n]+dp[i-1][m-1];
-                        if(tmp<=k)
-                        {
-                            res=max(res,tmp);
-                            if(res==k)
-                                return res;
-                        }
-			        }
+				for (int i = 0; i < m; i++)
+					sums[i] += matrix[i][j];
+				set<int> s({0});
+				int currsum = 0;
+				for (int i = 0; i < m; i++)
+				{
+					currsum += sums[i];
+					auto iter = s.lower_bound(currsum - k);
+					if (iter != s.end())
+						res = max(res, currsum - *iter);
+					s.insert(currsum);
+				}
 			}
-        return res;
-    }
+		}
+		return res;
+	}
 };
