@@ -8,45 +8,43 @@ class Solution
 public:
 	string largestNumber(vector<int> &cost, int target)
 	{
-		string number, res = "0";
+		string res = "0";
 		arr.resize(10);
 		for (char c = '1'; c <= '9'; c++)
 			arr[c - '1'] = c;
 		unordered_map<int, string> dp;
-		dfs(cost, target, number, res, dp);
-		return res;
+		return dfs(cost, target, dp);
 	}
 
-	void dfs(vector<int> &cost, int target, string &number, string &res, unordered_map<int, string> &dp)
+	string dfs(vector<int> &cost, int target, unordered_map<int, string> &dp)
 	{
 		if (target < 0)
-			return;
-		if (dp.find(target) != dp.end())
-		{
-			string tmp = number + dp[target];
-			if (tmp.length() > res.length())
-				res = tmp;
-			if (tmp.length() == res.length() && tmp > res)
-				res = tmp;
-			return;
-		}
+			return "0";
 		if (target == 0)
+			return "";
+		if (dp.find(target) != dp.end())
+			return dp[target];
+		string res = "0";
+		for (int i = 8; i >= 0; i--)
 		{
-			if (number.length() > res.length())
-				res = number;
-			if (number.length() == res.length() && number > res)
-				res = number;
-			return;
+			string tmp = dfs(cost, target - cost[i], dp);
+			if (tmp == "0")
+				continue;
+			tmp = arr[i] + tmp;
+			if (res == "0" || tmp.length() > res.length())
+				res = tmp;
 		}
-		for (int i = 0; i < 9; i++)
-		{
-			number.push_back(arr[i]);
-			dfs(cost, target - cost[i], number, res, dp);
-			number.pop_back();
-		}
-		dp[target] = res;
+		return dp[target] = res;
 	}
 
 private:
 	vector<char> arr;
 };
+
+int main()
+{
+	vector<int> cost = {4, 3, 2, 5, 6, 7, 2, 5, 5};
+	Solution sol;
+	sol.largestNumber(cost, 9);
+	return 0;
+}
