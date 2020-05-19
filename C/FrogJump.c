@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-int dfs(int *stones, int stonesSize, int index, int k, int (*dp)[1101])
+int dfs(int *stones, int stonesSize, int index, int k, int (*dp)[stonesSize])
 {
 	if (index == stonesSize - 1)
 		return 1;
@@ -19,7 +19,7 @@ int dfs(int *stones, int stonesSize, int index, int k, int (*dp)[1101])
 
 bool canCross(int *stones, int stonesSize)
 {
-	int dp[stonesSize + 1][1101];
+	int dp[stonesSize + 1][stonesSize];
 	memset(dp, -1, sizeof(dp));
 	return dfs(stones, stonesSize, 0, 0, dp);
 }
