@@ -1,43 +1,46 @@
-#include<list>
-#include<unordered_map>
+#include <list>
+#include <unordered_map>
 using namespace std;
 
-class LRUCache {
-	int c;
-	list<pair<int,int> > l;
-	unordered_map<int,list<pair<int,int> >::iterator> dict;
+class LRUCache
+{
 public:
-    LRUCache(int capacity) {
-        c=capacity;
-    }
-    
-    int get(int key) {
-        if(dict.find(key)!=dict.end())
+	LRUCache(int capacity)
+	{
+		size = capacity;
+	}
+
+	int get(int key)
+	{
+		if (m.find(key) == m.end())
+			return -1;
+		int value = m[key]->second;
+		data.erase(m[key]);
+		data.push_front({key, value});
+		m[key] = data.begin();
+		return value;
+	}
+
+	void put(int key, int value)
+	{
+		if (m.find(key) != m.end())
+			data.erase(m[key]);
+		else
 		{
-			l.push_back({key,dict[key]->second});
-			l.erase(dict[key]);
-			dict[key]=--l.end();
-			return dict[key]->second;
+			if (data.size() >= size)
+			{
+				m.erase(data.back().first);
+				data.pop_back();
+			}
 		}
-		return -1;
-    }
-    
-    void put(int key, int value) {
-		if(dict.find(key)!=dict.end())
-		{
-			l.push_back({key,value});
-			l.erase(dict[key]);
-			dict[key]=--l.end();
-			return;
-		}
-        if((int)l.size()>=c)
-		{
-			dict.erase(l.front().first);
-			l.pop_front();
-		}
-		l.push_back({key,value});
-		dict[key]=--l.end();
-    }
+		data.push_front({key, value});
+		m[key] = data.begin();
+	}
+
+private:
+	list<pair<int, int>> data;
+	unordered_map<int, list<pair<int, int>>::iterator> m;
+	int size;
 };
 
 /**
