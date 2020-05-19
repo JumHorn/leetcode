@@ -1,66 +1,30 @@
-#include<vector>
-#include<unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool canCross(vector<int>& stones) {
-		vector<unordered_map<int,bool> > dp(1100);
-		return canCross(stones,0,0,dp);  
-    }
-
-	bool canCross(vector<int>& stones,int current,int skip,vector<unordered_map<int,bool> >& dp)
+	bool canCross(vector<int> &stones)
 	{
-		if(current==(int)stones.size()-1)
+		int n = stones.size();
+		vector<vector<bool>> dp(n, vector<bool>(n + 1, false));
+		dp[0][1] = true;
+		for (int i = 1; i < n; i++)
 		{
-			dp[current][skip]=true;
-			return true;
-		}
-		if(dp[current].find(skip)!=dp[current].end())
-			return dp[current][skip];
-		int k=skip+1,i,j;
-		for(i=current+1;i<(int)stones.size();i++)
-		{
-			if(k+stones[current]==stones[i])
+			for (int j = 0; j < i; j++)
 			{
-				if(canCross(stones,i,k,dp))
+				int k = stones[i] - stones[j];
+				if (k > n || !dp[j][k])
+					continue;
+				dp[i][k] = true;
+				if (k > 0)
+					dp[i][k - 1] = true;
+				if (k < n)
+					dp[i][k + 1] = true;
+				if (i == n - 1)
 					return true;
-				dp[i][k]=false;
-			}
-			if(stones[i]>k+stones[current])
-				break;
-		}
-		k--;
-		if(k>0)
-		{
-			for(j=i-1;j>current;j--)
-			{
-				if(k+stones[current]==stones[j])
-				{
-					if(canCross(stones,j,k,dp))
-						return true;
-					dp[j][k]=false;
-				}
-				if(stones[j]<k+stones[current])
-					break;
 			}
 		}
-		k--;
-		if(k>0)
-		{
-			for(;j>current;j--)
-			{
-				if(k+stones[current]==stones[j])
-				{
-					if(canCross(stones,j,k,dp))
-						return true;
-					dp[j][k]=false;
-				}
-				if(stones[j]<k+stones[current])
-					break;
-			}
-		}
-		dp[current][k]=false;
 		return false;
 	}
 };
