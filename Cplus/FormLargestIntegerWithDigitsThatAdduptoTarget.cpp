@@ -40,11 +40,3 @@ public:
 private:
 	vector<char> arr;
 };
-
-int main()
-{
-	vector<int> cost = {4, 3, 2, 5, 6, 7, 2, 5, 5};
-	Solution sol;
-	sol.largestNumber(cost, 9);
-	return 0;
-}
