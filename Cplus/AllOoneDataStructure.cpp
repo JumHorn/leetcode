@@ -1,8 +1,7 @@
+#include <list>
 #include <string>
 #include <unordered_map>
-#include <map>
 #include <unordered_set>
-#include <climits>
 using namespace std;
 
 class AllOne
@@ -16,48 +15,79 @@ public:
 	/** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
 	void inc(string key)
 	{
-		int tmp = m1[key];
-		m2[tmp].erase(key);
-		if (m2[tmp].empty())
-			m2.erase(tmp);
-		tmp = ++m1[key];
-		m2[tmp].insert(key);
+		auto iter = m.find(key);
+		if (iter == m.end())
+		{
+			if (data.empty() || data.front().first != 1)
+				data.push_front({1, {key}});
+			else
+				data.front().second.insert(key);
+			m[key] = data.begin();
+		}
+		else
+		{
+			int freq = iter->second->first;
+			auto after = iter->second;
+			++after;
+			iter->second->second.erase(key);
+			if (iter->second->second.empty())
+				data.erase(iter->second);
+			if (after == data.end() || after->first != freq + 1)
+				m[key] = data.insert(after, {freq + 1, {key}});
+			else
+			{
+				after->second.insert(key);
+				m[key] = after;
+			}
+		}
 	}
 
 	/** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
 	void dec(string key)
 	{
-		if (m1.find(key) == m1.end())
+		auto iter = m.find(key);
+		if (iter == m.end())
 			return;
-		int tmp = m1[key];
-		m2[tmp].erase(key);
-		if (m2[tmp].empty())
-			m2.erase(tmp);
-		if (m1[key] == 1)
-			m1.erase(key);
+		auto iter1 = iter->second;
+		int freq = iter->second->first;
+		if (freq != 1)
+		{
+			auto before = iter->second;
+			--before;
+			if (iter->second == data.begin() || before->first != freq - 1)
+				m[key] = data.insert(iter->second, {freq - 1, {key}});
+			else
+			{
+				before->second.insert(key);
+				m[key] = before;
+			}
+		}
 		else
-			m2[--m1[key]].insert(key);
+			m.erase(key);
+		iter1->second.erase(key);
+		if (iter1->second.empty())
+			data.erase(iter1);
 	}
 
 	/** Returns one of the keys with maximal value. */
 	string getMaxKey()
 	{
-		if (m1.empty())
+		if (data.empty())
 			return "";
-		return *(--m2.end())->second.begin();
+		return *data.back().second.begin();
 	}
 
 	/** Returns one of the keys with Minimal value. */
 	string getMinKey()
 	{
-		if (m1.empty())
+		if (data.empty())
 			return "";
-		return *(m2.begin()->second.begin());
+		return *data.front().second.begin();
 	}
 
 private:
-	unordered_map<string, int> m1;
-	map<int, unordered_set<string>> m2;
+	list<pair<int, unordered_set<string>>> data;
+	unordered_map<string, list<pair<int, unordered_set<string>>>::iterator> m;
 };
 
 /**
