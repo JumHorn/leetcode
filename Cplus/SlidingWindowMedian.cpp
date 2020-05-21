@@ -11,20 +11,18 @@ public:
 		vector<double> res;
 		for (int i = 0; i < k; i++)
 			s.insert(nums[i]);
-		multiset<int>::iterator right = s.begin(), left;
-		advance(right, k / 2);
-		left = right;
-		advance(left, k % 2 - 1);
-		res.push_back(((double)*left + *right) / 2.0);
-		for (int i = k; i < (int)nums.size(); i++)
+		multiset<int>::iterator mid = next(s.begin(), k / 2);
+		for (int i = k;; i++)
 		{
+			res.push_back(((double)*mid + *prev(mid, 1 - k % 2)) / 2.0);
+			if (i == (int)nums.size())
+				break;
 			s.insert(nums[i]);
+			if (nums[i] < *mid)
+				--mid;
+			if (nums[i - k] <= *mid)
+				++mid;
 			s.erase(s.find(nums[i - k]));
-			right = s.begin();
-			advance(right, k / 2);
-			left = right;
-			advance(left, k % 2 - 1);
-			res.push_back(((double)*left + *right) / 2.0);
 		}
 		return res;
 	}
