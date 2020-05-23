@@ -1,12 +1,14 @@
-#include<cmath>
+#include <cmath>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
-		int k=minutesToTest/minutesToDie;	        
-		if(k==0)
+	int poorPigs(int buckets, int minutesToDie, int minutesToTest)
+	{
+		int k = minutesToTest / minutesToDie;
+		if (k == 0)
 			return -1;
-		return ceil(log(buckets)/log(k+1));
-    }
+		return ceil(log(buckets) / log(k + 1));
+	}
 };
