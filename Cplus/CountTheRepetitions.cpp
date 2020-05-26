@@ -1,39 +1,37 @@
-#include<string>
-#include<vector>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int getMaxRepetitions(string s1, int n1, string s2, int n2) {
-		if(n1==0)
-			return 0;
-		int N=s1.length(),M=s2.length(),count=0,index=0;
-		vector<int> countarray(M+1),indexarray(M+1);
-		for(int i=0;i<n1;i++)
+	int getMaxRepetitions(string s1, int n1, string s2, int n2)
+	{
+		int N = s1.length(), M = s2.length(), res = 0, index = 0;
+		vector<int> count(M + 1), seen(M, -1);
+		for (int i = 0; i < n1; i++)
 		{
-			for(int j=0;j<N;j++)
+			for (int j = 0; j < N; j++)
 			{
-				if(s1[j]==s2[index])
+				if (s1[j] == s2[index])
 					++index;
-				if(index==M)
+				if (index == M)
 				{
-					index=0;
-					++count;
+					index = 0;
+					++res;
 				}
 			}
-			countarray[i]=count;
-			indexarray[i]=index;
-			for(int k=0;k<i;k++)
+			count[i] = res;
+			int k = seen[index];
+			if (k != -1)
 			{
-				if(index==indexarray[k])
-				{
-					int pre=countarray[k];
-					int pattern=(countarray[i]-countarray[k])*((n1-k-1)/(i-k));
-					int remain=countarray[k+(n1-k-1)%(i-k)]-countarray[k];
-					return (pre+pattern+remain)/n2;
-				}
+				int pre = count[k];
+				int pattern = (count[i] - count[k]) * ((n1 - k - 1) / (i - k));
+				int remain = count[k + (n1 - k - 1) % (i - k)] - count[k];
+				return (pre + pattern + remain) / n2;
 			}
+			seen[index] = i;
 		}
-		return countarray[n1-1]/n2;
-    }
+		return res / n2;
+	}
 };
