@@ -1,103 +1,33 @@
-#include<iostream>
-#include<cmath>
-#include<vector>
+#include <cmath>
 using namespace std;
 
-class Solution {
-public:
-    int largestPalindrome(int n) {
-        long temp = pow(10,n),maxnum=0,multi;  
-        for(int i=temp-1;i>=temp-1000;i--)
-        {
-            for(int j=temp-1;j>=temp-1000;j--)
-            {
-                multi = (long)i*j;
-                if(IsPalindrome(multi))
-                {
-                    if(maxnum<multi)
-                    {
-                        maxnum = multi;
-                    }
-                }
-            }
-        }  
-        return maxnum%1337;    
-    }
-    bool IsPalindrome(long num)
-    {
-        vector<char> str;
-        while(num!=0)
-        {
-            str.push_back(num%10);
-            num /= 10;
-        }
-        for(int i=0;i<str.size()/2;i++)
-        {
-            if(str[i]!=str[str.size()-i-1])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-    // false method to judge palindrome 900099
-    // bool IsPalindrome(long num)
-    // {
-    //     if(num<10)
-    //     {
-    //         return true;
-    //     }
-    //     int i,temp=10,head,tail;
-    //     for(i=1;i<17;i++)
-    //     {
-    //         head = num/temp;
-    //         if(head<10)
-    //         {
-    //             break;
-    //         }
-    //         temp *= 10;
-    //     }
-    //     tail = num%10;
-    //     if(head==tail)
-    //     {
-    //         num %= temp;
-    //         num /= 10;
-    //         return IsPalindrome(num);
-    //     }
-    //     return false;
-    // }
-};
+/*
+build palindrome first
+*/
 
-class Solution {
-public:
-    int largestPalindrome(int n) {
-        if (n == 1) return 9;
-        int upper = pow(10, n) - 1;
-        int lower = pow(10, n-1);
-        for (int i = upper; i >= lower; i--) {
-            long cand = buildPalindrome(i);
-            for (long j = upper; j*j >= cand; j--) {
-                if (cand % j == 0 && cand / j <= upper) {
-                    cout<<cand<<endl;
-                    return cand % 1337;
-                }
-            }
-        }
-        return -1;
-    }
-
-    long buildPalindrome(int n) {
-        string s = to_string(n);
-        reverse(s.begin(), s.end());
-        return stol(to_string(n) + s);
-    }
-}; 
-
-int main()
+class Solution
 {
-    Solution sol;
-    if(sol.IsPalindrome(900099))
-    {
-        cout<<"palindrome"<<endl;
-    }
-}
+public:
+	int largestPalindrome(int n)
+	{
+		for (long halfval = pow(10, n) - 1; halfval > 0; halfval--)
+		{
+			long left = halfval, right = 0, palindrome;
+			for (long i = halfval; i > 0; i /= 10)
+			{
+				right = right * 10 + i % 10;
+				left *= 10;
+			}
+			palindrome = left + right;
+			for (long i = pow(10, n) - 1; i * i >= palindrome; --i)
+			{
+				if (palindrome % i == 0)
+					return palindrome % MOD;
+			}
+		}
+		return 9;
+	}
+
+private:
+	static const int MOD = 1337;
+};
