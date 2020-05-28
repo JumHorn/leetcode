@@ -24,6 +24,34 @@ int deque[k], front = 0, rear = 0;
 front = (front + k - 1) % k; //pop front
 rear = (rear + 1) % k; // pop rear
 front == rear; //is empty
+
+//prefix tree
+typedef struct Trie
+{
+	int val;
+	struct Trie* node[26];
+} Trie;
+
+Trie *createNode(int val)
+{
+	Trie *node = (Trie *)malloc(sizeof(Trie));
+	memset(node, 0, sizeof(Trie));
+	node->val = val;
+	return node;
+}
+
+void insert(Trie *root, char *s)
+{
+	while (*s)
+	{
+		int index = *s - 'a';
+		if (!root->node[index])
+			root->node[index] = createNode(0);
+		root = root->node[index];
+		++s;
+	}
+	root->val = 1;
+}
 */
 
 //max heap function series
