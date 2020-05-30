@@ -1,6 +1,6 @@
 #include <string.h>
 
-int dfs(char *board, int size, int *map)
+int dfs(char *board, int *map)
 {
 	int res = 100;
 	if (!*board)
@@ -16,9 +16,9 @@ int dfs(char *board, int size, int *map)
 		if (map[board[i] - 'A'] >= insert)
 		{
 			memcpy(dummy, board, i);
-			memcpy(&dummy[i], &board[j], size - j + 1);
+			strcpy(&dummy[i], &board[j]);
 			map[board[i] - 'A'] -= insert;
-			int tmp = dfs(dummy, size - (j - i), map) + insert;
+			int tmp = dfs(dummy, map) + insert;
 			if (tmp < res)
 				res = tmp;
 			map[board[i] - 'A'] += insert;
@@ -37,6 +37,6 @@ int findMinStep(char *board, char *hand)
 		++hand;
 	}
 	int size = strlen(board);
-	int res = dfs(board, size, map);
+	int res = dfs(board, map);
 	return res == 100 ? -1 : res;
 }
