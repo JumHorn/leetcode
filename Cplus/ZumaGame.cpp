@@ -1,64 +1,36 @@
-#include<string>
-#include<unordered_map>
-#include<climits>
+#include <string>
+#include <unordered_map>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findMinStep(string board, string hand) {
-		unordered_map<char,int> handmap;
-		for(int i=0;i<(int)hand.length();i++)
-			handmap[hand[i]]++;
-		int res=minStep(board,handmap);
-		if(res>=100)
-			return -1;
-		return res;
-    }
-
-	int minStep(string& board,unordered_map<char,int>& hand)
+	int findMinStep(string board, string hand)
 	{
-		int res=100;
-		int i=0,j=0;
-		while(i<(int)board.length())
+		unordered_map<char, int> handmap;
+		for (auto c : hand)
+			++handmap[c];
+		int res = dfs(board, handmap);
+		return res >= 100 ? -1 : res;
+	}
+
+	int dfs(string board, unordered_map<char, int> &hand)
+	{
+		if (board.empty())
+			return 0;
+		int res = 100, n = board.length();
+		for (int i = 0, j = 0; i < n;)
 		{
-			string origin(board);
-			unordered_map<char,int> oldhand(hand);
-			while(i<(int)board.length()&&board[i]=='V')
-				i++;
-			j=i+1;
-			int same=1;
-			char v=board[i];
-            board[i]='V';
-			while(j<(int)board.length()&&(board[j]=='V'||board[j]==v))
+			while (j < n && board[i] == board[j])
+				++j;
+			int insert = max(3 - (j - i), 0);
+			if (hand[board[i]] >= insert)
 			{
-				if(board[j]==v)
-				{
-					same++;
-					board[j]='V';
-				}
-				j++;
+				hand[board[i]] -= insert;
+				res = min(res, dfs(board.substr(0, i) + board.substr(j), hand) + insert);
+				hand[board[i]] += insert;
 			}
-            if(i>=(int)board.length())
-                return 0;
-
-			if(same>=3)
-				res=min(res,minStep(board,hand));
-			else
-			{
-				if(hand.find(v)!=hand.end())
-				{
-					if(hand[v]>=3-same)
-					{
-						hand[v]-=3-same;
-                        int tmp=minStep(board,hand)+3-same;
-						res=min(res,tmp);
-					}
-				}
-			}
-
-			board=origin;
-			hand=oldhand;
-			i=j;
+			i = j++;
 		}
 		return res;
 	}
