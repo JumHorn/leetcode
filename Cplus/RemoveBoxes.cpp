@@ -18,6 +18,8 @@ public:
 			return 0;
 		if (dp[l][r][k] != 0)
 			return dp[l][r][k];
+		for (; l < r && boxes[l] == boxes[l + 1]; l++)
+			++k;
 		int res = (k + 1) * (k + 1) + memdp(boxes, l + 1, r, 0, dp);
 		for (int i = l + 1; i <= r; i++)
 		{
