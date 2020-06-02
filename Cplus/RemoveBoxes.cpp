@@ -1,35 +1,29 @@
-#include<vector>
-#include<algorithm>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-	int removeBoxes(vector<int>& boxes)
+	int removeBoxes(vector<int> &boxes)
 	{
-		int visited[100][100][100]={{{0}}};
-		return removeBoxes(boxes,visited,0,boxes.size()-1,0);
+		int n = boxes.size();
+		vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(n)));
+		return memdp(boxes, 0, n - 1, 0, dp);
 	}
 
-    int removeBoxes(vector<int>& boxes,int (*visited)[100][100],int l,int r,int k)
+	int memdp(vector<int> &boxes, int l, int r, int k, vector<vector<vector<int>>> &dp)
 	{
-		if(l>r)
+		if (l > r)
 			return 0;
-		if(visited[l][r][k]!=0)
-			return visited[l][r][k];
-        while(l<r&&boxes[l]==boxes[l+1])
-        {
-            l++;
-            k++;
-        }
-		int res=(k+1)*(k+1)+removeBoxes(boxes,visited,l+1,r,0);
-		for(int j=l+1;j<=r;j++)
+		if (dp[l][r][k] != 0)
+			return dp[l][r][k];
+		int res = (k + 1) * (k + 1) + memdp(boxes, l + 1, r, 0, dp);
+		for (int i = l + 1; i <= r; i++)
 		{
-			if(boxes[l]==boxes[j])
-			{
-				res=max(res,removeBoxes(boxes,visited,l+1,j-1,0)+removeBoxes(boxes,visited,j,r,k+1));
-			}
+			if (boxes[l] == boxes[i])
+				res = max(res, memdp(boxes, l + 1, i - 1, 0, dp) + memdp(boxes, i, r, k + 1, dp));
 		}
-		visited[l][r][k]=res;
-		return res;
-    }
+		return dp[l][r][k] = res;
+	}
 };
