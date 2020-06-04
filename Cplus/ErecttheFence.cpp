@@ -1,68 +1,64 @@
-#include<vector>
-#include<set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int>> outerTrees(vector<vector<int>>& points) {
-		if(points.size()<=3)
+	vector<vector<int>> outerTrees(vector<vector<int>> &points)
+	{
+		int n = points.size();
+		if (n <= 3)
 			return points;
-        int leftmost=INT_MAX,index,origin;
-		set<vector<int>> res;
-		for(int i=0;i<(int)points.size();i++)
+		int origin = 0;
+		for (int i = 0; i < n; i++)
 		{
-			if(points[i][0]<leftmost)
-			{
-				origin=i;
-				leftmost=points[i][0];
-			}
+			if (points[i][0] < points[origin][0])
+				origin = i;
 		}
-		index=origin;
+		int index = origin;
+		vector<int> seen(n);
 		do
 		{
-			int newindex=0,cross=0;
-			res.insert(points[index]);
-            newindex=(index+1)%points.size();
-			for(int i=0;i<(int)points.size();i++)
+			seen[index] = 1;
+			int nextindex = (index + 1) % n;
+			for (int i = 0; i < n; i++)
 			{
-                int tmp=crossProduct(points[index],points[i],points[newindex]);
-                if(tmp>0)
-                {
-                    newindex=i;
-                }
-            }
-            for(int i=0;i<(int)points.size();i++)
-            {
-				if(i!=index&&i!=newindex)
+				if (crossProduct(points[index], points[i], points[nextindex]) > 0)
+					nextindex = i;
+			}
+			for (int i = 0; i < n; i++)
+			{
+				if (i != index && i != nextindex)
 				{
-					int tmp=crossProduct(points[index],points[i],points[newindex]);
-					if(tmp==0)
-					{
-						if(between(points[index],points[i],points[newindex]))
-						{
-							res.insert(points[i]);
-						}
-					}
+					int cross = crossProduct(points[index], points[i], points[nextindex]);
+					if (cross == 0 && between(points[index], points[i], points[nextindex]))
+						seen[i] = 1;
 				}
 			}
-			index=newindex;
+			index = nextindex;
+		} while (index != origin);
+		vector<vector<int>> res;
+		for (int i = 0; i < n; i++)
+		{
+			if (seen[i] == 1)
+				res.push_back(points[i]);
 		}
-		while(index!=origin);
-		return vector<vector<int>>(res.begin(),res.end());
-    }
-	
-	bool between(vector<int>& A,vector<int>& B,vector<int>& C)
-	{
-		return ((B[0]>=A[0]&&B[0]<=C[0])||(B[0]<=A[0]&&B[0]>=C[0]))
-			 &&((B[1]>=A[1]&&B[1]<=C[1])||(B[1]<=A[1]&&B[1]>=C[1]));
+		return res;
 	}
 
-	int crossProduct(vector<int>& A,vector<int>& B,vector<int>& C)
+	bool between(vector<int> &pointA, vector<int> &pointB, vector<int> &pointC)
 	{
-		int x1=B[0]-A[0];
-		int y1=B[1]-A[1];
-		int x2=C[0]-A[0];
-		int y2=C[1]-A[1];
-		return x1*y2-x2*y1;
+		bool x = ((pointB[0] >= pointA[0] && pointB[0] <= pointC[0]) || (pointB[0] <= pointA[0] && pointB[0] >= pointC[0]));
+		bool y = ((pointB[1] >= pointA[1] && pointB[1] <= pointC[1]) || (pointB[1] <= pointA[1] && pointB[1] >= pointC[1]));
+		return x && y;
+	}
+
+	int crossProduct(vector<int> &pointA, vector<int> &pointB, vector<int> &pointC)
+	{
+		int x1 = pointB[0] - pointA[0];
+		int y1 = pointB[1] - pointA[1];
+		int x2 = pointC[0] - pointA[0];
+		int y2 = pointC[1] - pointA[1];
+		return x1 * y2 - x2 * y1;
 	}
 };
