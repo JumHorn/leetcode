@@ -105,3 +105,13 @@ void pop_heap(int *ptr, int size)
 		ptr[size - 1] = val;
 	}
 }
+
+// cross product
+int crossProduct(int *pointA, int *pointB, int *pointC)
+{
+	int x1 = pointB[0] - pointA[0];
+	int y1 = pointB[1] - pointA[1];
+	int x2 = pointC[0] - pointA[0];
+	int y2 = pointC[1] - pointA[1];
+	return x1 * y2 - x2 * y1;
+}
