@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <stack>
 #include <vector>
 using namespace std;
 
@@ -7,50 +9,55 @@ public:
 	vector<vector<int>> outerTrees(vector<vector<int>> &points)
 	{
 		int n = points.size();
-		if (n <= 3)
-			return points;
-		int origin = 0;
-		for (int i = 0; i < n; i++)
-		{
-			if (points[i][0] < points[origin][0])
-				origin = i;
-		}
-		int index = origin;
+		sort(points.begin(), points.end());
 		vector<int> seen(n);
-		do
+		stack<int> s;
+		// left to right
+		int top = 0;
+		for (int i = 1; i < n; i++)
 		{
-			seen[index] = 1;
-			int nextindex = (index + 1) % n;
-			for (int i = 0; i < n; i++)
+			while (!s.empty() && crossProduct(points[top], points[i], points[s.top()]) < 0)
 			{
-				if (crossProduct(points[index], points[i], points[nextindex]) > 0)
-					nextindex = i;
+				top = s.top();
+				s.pop();
 			}
-			for (int i = 0; i < n; i++)
-			{
-				if (i != index && i != nextindex)
-				{
-					int cross = crossProduct(points[index], points[i], points[nextindex]);
-					if (cross == 0 && between(points[index], points[i], points[nextindex]))
-						seen[i] = 1;
-				}
-			}
-			index = nextindex;
-		} while (index != origin);
-		vector<vector<int>> res;
-		for (int i = 0; i < n; i++)
-		{
-			if (seen[i] == 1)
-				res.push_back(points[i]);
+			s.push(top);
+			top = i;
 		}
+		s.push(top);
+
+		vector<vector<int>> res;
+		dumpPoints(res, s, points, seen);
+
+		// right to left
+		top = n - 1;
+		for (int i = n - 2; i >= 0; i--)
+		{
+			while (!s.empty() && crossProduct(points[top], points[i], points[s.top()]) < 0)
+			{
+				top = s.top();
+				s.pop();
+			}
+			s.push(top);
+			top = i;
+		}
+		s.push(top);
+
+		dumpPoints(res, s, points, seen);
 		return res;
 	}
 
-	bool between(vector<int> &pointA, vector<int> &pointB, vector<int> &pointC)
+	void dumpPoints(vector<vector<int>> &res, stack<int> &s, vector<vector<int>> &points, vector<int> &seen)
 	{
-		bool x = ((pointB[0] >= pointA[0] && pointB[0] <= pointC[0]) || (pointB[0] <= pointA[0] && pointB[0] >= pointC[0]));
-		bool y = ((pointB[1] >= pointA[1] && pointB[1] <= pointC[1]) || (pointB[1] <= pointA[1] && pointB[1] >= pointC[1]));
-		return x && y;
+		while (!s.empty())
+		{
+			if (seen[s.top()] == 0)
+			{
+				seen[s.top()] = 1;
+				res.push_back(points[s.top()]);
+			}
+			s.pop();
+		}
 	}
 
 	int crossProduct(vector<int> &pointA, vector<int> &pointB, vector<int> &pointC)
