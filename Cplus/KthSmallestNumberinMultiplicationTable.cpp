@@ -15,10 +15,10 @@ public:
 			for (int i = 1; i <= m; i++)
 				count += min(mid / i, n);
 
-			if (count >= k)
-				hi = mid;
-			else
+			if (count < k)
 				lo = mid + 1;
+			else
+				hi = mid;
 		}
 		return lo;
 	}
