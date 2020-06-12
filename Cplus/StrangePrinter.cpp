@@ -1,45 +1,33 @@
-#include<string>
-#include<climits>
-#include<vector>
-#include<algorithm>
+#include <string>
+#include <climits>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int strangePrinter(string s) {
-        if(s.empty())
-            return 0;
-		vector<vector<int>> dp(s.length(),vector<int>(s.length(),-1));
-		return strangePrinter(s,0,s.length()-1,dp);
-    }
-
-	int strangePrinter(const string& s,int i,int j,vector<vector<int>>& dp)
+	int strangePrinter(string s)
 	{
-		if(dp[i][j]!=-1)
+		if (s.empty())
+			return 0;
+		int n = s.length();
+		vector<vector<int>> dp(n, vector<int>(n, -1));
+		return memdp(s, 0, n - 1, dp);
+	}
+
+	int memdp(const string &s, int i, int j, vector<vector<int>> &dp)
+	{
+		if (i > j)
+			return 0;
+		if (dp[i][j] != -1)
 			return dp[i][j];
-		if(i==j)
+		int res = memdp(s, i + 1, j, dp) + 1;
+		for (int k = i + 1; k <= j; k++)
 		{
-			dp[i][j]=1;
-			return 1;
+			if (s[k] == s[i])
+				res = min(res, memdp(s, i, k - 1, dp) + memdp(s, k + 1, j, dp));
 		}
-		if(j-i==1)
-		{
-			if(s[i]==s[j])
-				dp[i][j]=1;
-			else
-				dp[i][j]=2;
-			return dp[i][j];
-		}
-		int res=INT_MAX;
-		for(int k=i;k<j;k++)
-		{
-			if(s[k]==s[j])
-				res=min(res,strangePrinter(s,i,k,dp)+strangePrinter(s,k+1,j,dp)-1);
-			else
-				res=min(res,strangePrinter(s,i,k,dp)+strangePrinter(s,k+1,j,dp));
-		}
-		dp[i][j]=res;
-		return res;
+		return dp[i][j] = res;
 	}
 };
-
