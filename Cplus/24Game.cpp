@@ -1,65 +1,52 @@
-#include<vector>
-#include<cmath>
+#include <vector>
+#include <cmath>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool judgePoint24(vector<int>& nums) {
-		vector<double> tmp(nums.begin(),nums.end());
-		return judgePoint24(tmp);
+	bool judgePoint24(vector<int> &nums)
+	{
+		vector<double> doublenums(nums.begin(), nums.end());
+		return backTracking(doublenums);
 	}
 
-    bool judgePoint24(vector<double>& nums) {
-		if(nums.size()==1&&abs(nums.back()-24)<0.000001)
+	bool backTracking(vector<double> &nums)
+	{
+		int n = nums.size();
+		if (n == 1 && abs(nums[0] - 24) < 0.000001)
 			return true;
-		for(int i=0;i<(int)nums.size();i++)
+		for (int i = 0; i < n; i++)
 		{
-			for(int j=i+1;j<(int)nums.size();j++)
+			for (int j = 0; j < n; j++)
 			{
+				if (i == j)
+					continue;
 				vector<double> v;
-				for(int k=0;k<(int)nums.size();k++)
+				for (int k = 0; k < n; k++) // add leftover nums to v
 				{
-					if(k!=i&&k!=j)
+					if (k != i && k != j)
 						v.push_back(nums[k]);
 				}
-				double tmp=nums[i]+nums[j];
-				v.push_back(tmp);
-				if(judgePoint24(v))
-					return true;
-				v.pop_back();
+				for (int k = 0; k < 4; k++)
+				{
+					double tmp;
+					if (k == 0)
+						tmp = nums[i] + nums[j];
+					else if (k == 1)
+						tmp = nums[i] - nums[j];
+					else if (k == 2)
+						tmp = nums[i] * nums[j];
+					else if (nums[j] != 0)
+						tmp = nums[i] / nums[j];
 
-				tmp=nums[i]*nums[j];
-				v.push_back(tmp);
-				if(judgePoint24(v))
-					return true;
-				v.pop_back();
-
-				tmp=nums[i]-nums[j];
-				v.push_back(tmp);
-				if(judgePoint24(v))
-					return true;
-				v.pop_back();
-
-				tmp=nums[i]-nums[j];
-				v.push_back(-tmp);
-				if(judgePoint24(v))
-					return true;
-				v.pop_back();
-
-				tmp=nums[i]/nums[j];
-				v.push_back(tmp);
-				if(judgePoint24(v))
-					return true;
-				v.pop_back();
-
-				tmp=nums[j]/nums[i];
-				v.push_back(tmp);
-				if(judgePoint24(v))
-					return true;
-				v.pop_back();
+					v.push_back(tmp);
+					if (backTracking(v))
+						return true;
+					v.pop_back();
+				}
 			}
-			
 		}
-		return false;        
-    }
+		return false;
+	}
 };
