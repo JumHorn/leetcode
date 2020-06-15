@@ -1,32 +1,30 @@
-#include<vector>
-#include<unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
-		vector<vector<int>> graph(edges.size()+1);
-		vector<int> res;
-		int twoparents=-1;
-		unordered_set<int> visited;
-		for(int i=0;i<(int)edges.size();i++)
+	vector<int> findRedundantDirectedConnection(vector<vector<int>> &edges)
+	{
+		int nodeindegree2 = -1, n = edges.size();
+		vector<vector<int>> graph(n + 1);
+		vector<int> res, seen(n + 1);
+		for (int i = 0; i < n; i++)
 		{
-			if(visited.count(edges[i][0])>0&&visited.count(edges[i][1])>0)
-				res=edges[i];
-			visited.insert(edges[i][0]);
-			visited.insert(edges[i][1]);
+			if (seen[edges[i][0]] == 1 && seen[edges[i][1]] == 1)
+				res = edges[i];
+			seen[edges[i][0]] = seen[edges[i][1]] = 1;
 			graph[edges[i][1]].push_back(edges[i][0]);
-			if(graph[edges[i][1]].size()>1)
-				twoparents=edges[i][1];
+			if (graph[edges[i][1]].size() > 1)
+				nodeindegree2 = edges[i][1];
 		}
-		if(twoparents==-1)
+		if (nodeindegree2 == -1)
 			return res;
-		int id=graph[twoparents][0];
-		while((int)graph[id].size()>0&&id!=twoparents)
-			id=graph[id][0];
-		if(id==twoparents)
-			return {graph[twoparents][0],twoparents};
-		else
-			return {graph[twoparents][1],twoparents};
-    }
+		int id = graph[nodeindegree2][0];
+		while (!graph[id].empty() && id != nodeindegree2)
+			id = graph[id][0];
+		if (id == nodeindegree2) //circle
+			return {graph[nodeindegree2][0], nodeindegree2};
+		return {graph[nodeindegree2][1], nodeindegree2};
+	}
 };
