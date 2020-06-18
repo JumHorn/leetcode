@@ -1,67 +1,70 @@
-#include<vector>
-#include<algorithm>
-#include<queue>
-#include<unordered_set>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <unordered_set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int cutOffTree(vector<vector<int>>& forest) {
-		int N=forest.size(),M=forest[0].size();
-        vector<int> height;
-		for(int i=0;i<N;i++)
-			for(int j=0;j<M;j++)
-				if(forest[i][j]>1)
-					height.push_back(forest[i][j]);
-		sort(height.begin(),height.end());
-		int cut=0,res=0,i=0,j=0;
-		if(forest[0][0]==height[cut])
-			cut++;
-		int dir[][2]={{-1,0},{1,0},{0,-1},{0,1}};
-start:
-		while(cut<(int)height.size())
+	int cutOffTree(vector<vector<int>> &forest)
+	{
+		int M = forest.size(), N = forest[0].size();
+		priority_queue<pair<int, int>> height;
+		for (int i = 0; i < M; i++)
 		{
-			queue<int> q;
-			unordered_set<int> visited;
-			int steps=0;
-			visited.insert(i*M+j);
-			q.push(i*M+j);
-			while(!q.empty())
+			for (int j = 0; j < N; j++)
 			{
-				int size=q.size();
-				steps++;
-				while(--size>=0)
-				{
-					i=q.front()/M;
-					j=q.front()%M;
-					q.pop();
-					for(int k=0;k<4;k++)
-					{
-						int x=i+dir[k][0],y=j+dir[k][1];
-						if(x>=0&&x<N&&y>=0&&y<M&&forest[x][y]!=0)
-						{
-							if(visited.find(x*M+y)==visited.end())
-							{
-								if(forest[x][y]==height[cut])
-								{
-									i=x;
-									j=y;
-									res+=steps;
-									cut++;
-									goto start;
-								}
-								else
-								{
-									visited.insert(x*M+y);
-									q.push(x*M+y);
-								}
-							}
-						}
-					}
-				}
+				if (forest[i][j] > 1)
+					height.push({-forest[i][j], i * N + j});
 			}
-			return -1;
+		}
+		int cut = 0, res = 0;
+		while (!height.empty())
+		{
+			int distance = minDistance(forest, cut, height.top().second);
+			if (distance == -1)
+				return -1;
+			res += distance;
+			cut = height.top().second;
+			height.pop();
 		}
 		return res;
-    }
+	}
+
+	int minDistance(vector<vector<int>> &forest, int from, int to)
+	{
+		if (from == to)
+			return 0;
+		int dist = 0, M = forest.size(), N = forest[0].size();
+		queue<int> q;
+		vector<int> seen(M * N);
+		q.push(from);
+		seen[from] = 1;
+		while (!q.empty())
+		{
+			int size = q.size();
+			++dist;
+			while (--size >= 0)
+			{
+				int at = q.front();
+				q.pop();
+				int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+				int x = at / N, y = at % N;
+				for (int k = 0; k < 4; k++)
+				{
+					int i = x + path[k][0], j = y + path[k][1];
+					if (i < 0 || i >= M || j < 0 || j >= N || forest[i][j] == 0)
+						continue;
+					if (seen[i * N + j] == 1)
+						continue;
+					seen[i * N + j] = 1;
+					if (i * N + j == to)
+						return dist;
+					q.push(i * N + j);
+				}
+			}
+		}
+		return -1;
+	}
 };
