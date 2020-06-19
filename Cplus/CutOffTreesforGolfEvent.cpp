@@ -20,9 +20,10 @@ public:
 			}
 		}
 		int cut = 0, res = 0;
+		vector<vector<int>> cache(M * N, vector<int>(M * N));
 		while (!height.empty())
 		{
-			int distance = minDistance(forest, cut, height.top().second);
+			int distance = minDistance(forest, cut, height.top().second, cache);
 			if (distance == -1)
 				return -1;
 			res += distance;
@@ -32,10 +33,12 @@ public:
 		return res;
 	}
 
-	int minDistance(vector<vector<int>> &forest, int from, int to)
+	int minDistance(vector<vector<int>> &forest, int from, int to, vector<vector<int>> &cache)
 	{
 		if (from == to)
 			return 0;
+		if (cache[from][to] != 0)
+			return cache[from][to];
 		int dist = 0, M = forest.size(), N = forest[0].size();
 		queue<int> q;
 		vector<int> seen(M * N);
@@ -59,6 +62,7 @@ public:
 					if (seen[i * N + j] == 1)
 						continue;
 					seen[i * N + j] = 1;
+					cache[from][i * N + j] = cache[i * N + j][from] = dist;
 					if (i * N + j == to)
 						return dist;
 					q.push(i * N + j);
