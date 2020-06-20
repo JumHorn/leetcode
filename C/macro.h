@@ -19,10 +19,14 @@ int cmp(const void* lhs,const void* rhs)
 //board dfs direction
 int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-//monoqueue deque
-int deque[k], front = 0, rear = 0;
-front = (front + k - 1) % k; //pop front
-rear = (rear + 1) % k; // pop rear
+//circle queue for monoqueue queue (front stores data and rear not)
+int deque[size], front = 0, rear = 0;
+front = (front + 1) % size; //push front
+front = (front - 1 + size) % size; //pop front
+rear = (rear -1 + size) % size; // push back
+rear = (rear + 1) % size; // pop back
+size = (front - rear) % size; //size
+(front + 1) % size == rear; // is full
 front == rear; //is empty
 
 //prefix tree
