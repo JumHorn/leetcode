@@ -1,76 +1,72 @@
-#include<list>
-#include<algorithm>
+#include <algorithm>
+#include <map>
 using namespace std;
 
-class RangeModule {
-	list<pair<int,int>> intervals;
+class RangeModule
+{
 public:
-    RangeModule() {
-        
-    }
-    
-    void addRange(int left, int right) {
-		for(list<pair<int,int>>::iterator iter=intervals.begin();iter!=intervals.end();)
+	RangeModule()
+	{
+	}
+
+	void addRange(int left, int right)
+	{
+		auto iter = m.lower_bound(left);
+		auto prev = iter;
+		if (prev != m.begin())
 		{
-			if(iter->first>right)
+			--prev;
+			if (prev->second >= left)
 			{
-				intervals.insert(iter,{left,right});
-				return;
+				left = prev->first;
+				right = max(right, prev->second);
+				m.erase(prev);
 			}
-			if(iter->second<left)
-			{
-				++iter;
-				continue;
-			}
-			left=min(left,iter->first);
-			right=max(right,iter->second);
-			intervals.erase(iter++);
 		}
-		intervals.push_back({left,right});
-    }
-    
-    bool queryRange(int left, int right) {
-		for(list<pair<int,int>>::iterator iter=intervals.begin();iter!=intervals.end();++iter)
+		while (iter != m.end() && right >= iter->first)
 		{
-			if(left>=iter->first&&right<=iter->second)
+			right = max(right, iter->second);
+			iter = m.erase(iter);
+		}
+		m[left] = right;
+	}
+
+	bool queryRange(int left, int right)
+	{
+		auto iter = m.lower_bound(left);
+		auto prev = iter;
+		if (prev != m.begin())
+		{
+			--prev;
+			if (prev->second >= right)
 				return true;
-			if(iter->first>=right)
-				return false;
 		}
-		return false;
-    }
-    
-    void removeRange(int left, int right) {
-		for(list<pair<int,int>>::iterator iter=intervals.begin();iter!=intervals.end();)
+		if (iter == m.end())
+			return false;
+		return iter->first <= left && iter->second >= right;
+	}
+
+	void removeRange(int left, int right)
+	{
+		auto iter = m.lower_bound(left);
+		auto prev = iter;
+		if (prev != m.begin())
 		{
-			if(iter->first>=right)
-				return;
-			if(iter->second<=left)
-			{
-				++iter;
-				continue;
-			}
-			if(iter->first>=left&&iter->second<=right)
-				intervals.erase(iter++);
-			else if(iter->first<left&&iter->second>right)
-			{
-				intervals.insert(iter,{iter->first,left});
-				iter->first=right;
-				++iter;
-				return;
-			}
-			else if(iter->first<left)
-			{
-				iter->second=left;
-				++iter;
-			}
-			else
-			{
-				iter->first=right;
-				++iter;
-			}
+			--prev;
+			if (prev->second > right)
+				m[right] = prev->second;
+			prev->second = min(left, prev->second);
 		}
-    }
+		while (iter != m.end() && right > iter->first)
+		{
+			if (right < iter->second)
+				m[right] = iter->second;
+			iter = m.erase(iter);
+		}
+	}
+
+private:
+	map<int, int> m; //{left,right}
 };
 
 /**
