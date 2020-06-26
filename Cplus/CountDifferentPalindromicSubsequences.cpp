@@ -27,6 +27,8 @@ public:
 	{
 		int len = S.length();
 		vector<vector<int>> dp(len, vector<int>(len));
+		vector<int> left = leftNext(S);
+		vector<int> right = rightNext(S);
 		for (int i = 0; i < len; i++)
 			dp[i][i] = 1;
 		for (int n = 1; n < len; n++)
@@ -37,11 +39,8 @@ public:
 					dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1];
 				else
 				{
-					int l = i + 1, r = j - 1;
-					while (l < j && S[i] != S[l])
-						++l;
-					while (i < r && S[j] != S[r])
-						--r;
+
+					int l = left[i], r = right[j];
 					int duplicates = (l < r) ? -dp[l + 1][r - 1] : (r == l) ? 1 : 2;
 					dp[i][j] = dp[i + 1][j - 1] * 2 + duplicates;
 				}
@@ -49,6 +48,30 @@ public:
 			}
 		}
 		return dp[0][len - 1];
+	}
+
+	vector<int> leftNext(const string &s)
+	{
+		int n = s.length();
+		vector<int> v(26, n), res(n);
+		for (int i = n - 1; i >= 0; i--)
+		{
+			res[i] = v[s[i] - 'a'];
+			v[s[i] - 'a'] = i;
+		}
+		return res;
+	}
+
+	vector<int> rightNext(const string &s)
+	{
+		int n = s.length();
+		vector<int> v(26, -1), res(n);
+		for (int i = 0; i < n; i++)
+		{
+			res[i] = v[s[i] - 'a'];
+			v[s[i] - 'a'] = i;
+		}
+		return res;
 	}
 
 private:
