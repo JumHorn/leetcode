@@ -8,48 +8,36 @@ class Solution
 public:
 	int minNumberOfSemesters(int n, vector<vector<int>> &dependencies, int k)
 	{
-		vector<vector<int>> graph(n + 1, vector<int>(n + 1));
-		set<int> root;
-		for (int i = 1; i <= n; i++)
-			root.insert(i);
-		vector<int> seen(n + 1);
-		for (auto &v : dependencies)
+		vector<int> prerequisite(n);
+		for (auto &dep : dependencies)
+			prerequisite[dep[1] - 1] |= 1 << (dep[0] - 1);
+		vector<int> dp(1 << n, n);
+		dp[0] = 0;
+		for (int i = 0; i < 1 << n; i++)
 		{
-			graph[v[0]][v[1]] = 1;
-			root.erase(v[1]);
-		}
-		queue<int> q;
-		for (auto n : root)
-		{
-			q.push(n);
-			seen[n] = 1;
-		}
-		int res = 0;
-		while (!q.empty())
-		{
-			int size = q.size();
-			int count = k;
-			++res;
-			vector<int> parent(n + 1);
-			while (--size >= 0 && --count >= 0)
+			int canTakeCourse = 0;
+			for (int j = 0; j < n; j++)
 			{
-				int node = q.front();
-				q.pop();
-				if (parent[node] == 1)
-					q.push(node);
-				for (int to = 1; to <= n; to++)
-				{
-					if (graph[node][to] == 1)
-					{
-						parent[to] = 1;
-						if (seen[to] == 0)
-						{
-							seen[to] = 1;
-							q.push(to);
-						}
-					}
-				}
+				if ((prerequisite[j] & i) == prerequisite[j])
+					canTakeCourse |= 1 << j;
 			}
+			canTakeCourse &= ~i;
+			for (int j = canTakeCourse; j > 0; j = (j - 1) & canTakeCourse)
+			{
+				if (bitCount(j) <= k)
+					dp[i | j] = min(dp[i | j], dp[i] + 1);
+			}
+		}
+		return dp.back();
+	}
+
+	int bitCount(int n)
+	{
+		int res = 0;
+		while (n != 0)
+		{
+			++res;
+			n &= n - 1;
 		}
 		return res;
 	}
