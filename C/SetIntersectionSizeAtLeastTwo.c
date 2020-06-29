@@ -1,14 +1,16 @@
 #include <stdlib.h>
 
 //cmp function don't consider overflow
-int cmp(const void* lhs, const void* rhs)
+int cmp(const void *lhs, const void *rhs)
 {
-	return (*(int**)lhs)[1] - (*(int**)rhs)[1];
+	if ((*(int **)lhs)[1] != (*(int **)rhs)[1])
+		return (*(int **)lhs)[1] - (*(int **)rhs)[1];
+	return (*(int **)rhs)[0] - (*(int **)lhs)[0];
 }
 
-int intersectionSizeTwo(int** intervals, int intervalsSize, int* intervalsColSize)
+int intersectionSizeTwo(int **intervals, int intervalsSize, int *intervalsColSize)
 {
-	qsort(intervals, intervalsSize, sizeof(int*), cmp);
+	qsort(intervals, intervalsSize, sizeof(int *), cmp);
 	int arr[2 * intervalsSize], size = 2;
 	arr[0] = intervals[0][1] - 1;
 	arr[1] = intervals[0][1];
