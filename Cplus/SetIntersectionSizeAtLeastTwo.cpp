@@ -1,44 +1,36 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int intersectionSizeTwo(vector<vector<int>>& intervals) {
-		sort(intervals.begin(),intervals.end(),*this);
-		int N=intervals.size(),index=N-1,a=intervals[index][0],b=a+1,res=2;
-		while(--index>=0)
+	int intersectionSizeTwo(vector<vector<int>> &intervals)
+	{
+		sort(intervals.begin(), intervals.end(), *this);
+		int a = intervals[0][1] - 1, b = a + 1, res = 2;
+		for (int i = 1; i < (int)intervals.size(); i++)
 		{
-			if(intervals[index][1]<a)
+			if (intervals[i][0] > a)
 			{
-				a=intervals[index][0];
-				b=a+1;
-				res+=2;
-			}
-			else if(intervals[index][1]==a)
-			{
-                b=a;
-				a=intervals[index][0];
-				res+=1;
-			}
-			else
-			{
-				if(intervals[index][1]<b)
+				if (intervals[i][0] > b)
 				{
-					b=a;
-					a=intervals[index][0];
-					res+=1;
+					++res;
+					a = intervals[i][1] - 1;
 				}
+				else
+					a = b;
+				b = intervals[i][1];
+				++res;
 			}
 		}
 		return res;
-    }
+	}
 
-	bool operator()(vector<int>& lhs,vector<int>& rhs)
+	bool operator()(vector<int> &lhs, vector<int> &rhs)
 	{
-		if(lhs[0]!=rhs[0])
-			return lhs[0]<rhs[0];
-		return lhs[1]>rhs[1];
+		if (lhs[1] != rhs[1])
+			return lhs[1] < rhs[1];
+		return lhs[0] > rhs[0];
 	}
 };
-
