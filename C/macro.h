@@ -4,8 +4,8 @@
 #define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
-#define trimax(a, b, c) (max(max(a, b), c)) //the maximum of a,b,c
-#define trimin(a, b, c) (min(min(a, b), c)) //the minimum of a,b,c
+#define trimax(a, b, c) (max(max(a, b), c))	 //the maximum of a,b,c
+#define trimin(a, b, c) (min(min(a, b), c))	 //the minimum of a,b,c
 
 /*
 //frequently used items
@@ -17,7 +17,7 @@ int cmp(const void* lhs,const void* rhs)
 }
 
 //board dfs direction
-int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+int path[5] = {-1, 0, 1, 0, -1};
 
 //circle queue for monoqueue queue (front stores data and rear not)
 int size, deque[size], front = 0, rear = 0;
