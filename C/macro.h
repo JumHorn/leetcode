@@ -20,12 +20,12 @@ int cmp(const void* lhs,const void* rhs)
 int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
 //circle queue for monoqueue queue (front stores data and rear not)
-int deque[size], front = 0, rear = 0;
+int size, deque[size], front = 0, rear = 0;
 front = (front + 1) % size; //push front
 front = (front - 1 + size) % size; //pop front
 rear = (rear -1 + size) % size; // push back
 rear = (rear + 1) % size; // pop back
-size = (front - rear) % size; //size
+size = (front - rear +size) % size; //size
 (front + 1) % size == rear; // is full
 front == rear; //is empty
 
