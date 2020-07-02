@@ -1,41 +1,48 @@
-#include<vector>
-#include<algorithm>
-#include<queue>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class Solution {
-	struct Node
-	{
-		int elevation;
-		int x,y;//coordinate
-		Node(int t,int i,int j):elevation(t),x(i),y(j){}
-		bool operator<(const Node& n) const { return elevation>n.elevation; }
-	};
+class Solution
+{
 public:
-    int swimInWater(vector<vector<int> >& grid) {
-		vector<vector<int> > visited(grid.size(),vector<int>(grid.size(),0));
-		int dir[4][2]={{-1,0},{1,0},{0,-1},{0,1}};
-		priority_queue<Node> pq;
-		pq.push(Node(grid[0][0],0,0));
-		visited[0][0]=1;
-		int res=0;
-		while(!pq.empty())
+	int swimInWater(vector<vector<int>> &grid)
+	{
+		int N = grid.size();
+		priority_queue<pair<int, int>> q;
+		q.push({-grid[0][0], 0});
+		int res = grid[0][0], elevation = grid[0][0], dst = grid[N - 1][N - 1];
+		grid[0][0] = -1;
+		while (!q.empty())
 		{
-			Node tmp=pq.top();
-			pq.pop();
-			res=max(res,tmp.elevation);
-			if(tmp.x==(int)grid.size()-1&&tmp.y==(int)grid.size()-1)
+			if (grid[N - 1][N - 1] == -1)
+				return res + max(0, dst - elevation);
+			auto top = q.top();
+			q.pop();
+			res += -top.first - elevation;
+			if (top.second == (N - 1) * (N + 1))
 				return res;
-			for(int i=0;i<4;i++)
-			{
-				int x=tmp.x+dir[i][0],y=tmp.y+dir[i][1];
-				if(x>=0&&x<(int)grid.size()&&y>=0&&y<(int)grid.size()&&visited[x][y]==0)
-				{
-					visited[x][y]=1;
-					pq.push(Node(grid[x][y],x,y));
-				}
-			}
+			elevation = -top.first;
+			dfs(grid, top.second / N, top.second % N, elevation, q);
 		}
 		return res;
-    }
+	}
+
+	void dfs(vector<vector<int>> &grid, int row, int column, int elevation, priority_queue<pair<int, int>> &q)
+	{
+		int N = grid.size();
+		//board dfs direction
+		int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+		for (int i = 0; i < 4; i++)
+		{
+			int x = row + path[i][0], y = column + path[i][1];
+			if (x < 0 || x >= N || y < 0 || y >= N || grid[x][y] == -1)
+				continue;
+			int tmp = grid[x][y];
+			grid[x][y] = -1;
+			if (elevation >= tmp)
+				dfs(grid, x, y, elevation, q);
+			else
+				q.push({-tmp, x * N + y});
+		}
+	}
 };
