@@ -1,33 +1,48 @@
-#include<vector>
-#include<numeric>
-#include<iostream>
+#include <vector>
+#include <numeric>
+#include <iostream>
 using namespace std;
 
-class Solution {
-	double target;
+class Solution
+{
 public:
-    bool splitArraySameAverage(vector<int>& A) {
-		target=accumulate(A.begin(),A.end(),0)*1.0/A.size();
-		return combinaton(A,0,0,0);        
-    }
-	
-	bool combinaton(vector<int>& A,int start,int sum,int num)
+	bool backTracking(vector<int> &A, int index, int count, int subsum, int sum)
 	{
-        if(A.size()>20)
-        {
-            if(num>A.size()/4)
-                return false;
-        }
-        if(num>A.size()/2)
-            return false;
-		if(num!=0&&sum*1.0/num==target)
+		int n = A.size();
+		if (index >= n)
+			return false;
+		if (count != 0 && subsum * n == sum * count)
 			return true;
-		for(int i=start;i<(int)A.size();i++)
-        {
-
-			if(combinaton(A,i+1,sum+A[i],num+1))
-				return true;
-        }
+		if (sum * count % n != 0)
+			return false;
+		if (subsum * n > sum * count)
+			return false;
+		if (backTracking(A, index + 1, count, subsum, sum))
+			return true;
+		if (backTracking(A, index + 1, count + 1, subsum + A[index], sum))
+			return true;
 		return false;
+	}
+
+	bool isPossible(vector<int> &A, int sum)
+	{
+		int n = A.size();
+		for (int i = 1; i <= n / 2; i++)
+		{
+			if (sum * i % n == 0)
+				return true;
+		}
+		return false;
+	}
+
+	bool splitArraySameAverage(vector<int> &A)
+	{
+		int n = A.size();
+		sort(A.begin(), A.end());
+		int sum = accumulate(A.begin(), A.end(), 0);
+		// early pruning
+		if (!isPossible(A, sum))
+			return false;
+		return backTracking(A, 0, 0, 0, sum);
 	}
 };
