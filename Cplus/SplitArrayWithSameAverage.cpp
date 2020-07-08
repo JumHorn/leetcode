@@ -1,48 +1,39 @@
-#include <vector>
 #include <numeric>
-#include <iostream>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	bool backTracking(vector<int> &A, int index, int count, int subsum, int sum)
+	bool splitArraySameAverage(vector<int> &A)
 	{
-		int n = A.size();
-		if (index >= n)
-			return false;
-		if (count != 0 && subsum * n == sum * count)
-			return true;
-		if (sum * count % n != 0)
-			return false;
-		if (subsum * n > sum * count)
-			return false;
-		if (backTracking(A, index + 1, count, subsum, sum))
-			return true;
-		if (backTracking(A, index + 1, count + 1, subsum + A[index], sum))
-			return true;
-		return false;
-	}
-
-	bool isPossible(vector<int> &A, int sum)
-	{
-		int n = A.size();
-		for (int i = 1; i <= n / 2; i++)
+		int N = A.size(), m = N / 2;
+		int sum = accumulate(A.begin(), A.end(), 0);
+		// early pruning
+		bool isPossible = false;
+		for (int i = 1; i <= m && !isPossible; i++)
 		{
-			if (sum * i % n == 0)
+			if (sum * i % N == 0)
+				isPossible = true;
+		}
+		if (!isPossible)
+			return false;
+		vector<unordered_set<int>> dp(m + 1);
+		dp[0].insert(0);
+		for (auto n : A)
+		{
+			for (int i = m; i > 0; i--)
+			{
+				for (auto iter : dp[i - 1])
+					dp[i].insert(iter + n);
+			}
+		}
+		for (int i = 1; i <= m; i++)
+		{
+			if (sum * i % N == 0 && dp[i].find(sum * i / N) != dp[i].end())
 				return true;
 		}
 		return false;
-	}
-
-	bool splitArraySameAverage(vector<int> &A)
-	{
-		int n = A.size();
-		sort(A.begin(), A.end());
-		int sum = accumulate(A.begin(), A.end(), 0);
-		// early pruning
-		if (!isPossible(A, sum))
-			return false;
-		return backTracking(A, 0, 0, 0, sum);
 	}
 };
