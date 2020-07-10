@@ -1,56 +1,49 @@
-#include<vector>
-#include<set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int numBusesToDestination(vector<vector<int> >& routes, int S, int T) {
-		if(S==T)
+	int numBusesToDestination(vector<vector<int>> &routes, int S, int T)
+	{
+		if (S == T)
 			return 0;
-		set<int> terminal,visitedStation,visitedBus;
-		for(int i=0;i<(int)routes.size();i++)
-			for(int j=0;j<(int)routes[i].size();j++)
-			{
-				if(routes[i][j]==S)
-					visitedBus.insert(i);
-				else if(routes[i][j]==T)
-					terminal.insert(i);
-			}
-		for(set<int>::iterator iter=visitedBus.begin();iter!=visitedBus.end();++iter)
+		unordered_map<int, vector<int>> station; //{BusStop,{all bus route}}
+		int N = routes.size();
+		for (int i = 0; i < N; i++)
 		{
-			if(terminal.find(*iter)!=terminal.end())
-				return 1;
-			for(int i=0;i<(int)routes[*iter].size();i++)
-				visitedStation.insert(routes[*iter][i]);
+			for (int j = 0; j < (int)routes[i].size(); j++)
+				station[routes[i][j]].push_back(i);
 		}
-		bool flag=true;
-		int res=1;
-		set<int> tmp;
-		while(flag)
+		queue<int> q;
+		unordered_set<int> seen;
+		q.push(S);
+		int res = 0;
+		while (!q.empty())
 		{
-            tmp.clear();
-			res++;
-			flag=false;
-			for(int i=0;i<(int)routes.size();i++)
+			++res;
+			int size = q.size();
+			while (--size >= 0)
 			{
-				if(visitedBus.find(i)!=visitedBus.end())
-					continue;
-				for(int j=0;j<(int)routes[i].size();j++)
+				int stop = q.front();
+				q.pop();
+				for (auto r : station[stop]) //route in the bus stop
 				{
-					if(visitedStation.find(routes[i][j])!=visitedStation.end())
+					if (seen.find(r) != seen.end())
+						continue;
+					seen.insert(r);
+					for (auto n : routes[r]) //all the stops
 					{
-						visitedBus.insert(i);
-						if(terminal.find(i)!=terminal.end())
+						q.push(n);
+						if (n == T)
 							return res;
-						for(int k=0;k<(int)routes[i].size();k++)
-						 	tmp.insert(routes[i][k]);
-						flag=true;
-						break;
 					}
 				}
 			}
-			visitedStation.insert(tmp.begin(),tmp.end());
 		}
 		return -1;
-    }
+	}
 };
