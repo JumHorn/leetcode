@@ -1,44 +1,41 @@
-#include<string>
-#include<vector>
-#include<algorithm>
+#include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string longestPalindrome(string s) {
-        int len=s.length();
-	    vector<vector<int>> dp(len,vector<int>(len,-1));
-		int m=0,n=0;
-		for(int i=0;i<len;i++)
-			for(int j=i;j<len;j++)
+	string longestPalindrome(string s)
+	{
+		int len = s.length();
+		vector<vector<int>> dp(len, vector<int>(len, -1));
+		int m = 0, n = 0;
+		for (int i = 0; i < len; i++)
+		{
+			for (int j = i; j < len; j++)
 			{
-				if(dp[i][j]==-1)
-					palindrome(dp,i,j,s);
-				if(dp[i][j]!=0&&j-i>n-m)
+				if (dp[i][j] == -1)
+					memdp(s, i, j, dp);
+				if (dp[i][j] != 0 && j - i > n - m)
 				{
-					m=i;
-					n=j;
+					m = i;
+					n = j;
 				}
 			}
-		return s.substr(m,n-m+1);
-    }
+		}
+		return s.substr(m, n - m + 1);
+	}
 
-	bool palindrome(vector<vector<int>>& dp,int i,int j,const string& s)
+	int memdp(const string &s, int first, int last, vector<vector<int>> &dp)
 	{
-		if(i>=j)
-		{
-			dp[i][j]=1;
-			return true;
-		}
-		if(dp[i][j]!=-1)
-			return dp[i][j]==1;
-		if(s[i]!=s[j])
-		{
-			dp[i][j]=0;
-			return false;
-		}
-		bool res=palindrome(dp,i+1,j-1,s);
-		dp[i][j]=res?1:0;
-		return res;
+		if (first >= last)
+			return dp[first][last] = 1;
+		if (dp[first][last] != -1)
+			return dp[first][last];
+		if (s[first] != s[last])
+			return dp[first][last] = 0;
+		int res = memdp(s, first + 1, last - 1, dp);
+		return dp[first][last] = res;
 	}
 };
