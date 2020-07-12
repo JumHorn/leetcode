@@ -1,26 +1,21 @@
-#include<string>
-#include<unordered_set>
+#include <algorithm>
+#include <string>
+#include <unordered_map>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int lengthOfLongestSubstring(string s) {
-        unordered_set<char> m;
-		int res=0;
-		for(int i=0,j=0;i<(int)s.length();i++)
+	int lengthOfLongestSubstring(string s)
+	{
+		unordered_map<char, int> m;
+		int res = 0;
+		for (int i = 0, j = 0; j < (int)s.length(); j++)
 		{
-			if(m.find(s[i])==m.end())
-			{
-				m.insert(s[i]);
-				res=max(res,(int)m.size());
-			}
-			else
-			{
-				while(s[j]!=s[i])
-					m.erase(s[j++]);
-                j++;
-			}
+			i = max(i, m[s[j]]);
+			m[s[j]] = j + 1;
+			res = max(res, j - i + 1);
 		}
 		return res;
-    }
+	}
 };
