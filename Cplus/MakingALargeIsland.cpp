@@ -1,62 +1,68 @@
-#include<vector>
-#include<set>
-#include<unordered_map>
+#include <vector>
+#include <unordered_set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int largestIsland(vector<vector<int> >& grid) {
-		if(grid.empty())
-			return 0;
-		//calculate connected Island
-		vector<vector<int> > IslandIndex;
-		unordered_map<int,int> color;
-		int c=3;
-        for(int i=0;i<(int)grid.size();i++)
-			for(int j=0;j<(int)grid[0].size();j++)
-				if(grid[i][j]==1)
-				{
-					int all=connectedIsland(grid,IslandIndex,i,j);
-					for(int i=0;i<(int)IslandIndex.size();i++)
-						grid[IslandIndex[i][0]][IslandIndex[i][1]]=c;
-					color[c]=all;
-					c++;
-					IslandIndex.clear();
-				}
-
-		int res=0;
-		for(int i=0;i<(int)grid.size();i++)
-			for(int j=0;j<(int)grid[0].size();j++)
-				if(grid[i][j]==0)
-					res=max(res,bigIsland(grid,color,i,j));
-		if(res==0)
-			res=grid.size()*grid[0].size();
-		return res;
-    }
-
-	int connectedIsland(vector<vector<int> >& grid,vector<vector<int> >& IslandIndex,int i,int j)
+	int largestIsland(vector<vector<int>> &grid)
 	{
-		if(i<0||i>=(int)grid.size()||j<0||j>=(int)grid[0].size()||grid[i][j]==0)
-			return 0;
-		IslandIndex.push_back(vector<int>({i,j}));
-		grid[i][j]=0;
-		return 1+connectedIsland(grid,IslandIndex,i,j-1)+connectedIsland(grid,IslandIndex,i,j+1)+connectedIsland(grid,IslandIndex,i+1,j)+connectedIsland(grid,IslandIndex,i-1,j);
+		int M = grid.size(), N = grid[0].size();
+		int res = 0, color = 2;
+		vector<int> colorArr(2); //2 reserved for 0 and 1
+		//color the grid
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (grid[i][j] == 1)
+				{
+					colorArr.push_back(colorNode(grid, i, j, color));
+					res = max(res, colorArr.back());
+					++color;
+				}
+			}
+		}
+
+		for (int i = 0; i < M; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (grid[i][j] != 0)
+					continue;
+				unordered_set<int> colorset;
+				int n = 0, area = 0;
+				//board dfs direction
+				int path[5] = {-1, 0, 1, 0, -1};
+				for (int k = 0; k < 4; k++)
+				{
+					int dx = i + path[k], dy = j + path[k + 1];
+					if (dx < 0 || dx >= M || dy < 0 || dy >= N || grid[dx][dy] <= 1)
+						continue;
+					int c = grid[dx][dy];
+					if (colorset.find(c) == colorset.end()) //this color not count yet
+					{
+						area += colorArr[c];
+						colorset.insert(c);
+					}
+				}
+				res = max(res, area + 1); //1 for self
+			}
+		}
+		return res;
 	}
 
-	int bigIsland(vector<vector<int> >& grid,unordered_map<int,int>& color,int i,int j)
+	int colorNode(vector<vector<int>> &grid, int row, int col, int color)
 	{
-		int res=1;
-		set<int> colorset;
-		if(i-1>=0)
-			colorset.insert(grid[i-1][j]);
-		if(j-1>=0)
-			colorset.insert(grid[i][j-1]);
-		if(i+1<(int)grid.size())
-			colorset.insert(grid[i+1][j]);
-		if(j+1<(int)grid[0].size())
-			colorset.insert(grid[i][j+1]);
-		for(set<int>::iterator iter=colorset.begin();iter!=colorset.end();++iter)
-			res+=color[*iter];
+		int M = grid.size(), N = grid[0].size();
+		if (row < 0 || row >= M || col < 0 || col >= N || grid[row][col] != 1)
+			return 0;
+		int res = 1;
+		grid[row][col] = color;
+		res += colorNode(grid, row - 1, col, color);
+		res += colorNode(grid, row + 1, col, color);
+		res += colorNode(grid, row, col - 1, color);
+		res += colorNode(grid, row, col + 1, color);
 		return res;
 	}
 };
