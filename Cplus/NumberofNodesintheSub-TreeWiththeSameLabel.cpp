@@ -5,27 +5,30 @@ using namespace std;
 class Solution
 {
 public:
-	vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels)
+	vector<int> countSubTrees(int n, vector<vector<int>> &edges, string labels)
 	{
 		vector<int> res(n);
 		vector<unordered_set<int>> graph(n);
-		for (auto& edge : edges)
+		for (auto &edge : edges)
+		{
 			graph[edge[0]].insert(edge[1]);
-
-		for (int i = 0; i < n; i++)
-			res[i] = dfs(graph, i, labels[i], labels) + 1;
+			graph[edge[1]].insert(edge[0]);
+		}
+		dfs(graph, 0, labels[0], labels, res);
 		return res;
 	}
 
-	int dfs(vector<unordered_set<int>>& graph, int at, char c, string& labels)
+	vector<int> dfs(vector<unordered_set<int>> &graph, int at, char c, string &labels, vector<int> &nodeCount)
 	{
-		int res = 0;
+		vector<int> res(26);
 		for (auto n : graph[at])
 		{
-			if (labels[n] == c)
-				++res;
-			res += dfs(graph, n, c, labels);
+			graph[n].erase(at);
+			vector<int> tmp = dfs(graph, n, c, labels, nodeCount);
+			for (int i = 0; i < 26; i++)
+				res[i] += tmp[i];
 		}
+		nodeCount[at] = ++res[labels[at] - 'a'];
 		return res;
 	}
 };
