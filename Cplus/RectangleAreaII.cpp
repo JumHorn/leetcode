@@ -1,50 +1,48 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <vector>
 using namespace std;
 
-class Solution {
-	static const int mode=1000000000+7;
+class Solution
+{
 public:
-    int rectangleArea(vector<vector<int> >& rectangles) {
-		sort(rectangles.begin(),rectangles.end(),*this);
-		unsigned long long h=0,y=0,x=0,ylen=0,xlen=0;
-		unsigned long long res=0;
-		for(int i=0;i<(int)rectangles.size();i++)
-			h=max((int)h,rectangles[i][3]);
-		while(y<h)
+	int rectangleArea(vector<vector<int>> &rectangles)
+	{
+		map<int, vector<vector<int>>> m; //{x,{{ylower,yupper,in/out}}}
+		for (auto &rect : rectangles)
 		{
-			x=0;
-			xlen=0;
-			ylen=INT_MAX;
-			bool flag=false;
-			for(int i=0;i<(int)rectangles.size();i++)
+			m[rect[0]].push_back({rect[1], rect[3], 1});
+			m[rect[2]].push_back({rect[1], rect[3], -1});
+		}
+		multiset<int> lower, upper;
+		unsigned long long pre = 0, res = 0;
+		for (auto &n : m)
+		{
+			int y = 0;
+			if (!lower.empty())
+				y = *upper.rbegin() - *lower.begin();
+			res += y * (n.first - pre);
+			pre = n.first;
+
+			//add or delete
+			for (auto &yaxis : n.second)
 			{
-				if(rectangles[i][1]>(int)y)
-					ylen=min((int)ylen,rectangles[i][1]);
-				if((int)y>=rectangles[i][1]&&(int)y<rectangles[i][3]&&rectangles[i][2]>(int)x)
+				if (yaxis[2] == 1)
 				{
-					flag=true;
-					x=max((int)x,rectangles[i][0]);
-					ylen=min((int)ylen,rectangles[i][3]);
-					xlen+=rectangles[i][2]-x;
-					x=rectangles[i][2];
+					lower.insert(yaxis[0]);
+					upper.insert(yaxis[1]);
+				}
+				else
+				{
+					lower.erase(lower.find(yaxis[0]));
+					upper.erase(upper.find(yaxis[1]));
 				}
 			}
-			if(flag)
-			{
-				res+=xlen*(ylen-y);
-				y=ylen;
-			}
-			else
-				y=ylen;
 		}
-		return res%mode;
-    }
-
-	bool operator()(vector<int>& left,vector<int>& right)
-	{
-		if(left[0]<right[0])
-			return true;
-		return false;
+		return res % MOD;
 	}
+
+private:
+	static const int MOD = 1e9 + 7;
 };
