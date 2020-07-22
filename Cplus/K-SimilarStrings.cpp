@@ -1,29 +1,46 @@
-#include<string>
-#include<algorithm>
-#include<climits>
+#include <algorithm>
+#include <queue>
+#include <string>
+#include <unordered_set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int kSimilarity(string A, string B) {
-		return kSimilarity(A,B,0);
-	}
-    int kSimilarity(string& A, string& B,int start) {
-		int res=INT_MAX;
-		while(start<(int)A.length()&&A[start]==B[start])
-			start++;
-		for(int j=start+1;j<(int)A.size();j++)
+	int kSimilarity(string A, string B)
+	{
+		queue<pair<string, int>> q; //{current swapped string A,already matched index}
+		unordered_set<string> seen;
+		q.push({A, 0});
+		int res = -1, N = A.length();
+		while (!q.empty())
 		{
-			if(B[start]==A[j]&&B[j]!=A[j])
+			++res;
+			int size = q.size();
+			while (--size >= 0)
 			{
-				swap(A[start],A[j]);
-				int tmp=kSimilarity(A,B,start+1)+1;
-				res=min(tmp,res);
-				swap(A[start],A[j]);
+				string str = q.front().first;
+				int start = q.front().second;
+				q.pop();
+				while (start < N && str[start] == B[start])
+					++start;
+				if (start == N)
+					return res;
+				for (int i = start + 1; i < N; ++i)
+				{
+					if (B[start] == str[i] && B[i] != str[i])
+					{
+						swap(str[start], str[i]);
+						if (seen.find(str) == seen.end())
+						{
+							seen.insert(str);
+							q.push({str, start + 1});
+						}
+						swap(str[start], str[i]);
+					}
+				}
 			}
 		}
-		if(res==INT_MAX)
-			res=0;
-		return res;
-    }
+		return -1;
+	}
 };
