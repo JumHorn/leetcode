@@ -1,83 +1,67 @@
-#include<vector>
-#include<string>
-#include<queue>
-#include<unordered_set>
+#include <vector>
+#include <string>
+#include <queue>
+#include <unordered_set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int shortestPathAllKeys(vector<string>& grid) {
-		int m,n,k=0,M=grid.size(),N=grid[0].length();
-		for(int i=0;i<M;i++)
-			for(int j=0;j<N;j++)
-			{
-				if(grid[i][j]=='@')
-				{
-					m=i;
-					n=j;
-				}
-				else if(grid[i][j]<='f'&&grid[i][j]>='a')
-					++k;
-			}
-		int directions[][4]={{1,0},{-1,0},{0,1},{0,-1}};
-		unordered_set<int> visited;//state hash (k<<24)+i*N+j
-		queue<int> q;
-		q.push(m*N+n);
-		visited.insert(m*N+n);
-		int res=0;
-		while(!q.empty())
+	int shortestPathAllKeys(vector<string> &grid)
+	{
+		queue<pair<string, int>> q; //{keys in hand,position}
+		int res = -1, M = grid.size(), N = grid[0].length();
+		vector<unordered_set<string>> seen(M * N);
+		string target = "......";
+		auto start = findStart(grid, target);
+		q.push({"......", start.first * N + start.second});
+		seen[start.first * N + start.second].insert("......");
+		while (!q.empty())
 		{
 			++res;
-			int size=q.size();
-			while(--size>=0)
+			int size = q.size();
+			while (--size >= 0)
 			{
-				int state=q.front();
+				auto state = q.front();
 				q.pop();
-				n=(state&0x00ffffff)%N;
-				m=(state&0x00ffffff)/N;
-				int key=state>>24;
-				for(int i=0;i<4;i++)
+				if (state.first == target)
+					return res;
+				int x = state.second / N, y = state.second % N;
+				//board dfs direction
+				int path[5] = {-1, 0, 1, 0, -1};
+				for (int i = 0; i < 4; i++)
 				{
-					int x=m+directions[i][0];
-					int y=n+directions[i][1];
-					if(x<0||x>=M||y<0||y>=N||grid[x][y]=='#')
+					int dx = x + path[i], dy = y + path[i + 1];
+					if (dx < 0 || dx >= M || dy < 0 || dy >= N || grid[dx][dy] == '#')
 						continue;
-					if(grid[x][y]>='A'&&grid[x][y]<='F')
-					{
-						if((key&(1<<(grid[x][y]-'A')))!=0)
-						{
-							int tmp=(key<<24)+x*N+y;
-							if(visited.find(tmp)==visited.end())
-							{
-								visited.insert(tmp);
-								q.push(tmp);
-							}
-						}
-					}
-					else if(grid[x][y]>='a'&&grid[x][y]<='f')
-					{
-						int newkey=(key|(1<<(grid[x][y]-'a')));
-						if(newkey==(1<<k)-1)
-							return res;
-						int tmp=(newkey<<24)+x*N+y;
-						if(visited.find(tmp)==visited.end())
-						{
-							visited.insert(tmp);
-							q.push(tmp);
-						}
-					}
-					else
-					{
-						int tmp=(key<<24)+x*N+y;
-						if(visited.find(tmp)==visited.end())
-						{
-							visited.insert(tmp);
-							q.push(tmp);
-						}
-					}
+					string str = state.first;
+					if (grid[dx][dy] >= 'A' && grid[dx][dy] <= 'F' && str[grid[dx][dy] - 'A'] == '.')
+						continue;
+					if (grid[dx][dy] >= 'a' && grid[dx][dy] <= 'f')
+						str[grid[dx][dy] - 'a'] = grid[dx][dy];
+					if (seen[dx * N + dy].find(str) != seen[dx * N + dy].end())
+						continue;
+					seen[dx * N + dy].insert(str);
+					q.push({str, dx * N + dy});
 				}
 			}
 		}
 		return -1;
-    }
+	}
+
+	pair<int, int> findStart(vector<string> &grid, string &target)
+	{
+		pair<int, int> res = {0, 0};
+		for (int i = 0; i < (int)grid.size(); i++)
+		{
+			for (int j = 0; j < (int)grid[i].length(); j++)
+			{
+				if (grid[i][j] == '@')
+					res = {i, j};
+				else if (grid[i][j] >= 'a' && grid[i][j] <= 'f')
+					target[grid[i][j] - 'a'] = grid[i][j];
+			}
+		}
+		return res;
+	}
 };
