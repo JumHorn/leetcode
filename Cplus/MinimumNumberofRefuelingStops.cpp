@@ -1,43 +1,25 @@
-#include<vector>
-#include<queue>
-#include<set>
+#include <vector>
+#include <queue>
+#include <set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
-        priority_queue<int> q;
-		if(stations.empty())
-			return startFuel>=target?0:-1;
-        if(startFuel>=target)
-				return 0;
-		int n=0,res=0;
-		while(n<(int)stations.size())
+	int minRefuelStops(int target, int startFuel, vector<vector<int>> &stations)
+	{
+		priority_queue<int> q;
+		int res = 0, N = stations.size();
+		for (int i = 0; startFuel < target; ++res)
 		{
-			if(startFuel>=stations[n][0])
-            {
-				q.push(stations[n][1]);
-                n++;
-            }
-			else
-			{
-				if(q.empty())
-					return -1;
-				startFuel+=q.top();
-				++res;
-				q.pop();
-                if(startFuel>=target)
-				    return res;
-			}
+			while (i < N && startFuel >= stations[i][0])
+				q.push(stations[i++][1]);
+
+			if (q.empty())
+				return -1;
+			startFuel += q.top();
+			q.pop();
 		}
-        while(!q.empty())
-        {
-            startFuel+=q.top();
-            ++res;
-            q.pop();
-            if(startFuel>=target)
-                return res;
-        }
-		return -1;
-    }
+		return res;
+	}
 };
