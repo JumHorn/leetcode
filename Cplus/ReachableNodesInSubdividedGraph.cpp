@@ -1,52 +1,54 @@
-#include<vector>
-#include<algorithm>
-#include<unordered_map>
-#include<queue>
+#include <vector>
+#include <algorithm>
+#include <unordered_map>
+#include <queue>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int reachableNodes(vector<vector<int>>& edges, int M, int N) {
-		vector<vector<pair<int,int>>> graph(N);     
-		vector<vector<int>> visited(N,vector<int>(N));
-		vector<int> v(N,-1);
-		for(int i=0;i<(int)edges.size();i++)
+	int reachableNodes(vector<vector<int>> &edges, int M, int N)
+	{
+		vector<vector<pair<int, int>>> graph(N);
+		vector<vector<int>> dist(N, vector<int>(N));
+		vector<int> seen(N, -1); //current largest weight
+		for (auto &edge : edges)
 		{
-			graph[edges[i][0]].push_back({edges[i][1],edges[i][2]});
-			graph[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+			graph[edge[0]].push_back({edge[1], edge[2]});
+			graph[edge[1]].push_back({edge[0], edge[2]});
 		}
-		
-		int res=0;
+
+		int res = 0;
 		//dijkstra
-		priority_queue<pair<int,int>> q;
-		q.push({M,0});
-		while(!q.empty())
+		priority_queue<pair<int, int>> q; //{weight,node}
+		q.push({M, 0});
+		while (!q.empty())
 		{
-			int weight=q.top().first;
-			int node=q.top().second;
+			int weight = q.top().first;
+			int node = q.top().second;
 			q.pop();
-			if(weight<=v[node])
+			if (weight <= seen[node])
 				continue;
-			v[node]=weight;
+			seen[node] = weight;
 			++res;
-			for(auto n : graph[node])
+			for (auto &n : graph[node])
 			{
-				if(weight>n.second)
+				if (weight > n.second)
 				{
-					visited[node][n.first]=n.second;
-                    if(weight-n.second-1>v[n.first])
-					    q.push({weight-n.second-1,n.first});
+					dist[node][n.first] = n.second;
+					if (weight - n.second - 1 > seen[n.first])
+						q.push({weight - n.second - 1, n.first});
 				}
 				else
-					visited[node][n.first]=max(visited[node][n.first],weight);
+					dist[node][n.first] = max(dist[node][n.first], weight);
 			}
 		}
 
-		for(int k=0;k<(int)edges.size();k++)
-        {
-			int i=edges[k][0],j=edges[k][1],w=edges[k][2];
-				res+=min(w,visited[i][j]+visited[j][i]);
-        }
+		for (auto &edge : edges)
+		{
+			int i = edge[0], j = edge[1], w = edge[2];
+			res += min(w, dist[i][j] + dist[j][i]);
+		}
 		return res;
-    }
+	}
 };
