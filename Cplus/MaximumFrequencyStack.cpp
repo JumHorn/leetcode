@@ -12,24 +12,26 @@ public:
 
 	void push(int x)
 	{
-		++freq[x];
-		rmstack[freq[x]].push(x);
+		int f = ++freq[x];
+		data[f].push(x);
+		if (f > maxFreq)
+			maxFreq = f;
 	}
 
 	int pop()
 	{
-		int n = rmstack.rbegin()->second.top();
-		rmstack.rbegin()->second.pop();
-		if (rmstack.rbegin()->second.empty())
-			rmstack.erase(freq[n]);
-		if (--freq[n] == 0)
-			freq.erase(n);
-		return n;
+		int res = data[maxFreq].top();
+		data[maxFreq].pop();
+		--freq[res];
+		if (data[maxFreq].empty())
+			--maxFreq;
+		return res;
 	}
 
 private:
-	unordered_map<int, int> freq;
-	map<int, stack<int>> rmstack;
+	int maxFreq;						 //continuous
+	unordered_map<int, stack<int>> data; // {freq ,val stack}
+	unordered_map<int, int> freq;		 // {val ,freq}
 };
 
 /**
