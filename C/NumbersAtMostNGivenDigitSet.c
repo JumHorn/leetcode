@@ -1,11 +1,21 @@
+#include <math.h>
 
-int dfs(int* digits, int size, int N, long val)
+int dfs(int* digits, int size, int* arrN, int index)
 {
-	if (val > N)
-		return 0;
-	int res = 1;
+	if (index < 0)
+		return 1;
+	int res = 0;
 	for (int i = 0; i < size; ++i)
-		res += dfs(digits, size, N, val * 10 + digits[i]);
+	{
+		if (digits[i] < arrN[index])
+			res += pow(size, index);
+		else
+		{
+			if (digits[i] == arrN[index])
+				res += dfs(digits, size, arrN, index - 1);
+			break;
+		}
+	}
 	return res;
 }
 
@@ -14,5 +24,20 @@ int atMostNGivenDigitSet(char** D, int DSize, int N)
 	int digits[DSize];
 	for (int i = 0; i < DSize; ++i)
 		digits[i] = D[i][0] - '0';
-	return dfs(digits, DSize, N, 0) - 1;  //0 not include
+	int arrN[10], n = -1;
+	while (N != 0)
+	{
+		++n;
+		arrN[n] = N % 10;
+		N /= 10;
+	}
+	int res = 0;
+	if (n != 0)
+	{
+		if (DSize == 1)
+			res = n;
+		else
+			res = ((long)pow(DSize, n + 1) - DSize) / (DSize - 1);
+	}
+	return res + dfs(digits, DSize, arrN, n);
 }
