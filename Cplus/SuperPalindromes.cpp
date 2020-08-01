@@ -1,47 +1,49 @@
-#include<string>
-#include<cmath>
-#include<algorithm>
+#include <string>
+#include <cmath>
+#include <algorithm>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int superpalindromesInRange(string L, string R) {
-		long long l=stoll(L),r=stoll(R);
-		int res=0,magic=1e5;
-		for(long long i=1;i<magic;i++)
+	int superpalindromesInRange(string L, string R)
+	{
+		long long l = stoll(L), r = stoll(R);
+		int res = 0, magic = 1e5;
+		for (long long i = 1; i < magic; i++)
 		{
-			string tmp=to_string(i),retmp=tmp;
-			reverse(retmp.begin(),retmp.end());
-			tmp+=retmp;
-			long long v=stoll(tmp);
-			v*=v;
-			if(v>r)
+			string str = to_string(i), reverse_str = str;
+			reverse(reverse_str.begin(), reverse_str.end());
+			str += reverse_str;
+			long long val = stoll(str);
+			val *= val;
+			if (val > r)
 				break;
-			if(v>=l&&isPalindrome(v))
-				res++;
+			if (val >= l && isPalindrome(val))
+				++res;
 		}
-		for(long long i=1;i<magic;i++)
+		for (long long i = 1; i < magic; i++)
 		{
-			string tmp=to_string(i),retmp=tmp.substr(0,tmp.length()-1);
-			reverse(retmp.begin(),retmp.end());
-			tmp+=retmp;
-			long long v=stoll(tmp);
-			v*=v;
-			if(v>r)
+			string str = to_string(i), reverse_str = str.substr(0, str.length() - 1);
+			reverse(reverse_str.begin(), reverse_str.end());
+			str += reverse_str;
+			long long val = stoll(str);
+			val *= val;
+			if (val > r)
 				break;
-			if(v>=l&&isPalindrome(v))
-				res++;
+			if (val >= l && isPalindrome(val))
+				++res;
 		}
 		return res;
-    }
+	}
 
 	bool isPalindrome(long long x)
 	{
-		string tmp=to_string(x);
-		int i=0,j=tmp.length()-1;
-		while(i<j)
+		string str = to_string(x);
+		int i = 0, j = str.length() - 1;
+		while (i < j)
 		{
-			if(tmp[i++]!=tmp[j--])
+			if (str[i++] != str[j--])
 				return false;
 		}
 		return true;
