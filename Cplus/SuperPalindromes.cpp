@@ -8,26 +8,22 @@ class Solution
 public:
 	int superpalindromesInRange(string L, string R)
 	{
-		long long l = stoll(L), r = stoll(R);
+		long l = stoll(L), r = stoll(R);
 		int res = 0, magic = 1e5;
-		for (long long i = 1; i < magic; i++)
+		for (long i = 1; i < magic; i++)
 		{
-			string str = to_string(i), reverse_str = str;
-			reverse(reverse_str.begin(), reverse_str.end());
-			str += reverse_str;
-			long long val = stoll(str);
+			int len = to_string(i).length();
+			long val = i * pow(10, len) + reverse(i);
 			val *= val;
 			if (val > r)
 				break;
 			if (val >= l && isPalindrome(val))
 				++res;
 		}
-		for (long long i = 1; i < magic; i++)
+		for (long i = 1; i < magic; i++)
 		{
-			string str = to_string(i), reverse_str = str.substr(0, str.length() - 1);
-			reverse(reverse_str.begin(), reverse_str.end());
-			str += reverse_str;
-			long long val = stoll(str);
+			int len = to_string(i).length();
+			long val = i * pow(10, len - 1) + reverse(i) % (long)pow(10, len - 1);
 			val *= val;
 			if (val > r)
 				break;
@@ -37,15 +33,19 @@ public:
 		return res;
 	}
 
-	bool isPalindrome(long long x)
+	long reverse(long x)
 	{
-		string str = to_string(x);
-		int i = 0, j = str.length() - 1;
-		while (i < j)
+		long res = 0;
+		while (x != 0)
 		{
-			if (str[i++] != str[j--])
-				return false;
+			res = res * 10 + x % 10;
+			x /= 10;
 		}
-		return true;
+		return res;
+	}
+
+	bool isPalindrome(long x)
+	{
+		return x == reverse(x);
 	}
 };
