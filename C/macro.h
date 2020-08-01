@@ -4,8 +4,8 @@
 #define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
-#define trimax(a, b, c) (max(max(a, b), c))	 //the maximum of a,b,c
-#define trimin(a, b, c) (min(min(a, b), c))	 //the minimum of a,b,c
+#define trimax(a, b, c) (max(max(a, b), c))  //the maximum of a,b,c
+#define trimin(a, b, c) (min(min(a, b), c))  //the minimum of a,b,c
 
 /*
 //frequently used items
@@ -119,3 +119,48 @@ int crossProduct(int *pointA, int *pointB, int *pointC)
 	int y2 = pointC[1] - pointA[1];
 	return x1 * y2 - x2 * y1;
 }
+
+// DSU
+typedef struct DSU
+{
+	int *parent;
+	int size;
+} DSU;
+
+DSU *dsu_init(int N)
+{
+	DSU *dsu = (DSU *)malloc(sizeof(DSU));
+	dsu->parent = (int *)malloc(sizeof(int) * N);
+	dsu->size = N;
+	for (int i = 0; i < N; i++)
+		dsu->parent[i] = i;
+	return dsu;
+}
+
+void dsu_release(DSU *dsu)
+{
+	if (dsu)
+	{
+		if (dsu->parent)
+			free(dsu->parent);
+		free(dsu);
+	}
+}
+
+int dsu_find(DSU *dsu, int x)
+{
+	if (x != dsu->parent[x])
+		dsu->parent[x] = dsu_find(dsu, dsu->parent[x]);
+	return dsu->parent[x];
+}
+
+bool dsu_union(DSU *dsu, int x, int y)
+{
+	int xr = dsu_find(dsu, x), yr = dsu_find(dsu, y);
+	if (xr == yr)
+		return false;
+	--dsu->size;
+	dsu->parent[yr] = xr;
+	return true;
+}
+
