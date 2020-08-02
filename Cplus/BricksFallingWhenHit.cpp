@@ -1,164 +1,92 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class DSU
+{
 public:
-    vector<int> hitBricks(vector<vector<int>>& grid, vector<vector<int>>& hits) {
-		vector<int> res(hits.size());
-        vector<vector<int>> visited;
-        if(grid.size()>10)
-        {
-            for(int i=0;i<(int)hits.size();i++)
-            {
-                if(grid[hits[i][0]][hits[i][1]]==0)
-                {
-                    res[i]=0;
-                    continue;
-                }
-                grid[hits[i][0]][hits[i][1]]=0;
-                int tmp=0;
-                tmp=dfs2(grid,hits[i][0]-1,hits[i][1]);
-                if(tmp!=-1)
-                    res[i]+=tmp;
-                tmp=dfs2(grid,hits[i][0]+1,hits[i][1]);
-                if(tmp!=-1)
-                    res[i]+=tmp;
-                tmp=dfs2(grid,hits[i][0],hits[i][1]-1);
-                if(tmp!=-1)
-                    res[i]+=tmp;
-                tmp=dfs2(grid,hits[i][0],hits[i][1]+1);
-                if(tmp!=-1)
-                    res[i]+=tmp;
-            }
-            return res;
-        }
-		for(int i=0;i<(int)hits.size();i++)
-		{
-			if(grid[hits[i][0]][hits[i][1]]==0)
-            {
-				res[i]=0;
-                continue;
-            }
-			grid[hits[i][0]][hits[i][1]]=0;
-			int tmp=0;
-			tmp=dfs(grid,hits[i][0]-1,hits[i][1],visited);
-			if(tmp!=-1)
-				res[i]+=tmp;
-            else
-                for(int i=0;i<(int)visited.size();i++)
-                    grid[visited[i][0]][visited[i][1]]=1;
-            visited.clear();
-			tmp=dfs(grid,hits[i][0]+1,hits[i][1],visited);
-			if(tmp!=-1)
-				res[i]+=tmp;
-            else
-                for(int i=0;i<(int)visited.size();i++)
-                    grid[visited[i][0]][visited[i][1]]=1;
-            
-            visited.clear();
-			tmp=dfs(grid,hits[i][0],hits[i][1]-1,visited);
-			if(tmp!=-1)
-				res[i]+=tmp;
-            else
-                for(int i=0;i<(int)visited.size();i++)
-                    grid[visited[i][0]][visited[i][1]]=1;
-            visited.clear();
-			tmp=dfs(grid,hits[i][0],hits[i][1]+1,visited);
-			if(tmp!=-1)
-				res[i]+=tmp;
-            else
-                for(int i=0;i<(int)visited.size();i++)
-                    grid[visited[i][0]][visited[i][1]]=1;
-		}
-		return res;
-    }
-
-	int dfs(vector<vector<int>>& grid,int i,int j,vector<vector<int>>& visited)
+	DSU(int size) : parent(size), rank(size, 1)
 	{
-		int res=0;
-		if(i<0||i>=(int)grid.size()||j<0||j>=(int)grid[0].size()||grid[i][j]==0)
-			return 0;
-		if(i==0)
-			return -1;
-		int tmp=0;
-		grid[i][j]=0;
-        visited.push_back({i,j});
-        res++;
-		tmp=dfs(grid,i-1,j,visited);
-		if(tmp==-1)
-			return -1;
-        res+=tmp;
-		tmp=dfs(grid,i+1,j,visited);
-		if(tmp==-1)
-			return -1;
-        res+=tmp;
-		tmp=dfs(grid,i,j-1,visited);
-        if(tmp==-1)
-			return -1;
-        res+=tmp;
-		tmp=dfs(grid,i,j+1,visited);
-		if(tmp==-1)
-			return -1;
-        res+=tmp;
-		return res;
+		for (int i = 0; i < size; i++)
+			parent[i] = i;
 	}
 
-    int dfs2(vector<vector<int>>& grid,int i,int j)
+	int Find(int x)
 	{
-		int res=0;
-		if(i<0||i>=(int)grid.size()||j<0||j>=(int)grid[0].size()||grid[i][j]==0)
-			return 0;
-		if(i==0)
-			return -1;
-		int tmp=0;
-		grid[i][j]=0;
-        res++;
-		tmp=dfs2(grid,i-1,j);
-		if(tmp==-1)
+		if (x != parent[x])
+			parent[x] = Find(parent[x]);
+		return parent[x];
+	}
+
+	bool Union(int x, int y)
+	{
+		int xr = Find(x), yr = Find(y);
+		if (xr == yr)
+			return false;
+		parent[yr] = xr;
+		rank[xr] += rank[yr];
+		return true;
+	}
+
+	int Count(int x)
+	{
+		return rank[Find(x)];
+	}
+
+private:
+	vector<int> parent;
+	vector<int> rank;
+};
+
+class Solution
+{
+public:
+	vector<int> hitBricks(vector<vector<int>> &grid, vector<vector<int>> &hits)
+	{
+		int M = grid.size(), N = grid[0].size();
+		vector<vector<int>> old_grid = grid;
+		DSU dsu(M * N + 1);
+		for (auto &hit : hits)
+			grid[hit[0]][hit[1]] = 0;
+		for (int i = 0; i < M; ++i)
 		{
-			grid[i][j]=1;
-			return -1;
+			for (int j = 0; j < N; ++j)
+			{
+				if (grid[i][j] == 1)
+				{
+					int index = i * N + j;
+					if (i == 0)
+						dsu.Union(index, M * N);
+					if (i > 0 && grid[i - 1][j] == 1)
+						dsu.Union(index, (i - 1) * N + j);
+					if (j > 0 && grid[i][j - 1] == 1)
+						dsu.Union(index, i * N + j - 1);
+				}
+			}
 		}
-        res+=tmp;
-		tmp=dfs2(grid,i+1,j);
-		if(tmp==-1)
+
+		vector<int> res(hits.size());
+		for (int i = hits.size() - 1; i >= 0; --i)
 		{
-			grid[i][j]=1;
-			return -1;
+			int r = hits[i][0];
+			int c = hits[i][1];
+			int pre = dsu.Count(M * N);
+			if (old_grid[r][c] != 0)
+			{
+				int index = r * N + c;
+				//board dfs direction
+				int path[5] = {-1, 0, 1, 0, -1};
+				for (int k = 0; k < 4; ++k)
+				{
+					int dr = r + path[k], dc = c + path[k + 1];
+					if (dr >= 0 && dr < M && dc >= 0 && dc < N && grid[dr][dc] == 1)
+						dsu.Union(index, dr * N + dc);
+				}
+				if (r == 0)
+					dsu.Union(index, M * N);
+				grid[r][c] = 1;
+				res[i] = max(0, dsu.Count(M * N) - pre - 1);
+			}
 		}
-        res+=tmp;
-		tmp=dfs2(grid,i,j-1);
-		if(tmp==-1)
-		{
-			grid[i][j]=1;
-			return -1;
-		}
-        res+=tmp;
-		tmp=dfs2(grid,i,j+1);
-		if(tmp==-1)
-		{
-			grid[i][j]=1;
-			return -1;
-		}
-        res+=tmp;
 		return res;
 	}
 };
-
-int main()
-{
-    vector<vector<int>> v=
-    {
-        {0,1,1,1,1,1,1,0,1},
-        {1,1,1,1,0,1,1,1,0},
-        {0,0,0,1,0,0,1,1,1},
-        {0,0,1,1,0,1,1,1,0},
-        {0,0,0,0,0,1,1,1,1},
-        {0,0,0,0,0,0,0,1,0}
-    };
-    //vector<vector<int>> t={{1,8},{2,1},{1,4},{3,0},{3,4},{0,7},{1,6}};
-    vector<vector<int>> t={{1,6}};
-    Solution sol;
-    sol.hitBricks(v,t);
-    return 0;
-}
