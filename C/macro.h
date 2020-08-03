@@ -124,16 +124,19 @@ int crossProduct(int *pointA, int *pointB, int *pointC)
 typedef struct DSU
 {
 	int *parent;
-	int size;
+	int *rank;
 } DSU;
 
 DSU *dsu_init(int N)
 {
 	DSU *dsu = (DSU *)malloc(sizeof(DSU));
 	dsu->parent = (int *)malloc(sizeof(int) * N);
-	dsu->size = N;
+	dsu->rank = (int *)malloc(sizeof(int) * N);
 	for (int i = 0; i < N; i++)
+	{
 		dsu->parent[i] = i;
+		dsu->rank[i] = 1;
+	}
 	return dsu;
 }
 
@@ -143,6 +146,8 @@ void dsu_release(DSU *dsu)
 	{
 		if (dsu->parent)
 			free(dsu->parent);
+		if (dsu->rank)
+			free(dsu->rank);
 		free(dsu);
 	}
 }
@@ -159,8 +164,7 @@ bool dsu_union(DSU *dsu, int x, int y)
 	int xr = dsu_find(dsu, x), yr = dsu_find(dsu, y);
 	if (xr == yr)
 		return false;
-	--dsu->size;
 	dsu->parent[yr] = xr;
+	dsu->rank[xr] += dsu->rank[yr];
 	return true;
 }
-
