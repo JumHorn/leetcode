@@ -11,17 +11,14 @@ public:
 		int N = S.length();
 		vector<int> dp(N + 1);
 		dp[0] = 1;
+		vector<int> last(26, -1);
 		for (int i = 0; i < N; ++i)
 		{
 			dp[i + 1] = (dp[i] * 2) % MOD;
-			for (int j = i - 1; j >= 0; --j)
-			{
-				if (S[j] == S[i])
-				{
-					dp[i + 1] = (MOD + dp[i + 1] - dp[j]) % MOD;
-					break;
-				}
-			}
+			int index = S[i] - 'a';
+			if (last[index] != -1)
+				dp[i + 1] = (MOD + dp[i + 1] - dp[last[index]]) % MOD;
+			last[index] = i;
 		}
 		return dp.back() - 1;
 	}
