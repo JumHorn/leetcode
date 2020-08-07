@@ -1,32 +1,74 @@
-#include<vector>
-#include<string>
-#include<algorithm>
+#include <algorithm>
+#include <queue>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> movesToStamp(string stamp, string target) {
-		int M=stamp.length();        
-		vector<int> res,last;
-		if(target.find(stamp)==string::npos)
-			return res;
-		for(int i=0;i<M;i++)
-			for(int j=0;j<=i;j++)
+	vector<int> movesToStamp(string stamp, string target)
+	{
+		int M = stamp.length(), N = target.length();
+		queue<int> q;
+		vector<int> res;
+		vector<bool> done(N);
+		vector<unordered_set<int>> todo(N - M + 1);
+		for (int i = 0; i <= N - M; ++i)
+		{
+			for (int j = 0; j < M; ++j)
 			{
-				string newstamp=string(j,'?')+stamp.substr(j,M-i)+string(i-j,'?');
-				auto index=target.find(newstamp);
-				if(index!=string::npos)
+				if (target[i + j] != stamp[j])
+					todo[i].insert(i + j);
+			}
+			if (todo[i].empty())
+			{
+				res.push_back(i);
+				for (int j = i; j < i + M; ++j)
 				{
-					res.push_back(index);
-					fill(target.begin()+index,target.begin()+index+M,'?');
-					i=-1;
+					if (!done[j])
+					{
+						q.push(j);
+						done[j] = true;
+					}
 				}
 			}
-		if(target.find_first_not_of('?')==string::npos)
-		{
-			reverse(res.begin(),res.end());
-			return res;
 		}
-		return vector<int>();
-    }
+
+		while (!q.empty())
+		{
+			int i = q.front();
+			q.pop();
+			// For each window that is potentially affected,
+			// j: start of window
+			for (int j = max(0, i - M + 1); j <= min(N - M, i); ++j)
+			{
+				if (todo[j].find(i) != todo[j].end())
+				{
+					todo[j].erase(i);
+					if (todo[j].empty())
+					{
+						res.push_back(j);
+						for (int m = j; m < j + M; ++m)
+						{
+							if (!done[m])
+							{
+								q.push(m);
+								done[m] = true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		for (auto b : done)
+		{
+			if (!b)
+				return {};
+		}
+		reverse(res.begin(), res.end());
+		return res;
+	}
 };
