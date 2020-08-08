@@ -1,4 +1,3 @@
-#include <numeric>
 #include <string>
 #include <vector>
 using namespace std;
@@ -8,37 +7,19 @@ class Solution
 public:
 	int longestAwesome(string s)
 	{
-		int lo = 2, hi = s.length() + 1;
-		while (lo < hi)
+		int N = s.length();
+		vector<int> dp(1024, N);
+		dp[0] = -1;
+		int res = 0, mask = 0;
+		for (int i = 0; i < N; ++i)
 		{
-			int mi = (hi - lo) / 2 + lo;
-			if (slideWindow(s, mi))
-				lo = mi + 1;
-			else
-				hi = mi;
+			int bit = s[i] - '0';
+			mask ^= 1 << bit;
+			res = max(res, i - dp[mask]);
+			for (int j = 0; j < 10; ++j)
+				res = max(res, i - dp[mask ^ (1 << j)]);
+			dp[mask] = min(dp[mask], i);
 		}
-		return lo - 1;
-	}
-
-	bool slideWindow(string &s, int len)
-	{
-		vector<int> v(10);
-		for (int i = 0; i < len; ++i)
-			v[s[i] - '0'] ^= 1;
-		int ones = accumulate(v.begin(), v.end(), 0);
-		if (ones <= 1)
-			return true;
-		for (int i = len; i < (int)s.length(); ++i)
-		{
-			int index = s[i] - '0';
-			v[index] ^= 1;
-			ones += v[index] == 1 ? 1 : -1;
-			index = s[i - len] - '0';
-			v[index] ^= 1;
-			ones += v[index] == 1 ? 1 : -1;
-			if (ones <= 1)
-				return true;
-		}
-		return false;
+		return res;
 	}
 };
