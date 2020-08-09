@@ -1,62 +1,41 @@
-#include<algorithm>
-#include<unordered_map>
-#include<climits>
+#include <algorithm>
+#include <climits>
+#include <unordered_map>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int leastOpsExpressTarget(int x, int target) {
-		unordered_map<long,long> visited;
-        return getTarget(x,target,visited);
-    }
-
-    long getTarget(long x, long target,unordered_map<long,long>& visited)
-    {
-        if(visited.find(target)!=visited.end())
-			return visited[target];
-        long res;
-		if(target<=x)
-        {
-			res=min(2*target-1,2*(x-target));
-            visited[target]=res;
-            return res;
-        }
-		pair<long,long> large=getGreaterThan(x,target);
-        pair<long,long> smalllarge={large.first/x,large.second-1};
-		pair<long,long> small=getLessThan(x,target,smalllarge);
-
-        if(large.first>=2*target)
-            res=LONG_MAX;
-        else
-            res=getTarget(x,large.first-target,visited)+large.second+1;
-        res=min(res,min(getTarget(x,smalllarge.first-target,visited)+smalllarge.second+1,
-                        getTarget(x,target-small.first,visited)+small.second+1));
-
-		visited[target]=res;
-		return res;
-    }
-
-	pair<long,long> getGreaterThan(long x,long target)
+	int leastOpsExpressTarget(int x, int target)
 	{
-		long fx=x,i=0;
-		while(fx<target)
-		{
-			i++;
-			fx*=x;
-		}
-		return {fx,i};
+		unordered_map<long, long> cache;
+		return recursive(x, target, cache);
 	}
 
-    pair<long,long> getLessThan(long x,long target,pair<long,long>& small)
+	int recursive(int x, int target, unordered_map<long, long> &cache)
 	{
-        long i;
-        for(i=1;i<x;i++)
-        {
-            if(small.first*i>target)
-                break;
-        }
-        pair<long,long> res={small.first*(i-1),small.second*(i-1)+(i-2)};
-        small={small.first*i,small.second*i+(i-1)};
-		return res;
+		if (target == 0)
+			return 0;
+		if (target == 1)
+			return 1;
+		if (x == target)
+			return 0;
+		if (x > target)
+			return min(target * 2 - 1, (x - target) * 2);
+		if (cache.find(target) != cache.end())
+			return cache[target];
+		long val = 1, count = 0;
+		while (val < target)
+		{
+			val *= x;
+			++count;
+		}
+		if (val == target)
+			return count - 1;
+		int res1 = INT_MAX, res2 = INT_MAX;
+		if (val - target < target)
+			res1 = recursive(x, val - target, cache) + count;
+		res2 = recursive(x, target - val / x, cache) + count - 1;
+		return cache[target] = min(res1, res2);
 	}
 };
