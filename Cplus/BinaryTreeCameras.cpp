@@ -1,35 +1,37 @@
-#include<algorithm>
+#include <algorithm>
 using namespace std;
 
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 //0 leaf node not covered
 //1 the parent of leaf covered
 //2 covered and parent of this node is leaf
-class Solution {
-	int res;
+class Solution
+{
 public:
-    int minCameraCover(TreeNode* root) {
-		res=0;
-		return (dfs(root)<1?1:0)+res;
-    }
-	
-	int dfs(TreeNode* root)
+	int minCameraCover(TreeNode *root)
 	{
-		if(root==NULL)
-			return 2;
-		int l=dfs(root->left),r=dfs(root->right);
-		if(l==0||r==0)
-		{
-			++res;
-			return 1;
-		}
-		return (l==1||r==1)?2:0;
+		auto res = postorder(root);
+		return res.second + (res.first == 0 ? 1 : 0);
+	}
+
+	pair<int, int> postorder(TreeNode *root) //return {nodetype,result count}
+	{
+		if (root == NULL)
+			return {2, 0};
+		auto l = postorder(root->left), r = postorder(root->right);
+		int res = l.second + r.second;
+		if (l.first == 0 || r.first == 0)
+			return {1, res + 1};
+		return (l.first == 1 || r.first == 1) ? pair<int, int>(2, res) : pair<int, int>(0, res);
 	}
 };
