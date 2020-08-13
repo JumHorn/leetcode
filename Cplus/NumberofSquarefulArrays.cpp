@@ -1,47 +1,50 @@
-#include<vector>
-#include<algorithm>
-#include<unordered_set>
+#include <algorithm>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int numSquarefulPerms(vector<int>& A) {
- 		return numSquarefulPerms(A,0);
-    }
-
-	int numSquarefulPerms(vector<int>& A,int index)
+	int numSquarefulPerms(vector<int> &A)
 	{
-		if(index==(int)A.size())
+		return dfs(A, 0);
+	}
+
+	int dfs(vector<int> &A, int index)
+	{
+		int N = A.size();
+		if (index == N)
 			return 1;
-		int res=0;
-        unordered_set<int> visited;
-		for(int i=index;i<(int)A.size();i++)
+		int res = 0;
+		unordered_set<int> seen;
+		for (int i = index; i < N; i++)
 		{
-			if(index==0||isSquare((long)A[index-1]+(long)A[i]))
+			if (index == 0 || isSquare(A[index - 1] + A[i]))
 			{
-                if(visited.find(A[i])==visited.end())
-                {
-                    visited.insert(A[i]);
-                    swap(A[index],A[i]);
-                    res+=numSquarefulPerms(A,index+1);
-                    swap(A[index],A[i]);
-                }
+				if (seen.find(A[i]) == seen.end())
+				{
+					seen.insert(A[i]);
+					swap(A[index], A[i]);
+					res += dfs(A, index + 1);
+					swap(A[index], A[i]);
+				}
 			}
 		}
 		return res;
 	}
 
-	bool isSquare(long n)
+	bool isSquare(int n)
 	{
-		long hi=n,lo=0;
-		while(lo<hi)
+		int lo = 0, hi = n;
+		while (lo < hi)
 		{
-			long mi=(hi-lo)/2+lo;
-			if(mi*mi<n)
-				lo=mi+1;
+			long mi = (hi - lo) / 2 + lo;
+			if (mi * mi < n)
+				lo = mi + 1;
 			else
-				hi=mi;
+				hi = mi;
 		}
-		return lo*lo==n;
+		return lo * lo == n;
 	}
 };
