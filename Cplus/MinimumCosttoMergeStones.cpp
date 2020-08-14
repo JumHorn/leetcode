@@ -1,32 +1,36 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+/*
+dp[i][j] means the minimum cost needed to merge stones[i] ~ stones[j].
+dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j]);
+merge dp[i][k] as one pile and dp[k+1][j] as much as possible
+*/
+
+class Solution
+{
 public:
-    int mergeStones(vector<int>& stones, int K) {
-		int N=stones.size();
-		if((N-1)%(K-1)!=0)
+	int mergeStones(vector<int> &stones, int K)
+	{
+		int N = stones.size();
+		if ((N - 1) % (K - 1) != 0)
 			return -1;
-		vector<int> sum(N+1);        
-		for(int i=1;i<=N;i++)
-			sum[i]=sum[i-1]+stones[i-1];
-		vector<vector<vector<int>>> dp(N+1,vector<vector<int>>(N+1,vector<int>(K+1)));
-		for(int i=1;i<=N;i++)
-			for(int j=1;j<=N;j++)
-				for(int k=1;k<=K;k++)
-					dp[i][j][k]=100000000;
-		for(int i=1;i<=N;i++)
-			dp[i][i][1]=0;
-		for(int l=2;l<=N;l++)
-			for(int i=1;i<=N-l+1;i++)
+		vector<int> sum(N + 1);
+		for (int i = 0; i < N; i++)
+			sum[i + 1] = sum[i] + stones[i];
+		vector<vector<int>> dp(N, vector<int>(N));
+		for (int n = K; n <= N; ++n)
+		{
+			for (int i = 0, j = i + n - 1; j < N; ++i, ++j)
 			{
-				int j=i+l-1,k;
-				for(k=2;k<=K;k++)
-					for(int t=i;t<j;t++)
-						dp[i][j][k]=min(dp[i][j][k],dp[i][t][k-1]+dp[t+1][j][1]);
-				dp[i][j][1]=dp[i][j][K]+sum[j]-sum[i-1];
+				dp[i][j] = INT_MAX;
+				for (int k = i; k < j; k += K - 1)
+					dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j]);
+				if ((j - i) % (K - 1) == 0)
+					dp[i][j] += sum[j + 1] - sum[i];
 			}
-		return dp[1][N][1];
-    }
+		}
+		return dp[0][N - 1];
+	}
 };
