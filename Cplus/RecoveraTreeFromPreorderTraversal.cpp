@@ -1,60 +1,49 @@
-#include<string>
+#include <string>
 using namespace std;
-//Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    TreeNode* recoverFromPreorder(string S) {
-		int index=findDash(S,0);
-		TreeNode* root=new TreeNode(stoi(S.substr(0,index)));
-    	buildTree(S,index,1,root);   
-		return root;
-    }
-
-	int buildTree(const string& s,int index,int layer,TreeNode* root)
+	TreeNode *recoverFromPreorder(string S)
 	{
-		if(index>=(int)s.length())
-			return index;
-		int i=countDash(s,index);
-        int dash=i-index;
-		int tmp=findDash(s,i);
-		if(dash==layer)
+		int index = 0;
+		return preorder(S, index, 0);
+	}
+
+	int strToInt(string &S, int &index)
+	{
+		int res = 0;
+		while (index < (int)S.length() && S[index] != '-')
 		{
-			root->left=new TreeNode(stoi(s.substr(i,tmp-i)));
-			index=tmp;
-			index=buildTree(s,index,layer+1,root->left);
-            if(index>=(int)s.length())
-				return index;
-
-            i=countDash(s,index);
-            dash=i-index;
-            tmp=findDash(s,i);
-            if(dash==layer)
-            {
-                root->right=new TreeNode(stoi(s.substr(i,tmp-i)));
-                index=tmp;
-                index=buildTree(s,index,layer+1,root->right);
-            }
+			res = res * 10 + S[index] - '0';
+			++index;
 		}
-		return index;
+		return res;
 	}
 
-	int findDash(const string& s,int i)
+	TreeNode *preorder(string &S, int &index, int layer)
 	{
-		while(i<(int)s.length()&&s[i]!='-')
-			i++;
-		return i;
-	}
-
-	int countDash(const string& s,int i)
-	{
-		while(s[++i]=='-');
-		return i;
+		int depth = index;
+		while (depth < (int)S.length() && S[depth] == '-')
+			++depth;
+		depth -= index;
+		if (depth != layer)
+			return NULL;
+		index += depth;
+		TreeNode *node = new TreeNode(strToInt(S, index));
+		node->left = preorder(S, index, layer + 1);
+		node->right = preorder(S, index, layer + 1);
+		return node;
 	}
 };
