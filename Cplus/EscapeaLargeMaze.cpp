@@ -1,70 +1,49 @@
-#include<vector>
-#include<set>
-#include<queue>
+#include <queue>
+#include <set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool isEscapePossible(vector<vector<int>>& blocked, vector<int>& source, vector<int>& target) {
-        set<pair<int,int>> block,visited;
-		for(int i=0;i<(int)blocked.size();i++)
-			block.insert({blocked[i][0],blocked[i][1]});
-		queue<pair<int,int>> q;
-		q.push({source[0],source[1]});
-		visited.insert({source[0],source[1]});
-		int count=1;
-		int dir[][2]={{1,0},{-1,0},{0,1},{0,-1}};
-		while(count<(int)block.size()&&!q.empty())
+	bool isEscapePossible(vector<vector<int>> &blocked, vector<int> &source, vector<int> &target)
+	{
+		set<pair<int, int>> block;
+		for (int i = 0; i < (int)blocked.size(); i++)
+			block.insert({blocked[i][0], blocked[i][1]});
+		return bfs(block, source, target) && bfs(block, target, source);
+	}
+
+	bool bfs(set<pair<int, int>> &block, vector<int> &source, vector<int> &target)
+	{
+		queue<pair<int, int>> q;
+		set<pair<int, int>> seen;
+		q.push({source[0], source[1]});
+		seen.insert({source[0], source[1]});
+		int path[5] = {-1, 0, 1, 0, -1}, count = 1;
+		while (count < (int)block.size() && !q.empty())
 		{
-			int size=q.size();
-			while(--size>=0)
+			int size = q.size();
+			while (--size >= 0)
 			{
-				for(int i=0;i<4;i++)
-				{
-					int x=q.front().first+dir[i][0],y=q.front().second+dir[i][1];
-					if(target[0]==x&&target[1]==y)
-						return true;
-					if(x>=0&&x<1e6&&y>=0&&y<1e6&&block.find({x,y})==block.end()&&visited.find({x,y})==visited.end())
-					{
-						q.push({x,y});
-						visited.insert({x,y});
-					}
-				}
+				int x = q.front().first, y = q.front().second;
 				q.pop();
-			}
-            count++;
-		}
-		if(q.empty())
-			return false;
-
-		count=1;
-		queue<pair<int,int>> q1;
-		q1.push({target[0],target[1]});
-		visited.clear();
-		visited.insert({target[0],target[1]});
-		while(count<(int)block.size()&&!q1.empty())
-		{
-			int size=q1.size();
-			while(--size>=0)
-			{
-				for(int i=0;i<4;i++)
+				for (int i = 0; i < 4; i++)
 				{
-					int x=q1.front().first+dir[i][0],y=q1.front().second+dir[i][1];
-					if(source[0]==x&&source[1]==y)
+					int dx = x + path[i], dy = y + path[i + 1];
+					if (target[0] == dx && target[1] == dy)
 						return true;
-					if(x>=0&&x<1e6&&y>=0&&y<1e6&&block.find({x,y})==block.end()&&visited.find({x,y})==visited.end())
+					if (dx < 0 || dx >= 1e6 || dy < 0 || dy >= 1e6)
+						continue;
+					if (block.find({dx, dy}) == block.end() && seen.find({dx, dy}) == seen.end())
 					{
-						visited.insert({x,y});
-						q1.push({x,y});
+						q.push({dx, dy});
+						seen.insert({dx, dy});
 					}
 				}
-				q1.pop();
 			}
-            count++;
+			++count;
 		}
-		if(q1.empty())
-			return false;
-		return true;
-    }
+		return !q.empty();
+	}
 };
-
