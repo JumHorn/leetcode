@@ -41,17 +41,10 @@ public:
 			return -1;
 		int res = INT_MAX;
 		for (auto iter : dp.back())
+		{
 			if (iter.second < res)
 				res = iter.second;
+		}
 		return res;
 	}
 };
-
-int main()
-{
-	vector<int> arr1 = {1, 5, 3, 6, 7};
-	vector<int> arr2 = {1, 3, 2, 4};
-	Solution sol;
-	sol.makeArrayIncreasing(arr1, arr2);
-	return 0;
-}
