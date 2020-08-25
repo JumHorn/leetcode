@@ -1,11 +1,17 @@
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
+
+// all ready defined in math.h
 #define abs(x) (((x) < 0) ? (-(x)) : (x))
+
+// linux kernel swap version
+// #define swap(a, b) \
+// 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
 #define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
-#define trimax(a, b, c) (max(max(a, b), c))  //the maximum of a,b,c
-#define trimin(a, b, c) (min(min(a, b), c))  //the minimum of a,b,c
+#define trimax(a, b, c) (max(max(a, b), c)) //the maximum of a,b,c
+#define trimin(a, b, c) (min(min(a, b), c)) //the minimum of a,b,c
 
 /*
 //frequently used items
