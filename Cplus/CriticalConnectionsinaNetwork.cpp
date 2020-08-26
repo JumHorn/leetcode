@@ -1,5 +1,5 @@
+#include <unordered_set>
 #include <vector>
-#include <unordered_map>
 using namespace std;
 
 class Solution
@@ -7,44 +7,49 @@ class Solution
 public:
 	vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections)
 	{
-		vector<unordered_map<int, int>> graph(n);
+		vector<unordered_set<int>> graph(n);
 		for (auto &con : connections)
 		{
-			graph[con[0]][con[1]] = 1;
-			graph[con[1]][con[0]] = 2;
+			graph[con[0]].insert(con[1]);
+			graph[con[1]].insert(con[0]);
 		}
-		vector<int> dsc(n), low(n, n);
+		vector<int> dsc(n), low(n);
 		vector<vector<int>> res;
-		int found = 1;
+		int time = 0;
 		for (int i = 0; i < n; i++)
+		{
 			if (dsc[i] == 0)
-				dfs(graph, dsc, low, i, found, res);
+				dfs(graph, dsc, low, i, time);
+		}
+		for (auto &con : connections)
+		{
+			if (graph[con[0]].find(con[1]) != graph[con[0]].end())
+			{
+				if (low[con[1]] > dsc[con[0]])
+					res.push_back(con);
+			}
+			else
+			{
+				if (low[con[0]] > dsc[con[1]])
+					res.push_back(con);
+			}
+		}
 		return res;
 	}
 
-	void dfs(vector<unordered_map<int, int>> &graph, vector<int> &dsc, vector<int> &low, int index, int &found, vector<vector<int>> &res)
+	void dfs(vector<unordered_set<int>> &graph, vector<int> &dsc, vector<int> &low, int at, int &time)
 	{
-		if (dsc[index] != 0)
+		if (dsc[at] != 0)
 			return;
-		low[index] = dsc[index] = found++;
-		int n = graph.size();
-		for (auto to : graph[index])
+		low[at] = dsc[at] = ++time;
+		for (auto to : graph[at])
 		{
-			if (dsc[to.first] == 0)
+			if (dsc[to] == 0)
 			{
-				graph[to.first].erase(index);
-				dfs(graph, dsc, low, to.first, found, res);
-				low[index] = min(low[index], low[to.first]);
-				if (dsc[index] < low[to.first])
-				{
-					if (graph[index][to.first] == 1)
-						res.push_back({index, to.first});
-					else
-						res.push_back({to.first, index});
-				}
+				graph[to].erase(at);
+				dfs(graph, dsc, low, to, time);
 			}
-			else
-				low[index] = min(low[index], low[to.first]);
+			low[at] = min(low[at], low[to]);
 		}
 	}
 };
