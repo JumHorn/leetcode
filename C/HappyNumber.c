@@ -1,36 +1,27 @@
-#include<stdio.h>
-#include<stdbool.h>
-int main()
+#include <stdbool.h>
+
+int next(int n)
 {
-	bool isHappy(int n);
-}
-bool check(int n,int *a,int *i)
-{
-	int t=0;
-	if(n==1)
+	int res = 0;
+	while (n != 0)
 	{
-		return true;
+		res += (n % 10) * (n % 10);
+		n /= 10;
 	}
-	else
-	{
-		while(n!=0)
-		{
-			t+=(n%10)*(n%10);
-			n=n/10;
-		}
-		for(int j=0;j<*i;j++)
-		{
-			if(a[j]==t)
-			{
-				return false;
-			}
-		}
-		a[(*i)++]=t;
-		return check(t,a,i);
-	}
+	return res;
 }
+
 bool isHappy(int n)
 {
-	int a[100],i=0;
-	return check(n,a,&i);
+	if (n == 1)
+		return true;
+	int p = n, q = next(n);
+	while (p != q)
+	{
+		if (q == 1)
+			return true;
+		p = next(p);
+		q = next(next(q));
+	}
+	return false;
 }
