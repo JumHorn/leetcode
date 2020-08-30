@@ -20,17 +20,17 @@ public:
 			++res;
 			while (--size >= 0)
 			{
-				auto tmp = q.front();
+				auto at = q.front();
 				q.pop();
-				if (tmp.first == n * (n - 1) + n - 2 && tmp.second == n * (n - 1) + n - 1)
+				if (at.first == n * (n - 1) + n - 2 && at.second == n * (n - 1) + n - 1)
 					return res;
-				int tailrow = tmp.first / n, tailcol = tmp.first % n, headrow = tmp.second / n, headcol = tmp.second % n;
+				int tailrow = at.first / n, tailcol = at.first % n, headrow = at.second / n, headcol = at.second % n;
 				if (tailrow == headrow)
 				{
 					//right
 					if (headcol + 1 < n && grid[headrow][headcol + 1] == 0)
 					{
-						pair<int, int> p = {tmp.second, tmp.second + 1};
+						pair<int, int> p = {at.second, at.second + 1};
 						if (s.find(p) == s.end())
 						{
 							s.insert(p);
@@ -40,7 +40,7 @@ public:
 					//down
 					if (headrow + 1 < n && grid[headrow + 1][headcol] == 0 && grid[tailrow + 1][tailcol] == 0)
 					{
-						pair<int, int> p = {tmp.first + n, tmp.second + n};
+						pair<int, int> p = {at.first + n, at.second + n};
 						if (s.find(p) == s.end())
 						{
 							s.insert(p);
@@ -48,7 +48,7 @@ public:
 						}
 
 						//clockwise
-						p = {tmp.first, tmp.first + n};
+						p = {at.first, at.first + n};
 						if (s.find(p) == s.end())
 						{
 							s.insert(p);
@@ -61,7 +61,7 @@ public:
 					//down
 					if (headrow + 1 < n && grid[headrow + 1][headcol] == 0)
 					{
-						pair<int, int> p = {tmp.second, tmp.second + n};
+						pair<int, int> p = {at.second, at.second + n};
 						if (s.find(p) == s.end())
 						{
 							s.insert(p);
@@ -71,7 +71,7 @@ public:
 					//right
 					if (headcol + 1 < n && grid[headrow][headcol + 1] == 0 && grid[tailrow][tailcol + 1] == 0)
 					{
-						pair<int, int> p = {tmp.first + 1, tmp.second + 1};
+						pair<int, int> p = {at.first + 1, at.second + 1};
 						if (s.find(p) == s.end())
 						{
 							s.insert(p);
@@ -79,7 +79,7 @@ public:
 						}
 
 						//counter-clockwise
-						p = {tmp.first, tmp.first + 1};
+						p = {at.first, at.first + 1};
 						if (s.find(p) == s.end())
 						{
 							s.insert(p);
