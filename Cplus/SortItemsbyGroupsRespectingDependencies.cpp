@@ -1,3 +1,4 @@
+#include <queue>
 #include <vector>
 using namespace std;
 
@@ -21,13 +22,13 @@ public:
 			{
 				if (group[i] != group[beforeItems[i][j]]) //not in the same group
 				{
-					groupgraph[group[i]].push_back(group[beforeItems[i][j]]);
-					++groupindgree[group[beforeItems[i][j]]];
+					groupgraph[group[beforeItems[i][j]]].push_back(group[i]);
+					++groupindgree[group[i]];
 				}
 				else
 				{
-					itemgraph[i].push_back(beforeItems[i][j]);
-					++itemindgree[beforeItems[i][j]];
+					itemgraph[beforeItems[i][j]].push_back(i);
+					++itemindgree[i];
 				}
 			}
 		}
@@ -53,34 +54,36 @@ public:
 	//if items is empty, search all graph
 	vector<int> topologicalSort(vector<vector<int>> &graph, vector<int> &indgree, const vector<int> &items = vector<int>())
 	{
-		int N = graph.size();
-		vector<int> res, seen(N);
+		int N = items.empty() ? graph.size() : items.size();
+		vector<int> res;
+		queue<int> q;
 		if (items.empty())
 		{
 			for (int i = 0; i < N; ++i)
 			{
 				if (indgree[i] == 0)
-					dfs(graph, i, res, seen);
+					q.push(i);
 			}
-			return res.size() == graph.size() ? res : vector<int>();
 		}
-
-		for (auto item : items)
+		else
 		{
-			if (indgree[item] == 0)
-				dfs(graph, item, res, seen);
+			for (auto item : items)
+			{
+				if (indgree[item] == 0)
+					q.push(item);
+			}
 		}
-		return res.size() == items.size() ? res : vector<int>();
-	}
-
-private:
-	void dfs(vector<vector<int>> &graph, int at, vector<int> &v, vector<int> &seen)
-	{
-		if (seen[at] == 1)
-			return;
-		seen[at] = 1;
-		for (auto n : graph[at])
-			dfs(graph, n, v, seen);
-		v.push_back(at);
+		while (!q.empty())
+		{
+			int node = q.front();
+			q.pop();
+			res.push_back(node);
+			for (auto n : graph[node])
+			{
+				if (--indgree[n] == 0)
+					q.push(n);
+			}
+		}
+		return res.size() == N ? res : vector<int>();
 	}
 };
