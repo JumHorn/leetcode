@@ -26,7 +26,7 @@ public:
 			v[i].profit = profit[i];
 		}
 		sort(v.begin(), v.end(), *this);
-		map<int, int> dp;
+		map<int, int> dp; //{endTime,profit}
 		dp[0] = 0;
 		for (int i = 0; i < n; i++)
 		{
