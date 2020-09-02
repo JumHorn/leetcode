@@ -7,30 +7,27 @@ class Solution
 public:
 	int numberWays(vector<vector<int>> &hats)
 	{
-		int n = hats.size();
-		vector<vector<int>> dp(41, vector<int>(1 << n, -1));
-		vector<vector<int>> h2p(41); //hats to people
-		for (int i = 0; i < n; i++)
+		int n = hats.size(), N = 41, allmask = (1 << n) - 1;
+		vector<vector<int>> h2p(N); //hats to people
+		for (int i = 0; i < n; ++i)
+		{
 			for (auto h : hats[i])
 				h2p[h].push_back(i);
-		return memdp(h2p, 1, 0, (1 << n) - 1, dp);
-	}
-
-	int memdp(vector<vector<int>> &h2p, int index, int mask, int allmask, vector<vector<int>> &dp)
-	{
-		if (mask == allmask)
-			return 1;
-		if (index > 40)
-			return 0;
-		if (dp[index][mask] != -1)
-			return dp[index][mask];
-		int res = memdp(h2p, index + 1, mask, allmask, dp);
-		for (auto p : h2p[index])
-		{
-			if ((mask & (1 << p)) == 0)
-				res = (res + memdp(h2p, index + 1, mask | (1 << p), allmask, dp)) % MOD;
 		}
-		return dp[index][mask] = res;
+		vector<int> dp(1 << n);
+		dp[0] = 1;
+		for (int bit = 1; bit < N; ++bit)
+		{
+			for (int mask = allmask; mask >= 0; --mask)
+			{
+				for (auto p : h2p[bit])
+				{
+					if (((1 << p) & mask) == 0)
+						dp[mask | (1 << p)] = (dp[mask | (1 << p)] + dp[mask]) % MOD;
+				}
+			}
+		}
+		return dp[allmask];
 	}
 
 private:
