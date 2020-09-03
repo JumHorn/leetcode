@@ -9,9 +9,6 @@ public:
 	string largestNumber(vector<int> &cost, int target)
 	{
 		string res = "0";
-		arr.resize(10);
-		for (char c = '1'; c <= '9'; c++)
-			arr[c - '1'] = c;
 		unordered_map<int, string> dp;
 		return dfs(cost, target, dp);
 	}
@@ -25,18 +22,15 @@ public:
 		if (dp.find(target) != dp.end())
 			return dp[target];
 		string res = "0";
-		for (int i = 8; i >= 0; i--)
+		for (int i = 8; i >= 0; --i)
 		{
-			string tmp = dfs(cost, target - cost[i], dp);
-			if (tmp == "0")
+			string val = dfs(cost, target - cost[i], dp);
+			if (val == "0")
 				continue;
-			tmp = arr[i] + tmp;
-			if (res == "0" || tmp.length() > res.length())
-				res = tmp;
+			val = char(i + '1') + val;
+			if (res == "0" || val.length() > res.length())
+				res = val;
 		}
 		return dp[target] = res;
 	}
-
-private:
-	vector<char> arr;
 };
