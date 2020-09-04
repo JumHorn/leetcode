@@ -13,33 +13,36 @@
 #define trimax(a, b, c) (max(max(a, b), c)) //the maximum of a,b,c
 #define trimin(a, b, c) (min(min(a, b), c)) //the minimum of a,b,c
 
-/*
 //frequently used items
 
 //cmp function don't consider overflow
-int cmp(const void* lhs,const void* rhs)
+int cmp(const void *lhs, const void *rhs)
 {
-	return *(int*)lhs-*(int*)rhs;
+	return *(int *)lhs - *(int *)rhs;
 }
 
 //board dfs direction
 int path[5] = {-1, 0, 1, 0, -1};
 
-//circle queue for monoqueue queue (front stores data and rear not)
+//circle queue for monoqueue queue
+/*
+//front stores data and rear not
 int size, deque[size], front = 0, rear = 0;
-front = (front + 1) % size; //push front
-front = (front - 1 + size) % size; //pop front
-rear = (rear -1 + size) % size; // push back
-rear = (rear + 1) % size; // pop back
-size = (front - rear +size) % size; //size
-(front + 1) % size == rear; // is full
-front == rear; //is empty
+front = (front + 1) % size;			 //push front
+front = (front - 1 + size) % size;   //pop front
+rear = (rear - 1 + size) % size;	 //push back
+rear = (rear + 1) % size;			 //pop back
+size = (front - rear + size) % size; //size
+(front + 1) % size == rear;			 //is full
+front == rear;						 //is empty
+*/
+/********end of circle queue********/
 
 //prefix tree
 typedef struct Trie
 {
 	int val;
-	struct Trie* node[26];
+	struct Trie *node[26];
 } Trie;
 
 Trie *createNode(int val)
@@ -62,7 +65,7 @@ void insert(Trie *root, char *s)
 	}
 	root->val = 1;
 }
-*/
+/********end of prefix tree********/
 
 //max heap function series
 void push_heap(int *ptr, int size)
@@ -115,6 +118,7 @@ void pop_heap(int *ptr, int size)
 		ptr[size - 1] = val;
 	}
 }
+/********end of max heap********/
 
 // cross product
 int crossProduct(int *pointA, int *pointB, int *pointC)
@@ -125,6 +129,7 @@ int crossProduct(int *pointA, int *pointB, int *pointC)
 	int y2 = pointC[1] - pointA[1];
 	return x1 * y2 - x2 * y1;
 }
+/********end of cross product********/
 
 // DSU
 typedef struct DSU
@@ -174,3 +179,26 @@ bool dsu_union(DSU *dsu, int x, int y)
 	dsu->rank[xr] += dsu->rank[yr];
 	return true;
 }
+/********end of DSU********/
+
+//Fenwick tree(BIT)
+int sum(int *tree, int size, int index)
+{
+	int res = 0;
+	while (index > 0)
+	{
+		res += tree[index];
+		index -= index & -index;
+	}
+	return res;
+}
+
+void update(int *tree, int size, int index, int delta)
+{
+	while (index < size)
+	{
+		tree[index] += delta;
+		index += index & -index;
+	}
+}
+/********end of Fenwick tree(BIT)********/
