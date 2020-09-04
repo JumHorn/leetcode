@@ -1,5 +1,59 @@
+#include <algorithm>
 #include <string>
+#include <vector>
 using namespace std;
+
+/*
+So we need a data structure to store the indexes of picked numbers,
+to support fast calculation of the new index of each remaining number.
+BIT, Segment Tree and Balanced Binary Search Tree can do this.
+we can make use of sortedcontainers
+*/
+
+/*
+BIT
+
+original string: "1 2 4 0 5 6 7", original k = 3;
+use/not state:    1 1 1 0 1 1 1 (1: not been used, 0: used);
+prefix sum:       1 2 3 3 4 5 6 real index = prefixsum + used
+
+original string: "1 4 2 5 6 7", k = 2;
+use/not state:    0 1 0 1 1 1 (1: not been used, 0: used);
+prefix sum:       0 1 1 2 3 4
+*/
+
+//Fenwick tree
+class Fenwick
+{
+public:
+	Fenwick(int size) : tree(size + 1) {}
+
+	int sum(int index) const
+	{
+		int res = 0;
+		++index;
+		while (index > 0)
+		{
+			res += tree[index];
+			index -= index & -index;
+		}
+		return res;
+	}
+
+	void update(int index, int delta)
+	{
+		++index;
+		int size = tree.size();
+		while (index < size)
+		{
+			tree[index] += delta;
+			index += index & -index;
+		}
+	}
+
+private:
+	vector<int> tree;
+};
 
 class Solution
 {
@@ -12,20 +66,41 @@ public:
 			sort(num.begin(), num.end());
 			return num;
 		}
-		recursion(num, 0, k);
-		return num;
-	}
-
-	void recursion(string &num, int index, int k)
-	{
-		int n = num.length();
-		if (k == 0 || index >= n)
-			return;
-		auto iter = min_element(num.begin() + index, num.begin() + index + min(k + 1, n - index));
-		for (int i = iter - num.begin(); i > index; --i)
+		Fenwick bit(n);
+		for (int i = 0; i < n; ++i)
+			bit.update(i, 1);
+		vector<vector<int>> count(10);
+		for (int i = n - 1; i >= 0; --i)
+			count[num[i] - '0'].push_back(i);
+		string res;
+		vector<int> seen(n);
+		bool flag = true;
+		for (int c = k; c > 0 && flag;)
 		{
-			swap(num[i], num[i - 1]);
+			flag = false;
+			for (int i = 0; i < 10; ++i)
+			{
+				if (!count[i].empty())
+				{
+					flag = true;
+					int index = count[i].back();
+					int move = bit.sum(index) - 1;
+					if (c < move)
+						continue;
+					seen[index] = 1;
+					res.push_back(i + '0');
+					c -= move;
+					bit.update(index, -1);
+					count[i].pop_back();
+					break;
+				}
+			}
 		}
-		recursion(num, index + 1, k - (iter - num.begin()) + index);
+		for (int i = 0; i < n; ++i)
+		{
+			if (seen[i] == 0)
+				res.push_back(num[i]);
+		}
+		return res;
 	}
 };
