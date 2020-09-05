@@ -9,17 +9,21 @@ public:
 		int n = arr.size(), top = n, bottom = -1;
 		if (n == 1)
 			return 0;
+		bool increasing = true, decreasing = true;
 		for (int i = 1; i < n; ++i)
 		{
 			if (arr[i] < arr[i - 1])
 			{
+				increasing = false;
 				top = min(top, i - 1);
 				bottom = max(bottom, i);
 			}
+			else
+				decreasing = false;
 		}
-		if (top == n)
+		if (increasing) //increasing array
 			return 0;
-		if (bottom == n - 1)
+		if (decreasing) //decreasing arrary
 			return n - 1;
 		int res = bottom - top - 1;
 		int i = bottom;
