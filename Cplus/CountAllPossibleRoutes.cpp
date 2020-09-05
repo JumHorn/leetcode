@@ -5,7 +5,7 @@ using namespace std;
 class Solution
 {
 public:
-	int memdp(vector<int> &locations, int start, int finish, int fuel, vector<vector<int>> dp)
+	int memdp(vector<int> &locations, int start, int finish, int fuel, vector<vector<int>> &dp)
 	{
 		if (fuel == 0)
 			return start == finish ? 1 : 0;
