@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <climits>
 #include <vector>
 using namespace std;
 
@@ -26,6 +27,11 @@ public:
 		parent[yr] = xr;
 		rank[xr] += rank[yr];
 		return true;
+	}
+	//all nodes united into a single component
+	bool United()
+	{
+		return rank[Find(0)] == parent.size();
 	}
 
 private:
@@ -74,12 +80,7 @@ public:
 				++count;
 			}
 		}
-		for (int i = 0; i < n; ++i)
-		{
-			if (dsu.Find(i) != dsu.Find(0))
-				return INT_MAX;
-		}
-		return res;
+		return dsu.United() ? res : INT_MAX;
 	}
 
 	bool operator()(vector<int> &lhs, vector<int> &rhs)

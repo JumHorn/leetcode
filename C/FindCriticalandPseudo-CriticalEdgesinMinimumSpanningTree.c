@@ -8,6 +8,7 @@ typedef struct DSU
 {
 	int *parent;
 	int *rank;
+	int size;
 } DSU;
 
 DSU *dsu_init(int N)
@@ -15,6 +16,7 @@ DSU *dsu_init(int N)
 	DSU *dsu = (DSU *)malloc(sizeof(DSU));
 	dsu->parent = (int *)malloc(sizeof(int) * N);
 	dsu->rank = (int *)malloc(sizeof(int) * N);
+	dsu->size = N;
 	for (int i = 0; i < N; i++)
 	{
 		dsu->parent[i] = i;
@@ -52,6 +54,11 @@ bool dsu_union(DSU *dsu, int x, int y)
 	return true;
 }
 
+bool dsu_united(DSU *dsu)
+{
+	return dsu->rank[dsu_find(dsu, 0)] == dsu->size;
+}
+
 typedef struct EDGES
 {
 	int from;
@@ -85,12 +92,7 @@ int mimimumSpanningTree(int n, EDGES *edges, int edgesSize, int pre_edge, int bl
 			++count;
 		}
 	}
-	for (int i = 0; i < n; ++i)
-	{
-		if (dsu_find(dsu, i) != dsu_find(dsu, 0))
-			return INT_MAX;
-	}
-	return res;
+	return dsu_united(dsu) ? res : INT_MAX;
 }
 
 /**
