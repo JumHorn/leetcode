@@ -35,7 +35,7 @@ public:
 	bool fullTraversal()
 	{
 		int size = parent.size() - 1;
-		return rank[1] == size;
+		return rank[Find(1)] == size;
 	}
 
 private:
@@ -53,33 +53,23 @@ public:
 		for (int i = 0; i < (int)edges.size(); ++i)
 			type[edges[i][0] - 1].push_back(i);
 		vector<int> mark(n + 1);
-		int res = 0;
+		int edgeAdded = 0;
 		DSU alice(n + 1), bob(n + 1);
+		for (int i = 0; i < type[2].size(); ++i)
+		{
+			if (alice.Union(edges[type[2][i]][1], edges[type[2][i]][2]) | bob.Union(edges[type[2][i]][1], edges[type[2][i]][2]))
+				++edgeAdded;
+		}
 		for (int i = 0; i < type[0].size(); ++i)
 		{
-			if (!alice.Union(edges[type[0][i]][1], edges[type[0][i]][2]))
-				++res;
+			if (alice.Union(edges[type[0][i]][1], edges[type[0][i]][2]))
+				++edgeAdded;
 		}
 		for (int i = 0; i < type[1].size(); ++i)
 		{
-			if (!bob.Union(edges[type[1][i]][1], edges[type[1][i]][2]))
-				++res;
+			if (bob.Union(edges[type[1][i]][1], edges[type[1][i]][2]))
+				++edgeAdded;
 		}
-		for (int i = 0; i < type[2].size(); ++i)
-		{
-			if (!alice.Union(edges[type[2][i]][1], edges[type[2][i]][2]))
-				++mark[type[2][i]];
-		}
-		for (int i = 0; i < type[2].size(); ++i)
-		{
-			if (!bob.Union(edges[type[2][i]][1], edges[type[2][i]][2]))
-			{
-				if (++mark[type[2][i]] == 2)
-					++res;
-			}
-		}
-		if (!alice.fullTraversal() || !bob.fullTraversal())
-			return -1;
-		return res;
+		return (!alice.fullTraversal() || !bob.fullTraversal()) ? -1 : edges.size() - edgeAdded;
 	}
 };
