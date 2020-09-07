@@ -21,7 +21,7 @@ public:
 		int m = grid.size(), n = grid[0].size();
 		if (k >= m + n - 1)
 			return m + n - 2;
-		vector<vector<vector<int>>> goal(m, vector<vector<int>>(n, vector<int>((k+1), 5000)));
+		vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>((k + 1), 5000)));
 		queue<info> q;
 		q.push(info(0, 0, k, 0));
 		int res = 0;
@@ -31,65 +31,21 @@ public:
 			++res;
 			while (--size >= 0)
 			{
-				info top = q.front();
+				const info top = q.front();
 				q.pop();
-				info tmp = top;
-				if (tmp.i - 1 >= 0)
+				int path[5] = {-1, 0, 1, 0, -1};
+				for (int i = 0; i < 4; ++i)
 				{
-					tmp.i -= 1;
-					tmp.k -= grid[tmp.i][tmp.j];
-					tmp.step += 1;
-					if (tmp.k >= 0 && tmp.step < goal[tmp.i][tmp.j][tmp.k])
+					int dx = top.i + path[i], dy = top.j + path[i + 1];
+					if (dx < 0 || dx >= m || dy < 0 || dy >= n)
+						continue;
+					int dk = top.k - grid[dx][dy];
+					if (dk >= 0 && top.step + 1 < dp[dx][dy][dk])
 					{
-						goal[tmp.i][tmp.j][tmp.k] = tmp.step;
-						if (tmp.i == m - 1 && tmp.j == n - 1)
+						dp[dx][dy][dk] = top.step + 1;
+						if (dx == m - 1 && dy == n - 1)
 							return res;
-						q.push(tmp);
-					}
-				}
-
-				tmp = top;
-				if (tmp.i + 1 < m)
-				{
-					tmp.i += 1;
-					tmp.k -= grid[tmp.i][tmp.j];
-					tmp.step += 1;
-					if (tmp.k >= 0 && tmp.step < goal[tmp.i][tmp.j][tmp.k])
-					{
-						goal[tmp.i][tmp.j][tmp.k] = tmp.step;
-						if (tmp.i == m - 1 && tmp.j == n - 1)
-							return res;
-						q.push(tmp);
-					}
-				}
-
-				tmp = top;
-				if (tmp.j - 1 >= 0)
-				{
-					tmp.j -= 1;
-					tmp.k -= grid[tmp.i][tmp.j];
-					tmp.step += 1;
-					if (tmp.k >= 0 && tmp.step < goal[tmp.i][tmp.j][tmp.k])
-					{
-						goal[tmp.i][tmp.j][tmp.k] = tmp.step;
-						if (tmp.i == m - 1 && tmp.j == n - 1)
-							return res;
-						q.push(tmp);
-					}
-				}
-
-				tmp = top;
-				if (tmp.j + 1 < n)
-				{
-					tmp.j += 1;
-					tmp.k -= grid[tmp.i][tmp.j];
-					tmp.step += 1;
-					if (tmp.k >= 0 && tmp.step < goal[tmp.i][tmp.j][tmp.k])
-					{
-						goal[tmp.i][tmp.j][tmp.k] = tmp.step;
-						if (tmp.i == m - 1 && tmp.j == n - 1)
-							return res;
-						q.push(tmp);
+						q.push(info(dx, dy, dk, top.step + 1));
 					}
 				}
 			}
@@ -97,12 +53,3 @@ public:
 		return -1;
 	}
 };
-
-
-int main()
-{
-	vector<vector<int>> v={{0,0,0},{1,1,0},{0,0,0},{0,1,1},{0,0,0}};
-	Solution sol;
-	sol.shortestPath(v,1);
-	return 0;
-}
