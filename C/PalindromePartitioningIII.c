@@ -2,7 +2,7 @@
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int palindromePartition(char* s, int k)
+int palindromePartition(char *s, int k)
 {
 	int N = strlen(s);
 	int dp[k][N][N];
@@ -22,14 +22,11 @@ int palindromePartition(char* s, int k)
 
 	for (int m = 1; m < k; ++m)
 	{
-		for (int n = 1; n < N; ++n)
+		for (int i = 0; i < N; ++i)
 		{
-			for (int i = 0, j = n; j < N; ++i, ++j)
-			{
-				dp[m][i][j] = N;
-				for (int l = i; l < j; ++l)
-					dp[m][i][j] = min(dp[m][i][j], dp[0][i][l] + dp[m - 1][l + 1][j]);
-			}
+			dp[m][i][N - 1] = N;
+			for (int j = i; j < N - 1; ++j)
+				dp[m][i][N - 1] = min(dp[m][i][N - 1], dp[0][i][j] + dp[m - 1][j + 1][N - 1]);
 		}
 	}
 	return dp[k - 1][0][N - 1];
