@@ -1,6 +1,12 @@
 #include <string>
 #include <unordered_set>
+#include <vector>
 using namespace std;
+
+/*
+dp[i][j] = k stands for two sub strings that
+start from text[i] and text[j] respectively are same at most k characters
+*/
 
 class Solution
 {
@@ -9,12 +15,14 @@ public:
 	{
 		int N = text.size();
 		unordered_set<string> s;
-		for (int i = 2; i <= N; i += 2)
+		vector<vector<int>> dp(N + 1, vector<int>(N + 1));
+		for (int j = N - 1; j > 0; --j)
 		{
-			for (int j = 0; j <= N - i; ++j)
+			for (int i = j - 1; i >= 0; --i)
 			{
-				if (text.compare(j, i / 2, text, j + i / 2, i / 2) == 0)
-					s.insert(text.substr(j, i / 2));
+				dp[i][j] = text[i] == text[j] ? dp[i + 1][j + 1] + 1 : 0;
+				if (dp[i][j] >= j - i)
+					s.insert(text.substr(i, j - i));
 			}
 		}
 		return s.size();
