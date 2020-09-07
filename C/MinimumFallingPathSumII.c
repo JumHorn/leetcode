@@ -1,12 +1,12 @@
 #include <limits.h>
 
-int minFallingPathSum(int** arr, int arrSize, int* arrColSize)
+int minFallingPathSum(int **arr, int arrSize, int *arrColSize)
 {
 	int m = arrSize, n = *arrColSize;
-	for (int i = 1; i < m; i++)
+	for (int i = 1; i < m; ++i)
 	{
 		int first = INT_MAX, second = INT_MAX, index = -1;
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < n; ++j)
 		{
 			if (arr[i - 1][j] < first)
 			{
@@ -17,13 +17,8 @@ int minFallingPathSum(int** arr, int arrSize, int* arrColSize)
 			else if (arr[i - 1][j] < second)
 				second = arr[i - 1][j];
 		}
-		for (int j = 0; j < n; j++)
-		{
-			if (index == j)
-				arr[i][j] += second;
-			else
-				arr[i][j] += first;
-		}
+		for (int j = 0; j < n; ++j)
+			arr[i][j] += j == index ? second : first;
 	}
 	int res = INT_MAX;
 	for (int j = 0; j < n; j++)
@@ -31,4 +26,3 @@ int minFallingPathSum(int** arr, int arrSize, int* arrColSize)
 			res = arr[m - 1][j];
 	return res;
 }
-
