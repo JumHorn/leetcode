@@ -20,11 +20,11 @@ public:
 		return res;
 	}
 
-	void recursive(vector<int>& res, vector<int>& seen, int n, int len)
+	void recursive(vector<int> &res, vector<int> &seen, int n, int len)
 	{
 		for (int i = 0; i < len; i++)
 		{
-			int tmp = bitReverse(n, i);
+			int tmp = bitFlip(n, i);
 			if (seen[tmp] == 0)
 			{
 				seen[tmp] = 1;
@@ -35,8 +35,8 @@ public:
 		}
 	}
 
-	int bitReverse(int num, int bit)
+	int bitFlip(int num, int bit)
 	{
-		return ((~num) & (1u << bit)) | (num & (~(1u << bit)));
+		return num ^ (1 << bit);
 	}
 };

@@ -5,9 +5,9 @@
  * Note: The returned array must be malloced, assume caller calls free().
  */
 
-int bitReverse(int num, int bit)
+int bitFlip(int num, int bit)
 {
-	return ((~num) & (1u << bit)) | (num & (~(1u << bit)));
+	return num ^ (1 << bit);
 }
 
 int bitCount(int x)
@@ -20,12 +20,12 @@ int bitCount(int x)
 	return x & 0x3F;
 }
 
-bool* canMakePaliQueries(char* s, int** queries, int queriesSize, int* queriesColSize, int* returnSize)
+bool *canMakePaliQueries(char *s, int **queries, int queriesSize, int *queriesColSize, int *returnSize)
 {
-	bool* res = (bool*)malloc(queriesSize * sizeof(bool));
+	bool *res = (bool *)malloc(queriesSize * sizeof(bool));
 	*returnSize = queriesSize;
 	int len = strlen(s);
-	int* dp = (int*)malloc((len + 1) * sizeof(int));
+	int *dp = (int *)malloc((len + 1) * sizeof(int));
 	dp[0] = 0;
 	for (int i = 0; i < len; i++)
 		dp[i + 1] = (dp[i] ^ (1 << (s[i] - 'a')));
