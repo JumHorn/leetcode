@@ -8,18 +8,22 @@ class Solution
 public:
 	int minFlips(vector<vector<int>> &mat)
 	{
-		unordered_set<int> visited;
+		unordered_set<int> seen;
 		int m = mat.size(), n = mat[0].size(), matrix = 0;
 		for (int i = 0; i < m; i++)
+		{
 			for (int j = 0; j < n; j++)
+			{
 				if (mat[i][j] == 1)
 					matrix = bitFlip(matrix, i * n + j);
+			}
+		}
 		if (matrix == 0)
 			return 0;
 		queue<int> q;
 		q.push(matrix);
 		int res = 0;
-		visited.insert(matrix);
+		seen.insert(matrix);
 		while (!q.empty())
 		{
 			int size = q.size();
@@ -29,17 +33,19 @@ public:
 				int top = q.front();
 				q.pop();
 				for (int i = 0; i < m; i++)
+				{
 					for (int j = 0; j < n; j++)
 					{
-						int tmp = encodeFlip(top, m, n, i, j);
-						if (tmp == 0)
+						int state = encodeFlip(top, m, n, i, j);
+						if (state == 0)
 							return res;
-						if (visited.find(tmp) == visited.end())
+						if (seen.find(state) == seen.end())
 						{
-							visited.insert(tmp);
-							q.push(tmp);
+							seen.insert(state);
+							q.push(state);
 						}
 					}
+				}
 			}
 		}
 		return -1;
