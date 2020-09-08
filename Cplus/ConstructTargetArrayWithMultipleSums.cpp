@@ -1,6 +1,4 @@
-#include <algorithm>
 #include <queue>
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -18,20 +16,20 @@ public:
 		}
 		while (!q.empty())
 		{
-			int tmp = q.top();
+			int largest = q.top();
 			q.pop();
-			if (tmp == 1)
+			if (largest == 1)
 				return true;
-			sum -= tmp;
-			if (sum == 1)
+			sum -= largest;
+			if (sum == 1) //only two number,the other is 1
 				return true;
-			if (tmp < sum)
+			if (largest < sum || sum == 0)
 				return false;
-			tmp = tmp - tmp / sum * sum;
-			sum += tmp;
-			if (tmp < 1)
+			largest = largest - largest / sum * sum; //for single large element,substract many times
+			sum += largest;
+			if (largest < 1)
 				return false;
-			q.push(tmp);
+			q.push(largest);
 		}
 		return false;
 	}
