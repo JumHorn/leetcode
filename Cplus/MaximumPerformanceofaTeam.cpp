@@ -9,32 +9,26 @@ class Solution
 public:
 	int maxPerformance(int n, vector<int> &speed, vector<int> &efficiency, int k)
 	{
-		static const int MOD = 1e9 + 7;
-		vector<vector<long long>> v;
-		vector<int> heap(k);
+		vector<vector<int>> v;
 		for (int i = 0; i < n; i++)
 			v.push_back({efficiency[i], speed[i]});
-		sort(v.begin(), v.end(), greater<vector<long long>>());
-		long long res = 0, s = 0;
-		for (int i = 0; i < k; i++)
+		sort(v.begin(), v.end(), greater<vector<int>>());
+		long long res = 0, sum = 0;
+		priority_queue<int> q;
+		for (int i = 0; i < n; ++i)
 		{
-			heap[i] = v[i][1];
-			s += v[i][1];
-			res = max(res, v[i][0] * s);
-		}
-		make_heap(heap.begin(), heap.end(), greater<int>());
-		pop_heap(heap.begin(), heap.end(), greater<int>());
-		for (int i = k; i < n; i++)
-		{
-			if (v[i][1] > heap.back())
+			q.push(-v[i][1]);
+			sum += v[i][1];
+			if ((int)q.size() > k)
 			{
-				s = s - heap.back() + v[i][1];
-				heap.back() = v[i][1];
-				res = max(res, v[i][0] * s);
-				push_heap(heap.begin(), heap.end(), greater<int>());
-				pop_heap(heap.begin(), heap.end(), greater<int>());
+				sum += q.top();
+				q.pop();
 			}
+			res = max(res, v[i][0] * sum);
 		}
 		return res % MOD;
 	}
+
+private:
+	static const int MOD = 1e9 + 7;
 };
