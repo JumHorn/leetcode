@@ -13,22 +13,20 @@ public:
 			graph[edge[0]].insert(edge[1]);
 			graph[edge[1]].insert(edge[0]);
 		}
-		return dfs(graph, 1, t, target);
+		return backTracking(graph, 1, t, target);
 	}
 
-	double dfs(vector<unordered_set<int>> &graph, int index, int t, int target)
+	double backTracking(vector<unordered_set<int>> &graph, int index, int t, int target)
 	{
-		if (t == 0 || graph[index].size() == 0)
-		{
-			return index == target ? 1 : 0;
-		}
 		int n = graph[index].size();
+		if (t == 0 || n == 0)
+			return index == target ? 1 : 0;
 		for (auto to : graph[index])
 		{
 			graph[to].erase(index);
-			double tmp = 1.0 / n * dfs(graph, to, t - 1, target);
-			if (tmp != 0)
-				return tmp;
+			double res = 1.0 / n * backTracking(graph, to, t - 1, target);
+			if (res != 0)
+				return res;
 		}
 		return 0;
 	}
