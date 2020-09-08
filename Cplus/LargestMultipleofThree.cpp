@@ -8,46 +8,50 @@ class Solution
 public:
 	string largestMultipleOfThree(vector<int> &digits)
 	{
+		v = vector<int>(10);
+		sum = 0;
 		string res;
-		vector<vector<int>> v(3);
 		int n = digits.size();
 		for (int i = 0; i < n; i++)
 		{
-			if (digits[i] % 3 == 0)
-				res.push_back(digits[i] + '0');
-			else if (digits[i] % 3 == 1)
-				v[1].push_back(digits[i]);
-			else
-				v[2].push_back(digits[i]);
+			++v[digits[i]];
+			sum += digits[i];
 		}
-		sort(v[1].begin(), v[1].end(), greater<int>());
-		sort(v[2].begin(), v[2].end(), greater<int>());
-		n = min(v[1].size(), v[2].size());
-		if (v[1].size() - n == 2 || v[2].size() - n == 2)
-			if (n != 0)
-				n = n - 1;
-		for (int i = 0; i < n; i++)
+
+		if (sum % 3 == 1)
 		{
-			res.push_back(v[1][i] + '0');
-			res.push_back(v[2][i] + '0');
+			if (!(f(1) || f(4) || f(7)))
+				f(2) || f(2) || f(5) || f(5) || f(8) || f(8);
 		}
-		for (int i = n; i + 3 <= (int)v[1].size(); i += 3)
+		else if (sum % 3 == 2)
 		{
-			res.push_back(v[1][i] + '0');
-			res.push_back(v[1][i + 1] + '0');
-			res.push_back(v[1][i + 2] + '0');
+			if (!(f(2) || f(5) || f(8)))
+				f(1) || f(1) || f(4) || f(4) || f(7) || f(7);
 		}
-		for (int i = n; i + 3 <= (int)v[2].size(); i += 3)
+
+		for (int i = 9; i >= 0; --i)
 		{
-			res.push_back(v[2][i] + '0');
-			res.push_back(v[2][i + 1] + '0');
-			res.push_back(v[2][i + 2] + '0');
+			while (--v[i] >= 0)
+				res.push_back(i + '0');
 		}
-		sort(res.begin(), res.end(), greater<char>());
 		if (res.empty())
 			return "";
-		if (res.front() == '0')
+		if (res[0] == '0')
 			return "0";
 		return res;
 	}
+
+	bool f(int index)
+	{
+		if (v[index] > 0)
+		{
+			--v[index];
+			sum -= index % 3;
+		}
+		return sum % 3 == 0;
+	}
+
+private:
+	int sum;
+	vector<int> v;
 };
