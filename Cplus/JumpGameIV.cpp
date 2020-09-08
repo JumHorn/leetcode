@@ -1,17 +1,17 @@
-#include <map>
 #include <queue>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int minJumps(vector<int>& arr)
+	int minJumps(vector<int> &arr)
 	{
-		if (arr.size() == 1)
-			return 0;
 		int res = 0, n = arr.size();
-		map<int, vector<int>> m;
+		if (n <= 1)
+			return res;
+		unordered_map<int, vector<int>> m;
 		for (int i = 0; i < n; i++)
 			m[arr[i]].push_back(i);
 		vector<int> seen(n);
@@ -21,41 +21,34 @@ public:
 		while (!q.empty())
 		{
 			int size = q.size();
-			res++;
-			priority_queue<int> newq;
+			++res;
 			while (--size >= 0)
 			{
-				int tmp = q.front();
+				int front = q.front();
 				q.pop();
-				if (tmp - 1 >= 0 && seen[tmp - 1] == 0)
+				if (front == n - 1)
+					return res - 1;
+				if (front - 1 >= 0 && seen[front - 1] == 0)
 				{
-					newq.push(tmp - 1);
-					seen[tmp - 1] = 1;
+					q.push(front - 1);
+					seen[front - 1] = 1;
 				}
-				if (tmp + 1 < n && seen[tmp + 1] == 0)
+				if (front + 1 < n && seen[front + 1] == 0)
 				{
-					if (tmp + 1 == n - 1)
-						return res;
-					newq.push(tmp + 1);
-					seen[tmp + 1] = 1;
+					q.push(front + 1);
+					seen[front + 1] = 1;
 				}
-				for (auto t : m[arr[tmp]])
+				for (auto t : m[arr[front]])
 				{
 					if (seen[t] == 0)
 					{
-						if (t == n - 1)
-							return res;
 						seen[t] = 1;
-						newq.push(t);
+						q.push(t);
 					}
 				}
-			}
-			while (!newq.empty())
-			{
-				q.push(newq.top());
-				newq.pop();
+				m.erase(arr[front]);
 			}
 		}
-		return res;
+		return -1;
 	}
 };
