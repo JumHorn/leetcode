@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -9,34 +8,29 @@ public:
 	int maxJumps(vector<int> &arr, int d)
 	{
 		int N = arr.size();
-		vector<int> dp(N);
+		vector<pair<int, int>> v;
 		for (int i = 0; i < N; ++i)
-			memdp(arr, d, i, dp);
-		int res = 1;
-		for (int i = 0; i < N; ++i)
-			res = max(res, dp[i]);
-		return res;
-	}
+			v.push_back({arr[i], i});
+		sort(v.begin(), v.end());
 
-	void memdp(vector<int> &arr, int d, int index, vector<int> &dp)
-	{
-		int left = index - 1, right = index + 1, left_max = 0, right_max = 0, N = arr.size();
-		if (dp[index] != 0)
-			return;
-		while (left >= max(0, index - d) && arr[left] < arr[index])
+		int res = 1;
+		vector<int> dp(N, 1);
+		for (int i = 0; i < N; ++i)
 		{
-			if (dp[left] == 0)
-				memdp(arr, d, left, dp);
-			left_max = max(left_max, dp[left]);
-			--left;
+			int index = v[i].second;
+			int left = index - 1, right = index + 1;
+			while (left >= max(0, index - d) && arr[left] < arr[index])
+			{
+				dp[index] = max(dp[index], dp[left] + 1);
+				--left;
+			}
+			while (right <= min(N - 1, index + d) && arr[right] < arr[index])
+			{
+				dp[index] = max(dp[index], dp[right] + 1);
+				++right;
+			}
+			res = max(res, dp[index]);
 		}
-		while (right <= min(N - 1, index + d) && arr[right] < arr[index])
-		{
-			if (dp[right] == 0)
-				memdp(arr, d, right, dp);
-			right_max = max(right_max, dp[right]);
-			++right;
-		}
-		dp[index] = 1 + max(left_max, right_max);
+		return res;
 	}
 };
