@@ -1,5 +1,5 @@
+#include <algorithm>
 #include <cmath>
-#include <numeric>
 #include <vector>
 using namespace std;
 
@@ -8,54 +8,38 @@ class Solution
 public:
 	int maxStudents(vector<vector<char>> &seats)
 	{
-		int n = seats.size(), m = seats[0].size();
-		vector<int> mask(n);
-		for (int i = 0; i < n; i++)
+		int m = seats.size(), n = seats[0].size();
+		vector<int> mask(m);
+		for (int i = 0; i < m; i++)
 		{
-			for (int j = 0; j < m; j++)
-				if (seats[i][j] == '#')
-					mask[i] |= 1 << j;
-		}
-		vector<vector<int>> dp(n, vector<int>(pow(2, m)));
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < pow(2, m); j++)
+			for (int j = 0; j < n; j++)
 			{
-				//broken seat check
-				if ((j & mask[i]) != 0)
-					continue;
-				//neighber seat check
-				int k;
-				for (k = 0; k < m - 1; k++)
+				if (seats[i][j] == '.')
+					mask[i] |= 1 << j;
+			}
+		}
+		vector<vector<int>> dp(m + 1, vector<int>(1 << n));
+		for (int k = 0; k < m; ++k)
+		{
+			for (int i = 0; i < 1 << n; ++i)
+			{
+				for (int j = 0; j < 1 << n; ++j)
 				{
-					if (((j >> k) & 3u) == 3)
-						break;
-				}
-				if (k != m - 1)
-					continue;
-				//front seat check
-				if (i == 0)
-				{
-					dp[i][j] = bitCount(j);
-					continue;
-				}
-				for (int l = 0; l < pow(2, m); l++)
-				{
-					if (((~j) & ((j >> 1) | (j << 1)) & l) == 0)
-						dp[i][j] = max(dp[i][j], dp[i - 1][l] + bitCount(j));
+					if ((j & mask[k]) == j && (j & (j << 1)) == 0 && (i & (j << 1)) == 0 && (i & (j >> 1)) == 0)
+						dp[k + 1][j] = max(dp[k + 1][j], dp[k][i] + bitCount(j));
 				}
 			}
 		}
 		return *max_element(dp.back().begin(), dp.back().end());
 	}
 
-	int bitCount(int x)
+	int bitCount(int n)
 	{
 		int res = 0;
-		while (x != 0)
+		while (n != 0)
 		{
-			res++;
-			x &= x - 1;
+			++res;
+			n &= n - 1;
 		}
 		return res;
 	}
