@@ -5,26 +5,63 @@ using namespace std;
 class TreeAncestor
 {
 public:
-	TreeAncestor(int n, vector<int>& parent) : m_parent(parent), cache(n)
+	TreeAncestor(int n, vector<int> &parent) : m_parent(parent), cache(n)
 	{
+		for (int i = 0; i < n; ++i)
+			cache[i].push_back(parent[i]);
 	}
 
 	int getKthAncestor(int node, int k)
 	{
-		if (node != 0 && cache[node].empty())
-		{
-			if (node != 0 && cache[m_parent[node]].empty())
-				getKthAncestor(m_parent[node], k);
-			cache[node].push_back(m_parent[node]);
-			cache[node].insert(cache[node].end(), cache[m_parent[node]].begin(), cache[m_parent[node]].end());
-		}
-		if (k - 1 >= (int)cache[node].size())
+		if (k == 0)
+			return node;
+		if (node == 0)
 			return -1;
-		return cache[node][k - 1];
+		int n = index(k);
+		if (n >= (int)cache[node].size())
+		{
+			int last = 1 << (cache[node].size() - 1);
+			int parent = cache[node][cache[node].size() - 1];
+			for (int i = last + 1; i <= 1 << n; ++i)
+			{
+				parent = m_parent[parent];
+				if (parent == -1)
+					return -1;
+				if (bitCount(i) == 1)
+				{
+					cache[node].push_back(parent);
+					int j = cache[node].size() - 1;
+					if (cache[cache[node][j - 1]].size() <= j - 1)
+						cache[cache[node][j - 1]].push_back(parent);
+				}
+			}
+		}
+		return getKthAncestor(cache[node][n], k - (1 << n));
+	}
+
+	int bitCount(int n)
+	{
+		int res = 0;
+		while (n != 0)
+		{
+			++res;
+			n &= n - 1;
+		}
+		return res;
+	}
+
+	int index(int n)
+	{
+		int res = 0;
+		if (n == 0)
+			return 0;
+		while ((1 << res) <= n)
+			++res;
+		return res - 1;
 	}
 
 private:
-	vector<int>& m_parent;
+	vector<int> &m_parent;
 	vector<vector<int>> cache;
 };
 
