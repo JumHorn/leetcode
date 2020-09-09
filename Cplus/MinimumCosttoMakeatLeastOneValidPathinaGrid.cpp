@@ -1,4 +1,3 @@
-#include <climits>
 #include <queue>
 #include <vector>
 using namespace std;
@@ -10,28 +9,28 @@ public:
 	{
 		int m = grid.size(), n = grid[0].size();
 		vector<vector<int>> seen(m, vector<int>(n));
-		priority_queue<pair<int, int>> q;
+		priority_queue<pair<int, int>> q; //{cost,position}
 		int res = 0;
 		q.push({0, 0});
 		while (!q.empty())
 		{
-			auto tmp = q.top();
+			auto top = q.top();
 			q.pop();
-			int i = tmp.second / n, j = tmp.second % n;
-			res = -tmp.first;
+			int i = top.second / n, j = top.second % n;
+			res = -top.first;
 			if (seen[i][j] == 1)
 				continue;
 			if (i == m - 1 && j == n - 1)
 				return res;
 			seen[i][j] = 1;
 			if (i - 1 >= 0)
-				q.push({tmp.first - (grid[i][j] == 4 ? 0 : 1), (i - 1) * n + j});
+				q.push({top.first - (grid[i][j] == 4 ? 0 : 1), (i - 1) * n + j});
 			if (i + 1 < m)
-				q.push({tmp.first - (grid[i][j] == 3 ? 0 : 1), (i + 1) * n + j});
+				q.push({top.first - (grid[i][j] == 3 ? 0 : 1), (i + 1) * n + j});
 			if (j - 1 >= 0)
-				q.push({tmp.first - (grid[i][j] == 2 ? 0 : 1), i * n + j - 1});
+				q.push({top.first - (grid[i][j] == 2 ? 0 : 1), i * n + j - 1});
 			if (j + 1 < n)
-				q.push({tmp.first - (grid[i][j] == 1 ? 0 : 1), i * n + j + 1});
+				q.push({top.first - (grid[i][j] == 1 ? 0 : 1), i * n + j + 1});
 		}
 		return res;
 	}
