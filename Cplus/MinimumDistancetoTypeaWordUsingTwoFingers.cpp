@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <climits>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -9,27 +10,29 @@ class Solution
 public:
 	int minimumDistance(string word)
 	{
-		int dp[27][27][301] = {{{0}}};
-		return minimumDistance(word, 0, 'A' - 1, 'A' - 1, dp);
+		vector<vector<vector<int>>> dp(word.size(), vector<vector<int>>(26, vector<int>(26, -1)));
+		int res = INT_MAX;
+		for (int i = 0; i < 26; ++i)
+		{
+			for (int j = 0; j < 26; ++j)
+				res = min(res, memdp(word, 0, i, j, dp));
+		}
+		return res;
 	}
 
-	int minimumDistance(const string &word, int index, char finger1, char finger2, int (*dp)[27][301])
+	int memdp(const string &word, int index, int finger1, int finger2, vector<vector<vector<int>>> &dp)
 	{
 		if (index >= (int)word.size())
 			return 0;
-		if (dp[finger1 - 'A' + 1][finger2 - 'A' + 1][index] != 0)
-			return dp[finger1 - 'A' + 1][finger2 - 'A' + 1][index];
-		dp[finger1 - 'A' + 1][finger2 - 'A' + 1][index] =
-			min(distance(finger1, word[index]) + minimumDistance(word, index + 1, word[index], finger2, dp),
-				distance(finger2, word[index]) + minimumDistance(word, index + 1, finger1, word[index], dp));
-		return dp[finger1 - 'A' + 1][finger2 - 'A' + 1][index];
+		if (dp[index][finger1][finger2] != -1)
+			return dp[index][finger1][finger2];
+		return dp[index][finger1][finger2] =
+				   min(distance(finger1, word[index] - 'A') + memdp(word, index + 1, word[index] - 'A', finger2, dp),
+					   distance(finger2, word[index] - 'A') + memdp(word, index + 1, finger1, word[index] - 'A', dp));
 	}
 
-	int distance(char a, char b)
+	int distance(int pos1, int pos2)
 	{
-		if (a == 'A' - 1)
-			return 0;
-		int ai = (a - 'A') / 6, aj = (a - 'A') % 6, bi = (b - 'A') / 6, bj = (b - 'A') % 6;
-		return abs(ai - bi) + abs(aj - bj);
+		return abs(pos1 % 6 - pos2 % 6) + abs(pos1 / 6 - pos2 / 6);
 	}
 };
