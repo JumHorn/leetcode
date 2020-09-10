@@ -1,195 +1,169 @@
-#include<vector>
-#include<map>
-#include<set>
-#include<algorithm>
-#include<numeric>
-#include<iostream>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+/*
+a year later I still fail to pass the testcase below
+however My code is much clear than before.
+Even I can print the result to prove my understandings
+*/
+
+class Solution
+{
 public:
-    int containVirus(vector<vector<int>>& grid) {
-		int M=grid.size(),N=grid[0].size(),res=0;
-		vector<vector<int>> newgrid(M*2-1,vector<int>(N*2-1));        
-		int tag=2;
-		for(int i=0;i<M;i++)
-			for(int j=0;j<N;j++)
-				if(grid[i][j]==1)
-					tagArea(grid,tag++,i,j);
-		for(int i=0;i<M;i++)
-			for(int j=0;j<N;j++)
-				newgrid[2*i][2*j]=grid[i][j];
-
-		map<int,int> affectedmap;
-        pair<int,int> maxpair;
-        do
-        {
-            affectedmap=getAffected(newgrid,M,N);
-            if(affectedmap.empty())
-                break;
-            maxpair=getMaxPair(affectedmap);
-            res+=maxpair.second;
-            if(affectedmap.size()<=1)
-                break;
-            buildWalls(newgrid,M,N,maxpair.first);
-            cout<<"build walls"<<endl;
-            print(newgrid);
-            affectedExpand(newgrid,M,N);
-            cout<<"affected Expand"<<endl;
-            print(newgrid);
-        }while(maxpair.second!=0);
-		return res;
-    }
-
-    void print(vector<vector<int>>& newgrid)
-    {
-        for(auto n:newgrid)
-        {
-            for(auto m:n)
-                printf("%-3d",m);
-            cout<<endl;
-        }
-    }
-
-    void affectedExpand(vector<vector<int>>& newgrid,int M,int N)
-    {
-        set<pair<int,int>> v;
-		for(int i=0;i<M;i++)
-			for(int j=0;j<N;j++)
-			{
-				set<int> s;
-                bool flag=false;
-				if(newgrid[2*i][2*j]==0)
-				{
-                    if(2*i-2>=0&&newgrid[2*i-1][2*j]!=1&&newgrid[2*i-2][2*j]!=0)
-                    {
-                        if(v.find({2*i-2,2*j})==v.end())
-                        {
-                            v.insert({2*i,2*j});
-                            newgrid[2*i][2*j]=newgrid[2*i-2][2*j];
-                            flag=true;
-                        }
-                        s.insert(newgrid[2*i-2][2*j]);
-                    }
-                    if(2*i+2<2*M-1&&newgrid[2*i+1][2*j]!=1&&newgrid[2*i+2][2*j]!=0)
-                    {
-                        if(v.find({2*i+2,2*j})==v.end())
-                        {
-                            v.insert({2*i,2*j});
-                            newgrid[2*i][2*j]=newgrid[2*i+2][2*j];
-                            flag=true;
-                        }
-                        s.insert(newgrid[2*i+2][2*j]);
-                    }
-                    if(2*j-2>=0&&newgrid[2*i][2*j-1]!=1&&newgrid[2*i][2*j-2]!=0)
-                    {
-                        if(v.find({2*i,2*j-2})==v.end())
-                        {
-                            v.insert({2*i,2*j});
-                            newgrid[2*i][2*j]=newgrid[2*i][2*j-2];
-                            flag=true;
-                        }
-                        s.insert(newgrid[2*i][2*j-2]);
-                    }
-                    if(2*j+2<2*N-1&&newgrid[2*i][2*j+1]!=1&&newgrid[2*i][2*j+2]!=0)
-                    {
-                        if(v.find({2*i,2*j+2})==v.end())
-                        {
-                            v.insert({2*i,2*j});
-                            newgrid[2*i][2*j]=newgrid[2*i][2*j+2];
-                            flag=true;
-                        }
-                        s.insert(newgrid[2*i][2*j+2]);
-                    }
-                }
-                if(flag&&s.size()>1)
-                    reTagArea(newgrid,s,*s.begin(),M,N);
-			}
-    }
-
-    void buildWalls(vector<vector<int>>& newgrid,int M,int N,int tag)
-    {
-        for(int i=0;i<M;i++)
-			for(int j=0;j<N;j++)
-			{
-				if(newgrid[2*i][2*j]==0)
-				{
-                    if(2*i-2>=0&&newgrid[2*i-1][2*j]!=1&&newgrid[2*i-2][2*j]==tag)
-                        newgrid[2*i-1][2*j]=1;
-                    if(2*i+2<2*M-1&&newgrid[2*i+1][2*j]!=1&&newgrid[2*i+2][2*j]==tag)
-                        newgrid[2*i+1][2*j]=1;
-                    if(2*j-2>=0&&newgrid[2*i][2*j-1]!=1&&newgrid[2*i][2*j-2]==tag)
-                        newgrid[2*i][2*j-1]=1;
-                    if(2*j+2<2*N&&newgrid[2*i][2*j+1]!=1&&newgrid[2*i][2*j+2]==tag)
-                        newgrid[2*i][2*j+1]=1;
-                }
-			}
-    }
-
-    pair<int,int> getMaxPair(map<int,int>& affectedmap)
-    {
-        return *max_element(begin(affectedmap),end(affectedmap),
-        [](const pair<int,int>& lhs, const pair<int,int>& rhs){return lhs.second<rhs.second;});
-    }
-
-    map<int,int> getAffected(vector<vector<int>>& newgrid,int M,int N)
-    {
-        map<int,int> res;
-		for(int i=0;i<M;i++)
-			for(int j=0;j<N;j++)
-			{
-				set<int> s;
-				if(newgrid[2*i][2*j]==0)
-				{
-                    if(2*i-2>=0&&newgrid[2*i-1][2*j]!=1&&newgrid[2*i-2][2*j]!=0)
-                        ++res[newgrid[2*i-2][2*j]];
-                    if(2*i+2<2*M-1&&newgrid[2*i+1][2*j]!=1&&newgrid[2*i+2][2*j]!=0)
-                        ++res[newgrid[2*i+2][2*j]];
-                    if(2*j-2>=0&&newgrid[2*i][2*j-1]!=1&&newgrid[2*i][2*j-2]!=0)
-                        ++res[newgrid[2*i][2*j-2]];
-                    if(2*j+2<2*N-1&&newgrid[2*i][2*j+1]!=1&&newgrid[2*i][2*j+2]!=0)
-                        ++res[newgrid[2*i][2*j+2]];
-                }
-			}
-        return res;
-    }
-
-    void reTagArea(vector<vector<int>>& newgrid,set<int>& s,int tag,int M,int N)
-    {
-        for(int i=0;i<M;i++)
-			for(int j=0;j<N;j++)
-                if(s.find(newgrid[2*i][2*j])!=s.end())
-                    newgrid[2*i][2*j]=tag;
-    }
-
-	void tagArea(vector<vector<int>>& grid,int tag,int i,int j)
+	int containVirus(vector<vector<int>> &grid)
 	{
-		if(i<0||i>=(int)grid.size()||j<0||j>=(int)grid[0].size()||grid[i][j]!=1)
+		int M = grid.size(), N = grid[0].size(), res = 0;
+		vector<vector<vector<int>>> wall(M, vector<vector<int>>(N, vector<int>(2)));
+
+		while (true)
+		{
+			int x, y, virus = 0, color = 2;
+			for (int i = 0; i < M; ++i)
+			{
+				for (int j = 0; j < N; ++j)
+				{
+					if (grid[i][j] == 1)
+					{
+						int expand = colorGrid(grid, wall, i, j, color++);
+						if (expand > virus)
+						{
+							virus = expand;
+							x = i;
+							y = j;
+						}
+					}
+				}
+			}
+			if (virus == 0)
+				break;
+			buildWall(grid, wall, x, y, color);
+			clearVirus(grid, x, y);
+			vector<vector<int>> nextgrid(M, vector<int>(N));
+			for (int i = 0; i < M; ++i)
+			{
+				for (int j = 0; j < N; ++j)
+				{
+					if (grid[i][j] != 0)
+						expandVirus(grid, nextgrid, wall, i, j);
+				}
+			}
+			grid = nextgrid;
+		}
+		for (int i = 0; i < M; ++i)
+		{
+			for (int j = 0; j < N; ++j)
+				res += wall[i][j][0] + wall[i][j][1];
+		}
+		return res;
+	}
+
+	void expandVirus(vector<vector<int>> &grid, vector<vector<int>> &nextgrid, vector<vector<vector<int>>> &wall, int row, int col)
+	{
+		int M = grid.size(), N = grid[0].size();
+		nextgrid[row][col] = 1;
+		if (grid[row][col] == 0)
 			return;
-		grid[i][j]=tag;
-		tagArea(grid,tag,i-1,j);
-		tagArea(grid,tag,i+1,j);
-		tagArea(grid,tag,i,j-1);
-		tagArea(grid,tag,i,j+1);
+		grid[row][col] = 0;
+		if (row - 1 >= 0 && wall[row - 1][col][1] != 1)
+			expandVirus(grid, nextgrid, wall, row - 1, col);
+		if (row + 1 < M && wall[row][col][1] != 1)
+			expandVirus(grid, nextgrid, wall, row + 1, col);
+		if (col - 1 >= 0 && wall[row][col - 1][0] != 1)
+			expandVirus(grid, nextgrid, wall, row, col - 1);
+		if (col + 1 < N && wall[row][col][0] != 1)
+			expandVirus(grid, nextgrid, wall, row, col + 1);
+	}
+
+	void clearVirus(vector<vector<int>> &grid, int row, int col)
+	{
+		int M = grid.size(), N = grid[0].size();
+		if (row < 0 || row >= M || col < 0 || col >= N)
+			return;
+		if (grid[row][col] == 0)
+			return;
+		grid[row][col] = 0;
+		clearVirus(grid, row - 1, col);
+		clearVirus(grid, row + 1, col);
+		clearVirus(grid, row, col - 1);
+		clearVirus(grid, row, col + 1);
+	}
+
+	void buildWall(vector<vector<int>> &grid, vector<vector<vector<int>>> &wall, int row, int col, int color)
+	{
+		int M = grid.size(), N = grid[0].size();
+		if (grid[row][col] == 0 || grid[row][col] == color)
+			return;
+		grid[row][col] = color;
+		if (row - 1 >= 0)
+		{
+			if (grid[row - 1][col] == 0)
+				wall[row - 1][col][1] = 1;
+			else
+				buildWall(grid, wall, row - 1, col, color);
+		}
+		if (row + 1 < M)
+		{
+			if (grid[row + 1][col] == 0)
+				wall[row][col][1] = 1;
+			else
+				buildWall(grid, wall, row + 1, col, color);
+		}
+		if (col - 1 >= 0)
+		{
+			if (grid[row][col - 1] == 0)
+				wall[row][col - 1][0] = 1;
+			else
+				buildWall(grid, wall, row, col - 1, color);
+		}
+		if (col + 1 < N)
+		{
+			if (grid[row][col + 1] == 0)
+				wall[row][col][0] = 1;
+			else
+				buildWall(grid, wall, row, col + 1, color);
+		}
+	}
+
+	//color the connected component with color,return sum of node which can be affected(no wall between them)
+	int colorGrid(vector<vector<int>> &grid, vector<vector<vector<int>>> &wall, int row, int col, int color)
+	{
+		int M = grid.size(), N = grid[0].size();
+		if (grid[row][col] == color)
+			return 0;
+		if (grid[row][col] == 0)
+			return 1;
+		int res = 0;
+		grid[row][col] = color;
+		if (row - 1 >= 0 && wall[row - 1][col][1] != 1)
+			res += colorGrid(grid, wall, row - 1, col, color);
+		if (row + 1 < M && wall[row][col][1] != 1)
+			res += colorGrid(grid, wall, row + 1, col, color);
+		if (col - 1 >= 0 && wall[row][col - 1][0] != 1)
+			res += colorGrid(grid, wall, row, col - 1, color);
+		if (col + 1 < N && wall[row][col][0] != 1)
+			res += colorGrid(grid, wall, row, col + 1, color);
+		return res;
 	}
 };
 
 int main()
 {
-    vector<vector<int>> grid=
-    {
-        {0,1,0,1,1,1,1,1,1,0},
-        {0,0,0,1,0,0,0,0,0,0},
-        {0,0,1,1,1,0,0,0,1,0},
-        {0,0,0,1,1,0,0,1,1,0},
-        {0,1,0,0,1,0,1,1,0,1},
-        {0,0,0,1,0,1,0,1,1,1},
-        {0,1,0,0,1,0,0,1,1,0},
-        {0,1,0,1,0,0,0,1,1,0},
-        {0,1,1,0,0,1,1,0,0,1},
-        {1,0,1,1,0,1,0,1,0,1}
-    };
-    Solution sol;
-    sol.containVirus(grid);
-    return 0;
+	//Output 40
+	//Expected 38
+	vector<vector<int>> grid =
+		{
+			{0, 1, 0, 1, 1, 1, 1, 1, 1, 0},
+			{0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+			{0, 0, 1, 1, 1, 0, 0, 0, 1, 0},
+			{0, 0, 0, 1, 1, 0, 0, 1, 1, 0},
+			{0, 1, 0, 0, 1, 0, 1, 1, 0, 1},
+			{0, 0, 0, 1, 0, 1, 0, 1, 1, 1},
+			{0, 1, 0, 0, 1, 0, 0, 1, 1, 0},
+			{0, 1, 0, 1, 0, 0, 0, 1, 1, 0},
+			{0, 1, 1, 0, 0, 1, 1, 0, 0, 1},
+			{1, 0, 1, 1, 0, 1, 0, 1, 0, 1}};
+	Solution sol;
+	sol.containVirus(grid);
+	return 0;
 }
