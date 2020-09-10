@@ -1,27 +1,45 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
 // math period problem
 // same problem
 // Count The Repetitions
 
-class Solution {
+/*               i-2
+    case 1 : i-1┌─┐
+                └─┼─>i
+                 i-3
+
+                    i-2
+    case 2 : i-1 ┌────┐
+                 └─══>┘i-3
+                 i  i-4      (i overlapped i-4)
+
+    case 3 :    i-4
+               ┌──┐
+               │i<┼─┐
+            i-3│ i-5│i-1
+               └────┘
+                i-2
+
+*/
+
+class Solution
+{
 public:
-    bool isSelfCrossing(vector<int>& x) {
-		if(x.size()<4)
+	bool isSelfCrossing(vector<int> &x)
+	{
+		if (x.size() < 4)
 			return false;
-		for(int i=3;i<(int)x.size();i++)
+		for (int i = 3; i < (int)x.size(); i++)
 		{
-            if(x[i]>=x[i-2]&&x[i-1]<=x[i-3])
-                return true;
-            if(i>3)
-                if(x[i-1]==x[i-3]&&x[i]+x[i-4]>=x[i-2])
-                    return true;
-            if(i>4)
-                if(x[i-2]>=x[i-4]&&x[i-1]<=x[i-3]&&x[i-1]>=x[i-3]-x[i-5]&&x[i]>=x[i-2]-x[i-4])
-                    return true;
+			if (x[i] >= x[i - 2] && x[i - 1] <= x[i - 3])
+				return true;
+			if (i > 3 && x[i - 1] == x[i - 3] && x[i] + x[i - 4] >= x[i - 2])
+				return true;
+			if (i > 4 && x[i - 2] >= x[i - 4] && x[i - 1] <= x[i - 3] && x[i - 1] >= x[i - 3] - x[i - 5] && x[i] >= x[i - 2] - x[i - 4])
+				return true;
 		}
 		return false;
-    }
+	}
 };
-
