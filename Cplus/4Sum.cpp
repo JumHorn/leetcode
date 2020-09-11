@@ -1,47 +1,53 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <climits>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int>> fourSum(vector<int>& nums, int target) {
-		vector<vector<int>> res;
-		vector<int> tmp(4);
-		sort(nums.begin(),nums.end());
-		nSum(res,tmp,nums,0,4,target);
-		return res;
-    }
-
-	void nSum(vector<vector<int>>& res,vector<int>& tmp,vector<int>& nums,int start,int n,int target)
+	vector<vector<int>> fourSum(vector<int> &nums, int target)
 	{
-		if(n==2)
+		vector<vector<int>> res;
+		vector<int> data;
+		sort(nums.begin(), nums.end());
+		nSum(res, data, nums, 0, 4, target);
+		return res;
+	}
+
+	void nSum(vector<vector<int>> &res, vector<int> &data, vector<int> &nums, int index, int n, int target)
+	{
+		int N = nums.size();
+		if (n == 2) //two sum
 		{
-			int low=start,high=nums.size()-1;
-			while(low<high)
+			int i = index, j = N - 1;
+			while (i < j)
 			{
-				int sum=nums[low]+nums[high]-target;
-				if(sum==0)
+				int sum = nums[i] + nums[j];
+				if (sum == target)
 				{
-					tmp[0]=nums[low];
-					tmp[1]=nums[high];
-					res.push_back(tmp);
-					while(++low<high&&nums[low]==nums[low-1]);
-					while(low<--high&&nums[high]==nums[high+1]);
+					res.push_back(data);
+					res.back().push_back(nums[i]);
+					res.back().push_back(nums[j]);
+
+					++i;
+					while (i < j && nums[i] == nums[i - 1])
+						++i;
 				}
-				else if(sum<0)
-					low++;
+				else if (sum < target)
+					++i;
 				else
-					high--;
+					--j;
 			}
 			return;
 		}
-		for(int i=start;i<(int)nums.size();)
+		for (int i = index, pre = INT_MIN; i < N; pre = nums[i++])
 		{
-			tmp[n-1]=nums[i];
-			nSum(res,tmp,nums,i+1,n-1,target-nums[i]);
-			i++;
-			while(i<(int)nums.size()&&nums[i]==nums[i-1])
-				i++;
+			if (pre == nums[i])
+				continue;
+			data.push_back(nums[i]);
+			nSum(res, data, nums, i + 1, n - 1, target - nums[i]);
+			data.pop_back();
 		}
 	}
 };
