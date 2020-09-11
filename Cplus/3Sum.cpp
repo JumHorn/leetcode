@@ -1,47 +1,38 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <climits>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
-		vector<vector<int>> res;
-		vector<int> tmp(3);
-		sort(nums.begin(),nums.end());
-		threeSum(res,tmp,nums,0,3,0);
-		return res;
-    }
-
-	void threeSum(vector<vector<int>>& res,vector<int>& tmp,vector<int>& nums,int start,int n,int target)
+	vector<vector<int>> threeSum(vector<int> &nums)
 	{
-		if(n==2)
+		vector<vector<int>> res;
+		sort(nums.begin(), nums.end());
+		int N = nums.size();
+		for (int i = 0, pre = INT_MIN; i < N - 2; pre = nums[i++])
 		{
-			int low=start,high=nums.size()-1;
-			while(low<high)
+			if (nums[i] == pre)
+				continue;
+			int j = i + 1, k = N - 1;
+			while (j < k)
 			{
-				int sum=nums[low]+nums[high]-target;
-				if(sum==0)
+				int sum = nums[i] + nums[j] + nums[k];
+				if (sum == 0)
 				{
-					tmp[0]=nums[low];
-					tmp[1]=nums[high];
-					res.push_back(tmp);
-					while(++low<high&&nums[low]==nums[low-1]);
-					while(low<--high&&nums[high]==nums[high+1]);
+					res.push_back({nums[i], nums[j], nums[k]});
+
+					++j;
+					while (j < k && nums[j] == nums[j - 1])
+						++j;
 				}
-				else if(sum<0)
-					low++;
+				else if (sum < 0)
+					++j;
 				else
-					high--;
+					--k;
 			}
-			return;
 		}
-		for(int i=start;i<(int)nums.size();)
-		{
-			tmp[n-1]=nums[i];
-			threeSum(res,tmp,nums,i+1,n-1,target-nums[i]);
-			i++;
-			while(i<(int)nums.size()&&nums[i]==nums[i-1])
-				i++;
-		}
+		return res;
 	}
 };
