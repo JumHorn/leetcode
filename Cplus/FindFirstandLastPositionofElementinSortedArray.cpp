@@ -1,36 +1,18 @@
-#include<vector>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
-		vector<int> res={-1,-1};
-		if(nums.empty())
-			return res;
-		if(target<nums.front()||target>nums.back())
-			return res;	
-		int low=0,high=nums.size()-1,mid;
-		while(low<high)
-		{
-			mid=(high-low)/2+low;
-			if(target<=nums[mid])
-				high=mid;
-			else
-				low=mid+1;
-		}
-		if(nums[low]!=target)
-			return res;
-        res[0]=low;
-		high=nums.size()-1;
-		while(low<high)
-		{
-			mid=(high-low)/2+low+1;
-			if(nums[mid]<=target)
-				low=mid;
-			else
-				high=mid-1;
-		}
-        res[1]=high;
-		return res;
-    }
+	vector<int> searchRange(vector<int> &nums, int target)
+	{
+		if (nums.empty() || target < nums.front() || target > nums.back())
+			return {-1, -1};
+		int lower = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+		if (nums[lower] != target)
+			return {-1, -1};
+		int upper = upper_bound(nums.begin(), nums.end(), target) - nums.begin();
+		return {lower, upper - 1};
+	}
 };
