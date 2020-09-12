@@ -1,23 +1,25 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    void nextPermutation(vector<int>& nums) {
-		int i=nums.size(); 
-		while(--i>0)
+	void nextPermutation(vector<int> &nums)
+	{
+		int N = nums.size(), i = N;
+		while (--i > 0)
 		{
-			if(nums[i]>nums[i-1])
+			if (nums[i] > nums[i - 1])
 			{
-				int j=nums.size()-1;
-				while(nums[j]<=nums[i-1])
-					j--;
-				swap(nums[i-1],nums[j]);
-				reverse(nums.begin()+i,nums.end());
+				int j = N - 1;
+				while (nums[j] <= nums[i - 1])
+					--j;
+				swap(nums[i - 1], nums[j]);
+				reverse(nums.begin() + i, nums.end());
 				return;
 			}
 		}
-		reverse(nums.begin(),nums.end());
-    }
+		reverse(nums.begin(), nums.end());
+	}
 };

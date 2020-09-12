@@ -18,10 +18,10 @@ void nextPermutation(int *nums, int numsSize)
 	{
 		if (nums[i] > nums[i - 1])
 		{
-			int j = i;
-			while (j < numsSize && nums[j] > nums[i - 1])
-				++j;
-			swap(nums[i - 1], nums[j - 1]);
+			int j = numsSize - 1;
+			while (nums[j] <= nums[i - 1])
+				--j;
+			swap(nums[i - 1], nums[j]);
 			reverse(nums, i, numsSize - 1);
 			return;
 		}
