@@ -1,35 +1,28 @@
-#include<vector>
-using namespace std;
 
 //Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* removeNthFromEnd(ListNode* head, int n) {
- 		vector<ListNode*> v;
- 		while(head!=NULL)
+	ListNode *removeNthFromEnd(ListNode *head, int n)
+	{
+		ListNode **walker = &head, *runner = head;
+		for (int i = 0; i < n; ++i)
+			runner = runner->next;
+		while (runner)
 		{
-			v.push_back(head);
-			head=head->next;
-		}		
-		int s=v.size();
-		if(n==1)
-		{
-			if(s==1)
-				return NULL;
-			v[s-2]->next=NULL;
-			return v.front();
+			walker = &(*walker)->next;
+			runner = runner->next;
 		}
-		if(n==s)
-		{
-			return v[1];
-		}
-		v[s-n-1]->next=v[s-n+1];
-		return v.front();
-    }
+		*walker = (*walker)->next;
+		return head;
+	}
 };
