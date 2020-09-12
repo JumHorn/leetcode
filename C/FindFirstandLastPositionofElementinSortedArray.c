@@ -10,8 +10,8 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize)
 	int* res = (int*)malloc(sizeof(int) * 2);
 	memset(res, -1, sizeof(int) * 2);
 
-	int lo = 0, hi = numsSize - 1;
-	if (numsSize == 0 || target < nums[lo] || target > nums[hi])
+	int lo = 0, hi = numsSize;
+	if (numsSize == 0 || target < nums[lo] || target > nums[hi - 1])
 		return res;
 	while (lo < hi)
 	{
@@ -24,7 +24,7 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize)
 	if (nums[lo] != target)
 		return res;
 	res[0] = lo;
-	lo = 0, hi = numsSize - 1;
+	lo = 0, hi = numsSize;
 	while (lo < hi)
 	{
 		int mi = (hi - lo) / 2 + lo;
@@ -33,9 +33,6 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize)
 		else
 			hi = mi;
 	}
-
-	if (nums[lo] != target)
-		--lo;
-	res[1] = lo;
+	res[1] = lo - 1;
 	return res;
 }
