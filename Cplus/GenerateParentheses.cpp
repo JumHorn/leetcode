@@ -1,37 +1,30 @@
-#include<vector>
-#include<string>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<string> generateParenthesis(int n) {
-		string parenthesis(n*2,' ');
-		vector<string> res;
-		generateParenthesis(res,parenthesis,0,0,0);
-		return res;
-    }
-
-	void generateParenthesis(vector<string>& res,string& parenthesis,int start,int left,int right)
+	vector<string> generateParenthesis(int n)
 	{
-		if(start==(int)parenthesis.size())
+		vector<pair<string, int>> parenthesis(1, {"", 0}); //{str,left-right}
+		vector<string> res;
+		for (int i = 0; i < 2 * n; ++i)
 		{
-			res.push_back(parenthesis);
-			return;
-		}
-		if(left==right)
-		{
-			parenthesis[start]='(';
-			generateParenthesis(res,parenthesis,start+1,left+1,right);
-		}
-		else if(left>right)
-		{
-			if(left<(int)parenthesis.size()/2)
+			vector<pair<string, int>> old;
+			for (auto &p : parenthesis)
 			{
-				parenthesis[start]='(';
-				generateParenthesis(res,parenthesis,start+1,left+1,right);
+				if (p.second > 0)
+					old.push_back({p.first + ')', p.second - 1});
+				old.push_back({p.first + '(', p.second + 1});
 			}
-			parenthesis[start]=')';
-			generateParenthesis(res,parenthesis,start+1,left,right+1);
+			parenthesis = old;
 		}
+		for (auto &p : parenthesis)
+		{
+			if (p.second == 0)
+				res.push_back(p.first);
+		}
+		return res;
 	}
 };
