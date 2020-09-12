@@ -1,54 +1,36 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int search(vector<int>& nums, int target) {
-		int low=0,high=nums.size()-1;
-		while(low<=high)
-		{
-			int mid=(high-low)/2+low;
-			if(target==nums[mid])
-				return mid;
-			if(target>nums[mid])
-			{
-				if(nums[mid]<=nums[high])
-                {
-                    if(target<=nums[high])
-					    return binarySearch(nums,target,mid+1,high);
-                    else
-                        high=mid-1;
-                }
-                else
-                    low=mid+1;
-			}
-			else
-			{
-				if(nums[mid]>=nums[low])
-                {
-                    if(target>=nums[low])
-					    return binarySearch(nums,target,low,mid-1);
-                    else
-                        low=mid+1;
-                }
-                else
-                    high=mid-1;
-			}
-		}
-		return -1;
-    }
-
-	int binarySearch(vector<int>& nums,int target,int low,int high)
+	int search(vector<int> &nums, int target)
 	{
-		while(low<=high)
+		int N = nums.size(), lo = 0, hi = N - 1;
+		while (lo < hi)
 		{
-			int mid=(high-low)/2+low;
-			if(target==nums[mid])
-				return mid;
-			if(target>nums[mid])
-				low=mid+1;
+			int mi = (hi - lo) / 2 + lo;
+			if (nums[mi] > nums[hi])
+				lo = mi + 1;
 			else
-				high=mid-1;
+				hi = mi;
+		}
+		if (target <= nums[N - 1])
+			return binarySearch(nums, lo, N - 1, target);
+		return binarySearch(nums, 0, lo - 1, target);
+	}
+
+	int binarySearch(vector<int> &nums, int lo, int hi, int target)
+	{
+		while (lo <= hi)
+		{
+			int mi = (hi - lo) / 2 + lo;
+			if (target == nums[mi])
+				return mi;
+			if (target > nums[mi])
+				lo = mi + 1;
+			else
+				hi = mi - 1;
 		}
 		return -1;
 	}
