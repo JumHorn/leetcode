@@ -1,32 +1,28 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-	vector<vector<int> > result;
-    vector<vector<int> > permute(vector<int>& nums) {
-		vector<vector<int> > res;
-		this->result=res;		
-		permutation(nums,0,nums.size());
-		return result;
-    }
-
-	void permutation(vector<int>& nums,int l,int r)
+	vector<vector<int>> permute(vector<int> &nums)
 	{
-		if(l==r)
+		vector<vector<int>> res;
+		dfs(nums, 0, res);
+		return res;
+	}
+
+	void dfs(vector<int> &nums, int index, vector<vector<int>> &res)
+	{
+		int N = nums.size();
+		if (index >= N)
+			res.push_back(nums);
+		for (int i = index; i < N; ++i)
 		{
-			result.push_back(nums);
-		}
-		else
-		{
-			for(int i=l;i<r;i++)
-			{
-				swap(nums[i],nums[l]);
-				permutation(nums,l+1,r);
-				swap(nums[i],nums[l]);
-			}
+			swap(nums[i], nums[index]);
+			dfs(nums, index + 1, res);
+			swap(nums[i], nums[index]);
 		}
 	}
 };

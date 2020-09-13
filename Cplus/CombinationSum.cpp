@@ -1,35 +1,33 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > combinationSum(vector<int>& candidates, int target) {
-		vector<vector<int> > res;
-		vector<int> sol;
-		sort(candidates.begin(),candidates.end());
-		combine(candidates,target,res,sol,candidates.begin());
-		return res;		
-    }
-
-	void combine(vector<int>& candidates,int target,vector<vector<int> >& res, vector<int>& sol,vector<int>::iterator start)
+	vector<vector<int>> combinationSum(vector<int> &candidates, int target)
 	{
-		for(vector<int>::iterator iter=start;iter!=candidates.end();iter++)
+		vector<vector<int>> res;
+		vector<int> data;
+		sort(candidates.begin(), candidates.end());
+		dfs(candidates, 0, target, data, res);
+		return res;
+	}
+
+	void dfs(vector<int> &candidates, int index, int target, vector<int> &data, vector<vector<int>> &res)
+	{
+		if (target < 0)
+			return;
+		if (target == 0)
 		{
-			if(target==*iter)
-			{
-				sol.push_back(*iter);
-				res.push_back(sol);
-				sol.pop_back();
-				return;
-			}
-			if(target<*iter)
-			{
-				return;
-			}
-			sol.push_back(*iter);
-			combine(candidates,target-*iter,res,sol,iter);
-			sol.pop_back();
+			res.push_back(data);
+			return;
+		}
+		for (int i = index; i < (int)candidates.size(); ++i)
+		{
+			data.push_back(candidates[i]);
+			dfs(candidates, i, target - candidates[i], data, res);
+			data.pop_back();
 		}
 	}
 };
