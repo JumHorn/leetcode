@@ -2,37 +2,28 @@
 
 bool isValidSudoku(char** board, int boardSize, int* boardColSize)
 {
-	for (char c = '1'; c <= '9'; ++c)
+	for (int k = 0; k < 9; ++k)
 	{
-		for (int k = 0; k < 9; ++k)
+		int row[9] = {0};
+		for (int j = 0; j < 9; ++j)  //check row
 		{
-			int count = 0;
-			for (int j = 0; j < 9; ++j)  //check row
-			{
-				if (board[k][j] == c)
-					++count;
-			}
-			if (count > 1)
+			if (board[k][j] != '.' && ++row[board[k][j] - '1'] > 1)
 				return false;
-			count = 0;
-			for (int i = 0; i < 9; ++i)  //check col
-			{
-				if (board[i][k] == c)
-					++count;
-			}
-			if (count > 1)
+		}
+		int col[9] = {0};
+		for (int i = 0; i < 9; ++i)  //check col
+		{
+			if (board[i][k] != '.' && ++col[board[i][k] - '1'] > 1)
 				return false;
-			count = 0;
-			for (int i = k / 3 * 3; i < k / 3 * 3 + 3; ++i)
+		}
+		int sub[9] = {0};
+		for (int i = k / 3 * 3; i < k / 3 * 3 + 3; ++i)
+		{
+			for (int j = k % 3 * 3; j < k % 3 * 3 + 3; ++j)
 			{
-				for (int j = k % 3 * 3; j < k % 3 * 3 + 3; ++j)
-				{
-					if (board[i][j] == c)
-						++count;
-				}
+				if (board[i][j] != '.' && ++sub[board[i][j] - '1'] > 1)
+					return false;
 			}
-			if (count > 1)
-				return false;
 		}
 	}
 	return true;
