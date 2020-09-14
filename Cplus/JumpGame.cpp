@@ -1,16 +1,15 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool canJump(vector<int>& nums) {
-		int n=nums.size(),jump=0,i=0;
-		while(i<=jump&&jump<n-1)
-		{
-			jump=max(jump,i+nums[i]);
-			i++;
-		}
-		return jump>=n-1;
-    }
+	bool canJump(vector<int> &nums)
+	{
+		int N = nums.size(), jump = 0;
+		for (int i = 0; i <= jump && jump < N - 1; ++i)
+			jump = max(jump, i + nums[i]);
+		return jump >= N - 1;
+	}
 };
