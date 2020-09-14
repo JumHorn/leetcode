@@ -14,6 +14,8 @@
 #define trimin(a, b, c) (min(min(a, b), c)) //the minimum of a,b,c
 
 //frequently used items
+#include <stdlib.h>
+#include <string.h>
 
 //cmp function don't consider overflow
 int cmp(const void *lhs, const void *rhs)
@@ -202,3 +204,19 @@ void update(int *tree, int size, int index, int delta)
 	}
 }
 /********end of Fenwick tree(BIT)********/
+
+//malloc result
+int **mallocRes(int **data, int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
+{
+	*returnSize = dataSize;
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	memcpy(*returnColumnSizes, dataColSize, sizeof(int) * (*returnSize));
+	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
+	for (int i = 0; i < *returnSize; ++i)
+	{
+		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
+		memcpy(res[i], data[i], sizeof(int) * ((*returnColumnSizes)[i]));
+	}
+	return res;
+}
+/********malloc result********/
