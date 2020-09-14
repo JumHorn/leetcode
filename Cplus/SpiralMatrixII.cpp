@@ -1,30 +1,34 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > generateMatrix(int n) {
-        vector<vector<int> > res(n,vector<int>(n));
-		int l,r,t,b,num=0;
-		l=t=0;
-		r=b=n;
-		while(true)
+	vector<vector<int>> generateMatrix(int n)
+	{
+		vector<vector<int>> res(n, vector<int>(n));
+		vector<int> range = {0, n, 0, n}; //left,right,bottom,top
+		int i = 0, j = 0, d = 0;
+		vector<vector<int>> path = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		vector<vector<int>> rangechange = {{1, 0, 0, 0}, {0, 0, 1, 0}, {0, -1, 0, 0}, {0, 0, 0, -1}};
+		for (int k = 0; k < n * n; ++k)
 		{
-		    for(int i=l;i<r;i++)//left to right
-				res[t][i]=++num;	
-			t++;
-		    for(int i=t;i<b;i++)//top to bottom
-				res[i][r-1]=++num;	
-			r--;
-		    for(int i=r-1;i>=l;i--)//right to left
-				res[b-1][i]=++num;	
-			b--;
-		    for(int i=b-1;i>=t;i--)//bottom to top
-				res[i][l]=++num;
-			l++;
-			if(r-l<=1)
-				break;
+			res[i][j] = k + 1;
+			int dx = i + path[d][0], dy = j + path[d][1];
+			if (dx >= range[2] && dx < range[3] && dy >= range[0] && dy < range[1])
+			{
+				i = dx;
+				j = dy;
+			}
+			else
+			{
+				d = (d + 1) % 4;
+				i += path[d][0];
+				j += path[d][1];
+				for (int i = 0; i < 4; ++i)
+					range[i] += rangechange[d][i];
+			}
 		}
 		return res;
-    }
+	}
 };

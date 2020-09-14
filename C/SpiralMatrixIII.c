@@ -15,91 +15,22 @@ int **spiralMatrixIII(int R, int C, int r0, int c0, int *returnSize, int **retur
 		(*returnColumnSizes)[i] = 2;
 		res[i] = (int *)malloc(sizeof(int) * 2);
 	}
-	int index = 0, radius = 1, x = c0, y = r0, left, right = c0 + radius, top, bottom;
-	while (index < (*returnSize))
+	res[0][0] = r0;
+	res[0][1] = c0;
+	int path[][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+	int i = r0, j = c0;
+	for (int n = 0, index = 1; index < R * C; ++n)
 	{
-		//->
-		while (x <= right)
+		for (int k = 0; k < n / 2 + 1; ++k)
 		{
-			if (x < C && y >= 0 && y < R)
+			i += path[n % 4][0], j += path[n % 4][1];
+			if (0 <= i && i < R && 0 <= j && j < C)
 			{
-				if (x >= 0)
-				{
-					res[index][0] = y;
-					res[index++][1] = x;
-				}
-				else
-					x = -1;
+				res[index][0] = i;
+				res[index][1] = j;
+				++index;
 			}
-			else
-				x = right;
-			++x;
 		}
-		// v
-		bottom = y + radius;
-		--x;
-		++y;
-		while (y <= bottom)
-		{
-			if (y < R && x >= 0 && x < C)
-			{
-				if (y >= 0)
-				{
-					res[index][0] = y;
-					res[index++][1] = x;
-				}
-				else
-					y = -1;
-			}
-			else
-				y = bottom;
-			++y;
-		}
-		//<-
-		radius++;
-		left = x - radius;
-		--y;
-		--x;
-		while (x >= left)
-		{
-			if (x >= 0 && y >= 0 && y < R)
-			{
-				if (x < C)
-				{
-					res[index][0] = y;
-					res[index++][1] = x;
-				}
-				else
-					x = C;
-			}
-			else
-				x = left;
-			--x;
-		}
-		//^
-		top = y - radius;
-		--y;
-		++x;
-		while (y >= top)
-		{
-			if (y >= 0 && x >= 0 && x < C)
-			{
-				if (y < R)
-				{
-					res[index][0] = y;
-					res[index++][1] = x;
-				}
-				else
-					y = R;
-			}
-			else
-				y = top;
-			--y;
-		}
-		++radius;
-		right = x + radius;
-		++y;
-		++x;
 	}
 	return res;
 }

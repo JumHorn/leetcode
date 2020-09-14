@@ -1,44 +1,37 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        if(matrix.empty()||matrix[0].empty())
-            return vector<int>();
-		int l=0,r=matrix[0].size(),b=0,t=matrix.size(),x=0,y=0,i=0;//left right bottom top
-		vector<int> res(r*t);
-		while(l<r&&b<t)
+	vector<int> spiralOrder(vector<vector<int>> &matrix)
+	{
+		vector<int> res;
+		if (matrix.empty() || matrix[0].empty())
+			return res;
+		int M = matrix.size(), N = matrix[0].size();
+		vector<int> range = {0, N, 0, M}; //left,right,bottom,top
+		int i = 0, j = 0, d = 0;
+		vector<vector<int>> path = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		vector<vector<int>> rangechange = {{1, 0, 0, 0}, {0, 0, 1, 0}, {0, -1, 0, 0}, {0, 0, 0, -1}};
+		for (int k = 0; k < M * N; ++k)
 		{
-			while(y<r)
-				res[i++]=matrix[x][y++];
-            if(l>=r||b>=t)
-                break;
-			--y;
-			++x;
-			++b;
-			while(x<t)
-				res[i++]=matrix[x++][y];
-            if(l>=r||b>=t)
-                break;
-			--x;
-			--y;
-			--r;
-			while(y>=l)
-				res[i++]=matrix[x][y--];
-            if(l>=r||b>=t)
-                break;
-			++y;
-			--x;
-			--t;
-			while(x>=b)
-				res[i++]=matrix[x--][y];
-            if(l>=r||b>=t)
-                break;
-			++y;
-			++x;
-			++l;
+			res.push_back(matrix[i][j]);
+			int dx = i + path[d][0], dy = j + path[d][1];
+			if (dx >= range[2] && dx < range[3] && dy >= range[0] && dy < range[1])
+			{
+				i = dx;
+				j = dy;
+			}
+			else
+			{
+				d = (d + 1) % 4;
+				i += path[d][0];
+				j += path[d][1];
+				for (int i = 0; i < 4; ++i)
+					range[i] += rangechange[d][i];
+			}
 		}
 		return res;
-    }
+	}
 };
