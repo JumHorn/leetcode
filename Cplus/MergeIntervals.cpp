@@ -1,45 +1,22 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <climits>
+#include <vector>
 using namespace std;
-//Definition for an interval.
-struct Interval {
-    int start;
-    int end;
-    Interval() : start(0), end(0) {}
-    Interval(int s, int e) : start(s), end(e) {}
-};
 
-class Solution {
+class Solution
+{
 public:
-    vector<Interval> merge(vector<Interval>& intervals) {
-        if(intervals.empty())
-            return intervals;
-		vector<Interval> res;
-        sort(intervals.begin(),intervals.end(),*this);
-		Interval tmp(intervals[0]);
-		for(int i=1;i<(int)intervals.size();i++)
-		{
-			if(intervals[i].start<=tmp.end)
-				tmp.end=max(tmp.end,intervals[i].end);
-			else
-			{
-				res.push_back(tmp);
-				tmp=intervals[i];
-			}
-		}
-		if(res.empty()||tmp.start!=res.back().start||tmp.end!=res.back().end)
-			res.push_back(tmp);
-		return res;
-    }
-
-	bool operator()(Interval& left,Interval& right)
+	vector<vector<int>> merge(vector<vector<int>> &intervals)
 	{
-		if(left.start<right.start)
-			return true;
-		if(left.start>right.start)
-			return false;
-		if(left.end<right.end)
-			return true;
-		return false;
+		sort(intervals.begin(), intervals.end());
+		vector<vector<int>> res;
+		for (int i = 0, maxright = INT_MIN; i < intervals.size(); ++i)
+		{
+			if (intervals[i][0] > maxright)
+				res.push_back(intervals[i]);
+			if (intervals[i][1] > maxright)
+				maxright = res.back()[1] = intervals[i][1];
+		}
+		return res;
 	}
 };
