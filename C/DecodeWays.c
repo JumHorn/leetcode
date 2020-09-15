@@ -3,10 +3,8 @@
 
 bool canDecode(char* s, int index)
 {
-	if (s[index - 1] == '0')
-		return false;
 	int val = (s[index - 1] - '0') * 10 + (s[index] - '0');
-	return val <= 26;
+	return val >= 10 && val <= 26;
 }
 
 int numDecodings(char* s)
