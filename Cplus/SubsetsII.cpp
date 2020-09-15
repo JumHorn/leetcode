@@ -1,26 +1,32 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > subsetsWithDup(vector<int>& nums) {
-        vector<vector<int> > res;
-		sort(nums.begin(),nums.end());
-		vector<int> n;
-		combination(res,nums,n,0);
-		return res;
-    }
-
-	void combination(vector<vector<int> >& res,vector<int>& nums,vector<int>& n,int start)
+	vector<vector<int>> subsetsWithDup(vector<int> &nums)
 	{
-		if(find(res.begin(),res.end(),n)==res.end())
-			res.push_back(n);
-		for(int i=start;i<nums.size();i++)
+		vector<vector<int>> res;
+		vector<int> instance;
+		sort(nums.begin(), nums.end());
+		dfs(nums, 0, instance, res);
+		return res;
+	}
+
+	void dfs(vector<int> &nums, int index, vector<int> &instance, vector<vector<int>> &res)
+	{
+		res.push_back(instance);
+		unordered_set<int> s;
+		for (int i = index; i < (int)nums.size(); ++i)
 		{
-			n.push_back(nums[i]);
-			combination(res,nums,n,i+1);
-			n.pop_back();
+			if (s.find(nums[i]) != s.end()) //remove dumplicate
+				continue;
+			s.insert(nums[i]);
+			instance.push_back(nums[i]);
+			dfs(nums, i + 1, instance, res);
+			instance.pop_back();
 		}
 	}
 };
