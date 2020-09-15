@@ -1,28 +1,19 @@
-#include<vector>
+#include <climits>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int removeDuplicates(vector<int>& nums) {
-		int i=0,j=0,k=0;
-		for(i=1;i<(int)nums.size();i++)
+	int removeDuplicates(vector<int> &nums)
+	{
+		int continuous = 0, res = 0;
+		for (int i = 0, pre = INT_MIN; i < (int)nums.size(); pre = nums[i++])
 		{
-			if(k==1&&nums[i]==nums[j])
-            {
-                nums.erase(nums.begin()+i);
-                i--;
-            }
-            else
-            {
-                if(nums[i]==nums[j])
-                    k++;
-                else
-                {
-                    j=i;
-                    k=0;
-                }
-            }
+			nums[i] == pre ? ++continuous : (continuous = 1);
+			if (continuous <= 2)
+				nums[res++] = nums[i];
 		}
-		return nums.size();
-    }
+		return res;
+	}
 };
