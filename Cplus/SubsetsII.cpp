@@ -18,12 +18,10 @@ public:
 	void dfs(vector<int> &nums, int index, vector<int> &instance, vector<vector<int>> &res)
 	{
 		res.push_back(instance);
-		unordered_set<int> s;
 		for (int i = index; i < (int)nums.size(); ++i)
 		{
-			if (s.find(nums[i]) != s.end()) //remove dumplicate
+			if (i != index && nums[i] == nums[i - 1]) //remove dumplicate
 				continue;
-			s.insert(nums[i]);
 			instance.push_back(nums[i]);
 			dfs(nums, i + 1, instance, res);
 			instance.pop_back();
