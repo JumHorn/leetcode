@@ -1,27 +1,23 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    void sortColors(vector<int>& nums) {
-		int flag01=0,flag12=nums.size()-1;
-		while(flag01<flag12&&nums[flag01]==0)
-			flag01++;
-		while(flag12>flag01&&nums[flag12]==2)
-			flag12--;
-		for(int i=flag01;i<=flag12;i++)
+	void sortColors(vector<int> &nums)
+	{
+		int count[3] = {0};
+		for (auto n : nums)
+			++count[n];
+		for (int i = 0, j = 0; i < (int)nums.size();)
 		{
-			if(nums[i]==2)
+			if (count[j] > 0)
 			{
-				nums[i--]=nums[flag12];
-				nums[flag12--]=2;
+				--count[j];
+				nums[i++] = j;
 			}
-			else if(nums[i]==0)
-			{
-				nums[flag01]=0;
-                if(flag01++!=i)
-				    nums[i]=1;
-			}
+			else
+				++j;
 		}
-    }
+	}
 };
