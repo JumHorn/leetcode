@@ -1,27 +1,29 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > combine(int n, int k) {
-		vector<vector<int> > res;
-		vector<int> tmp;
-		combine(res,tmp,1,n,k);
-		return res;
-    }
-
-	void combine(vector<vector<int> >& res,vector<int>& sol,int i,int n,int k)
+	vector<vector<int>> combine(int n, int k)
 	{
-		if(k==0)
+		vector<vector<int>> res;
+		vector<int> data;
+		dfs(res, data, 1, n, k);
+		return res;
+	}
+
+	void dfs(vector<vector<int>> &res, vector<int> &data, int start, int n, int k)
+	{
+		if (k == 0)
 		{
-			res.push_back(sol);
+			res.push_back(data);
 			return;
 		}
-		for(int j=i;j<=n-k+1;j++)
+		for (int i = start; i <= n - k + 1; ++i)
 		{
-			sol.push_back(j);
-			combine(res,sol,j+1,n,k-1);
-			sol.pop_back();
+			data.push_back(i);
+			dfs(res, data, i + 1, n, k - 1);
+			data.pop_back();
 		}
 	}
 };
