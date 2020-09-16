@@ -13,7 +13,7 @@ struct TreeNode
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int *postorderTraversal(struct TreeNode *root, int *returnSize)
+int *preorderTraversal(struct TreeNode *root, int *returnSize)
 {
 	static struct TreeNode *stack[MAXNODE];
 	static int staticRes[MAXNODE];
@@ -24,23 +24,14 @@ int *postorderTraversal(struct TreeNode *root, int *returnSize)
 		return NULL;
 	}
 	stack[++top] = root;
-	struct TreeNode *pre = root, *cur = root;
 	while (top != -1)
 	{
-		cur = stack[top];
-		if ((!cur->left && !cur->right) || (cur->left == pre || cur->right == pre))
-		{
-			pre = cur;
-			staticRes[size++] = cur->val;
-			--top;
-		}
-		else
-		{
-			if (cur->right)
-				stack[++top] = cur->right;
-			if (cur->left)
-				stack[++top] = cur->left;
-		}
+		struct TreeNode *node = stack[top--];
+		staticRes[size++] = node->val;
+		if (node->right)
+			stack[++top] = node->right;
+		if (node->left)
+			stack[++top] = node->left;
 	}
 
 	*returnSize = size;

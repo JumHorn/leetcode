@@ -1,33 +1,38 @@
-#include<iostream>
-#include<vector>
-#include<stack>
+#include <stack>
+#include <vector>
 using namespace std;
-// Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+
+//Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> preorderTraversal(TreeNode* root) {
+	vector<int> preorderTraversal(TreeNode *root)
+	{
 		vector<int> res;
-    	stack<TreeNode*> s;
-		while(!s.empty()||root!=NULL)
+		stack<TreeNode *> s;
+		if (root == nullptr)
+			return res;
+		s.push(root);
+		while (!s.empty())
 		{
-			s.push(root);
-			res.push_back(root->val);
-			root=root->left;
-
-			while(root==NULL&&!s.empty())
-			{
-				root=s.top();
-				root=root->right;
-				s.pop();
-			}
+			struct TreeNode *node = s.top();
+			s.pop();
+			res.push_back(node->val);
+			if (node->right != nullptr)
+				s.push(node->right);
+			if (node->left != nullptr)
+				s.push(node->left);
 		}
 		return res;
-    }
+	}
 };
