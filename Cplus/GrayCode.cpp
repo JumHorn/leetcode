@@ -7,32 +7,22 @@ class Solution
 public:
 	vector<int> grayCode(int n)
 	{
-		if (n == 0)
-			return {0};
-		if (n == 1)
-			return {0, 1};
-		if (n == 2)
-			return {0, 1, 3, 2};
-		vector<int> res, seen(pow(2, n));
-		res.push_back(0);
-		seen[0] = 1;
-		recursive(res, seen, 0, n);
+		vector<int> res;
+		int mask = 0;
+		recursive(res, mask, n);
 		return res;
 	}
 
-	void recursive(vector<int> &res, vector<int> &seen, int n, int len)
+	void recursive(vector<int> &res, int &mask, int n)
 	{
-		for (int i = 0; i < len; i++)
+		if (n == 0)
 		{
-			int tmp = bitFlip(n, i);
-			if (seen[tmp] == 0)
-			{
-				seen[tmp] = 1;
-				res.push_back(tmp);
-				recursive(res, seen, tmp, len);
-				break;
-			}
+			res.push_back(mask);
+			return;
 		}
+		recursive(res, mask, n - 1);
+		mask = bitFlip(mask, n - 1);
+		recursive(res, mask, n - 1);
 	}
 
 	int bitFlip(int num, int bit)
