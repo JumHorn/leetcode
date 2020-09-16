@@ -1,96 +1,48 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
+
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    vector<TreeNode*> generateTrees(int n) {
-        if(n==0)
-            return vector<TreeNode*>();
-        vector<int> v(n);
-		for(int i=0;i<n;i++)
-			v[i]=i+1;
-		vector<vector<int> > permutation;
-		vector<int> tmp;
-		generateTrees(permutation,v,tmp,0);
-		vector<TreeNode*> res;
-		for(int i=0;i<(int)permutation.size();i++)
-		{
-			TreeNode* tmp=createTree(permutation[i]);
-			int j;
-			for(j=0;j<(int)res.size();j++)
-				if(isSame(res[j],tmp))
-					break;
-			if(j==(int)res.size())
-				res.push_back(tmp);
-		}
-		return res;
-    }
-
-	bool isSame(TreeNode* t1,TreeNode* t2)
+	vector<TreeNode *> generateTrees(int n)
 	{
-		if(t1==NULL&&t2==NULL)
-			return true;
-		if(t1==NULL||t2==NULL)
-			return false;
-		return t1->val==t2->val&&isSame(t1->left,t2->left)&&isSame(t1->right,t2->right);
+		if (n == 0)
+			return {};
+		return recursive(1, n);
 	}
 
-	TreeNode* createTree(vector<int> node)
+	vector<TreeNode *> recursive(int first, int last) //[first,last] closed range
 	{
-		TreeNode* root=new TreeNode(node[0]);
-		for(int i=1;i<(int)node.size();i++)
+		if (first > last)
+			return {nullptr};
+		vector<TreeNode *> res;
+		for (int i = first; i <= last; ++i)
 		{
-			TreeNode* tmp=root;
-			while(true)
+			vector<TreeNode *> left = recursive(first, i - 1);
+			vector<TreeNode *> right = recursive(i + 1, last);
+			for (auto l : left)
 			{
-				if(node[i]>tmp->val)
+				for (auto r : right)
 				{
-					if(tmp->right==NULL)
-					{
-						tmp->right=new TreeNode(node[i]);
-						break;
-					}
-					else
-						tmp=tmp->right;
-				}
-				else
-				{
-					if(tmp->left==NULL)
-					{
-						tmp->left=new TreeNode(node[i]);
-						break;
-					}
-					else
-						tmp=tmp->left;
+					TreeNode *root = new TreeNode(i);
+					root->left = l;
+					root->right = r;
+					res.push_back(root);
 				}
 			}
-
 		}
-		return root;
-	}
-
-	void generateTrees(vector<vector<int> >& permutation,vector<int>& v,vector<int>& tmp,int start)
-	{
-		if(tmp.size()==v.size())
-		{
-			permutation.push_back(tmp);
-			return;
-		}
-		for(int i=start;i<(int)v.size();i++)
-		{
-			swap(v[start],v[i]);
-			tmp.push_back(v[start]);
-			generateTrees(permutation,v,tmp,start+1);
-			tmp.pop_back();
-			swap(v[start],v[i]);
-		}
+		return res;
 	}
 };
