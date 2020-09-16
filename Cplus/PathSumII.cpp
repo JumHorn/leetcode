@@ -1,90 +1,46 @@
-#include<iostream>
-#include<vector>
-#include<stack>
+#include <vector>
 using namespace std;
 
-// Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+//Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    int value = 0;
-    TreeNode* parent;
-    stack<TreeNode*> s;
-    vector<int> temp;
-    vector<vector<int> > result;
-    vector<vector<int> > pathSum(TreeNode* root, int sum) {
-        // cout<<value<<endl;
-        // print(temp);
-        if(root==NULL)
-        {
-            while(!s.empty()&&s.top()->right==root)
-            {
-                value-=temp[temp.size()-1];
-                temp.pop_back(); 
-                root=s.top();
-                s.pop();
-            }
-            return result;
-        }
-        if(root->left==NULL&&root->right==NULL)
-        {
-            if(value+root->val==sum)
-            {
-                // cout<<"test:"<<root->val<<endl;
-                vector<int> vec(temp.begin(),temp.end());
-                vec.push_back(root->val);
-                result.push_back(vec);
-            }
-            while(!s.empty()&&s.top()->right==root)
-            {
-                value-=temp[temp.size()-1]; 
-                temp.pop_back();
-                root=s.top();
-                s.pop();
-            }
-            return result;            
-        }
-        temp.push_back(root->val);
-        s.push(root);
-        value+=root->val;
-        pathSum(root->left,sum);
-        pathSum(root->right,sum);
-        return result;
-    }
-    // for testing
-    // void print(vector<int> &vec)
-    // {
-    //     for(vector<int>::iterator iter=vec.begin();iter!=vec.end();iter++)
-    //     {
-    //         cout<<*iter<<";";
-    //     }
-    //     cout<<endl;
-    // }
-};
+	vector<vector<int>> pathSum(TreeNode *root, int sum)
+	{
+		vector<vector<int>> res;
+		if (root == nullptr)
+			return res;
+		vector<int> instance;
+		dfs(root, sum, instance, res);
+		return res;
+	}
 
-// greater solution
-// class Solution {
-// public:
-//     vector<vector<int>> pathSum(TreeNode* root, int sum) {
-//         vector<vector<int> > paths;
-//         vector<int> path;
-//         findPaths(root, sum, path, paths);
-//         return paths;  
-//     }
-// private:
-//     void findPaths(TreeNode* node, int sum, vector<int>& path, vector<vector<int> >& paths) {
-//         if (!node) return;
-//         path.push_back(node -> val);
-//         if (!(node -> left) && !(node -> right) && sum == node -> val)
-//             paths.push_back(path);
-//         findPaths(node -> left, sum - node -> val, path, paths);
-//         findPaths(node -> right, sum - node -> val, path, paths);
-//         path.pop_back();
-//     }
-// };
+	void dfs(TreeNode *root, int sum, vector<int> &instance, vector<vector<int>> &res)
+	{
+		if (root == nullptr)
+			return;
+		if (root->left == nullptr && root->right == nullptr)
+		{
+			if (sum == root->val)
+			{
+				res.push_back(instance);
+				res.back().push_back(root->val);
+			}
+			return;
+		}
+		instance.push_back(root->val);
+		dfs(root->left, sum - root->val, instance, res);
+		dfs(root->right, sum - root->val, instance, res);
+		instance.pop_back();
+	}
+};
