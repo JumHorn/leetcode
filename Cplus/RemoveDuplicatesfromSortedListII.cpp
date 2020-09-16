@@ -14,18 +14,20 @@ class Solution
 public:
 	ListNode *deleteDuplicates(ListNode *head)
 	{
-		ListNode **indirect = &head;
-		while ((*indirect) != nullptr && (*indirect)->next != nullptr)
+		ListNode dummy;
+		dummy.next = head;
+		ListNode *p = &dummy;
+		while (p->next && p->next->next)
 		{
-			if ((*indirect)->val == (*indirect)->next->val)
+			if (p->next->val == p->next->next->val)
 			{
-				while ((*indirect) != nullptr && (*indirect)->next != nullptr && (*indirect)->val == (*indirect)->next->val)
-					*indirect = (*indirect)->next;
-				*indirect = (*indirect)->next;
+				while (p->next->next && p->next->val == p->next->next->val)
+					p->next = p->next->next;
+				p->next = p->next->next;
 			}
 			else
-				indirect = &((*indirect)->next);
+				p = p->next;
 		}
-		return head;
+		return dummy.next;
 	}
 };
