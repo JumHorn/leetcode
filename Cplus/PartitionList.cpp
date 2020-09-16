@@ -1,45 +1,31 @@
-#include<iostream>
-using namespace std;
+
 //Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* partition(ListNode* head, int x) {
-        ListNode* tmp=head,*insert=NULL;
-		while(tmp!=NULL&&tmp->val<x)
-        {
-            insert=tmp;
-			tmp=tmp->next;
-        }
-		while(tmp!=NULL&&tmp->next!=NULL)
+	ListNode *partition(ListNode *head, int x)
+	{
+		ListNode node1, node2;
+		ListNode *p1 = &node1, *p2 = &node2;
+		while (head)
 		{
-			if(tmp->next->val<x)
-			{
-				ListNode* tmp1=tmp->next;
-				ListNode* tmp2=tmp->next->next;
-                if(insert!=NULL)
-                {
-                    tmp1->next=insert->next;
-                    insert->next=tmp1;
-                    tmp->next=tmp2;
-                    insert=insert->next;
-                }
-                else
-                {
-                    tmp1->next=head;
-                    insert=tmp1;
-                    head=insert;
-                    tmp->next=tmp2;
-                }
-			}
-            else
-                tmp=tmp->next;
+			if (head->val < x)
+				p1 = p1->next = head;
+			else
+				p2 = p2->next = head;
+			head = head->next;
 		}
-		return head;
-    }
+		p2->next = nullptr;
+		p1->next = node2.next;
+		return node1.next;
+	}
 };
