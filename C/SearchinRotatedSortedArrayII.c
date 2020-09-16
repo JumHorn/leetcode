@@ -1,13 +1,14 @@
 #include <limits.h>
+#include <stdbool.h>
 
-int search(int *nums, int numsSize, int target)
+bool search(int *nums, int numsSize, int target)
 {
 	int lo = 0, hi = numsSize - 1;
 	while (lo <= hi)
 	{
 		int mi = (hi - lo) / 2 + lo;
 		if (nums[mi] == target)
-			return mi;
+			return true;
 		if (nums[lo] == nums[mi]) //skip duplicates
 			++lo;
 		else if (nums[lo] < nums[mi])
@@ -25,5 +26,5 @@ int search(int *nums, int numsSize, int target)
 				hi = mi - 1;
 		}
 	}
-	return -1;
+	return false;
 }
