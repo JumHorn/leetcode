@@ -1,61 +1,62 @@
-#include<iostream>
-#include<vector>
+#include <vector>
 using namespace std;
-// Definition for singly-linked list.
-struct ListNode {
+
+/*
+inorder generate tree with [1,n]
+then fill list node in inorder traversal
+*/
+
+//Definition for singly-linked list.
+struct ListNode
+{
 	int val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-//  Definition for a binary tree node.
-struct TreeNode {
+//Definition for a binary tree node.
+struct TreeNode
+{
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
-	public:
-		TreeNode* sortedListToBST(ListNode* head) {
-            vector<int> nums;
-            while(head)
-            {
-                nums.push_back(head->val);
-                head=head->next;
-            }
-            return sortedArrayToBST(nums);
-        }
-        TreeNode* sortedArrayToBST(vector<int>& nums) {
-            if(nums.size()==0)
-            {
-                return NULL;
-            }
-            TreeNode* root;
-            Array2BST(root,nums,0,nums.size()-1);
-            return root;
-        }
-        // void Array2BST(TreeNode* root,vector<int>& nums,int L,int R）   
-        // 指针作为参数是获得一份指针的拷贝，若改变指向，只是拷贝指针的指向，原来指针的指向不改变
-        // 而指针的引用可以改变原来指针的指向 
-        void Array2BST(TreeNode* &root,vector<int>& nums,int L,int R)
-        {
-            if(R-L>1)
-            {
-                int middle = (L+R)/2+(L+R)%2;
-                root = new TreeNode(nums[middle]);
-                Array2BST(root->left,nums,L,middle-1);
-                Array2BST(root->right,nums,middle+1,R);
-            }
-            if(R-L==1)
-            {
-                root = new TreeNode(nums[R]);
-                root->left = new TreeNode(nums[L]);
-            }
-            if(R-L==0)
-            {
-                root = new TreeNode(nums[R]);
-            }
-        }
+class Solution
+{
+public:
+	TreeNode *sortedListToBST(ListNode *head)
+	{
+		int size = getSize(head);
+		return inorder(head, 0, size);
+	}
+
+	TreeNode *inorder(ListNode *&head, int first, int last) //[first,last)
+	{
+		if (first >= last)
+			return nullptr;
+		int mi = (last - first) / 2 + first;
+		TreeNode *root = new TreeNode();
+		root->left = inorder(head, first, mi);
+		root->val = head->val;
+		head = head->next;
+		root->right = inorder(head, mi + 1, last);
+		return root;
+	}
+
+	int getSize(ListNode *head)
+	{
+		int res = 0;
+		while (head)
+		{
+			++res;
+			head = head->next;
+		}
+		return res;
+	}
 };
