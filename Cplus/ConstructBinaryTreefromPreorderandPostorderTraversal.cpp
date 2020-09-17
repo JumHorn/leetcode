@@ -17,26 +17,19 @@ class Solution
 public:
 	TreeNode *constructFromPrePost(vector<int> &pre, vector<int> &post)
 	{
-		return recursive(pre, 0, pre.size(), post, 0, post.size());
+		int preIndex = 0, postIndex = 0;
+		return recursive(pre, preIndex, post, postIndex);
 	}
 
 	//[first,last)
-	TreeNode *recursive(vector<int> &preorder, int prefirst, int prelast, vector<int> &postorder, int postfirst, int postlast)
+	TreeNode *recursive(vector<int> &preorder, int &preIndex, vector<int> &postorder, int &postIndex)
 	{
-		if (prefirst >= prelast)
-			return nullptr;
-		if (prelast - prefirst == 1)
-			return new TreeNode(preorder[prefirst]);
-		int mi, len;
-		for (mi = postfirst; mi < postlast; ++mi)
-		{
-			if (preorder[prefirst + 1] == postorder[mi])
-				break;
-		}
-		len = mi - postfirst;
-		TreeNode *root = new TreeNode(preorder[prefirst]);
-		root->left = recursive(preorder, prefirst + 1, prefirst + 2 + len, postorder, postfirst, mi + 1);
-		root->right = recursive(preorder, prefirst + 2 + len, prelast, postorder, mi + 1, postlast - 1);
+		TreeNode *root = new TreeNode(preorder[preIndex++]);
+		if (root->val != postorder[postIndex])
+			root->left = recursive(preorder, preIndex, postorder, postIndex);
+		if (root->val != postorder[postIndex])
+			root->right = recursive(preorder, preIndex, postorder, postIndex);
+		++postIndex;
 		return root;
 	}
 };
