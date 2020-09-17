@@ -18,20 +18,21 @@ class Solution
 public:
 	bool isValidBST(TreeNode *root)
 	{
-		return get<0>(postorder(root));
+		long preval = INT_MIN - 1L;
+		return inorder(root, preval);
 	}
 
-	tuple<bool, long, long> postorder(TreeNode *root) //return {isBst,minval,maxval}
+	bool inorder(TreeNode *root, long &preval)
 	{
 		if (root == nullptr)
-			return {true, INT_MAX + 1u, INT_MIN - 1u};
-		auto l = postorder(root->left);
-		auto r = postorder(root->right);
-		if (get<0>(l) && get<0>(r))
-		{
-			if (root->val > get<2>(l) && root->val < get<1>(r))
-				return {true, min(get<1>(l), (long)root->val), max(get<2>(r), (long)root->val)};
-		}
-		return {false, INT_MAX, INT_MIN};
+			return true;
+		if (!inorder(root->left, preval))
+			return false;
+		if (root->val <= preval)
+			return false;
+		preval = root->val;
+		if (!inorder(root->right, preval))
+			return false;
+		return true;
 	}
 };
