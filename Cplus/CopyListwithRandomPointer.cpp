@@ -1,50 +1,43 @@
-#include<unordered_map>
-#include<vector>
+#include <unordered_map>
+#include <vector>
 using namespace std;
+
 // Definition for a Node.
-class Node {
+class Node
+{
 public:
-    int val;
-    Node* next;
-    Node* random;
+	int val;
+	Node *next;
+	Node *random;
 
-    Node() {}
-
-    Node(int _val, Node* _next, Node* _random) {
-        val = _val;
-        next = _next;
-        random = _random;
-    }
+	Node(int _val)
+	{
+		val = _val;
+		next = NULL;
+		random = NULL;
+	}
 };
 
-class Solution {
+class Solution
+{
 public:
-    Node* copyRandomList(Node* head) {
-        unordered_map<Node*,int> nodetoindex;//src node list
-		unordered_map<int,Node*> indextonode;//dst node list
-		vector<pair<int,int>> random;
-		int index=0;
-		Node* tmp=head;
-		Node* res=new Node(0,NULL,NULL);//dumzy node
-		Node* tmpnew=res;
-		while(tmp!=NULL)
+	Node *copyRandomList(Node *head)
+	{
+		if (head == nullptr)
+			return nullptr;
+		unordered_map<Node *, Node *> m; //{src node,dst node}
+		Node *res = new Node(head->val);
+		m[head] = res;
+		for (Node *p = head->next, *q = res; p; p = p->next, q = q->next)
 		{
-			nodetoindex[tmp]=index;
-			tmpnew->next=new Node(tmp->val,NULL,NULL);
-			tmpnew=tmpnew->next;
-			indextonode[index]=tmpnew;
-			tmp=tmp->next;
-			index++;
+			m[p] = new Node(p->val);
+			q->next = m[p];
 		}
-		tmp=head;
-		while(tmp!=NULL)
+		for (Node *p = head, *q = res; p; p = p->next, q = q->next)
 		{
-			if(tmp->random!=NULL)
-				random.push_back({nodetoindex[tmp],nodetoindex[tmp->random]});
-			tmp=tmp->next;
+			if (p->random)
+				q->random = m[p->random];
 		}
-		for(int i=0;i<(int)random.size();i++)
-			indextonode[random[i].first]->random=indextonode[random[i].second];
-		return res->next;
-    }
+		return res;
+	}
 };
