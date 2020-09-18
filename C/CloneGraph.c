@@ -45,6 +45,7 @@ struct Node* cloneGraph(struct Node* s)
 	struct Node* nodes[101];
 	memset(nodes, 0, sizeof(nodes));
 	struct Node* root = createNode(s->val);
+	nodes[root->val] = root;
 	dfs(s, root, nodes);
 	return root;
 }
