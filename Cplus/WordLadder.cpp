@@ -1,48 +1,48 @@
-#include<string>
-#include<unordered_set>
-#include<queue>
-#include<algorithm>
+#include <algorithm>
+#include <queue>
+#include <string>
+#include <unordered_set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-		unordered_set<string> words(wordList.begin(),wordList.end());
-		unordered_set<string> *beginset=new unordered_set<string>();
-		unordered_set<string> *endset=new unordered_set<string>();
-		if(words.find(endWord)==words.end())
+	int ladderLength(string beginWord, string endWord, vector<string> &wordList)
+	{
+		unordered_set<string> words(wordList.begin(), wordList.end());
+		unordered_set<string> beginset, endset;
+		if (words.find(endWord) == words.end())
 			return 0;
-		beginset->insert(beginWord);
-		endset->insert(endWord);
-		int res=1;
-		while(!beginset->empty())
+		beginset.insert(beginWord);
+		endset.insert(endWord);
+		int res = 1;
+		while (!beginset.empty())
 		{
-			if(beginset->size()>endset->size())
-				swap(beginset,endset);
+			if (beginset.size() > endset.size())
+				beginset.swap(endset);
 			++res;
-			unordered_set<string> *newset=new unordered_set<string>();
-			for(unordered_set<string>::iterator iter=beginset->begin();iter!=beginset->end();++iter)
+			unordered_set<string> newset;
+			for (auto str : beginset)
 			{
-				string tmp=*iter;
-				for(int i=0;i<(int)tmp.length();i++)
+				for (int i = 0; i < (int)str.length(); i++)
 				{
-                    char origin=tmp[i];
-					for(char c='a';c<='z';c++)
+					char oldchar = str[i];
+					for (char c = 'a'; c <= 'z'; c++)
 					{
-						tmp[i]=c;
-                        if(endset->find(tmp)!=endset->end())
+						str[i] = c;
+						if (endset.find(str) != endset.end())
 							return res;
-						if(words.find(tmp)!=words.end())
+						if (words.find(str) != words.end())
 						{
-							words.erase(tmp);
-							newset->insert(tmp);
+							words.erase(str);
+							newset.insert(str);
 						}
 					}
-                    tmp[i]=origin;
+					str[i] = oldchar;
 				}
 			}
-			beginset=newset;
+			beginset.swap(newset);
 		}
 		return 0;
-    }
+	}
 };
