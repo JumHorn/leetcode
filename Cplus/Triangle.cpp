@@ -1,28 +1,27 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minimumTotal(vector<vector<int> >& triangle) {
-		if(triangle.empty())
+	int minimumTotal(vector<vector<int>> &triangle)
+	{
+		int N = triangle.size();
+		if (triangle.empty())
 			return 0;
-        if(triangle.size()==1)
-            return triangle[0][0];
-        vector<int> tmp(triangle.size(),INT_MAX);
-		for(int i=1;i<(int)triangle.size();i++)
+		if (N == 1)
+			return triangle[0][0];
+		for (int i = 1; i < N; ++i)
 		{
-			for(int j=0;j<(int)triangle[i-1].size();j++)
-			{
-				tmp[j]=min(triangle[i-1][j]+triangle[i][j],tmp[j]);
-				tmp[j+1]=min(triangle[i-1][j]+triangle[i][j+1],tmp[j+1]);
-			}
-			for(int k=0;k<(int)triangle[i].size();k++)
-            {
-				triangle[i][k]=tmp[k];
-                tmp[k]=INT_MAX;
-            }
+			triangle[i][0] += triangle[i - 1][0];
+			triangle[i][triangle[i].size() - 1] += triangle[i - 1][triangle[i - 1].size() - 1];
 		}
-		return *min_element(triangle.back().begin(),triangle.back().end());
-    }
+		for (int i = 2; i < N; ++i)
+		{
+			for (int j = 1; j < triangle[i].size() - 1; ++j)
+				triangle[i][j] += min(triangle[i - 1][j], triangle[i - 1][j - 1]);
+		}
+		return *min_element(triangle.back().begin(), triangle.back().end());
+	}
 };
