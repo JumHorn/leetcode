@@ -1,17 +1,27 @@
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 using namespace std;
+
 // Definition for a Node.
 class Node
 {
 public:
 	int val;
-	vector<Node*> neighbors;
+	vector<Node *> neighbors;
 
-	Node() {}
+	Node()
+	{
+		val = 0;
+		neighbors = vector<Node *>();
+	}
 
-	Node(int _val, vector<Node*> _neighbors)
+	Node(int _val)
+	{
+		val = _val;
+		neighbors = vector<Node *>();
+	}
+
+	Node(int _val, vector<Node *> _neighbors)
 	{
 		val = _val;
 		neighbors = _neighbors;
@@ -21,46 +31,33 @@ public:
 class Solution
 {
 public:
-	Node* cloneGraph(Node* node)
+	Node *cloneGraph(Node *node)
 	{
-		vector<Node*> v;
-		unordered_map<Node*, int> index;
-		unordered_set<Node*> visited;
-		dfs(node, v, visited, index);
-		vector<Node*> copyv(v.size());
-		for (int i = 0; i < (int)copyv.size(); i++)
-		{
-			copyv[i] = new Node();
-			copyv[i]->val = v[i]->val;
-		}
-		for (int i = 0; i < (int)v.size(); i++)
-		{
-			for (auto& n : v[i]->neighbors)
-				copyv[i]->neighbors.push_back(copyv[index[n]]);
-		}
-		return copyv.front();
+		if (node == nullptr)
+			return nullptr;
+		Node *copy = new Node(node->val);
+		unordered_map<Node *, Node *> seen; //{origin node,copy node}
+		seen[node] = copy;
+		dfs(node, copy, seen);
+		return copy;
 	}
 
-	void dfs(Node* node, vector<Node*>& v, unordered_set<Node*>& visited, unordered_map<Node*, int>& index)
+	void dfs(Node *node, Node *copy, unordered_map<Node *, Node *> &seen)
 	{
-		if (visited.find(node) != visited.end())
+		if (node == nullptr)
 			return;
-		visited.insert(node);
-		if (index.find(node) == index.end())
+		copy->neighbors.resize(node->neighbors.size());
+		for (int i = 0; i < (int)node->neighbors.size(); ++i)
 		{
-			v.push_back(node);
-			index[node] = v.size() - 1;
-		}
-		for (auto n : node->neighbors)
-		{
-			if (visited.find(n) != visited.end())
-				continue;
-			if (index.find(n) == index.end())
+			auto n = node->neighbors[i];
+			if (seen.find(n) == seen.end())
 			{
-				v.push_back(n);
-				index[n] = v.size() - 1;
+				seen[n] = new Node(n->val);
+				copy->neighbors[i] = seen[n];
+				dfs(node->neighbors[i], copy->neighbors[i], seen);
 			}
-			dfs(n, v, visited, index);
+			else
+				copy->neighbors[i] = seen[n];
 		}
 	}
 };
