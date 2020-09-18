@@ -1,39 +1,39 @@
-#include<vector>
-#include<string>
-#include<unordered_set>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<string> > partition(string s) {
-		if(s.empty())
-			return vector<vector<string> >();
-        vector<vector<string> > res;
-		vector<string> tmp;
-		partition(res,s,tmp,0);
-		return res;
-    }
-
-	void partition(vector<vector<string> >& res,const string& s,vector<string>& tmp,int start)
+	vector<vector<string>> partition(string s)
 	{
-        if(start==s.length())
-            res.push_back(tmp);
-		for(int i=start+1;i<=(int)s.length();i++)
+		if (s.empty())
+			return {};
+		int N = s.length();
+		vector<vector<bool>> dp(N, vector<bool>(N));
+		for (int l = 0; l < N; ++l)
 		{
-            if(!isPalindromic(s,start,i))
-			    continue;
-            tmp.push_back(s.substr(start,i-start));
-			partition(res,s,tmp,i);
-            tmp.pop_back();
+			for (int i = 0, j = l; j < N; ++i, ++j)
+				dp[i][j] = s[i] == s[j] && (j - i <= 1 || dp[i + 1][j - 1]);
 		}
+		vector<vector<string>> res;
+		vector<string> instance;
+		dfs(s, 0, dp, instance, res);
+		return res;
 	}
 
-	bool isPalindromic(const string& s,int start,int end)
+	void dfs(const string &s, int index, vector<vector<bool>> &dp, vector<string> &instance, vector<vector<string>> &res)
 	{
-        --end;
-		while(start<end)
-			if(s[start++]!=s[end--])
-				return false;
-		return true;
+		if (index >= s.length())
+			res.push_back(instance);
+		for (int i = index + 1; i <= (int)s.length(); ++i)
+		{
+			if (!dp[index][i - 1])
+				continue;
+			instance.push_back(s.substr(index, i - index));
+			dfs(s, i, dp, instance, res);
+			instance.pop_back();
+		}
 	}
 };
