@@ -1,19 +1,22 @@
 #include <stdbool.h>
 
-bool complete(int *gas, int gasSize, int *cost, int index)
-{
-	int leftgas = gas[index] - cost[index], i;
-	for (i = (index + 1) % gasSize; leftgas >= 0 && i != index; i = (i + 1) % gasSize)
-		leftgas += gas[i] - cost[i];
-	return leftgas >= 0 && i == index;
-}
+/*
+If car starts at A and can not reach B. Any station between A and B
+can not reach B.(B is the first station that A can not reach.)
+*/
 
 int canCompleteCircuit(int *gas, int gasSize, int *cost, int costSize)
 {
-	for (int i = 0; i < gasSize; ++i)
+	for (int i = 0; i < gasSize;)
 	{
-		if (complete(gas, gasSize, cost, i))
+		int leftgas = gas[i] - cost[i], j;
+		for (j = (i + 1) % gasSize; leftgas >= 0 && j != i; j = (j + 1) % gasSize)
+			leftgas += gas[j] - cost[j];
+		if (leftgas >= 0 && j == i)
 			return i;
+		if (j <= i)
+			break;
+		i = j;
 	}
 	return -1;
 }
