@@ -1,29 +1,34 @@
-#include<iostream>
-//Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    int sumNumbers(TreeNode* root) {
-		if(root==NULL)
-			return 0;
- 		return sumNumbers(root,0);
-    }
-
-	int sumNumbers(TreeNode* root,int n)
+	int sumNumbers(TreeNode *root)
 	{
-		if(root->left==NULL&&root->right==NULL)
-			return n*10+root->val;
-		int n1=0,n2=0;
-		if(root->left!=NULL)
-			n1=sumNumbers(root->left,n*10+root->val);
-		if(root->right!=NULL)
-			n2=sumNumbers(root->right,n*10+root->val);
-		return n1+n2;
+		if (root == nullptr)
+			return 0;
+		return preorder(root, 0);
+	}
+
+	int preorder(TreeNode *root, int sum)
+	{
+		if (root->left == nullptr && root->right == nullptr)
+			return sum * 10 + root->val;
+		int res = 0;
+		if (root->left != nullptr)
+			res += preorder(root->left, sum * 10 + root->val);
+		if (root->right != nullptr)
+			res += preorder(root->right, sum * 10 + root->val);
+		return res;
 	}
 };
