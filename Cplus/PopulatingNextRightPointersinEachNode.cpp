@@ -1,46 +1,49 @@
-#include<vector>
+#include <algorithm>
 using namespace std;
+
 // Definition for a Node.
-class Node {
+class Node
+{
 public:
-    int val;
-    Node* left;
-    Node* right;
-    Node* next;
+	int val;
+	Node *left;
+	Node *right;
+	Node *next;
 
-    Node() {}
+	Node() : val(0), left(NULL), right(NULL), next(NULL) {}
 
-    Node(int _val, Node* _left, Node* _right, Node* _next) {
-        val = _val;
-        left = _left;
-        right = _right;
-        next = _next;
-    }
+	Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+	Node(int _val, Node *_left, Node *_right, Node *_next)
+		: val(_val), left(_left), right(_right), next(_next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    Node* connect(Node* root) {
-		//get hieght
-		int layer=0;
-		Node* tmp=root;
-		while(tmp!=NULL)
-		{
-			layer++;
-			tmp=tmp->left;
-		}
-		vector<Node*> nodemap(layer+1,NULL);
-		connect(root,0,nodemap);
-		return root;        
-    }
-
-	void connect(Node* root,int layer,vector<Node*>& nodemap)
+	Node *connect(Node *root)
 	{
-		if(root==NULL)
-			return;
-		root->next=nodemap[layer];
-		nodemap[layer]=root;
-		connect(root->right,layer+1,nodemap);
-		connect(root->left,layer+1,nodemap);
+		Node dummy, *p = root, *d = &dummy;
+		while (p)
+		{
+			if (p->left)
+			{
+				d->next = p->left;
+				d = d->next;
+			}
+			if (p->right)
+			{
+				d->next = p->right;
+				d = d->next;
+			}
+			p = p->next;
+			if (!p) //next level
+			{
+				p = dummy.next;
+				d = &dummy;
+				d->next = NULL;
+			}
+		}
+		return root;
 	}
 };
