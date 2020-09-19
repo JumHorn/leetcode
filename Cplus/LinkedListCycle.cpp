@@ -10,29 +10,18 @@ struct ListNode
 class Solution
 {
 public:
-	ListNode *detectCycle(ListNode *head)
+	bool hasCycle(ListNode *head)
 	{
-		if (!head)
-			return nullptr;
+		if (head == nullptr)
+			return false;
 		ListNode *tortoise = head, *hare = head->next;
 		while (hare && hare->next)
 		{
 			tortoise = tortoise->next;
 			hare = hare->next->next;
 			if (tortoise == hare)
-				break;
+				return true;
 		}
-		if (hare && hare->next)
-		{
-			tortoise = head;
-			hare = hare->next;
-			while (tortoise != hare)
-			{
-				tortoise = tortoise->next;
-				hare = hare->next;
-			}
-			return hare;
-		}
-		return nullptr;
+		return false;
 	}
 };

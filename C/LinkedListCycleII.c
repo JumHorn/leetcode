@@ -1,4 +1,3 @@
-#include <stdbool.h>
 
 //Definition for singly-linked list.
 struct ListNode
@@ -7,17 +6,28 @@ struct ListNode
 	struct ListNode *next;
 };
 
-bool hasCycle(struct ListNode *head)
+struct ListNode *detectCycle(struct ListNode *head)
 {
 	if (!head)
-		return false;
+		return 0;
 	struct ListNode *tortoise = head, *hare = head->next;
 	while (hare && hare->next)
 	{
 		tortoise = tortoise->next;
 		hare = hare->next->next;
 		if (tortoise == hare)
-			return true;
+			break;
 	}
-	return false;
+	if (hare && hare->next)
+	{
+		tortoise = head;
+		hare = hare->next;
+		while (tortoise != hare)
+		{
+			tortoise = tortoise->next;
+			hare = hare->next;
+		}
+		return hare;
+	}
+	return 0;
 }
