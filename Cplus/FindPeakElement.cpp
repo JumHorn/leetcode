@@ -1,24 +1,20 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findPeakElement(vector<int>& nums) {
-		if(nums.size()==1)
-			return 0;
-		int last=nums.size()-1;
-		if(nums[0]<=nums[last])
+	int findPeakElement(vector<int> &nums)
+	{
+		int lo = 0, hi = nums.size() - 1;
+		while (lo < hi)
 		{
-			for(int i=last-1;i>=0;i--)
-				if(nums[i]<nums[i+1])
-					return i+1;
+			int mi = (hi - lo) / 2 + lo;
+			if (nums[mi] < nums[mi + 1])
+				lo = mi + 1;
+			else
+				hi = mi;
 		}
-		else
-		{
-			for(int i=1;i<=last;i++)
-				if(nums[i]<nums[i-1])
-					return i-1;
-		}
-		return 0;
-    }
+		return lo;
+	}
 };
