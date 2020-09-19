@@ -1,6 +1,6 @@
-#include <vector>
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -8,44 +8,44 @@ class Solution
 public:
 	vector<string> wordBreak(string s, vector<string> &wordDict)
 	{
-		if (!canBreak(s, wordDict))
+		int N = s.length();
+		vector<bool> breakarray(N + 1);
+		unordered_set<string> dict(wordDict.begin(), wordDict.end());
+		if (!canBreak(s, dict, breakarray))
 			return {};
-		int n = s.length();
-		vector<unordered_set<string>> dp(n + 1);
-		for (int i = 0; i < n; i++)
+		vector<vector<string>> dp(N + 1);
+		dp[0] = {""};
+		for (int i = 0; i < N; i++)
 		{
-			for (auto word : wordDict)
+			for (int j = i; j >= 0; --j)
 			{
-				int len = word.length();
-				if (word.length() <= i + 1)
+				if (!breakarray[j])
+					continue;
+				string word = s.substr(j, i - j + 1);
+				if (dict.find(word) != dict.end())
 				{
-					if (word == s.substr(i + 1 - len, len))
+					for (auto &str : dp[j])
 					{
-						if (i + 1 == len)
-							dp[i + 1].insert(word);
+						if (str.empty())
+							dp[i + 1].push_back(word);
 						else
-						{
-							for (auto &prefix : dp[i + 1 - len])
-								dp[i + 1].insert(prefix + " " + word);
-						}
+							dp[i + 1].push_back(str + " " + word);
 					}
 				}
 			}
 		}
-		return vector<string>(dp.back().begin(), dp.back().end());
+		return dp.back();
 	}
 
-	bool canBreak(const string &s, vector<string> &wordDict)
+	bool canBreak(const string &s, unordered_set<string> &dict, vector<bool> &dp)
 	{
-		vector<bool> dp(s.length() + 1);
-		unordered_set<string> dict(wordDict.begin(), wordDict.end());
 		dp[0] = true;
-		for (int i = 0; i < (int)s.length(); i++)
+		for (int i = 0; i < (int)s.length(); ++i)
 		{
-			for (int j = i; j >= 0 && !dp[i + 1]; j--)
+			for (int j = i; j >= 0 && !dp[i + 1]; --j)
 			{
 				if (dict.find(s.substr(j, i - j + 1)) != dict.end())
-					dp[i + 1] = dp[i + 1] || dp[j];
+					dp[i + 1] = dp[j];
 			}
 		}
 		return dp.back();

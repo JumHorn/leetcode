@@ -1,38 +1,25 @@
-#include<string>
-#include<vector>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool wordBreak(string s, vector<string>& wordDict) {
-		vector<bool> dp(s.size()+1,false);
-		dp[0]=true;
-		for(int i=0;i<s.size();i++)
+	bool wordBreak(string s, vector<string> &wordDict)
+	{
+		int N = s.length();
+		unordered_set<string> dict(wordDict.begin(), wordDict.end());
+		vector<bool> dp(N + 1);
+		dp[0] = true;
+		for (int i = 0; i < N; ++i)
 		{
-			for(int j=0;j<(int)wordDict.size();j++)
+			for (int j = i; j >= 0 && !dp[i + 1]; --j)
 			{
-				if(wordDict[j].size()<=i+1)
-				{
-					int tmp=i+1-wordDict[j].size();
-					if(dp[tmp]&&s.substr(tmp,i+1-tmp)==wordDict[j])
-					{
-						dp[i+1]=true;
-						break;
-					}
-				}
+				if (dict.find(s.substr(j, i - j + 1)) != dict.end())
+					dp[i + 1] = dp[j];
 			}
 		}
 		return dp.back();
-    }
+	}
 };
-
-int main()
-{
-	string s1="apple",s2="pen";
-	vector<string> v;
-	v.push_back(s1);
-	v.push_back(s2);
-	Solution sol;
-	sol.wordBreak("applepenapple",v);
-	return 0;
-}
