@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -28,12 +29,13 @@ void insert(Trie *root, char *s)
 	root->val = 1;
 }
 
-char **addString(char **res, int size, char *s, int len)
+char **addString(char **res, int *size, char *s, int len)
 {
-	char *tmp = (char *)malloc((len + 1) * sizeof(char));
-	strcpy(tmp, s);
-	res = (char **)realloc(res, size * sizeof(char *));
-	res[size - 1] = tmp;
+	char *data = (char *)malloc((len + 1) * sizeof(char));
+	strcpy(data, s);
+	res = (char **)realloc(res, sizeof(char *) * (*size + 1));
+	res[*size] = data;
+	++*size;
 	return res;
 }
 
@@ -44,7 +46,7 @@ void dfs(Trie *root, Trie *node, char *s, char *buff, int index, int *size, char
 		if (node && node->val == 1)
 		{
 			buff[index] = '\0';
-			*res = addString(*res, ++(*size), buff, index);
+			*res = addString(*res, size, buff, index);
 		}
 		return;
 	}
@@ -60,16 +62,38 @@ void dfs(Trie *root, Trie *node, char *s, char *buff, int index, int *size, char
 	dfs(root, node->node[tmp], s + 1, buff, index + 1, size, res);
 }
 
+bool canBreak(char *s, char **wordDict, int wordDictSize)
+{
+	int N = strlen(s);
+	bool dp[N + 1];
+	memset(dp, 0, sizeof(dp));
+	dp[0] = true;
+	for (int i = 0; i < N; ++i)
+	{
+		for (int j = i; j >= 0 && !dp[i + 1]; --j)
+		{
+			for (int k = 0; k < wordDictSize; ++k)
+			{
+				if (strncmp(wordDict[k], s + j, i - j + 1) == 0)
+					dp[i + 1] = dp[j];
+			}
+		}
+	}
+	return dp[N];
+}
+
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
 char **wordBreak(char *s, char **wordDict, int wordDictSize, int *returnSize)
 {
+	*returnSize = 0;
+	if (!canBreak(s, wordDict, wordDictSize))
+		return NULL;
 	//create Trie
 	Trie *root = createNode(0);
 	for (int i = 0; i < wordDictSize; i++)
 		insert(root, wordDict[i]);
-	*returnSize = 0;
 	char buff[1000];
 	char **res = 0;
 	dfs(root, root, s, buff, 0, returnSize, &res);
