@@ -1,44 +1,45 @@
-#include<iostream>
-using namespace std;
+
 //Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    void reorderList(ListNode* head) {
-		if(head==NULL)
-			return;
-		ListNode* walker=head,*mid=head,*runner=head;
-		while(runner!=NULL&&runner->next!=NULL)
-		{
-			walker=walker->next;
-			runner=runner->next->next;
-		}
-		mid=walker;
-		ListNode* tmp=mid->next;
-		tmp=reverse(tmp);
-		mid->next=NULL;
-		while(tmp!=NULL)
-		{
-			ListNode* tmp1=tmp;
-			tmp=tmp->next;
-			tmp1->next=head->next;
-			head->next=tmp1;
-			head=head->next->next;
-		}
-    }
-
-	ListNode* reverse(ListNode* root)
+	void reorderList(ListNode *head)
 	{
-		if(root==NULL||root->next==NULL)
+		if (head == nullptr)
+			return;
+		ListNode *mid = head, *tail = head;
+		while (tail != nullptr && tail->next != nullptr) //get the middle
+		{
+			mid = mid->next;
+			tail = tail->next->next;
+		}
+		tail = reverseList(mid->next);
+		mid->next = nullptr;
+		for (ListNode *p = head; tail; p = p->next->next)
+		{
+			ListNode *node = tail;
+			tail = tail->next;
+			node->next = p->next;
+			p->next = node;
+		}
+	}
+
+	ListNode *reverseList(ListNode *root)
+	{
+		if (root == nullptr || root->next == nullptr)
 			return root;
-		ListNode* res=reverse(root->next);
-		root->next->next=root;
-		root->next=NULL;
+		ListNode *res = reverseList(root->next);
+		root->next->next = root;
+		root->next = nullptr;
 		return res;
 	}
 };
