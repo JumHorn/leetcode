@@ -1,78 +1,83 @@
-#include<string>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Trie {
-
+class Trie
+{
 	struct TreeNode
 	{
-		char val;
-		int count;
-		TreeNode* node[26];
-		TreeNode(char v):val(v),count(0)
+		int count; //number of words ends with this node
+		vector<TreeNode *> nodes;
+
+		TreeNode() : count(0), nodes(26, nullptr)
 		{
-			memset(node,0,sizeof(node));
 		}
 		// ~TreeNode()
 		// {
-		// 	for(int i=0;i<26;i++)
-		// 		if(node[i]!=NULL)
-		// 			delete node[i];
+		// 	for (int i = 0; i < 26; i++)
+		// 	{
+		// 		if (nodes[i] != nullptr)
+		// 			delete nodes[i];
+		// 	}
 		// }
 	};
 
-	TreeNode* root;
 public:
-    /** Initialize your data structure here. */
-    Trie() {
-        root=new TreeNode('\0');
-    }
+	/** Initialize your data structure here. */
+	Trie()
+	{
+		root = new TreeNode();
+	}
 
 	// ~Trie()
 	// {
-	// 	if(root!=NULL)
+	// 	if (root != nullptr)
 	// 		delete root;
 	// }
 
-    /** Inserts a word into the trie. */
-    void insert(string word) {
-        TreeNode* tmp=root;
-		for(int i=0;i<(int)word.length();i++)
+	/** Inserts a word into the trie. */
+	void insert(string word)
+	{
+		TreeNode *node = root;
+		for (auto c : word)
 		{
-			int index=word[i]-'a';
-			if(tmp->node[index]==NULL)
-			{
-				tmp->node[index]=new TreeNode(word[i]);
-			}
-			tmp=tmp->node[index];
+			int index = c - 'a';
+			if (node->nodes[index] == NULL)
+				node->nodes[index] = new TreeNode();
+			node = node->nodes[index];
 		}
-		tmp->count++;
-    }
+		++node->count;
+	}
 
-    /** Returns if the word is in the trie. */
-    bool search(string word) {
-		TreeNode* tmp=root;
-        for(int i=0;i<(int)word.length();i++)
-		{
-			int index=word[i]-'a';
-			if(tmp->node[index]==NULL)
-				return false;
-			tmp=tmp->node[index];
-		}
-		return tmp->count>0;
-    }
+	/** Returns if the word is in the trie. */
+	bool search(string word)
+	{
+		TreeNode *node = searchNode(word);
+		return node != nullptr && node->count > 0;
+	}
 
-    /** Returns if there is any word in the trie that starts with the given prefix. */
-    bool startsWith(string prefix) {
-        TreeNode* tmp=root;
-		for(int i=0;i<(int)prefix.length();i++)
+	/** Returns if there is any word in the trie that starts with the given prefix. */
+	bool startsWith(string prefix)
+	{
+		TreeNode *node = searchNode(prefix);
+		return node != nullptr;
+	}
+
+private:
+	TreeNode *root;
+
+	TreeNode *searchNode(const string &str)
+	{
+		TreeNode *node = root;
+		for (auto c : str)
 		{
-			int index=prefix[i]-'a';
-			if(tmp->node[index]==NULL)
-				return false;
-			tmp=tmp->node[index];
+			int index = c - 'a';
+			if (node->nodes[index] == nullptr)
+				return nullptr;
+			node = node->nodes[index];
 		}
-		return true;
-    }
+		return node;
+	}
 };
 
 /**
