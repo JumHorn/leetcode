@@ -14,18 +14,27 @@ public:
 		{
 			for (int mask = 0; mask <= bitmask; ++mask)
 			{
-				for (int j = 1; j <= bitmask; ++j)
-				{
-					int costs = 0;
-					for (int k = 0; k < size2; ++k)
-					{
-						if (j & (1 << k))
-							costs += cost[i][k];
-					}
-					dp[i + 1][mask | j] = min(dp[i + 1][mask | j], dp[i][mask] + costs);
-				}
+				for (int j = 0; j < size2; ++j)
+					dp[i + 1][mask | 1 << j] = min(dp[i + 1][mask | 1 << j], dp[i][mask] + cost[i][j]);
 			}
 		}
-		return dp[size1][bitmask];
+		vector<int> mincost(size2, INT_MAX);
+		for (int i = 0; i < size1; ++i)
+		{
+			for (int j = 0; j < size2; ++j)
+				mincost[j] = min(mincost[j], cost[i][j]);
+		}
+		int res = INT_MAX;
+		for (int i = 0; i <= bitmask; ++i)
+		{
+			int val = dp[size1][i];
+			for (int j = 0; j < size2; ++j)
+			{
+				if (((1 << j) & i) == 0)
+					val += mincost[j];
+			}
+			res = min(res, val);
+		}
+		return res;
 	}
 };
