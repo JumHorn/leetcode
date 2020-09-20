@@ -43,29 +43,39 @@ front == rear;						 //is empty
 //prefix tree
 typedef struct Trie
 {
-	int val;
-	struct Trie *node[26];
+	int count; //number of words end with this node
+	struct Trie *nodes[26];
 } Trie;
 
-Trie *createNode(int val)
+Trie *createNode()
 {
 	Trie *node = (Trie *)malloc(sizeof(Trie));
 	memset(node, 0, sizeof(Trie));
-	node->val = val;
 	return node;
 }
 
-void insert(Trie *root, char *s)
+void insert(Trie *root, char *str)
 {
-	while (*s)
+	while (*str)
 	{
-		int index = *s - 'a';
-		if (!root->node[index])
-			root->node[index] = createNode(0);
-		root = root->node[index];
-		++s;
+		int index = *str++ - 'a';
+		if (!root->nodes[index])
+			root->nodes[index] = createNode();
+		root = root->nodes[index];
 	}
-	root->val = 1;
+	++root->count;
+}
+
+Trie *searchNode(Trie *root, char *str)
+{
+	while (*str)
+	{
+		int index = *str++ - 'a';
+		if (!root->nodes[index])
+			return NULL;
+		root = root->nodes[index];
+	}
+	return root;
 }
 /********end of prefix tree********/
 
