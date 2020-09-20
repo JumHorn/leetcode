@@ -4,33 +4,11 @@
 
 int cmp(const void *lhs, const void *rhs)
 {
+	static char arr1[30], arr2[30];
 	char *l = (char *)lhs, *r = (char *)rhs;
-	while (*l && *r)
-	{
-		if (*l != *r)
-			return *r - *l;
-		++l;
-		++r;
-	}
-	if (!*l && !*r)
-		return 0;
-	if (*l)
-	{
-		char *p = (char *)lhs;
-		while (*l && *l == *p)
-		{
-			++l;
-			++p;
-		}
-		return *p - *l;
-	}
-	char *p = (char *)rhs;
-	while (*r && *r == *p)
-	{
-		++r;
-		++p;
-	}
-	return *r - *p;
+	sprintf(arr1, "%s%s", l, r);
+	sprintf(arr2, "%s%s", r, l);
+	return strcmp(arr2, arr1);
 }
 
 char *largestNumber(int *nums, int numsSize)
