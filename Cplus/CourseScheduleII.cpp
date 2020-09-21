@@ -1,32 +1,36 @@
-#include<vector>
-#include<unordered_set>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-		vector<int> res(numCourses),parents(numCourses);
-		unordered_set<int> noParents;
-		vector<unordered_set<int>> children(numCourses);		
-		for(int i=0;i<(int)prerequisites.size();i++)
+	vector<int> findOrder(int numCourses, vector<vector<int>> &prerequisites)
+	{
+		vector<int> res, indegree(numCourses);
+		queue<int> q; //store no parent node
+		vector<vector<int>> graph(numCourses);
+		for (auto &pre : prerequisites)
 		{
-			++parents[prerequisites[i][0]];
-			children[prerequisites[i][1]].insert(prerequisites[i][0]);
+			++indegree[pre[0]];
+			graph[pre[1]].push_back(pre[0]);
 		}
-		for(int i=0;i<numCourses;i++)
-			if(parents[i]==0)
-				noParents.insert(i);
-		for(int i=0;i<numCourses;i++)
+		for (int i = 0; i < numCourses; i++)
 		{
-			if(noParents.empty())
-				return vector<int>();
-			int orphan=*noParents.begin();
-			noParents.erase(orphan);
-			res[i]=orphan;
-			for(unordered_set<int>::iterator iter=children[orphan].begin();iter!=children[orphan].end();++iter)
-				if(--parents[*iter]==0)
-					noParents.insert(*iter);
+			if (indegree[i] == 0)
+				q.push(i);
 		}
-		return res;
-    }
+		while (!q.empty())
+		{
+			int node = q.front();
+			q.pop();
+			res.push_back(node);
+			for (auto n : graph[node])
+			{
+				if (--indegree[n] == 0)
+					q.push(n);
+			}
+		}
+		return (int)res.size() == numCourses ? res : vector<int>();
+	}
 };
