@@ -1,4 +1,4 @@
-#include <unordered_set>
+#include <queue>
 #include <vector>
 using namespace std;
 
@@ -7,31 +7,30 @@ class Solution
 public:
 	bool canFinish(int numCourses, vector<vector<int>> &prerequisites)
 	{
-		vector<int> done(numCourses), seen(numCourses);
+		vector<int> indegree(numCourses);
+		queue<int> q; //store no parent node
 		vector<vector<int>> graph(numCourses);
 		for (auto &pre : prerequisites)
-			graph[pre[0]].push_back(pre[1]);
-		for (int i = 0; i < numCourses; ++i)
 		{
-			if (done[i] == 0 && !dfs(graph, i, seen, done))
-				return false;
+			++indegree[pre[0]];
+			graph[pre[1]].push_back(pre[0]);
 		}
-		return true;
-	}
-
-	bool dfs(vector<vector<int>> &graph, int at, vector<int> &seen, vector<int> &done)
-	{
-		if (seen[at] == 1)
-			return false;
-		if (done[at] == 1)
-			return true;
-		done[at] = seen[at] = 1;
-		for (int i = 0; i < (int)graph[at].size(); i++)
+		for (int i = 0; i < numCourses; i++)
 		{
-			if (!dfs(graph, graph[at][i], seen, done))
-				return false;
+			if (indegree[i] == 0)
+				q.push(i);
 		}
-		seen[at] = 0;
-		return true;
+		while (!q.empty())
+		{
+			int node = q.front();
+			q.pop();
+			--numCourses;
+			for (auto n : graph[node])
+			{
+				if (--indegree[n] == 0)
+					q.push(n);
+			}
+		}
+		return numCourses == 0;
 	}
 };
