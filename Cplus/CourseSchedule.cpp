@@ -1,36 +1,37 @@
-#include<vector>
-#include<unordered_set>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool canFinish(int numCourses, vector<vector<int> >& prerequisites) {
-        vector<int> visited(numCourses);
-		vector<int> mem(numCourses);
-		vector<vector<int> > adjacencymetrices(numCourses);
-		for(int i=0;i<(int)prerequisites.size();i++)
-			adjacencymetrices[prerequisites[i][0]].push_back(prerequisites[i][1]);
-		for(int i=0;i<numCourses;i++)
+	bool canFinish(int numCourses, vector<vector<int>> &prerequisites)
+	{
+		vector<int> done(numCourses), seen(numCourses);
+		vector<vector<int>> graph(numCourses);
+		for (auto &pre : prerequisites)
+			graph[pre[0]].push_back(pre[1]);
+		for (int i = 0; i < numCourses; ++i)
 		{
-			if(visited[i]==0&&!canFinish(visited,mem,adjacencymetrices,i))
+			if (done[i] == 0 && !dfs(graph, i, seen, done))
 				return false;
 		}
 		return true;
-    }
+	}
 
-	bool canFinish(vector<int>& visited,vector<int>& mem,vector<vector<int> >& graph,int start)
+	bool dfs(vector<vector<int>> &graph, int at, vector<int> &seen, vector<int> &done)
 	{
-		if(mem[start]==1)
+		if (seen[at] == 1)
 			return false;
-		if(visited[start]==1)
+		if (done[at] == 1)
 			return true;
-		visited[start]=mem[start]=1;
-		for(int i=0;i<(int)graph[start].size();i++)
+		done[at] = seen[at] = 1;
+		for (int i = 0; i < (int)graph[at].size(); i++)
 		{
-			if(!canFinish(visited,mem,graph,graph[start][i]))
+			if (!dfs(graph, graph[at][i], seen, done))
 				return false;
 		}
-        mem[start]=0;
+		seen[at] = 0;
 		return true;
 	}
 };
