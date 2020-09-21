@@ -82,22 +82,22 @@ Trie *searchNode(Trie *root, char *str)
 //max heap function series
 void push_heap(int *ptr, int size)
 {
-	if (size > 0)
+	if (size <= 1)
+		return;
+	int val = ptr[size - 1], hole = size - 1;
+	for (int i = (hole - 1) >> 1; hole > 0 && val > ptr[i]; i = (hole - 1) >> 1)
 	{
-		int val = ptr[size - 1], hole = size - 1;
-		for (int i = (hole - 1) >> 1; hole > 0 && val > ptr[i]; i = (hole - 1) >> 1)
-		{
-			ptr[hole] = ptr[i];
-			hole = i;
-		}
-		ptr[hole] = val;
+		ptr[hole] = ptr[i];
+		hole = i;
 	}
+	ptr[hole] = val;
 }
 
-//for internal usage
-void _adjust_heap(int *ptr, int size, int hole, int val)
+void pop_heap(int *ptr, int size)
 {
-	int non_leaf = (size - 1) >> 1, i = hole;
+	if (size <= 0)
+		return;
+	int val = *ptr, non_leaf = (size - 1) >> 1, hole = 0, i = 0;
 	while (i < non_leaf)
 	{
 		i = 2 * i + 2;
@@ -111,24 +111,15 @@ void _adjust_heap(int *ptr, int size, int hole, int val)
 		ptr[hole] = ptr[size - 1];
 		hole = size - 1;
 	}
-	ptr[hole] = val;
+	ptr[hole] = ptr[size - 1];
 	push_heap(ptr, hole + 1);
+	ptr[size - 1] = val;
 }
 
 void make_heap(int *ptr, int size)
 {
-	for (int hole = (size - 1) >> 1; hole >= 0; --hole)
-		_adjust_heap(ptr, size, hole, ptr[hole]);
-}
-
-void pop_heap(int *ptr, int size)
-{
-	if (size > 0)
-	{
-		int val = *ptr;
-		_adjust_heap(ptr, size, 0, ptr[size - 1]);
-		ptr[size - 1] = val;
-	}
+	for (int i = 1; i < size; ++i)
+		push_heap(ptr, i + 1);
 }
 /********end of max heap********/
 
