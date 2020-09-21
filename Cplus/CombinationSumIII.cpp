@@ -1,35 +1,32 @@
-#include<iostream>
-#include<vector>
-#include<numeric>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-	vector<int> singleRes;
-    int n;
-    vector<vector<int> > combinationSum3(int k, int n) {
-       vector<vector<int> > res;
-	   singleRes.resize(k);
-       this->n=n;
-	   combination(res,1,0); 
-	   return res;
-    }
-
-	void combination(vector<vector<int> >& res,int l,int k)
+	vector<vector<int>> combinationSum3(int k, int n)
 	{
-		if(k==singleRes.size())
+		vector<vector<int>> res;
+		vector<int> instance;
+		dfs(n, k, 1, instance, res);
+		return res;
+	}
+
+	void dfs(int n, int k, int start, vector<int> &instance, vector<vector<int>> &res)
+	{
+		if (n < 0)
+			return;
+		if (k == 0)
 		{
-			if(n==accumulate(singleRes.begin(),singleRes.end(),0))
-				res.push_back(singleRes);
+			if (n == 0)
+				res.push_back(instance);
+			return;
 		}
-		else
+		for (int i = start; i <= 9; ++i)
 		{
-			for(int i=l;i<=9;i++)//only 1-9 combination
-			{
-				singleRes[k]=i;
-				combination(res,i+1,k+1);
-			}
+			instance.push_back(i);
+			dfs(n - i, k - 1, i + 1, instance, res);
+			instance.pop_back();
 		}
 	}
 };
-
