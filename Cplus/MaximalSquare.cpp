@@ -1,36 +1,29 @@
-#include<vector>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int maximalSquare(vector<vector<char>>& matrix) {
-        if(matrix.empty())
-            return 0;
-		int edge=1,M=matrix.size(),N=matrix[0].size();
-		vector<vector<int>> v(M+1,vector<int>(N+1));
-		for(int i=1;i<=M;i++)
-			for(int j=1;j<=N;j++)
-				v[i][j]=v[i-1][j]+v[i][j-1]-v[i-1][j-1]+(matrix[i-1][j-1]-'0');
-		for(int i=1;i<=M;i++)
+	int maximalSquare(vector<vector<char>> &matrix)
+	{
+		if (matrix.empty())
+			return 0;
+		int res = 0, M = matrix.size(), N = matrix[0].size();
+		vector<int> dp(N + 1);
+		for (int i = 0; i < M; ++i)
 		{
-			int m=i+edge-1;
-			if(m>M)
-				break;
-			for(int j=1;j<=N;j++)
+			vector<int> dp1(N + 1);
+			for (int j = 0; j < N; ++j)
 			{
-				int n=j+edge-1;
-				if(n>N||m>M)
-					break;
-				if(matrix[i-1][j-1]=='0'||matrix[m-1][n-1]=='0')
-					continue;
-				if(edge*edge==v[m][n]+v[i-1][j-1]-v[m][j-1]-v[i-1][n])
+				if (matrix[i][j] == '1')
 				{
-					++edge;
-                    m=i+edge-1;
-					j--;
+					dp1[j + 1] = min({dp[j + 1], dp[j], dp1[j]}) + 1;
+					res = max(res, dp1[j + 1]);
 				}
 			}
+			dp.swap(dp1);
 		}
-		return (edge-1)*(edge-1);		
-    }
+		return res * res;
+	}
 };
