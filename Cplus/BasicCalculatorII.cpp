@@ -1,3 +1,4 @@
+#include <sstream>
 #include <string>
 using namespace std;
 
@@ -6,34 +7,29 @@ class Solution
 public:
 	int calculate(string s)
 	{
-		int N = s.length();
-		int res = 0, pre = 0, i = 0;
-		while (i < N && s[i] != '+' && s[i] != '-' && s[i] != '*' && s[i] != '/')
-			++i;
-		if (i == N)
-			return stoi(s);
-		res = pre = stoi(s.substr(0, i));
-		while (i < N)
+		stringstream ss(s);
+		int res, pre, val;
+		char op;
+		ss >> res;
+		pre = res;
+		while (ss >> op)
 		{
-			int j = i + 1;
-			while (j < N && s[j] != '+' && s[j] != '-' && s[j] != '*' && s[j] != '/')
-				++j;
-			if (s[i] == '+')
-				pre = stoi(s.substr(i + 1, j - i - 1));
-			else if (s[i] == '-')
-				pre = -stoi(s.substr(i + 1, j - i - 1));
-			else if (s[i] == '*')
+			ss >> val;
+			if (op == '+')
+				pre = val;
+			else if (op == '-')
+				pre = -val;
+			else if (op == '*')
 			{
 				res -= pre;
-				pre *= stoi(s.substr(i + 1, j - i - 1));
+				pre *= val;
 			}
 			else // '/'
 			{
 				res -= pre;
-				pre /= stoi(s.substr(i + 1, j - i - 1));
+				pre /= val;
 			}
 			res += pre;
-			i = j;
 		}
 		return res;
 	}
