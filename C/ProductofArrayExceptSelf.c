@@ -4,29 +4,20 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* productExceptSelf(int* nums, int numsSize, int* returnSize)
+int *productExceptSelf(int *nums, int numsSize, int *returnSize)
 {
 	*returnSize = numsSize;
-	int* res = (int*)malloc(sizeof(int) * (*returnSize));
-	int product = 1, zero = 0, index;
-	for (int i = 0; i < numsSize; ++i)
-	{
-		if (nums[i] == 0)
-		{
-			++zero;
-			index = i;
-		}
-		else
-			product *= nums[i];
-	}
-	if (zero > 0)
-		memset(res, 0, sizeof(int) * (*returnSize));
-	if (zero == 1)
-		res[index] = product;
-	else if (zero == 0)
-	{
-		for (int i = 0; i < numsSize; ++i)
-			res[i] = product / nums[i];
-	}
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	//use res as prefix product
+	res[0] = nums[0];
+	for (int i = 1; i < numsSize; ++i)
+		res[i] = res[i - 1] * nums[i];
+	//calcu nums as suffix product
+	for (int i = numsSize - 2; i >= 0; --i)
+		nums[i] *= nums[i + 1];
+	res[numsSize - 1] = res[numsSize - 2];
+	for (int i = numsSize - 2; i > 0; --i)
+		res[i] = nums[i + 1] * res[i - 1];
+	res[0] = nums[1];
 	return res;
 }
