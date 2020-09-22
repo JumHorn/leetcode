@@ -1,69 +1,40 @@
-#include<string>
-#include<set>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int calculate(string s) {
-		int res=0,pre=0,index=0,i=0;        
-		set<char> symbol={'+','-','*','/'};
-		while(++i<(int)s.length())
+	int calculate(string s)
+	{
+		int N = s.length();
+		int res = 0, pre = 0, i = 0;
+		while (i < N && s[i] != '+' && s[i] != '-' && s[i] != '*' && s[i] != '/')
+			++i;
+		if (i == N)
+			return stoi(s);
+		res = pre = stoi(s.substr(0, i));
+		while (i < N)
 		{
-			if(symbol.find(s[i])!=symbol.end())
+			int j = i + 1;
+			while (j < N && s[j] != '+' && s[j] != '-' && s[j] != '*' && s[j] != '/')
+				++j;
+			if (s[i] == '+')
+				pre = stoi(s.substr(i + 1, j - i - 1));
+			else if (s[i] == '-')
+				pre = -stoi(s.substr(i + 1, j - i - 1));
+			else if (s[i] == '*')
 			{
-				res=stoi(s.substr(index,i-index));
-                pre=-res;
-				break;
+				res -= pre;
+				pre *= stoi(s.substr(i + 1, j - i - 1));
 			}
-		}
-        if(i==(int)s.length())
-            return stoi(s.substr(index,i-index));
-		while(i<(int)s.length())
-		{
-			if(s[i]=='+')
+			else // '/'
 			{
-				int j=i+1;
-				while(j<(int)s.length()&&symbol.find(s[j])==symbol.end())
-					j++;
-				pre=stoi(s.substr(i+1,j-i-1));
-				res+=pre;
-				pre=-pre;
-				i=j;
+				res -= pre;
+				pre /= stoi(s.substr(i + 1, j - i - 1));
 			}
-			else if(s[i]=='-')
-			{
-				int j=i+1;
-				while(j<(int)s.length()&&symbol.find(s[j])==symbol.end())
-					j++;
-				pre=stoi(s.substr(i+1,j-i-1));
-				res-=pre;
-				i=j;
-			}
-			else if(s[i]=='*')
-			{
-				int j=i+1;
-				while(j<(int)s.length()&&symbol.find(s[j])==symbol.end())
-					j++;
-				res+=pre;
-				pre=(-pre)*stoi(s.substr(i+1,j-i-1));
-				res+=pre;
-				pre=-pre;
-				i=j;
-			}
-			else if(s[i]=='/')
-			{
-				int j=i+1;
-				while(j<(int)s.length()&&symbol.find(s[j])==symbol.end())
-					j++;
-				res+=pre;
-				pre=(-pre)/stoi(s.substr(i+1,j-i-1));
-				res+=pre;
-				pre=-pre;
-				i=j;
-			}
-			else
-				i++;
+			res += pre;
+			i = j;
 		}
 		return res;
-    }
+	}
 };
