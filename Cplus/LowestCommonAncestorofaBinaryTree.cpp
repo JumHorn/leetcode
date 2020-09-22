@@ -1,37 +1,26 @@
-#include<iostream>
-//Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(root==p||root==q)
-			return root;
-		if(findNode(root->left,p))
-		{
-			if(findNode(root->right,q))
-				return root;
-			return lowestCommonAncestor(root->left,p,q);
-		}
-		else
-		{
-			if(findNode(root->left,q))
-				return root;
-			return lowestCommonAncestor(root->right,p,q);
-		}
-    }
-
-	bool findNode(TreeNode* root,TreeNode* node)
+	TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
 	{
-        if(root==NULL)
-            return false;
-		if(root==node)
-			return true;
-		return findNode(root->left,node)||findNode(root->right,node);
+		if (root == nullptr || root == p || root == q)
+			return root;
+		TreeNode *left = lowestCommonAncestor(root->left, p, q);
+		TreeNode *right = lowestCommonAncestor(root->right, p, q);
+		if (left == nullptr && right == nullptr)
+			return nullptr;
+		if (left != nullptr && right != nullptr)
+			return root;
+		return left == nullptr ? right : left;
 	}
 };
