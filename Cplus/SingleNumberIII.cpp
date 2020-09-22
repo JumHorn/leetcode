@@ -1,60 +1,23 @@
-#include<iostream>
-#include<vector>
-#include<map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> singleNumber(vector<int>& nums) {
-        map<int,int> hash;
-        vector<int> retval;
-        for(int i=0;i<nums.size();i++)
-        {
-            if(hash.find(nums[i])==hash.end())
-            {
-                hash[nums[i]]=1;
-            }
-            else
-            {
-                hash[nums[i]]++;
-            }
-        }
-        for(map<int,int>::iterator iter=hash.begin();iter!=hash.end();iter++)
-        {
-            if(iter->second==1)
-            {
-                retval.push_back(iter->first);
-            }
-        }
-        return retval;
-    }
+	vector<int> singleNumber(vector<int> &nums)
+	{
+		int XOR = 0;
+		for (auto n : nums)
+			XOR ^= n;
+		int rightmostbit = (XOR & -XOR);
+		int a = 0, b = 0;
+		for (auto n : nums)
+		{
+			if (n & rightmostbit)
+				a ^= n;
+			else
+				b ^= n;
+		}
+		return {a, b};
+	}
 };
-
-// using XOR
-// class Solution0
-// {
-// public:
-//     vector<int> singleNumber(vector<int>& nums) 
-//     {
-//         // Pass 1 : 
-//         // Get the XOR of the two numbers we need to find
-//         int diff = accumulate(nums.begin(), nums.end(), 0, bit_xor<int>());
-//         // Get its last set bit
-//         diff &= -diff;
-
-//         // Pass 2 :
-//         vector<int> rets = {0, 0}; // this vector stores the two numbers we will return
-//         for (int num : nums)
-//         {
-//             if ((num & diff) == 0) // the bit is not set
-//             {
-//                 rets[0] ^= num;
-//             }
-//             else // the bit is set
-//             {
-//                 rets[1] ^= num;
-//             }
-//         }
-//         return rets;
-//     }
-// };
