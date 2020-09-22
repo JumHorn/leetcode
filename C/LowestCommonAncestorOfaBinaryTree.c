@@ -1,5 +1,6 @@
-#include<stdio.h>
-//definition for a binary tree node
+#include <stdbool.h>
+
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
@@ -7,24 +8,32 @@ struct TreeNode
 	struct TreeNode *right;
 };
 
-int main()
+struct pair
 {
-struct TreeNode * lowestCommonAncestor(struct TreeNode *root,struct TreeNode *p ,struct TreeNode *q);
+	struct TreeNode *node;
+	bool p;
+	bool q;
+};
 
+struct pair postorder(struct TreeNode *root, struct TreeNode *p, struct TreeNode *q)
+{
+	struct pair res = {0, false, false};
+	if (!root)
+		return res;
+	struct pair l = postorder(root->left, p, q);
+	if (l.node)
+		return l;
+	struct pair r = postorder(root->right, p, q);
+	if (r.node)
+		return r;
+	res.p = l.p || r.p || root == p;
+	res.q = l.q || r.q || root == q;
+	if (res.p && res.q)
+		res.node = root;
+	return res;
 }
 
-struct TreeNode * lowestCommonAncestor(struct TreeNode *root,struct TreeNode *p ,struct TreeNode *q)
+struct TreeNode *lowestCommonAncestor(struct TreeNode *root, struct TreeNode *p, struct TreeNode *q)
 {
-	if(root->val>=p->val&&root->val<=q->val||root->val<=p->val&&root->val>=q->val)
-	{
-		return root;
-	}
-	if(root->val>p->val&&root->val>q->val)
-	{
-		return lowestCommonAncestor(root->left,p,q);
-	}
-	if(root->val<p->val&&root->val<q->val)
-	{
-		return lowestCommonAncestor(root->right,p,q);
-	}
+	return postorder(root, p, q).node;
 }
