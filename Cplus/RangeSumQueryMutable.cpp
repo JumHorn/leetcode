@@ -1,62 +1,67 @@
-#include<vector>
-#include<iostream>
+#include <vector>
 using namespace std;
 
-class NumArray {
-private:
-	vector<int>& data;
-    vector<int> tree;
-
-	void buildTree()
+class SegmentTree
+{
+public:
+	SegmentTree(int n) : data(2 * n)
 	{
-        for(int i=data.size(),j=0;i<2*data.size(); i++,j++)
-            tree[i]=data[j];
-        for(int i=data.size()-1;i>0;i--)
-            tree[i]=tree[i*2]+tree[i*2+1];
 	}
 
+	SegmentTree(vector<int> &v) : data(2 * v.size())
+	{
+		int n = v.size();
+		for (int i = 0; i < n; i++)
+			data[i + n] = v[i];
+		for (int i = n - 1; i > 0; i--)
+			data[i] = data[i << 1] + data[i << 1 | 1];
+	}
+
+	//update index with value val
+	void update(int index, int val)
+	{
+		int n = data.size() / 2, delta = val - data[index + n];
+		for (index += n; index > 0; index >>= 1)
+			data[index] += delta;
+	}
+
+	//[start,end) query range start included and end not included
+	int queryRange(int start, int end)
+	{
+		int n = data.size() / 2, res = 0;
+		for (int l = start + n, r = end + n; l < r; l >>= 1, r >>= 1)
+		{
+			if (l & 1)
+				res += data[l++];
+			if (r & 1)
+				res += data[--r];
+		}
+		return res;
+	}
+
+private:
+	vector<int> data; //tree data with 0 index reserved
+};
+
+class NumArray
+{
 public:
-    NumArray(vector<int>& nums): data(nums),tree(nums.size()*2){
-        buildTree();
-    }
-    
-    void update(int i, int val) {
-        i+=data.size();
-        tree[i]=val;
-        while(i>0)
-        {
-            int left,right;
-            left=right=i;
-            if(i%2==0)
-                right=i+1;
-            else
-                left=i-1;
-            tree[i/2]=tree[left]+tree[right];
-            i/=2;
-        }
-    }
-    
-    int sumRange(int i, int j) {
- 		i+=data.size();
-        j+=data.size();
-        int res=0;
-        while(i<=j)
-        {
-            if(i%2==1)
-            {
-                res+=tree[i];
-                i++;
-            }
-            if(j%2==0)
-            {
-                res+=tree[j];
-                j--;
-            }
-            i/=2;
-            j/=2;
-        }
-        return res;
-    }
+	NumArray(vector<int> &nums) : tree(nums)
+	{
+	}
+
+	void update(int i, int val)
+	{
+		tree.update(i, val);
+	}
+
+	int sumRange(int i, int j)
+	{
+		return tree.queryRange(i, j + 1);
+	}
+
+private:
+	SegmentTree tree;
 };
 
 /**
