@@ -1,20 +1,33 @@
-#include<vector>
-#include<unordered_set>
+#include <climits>
+#include <vector>
 using namespace std;
 
-class Solution {
+/*
+primes[0] 1×primes[0], 2×primes[0], 3×primes[0], 4×primes[0], 5×primes[0], …
+primes[1] 1×primes[1], 2×primes[1], 3×primes[1], 4×primes[1], 5×primes[1], …
+primes[2] 1×primes[2], 2×primes[2], 3×primes[2], 4×primes[2], 5×primes[2], …
+…, …, …
+…, …, …
+*/
+
+class Solution
+{
 public:
-    int nthSuperUglyNumber(int n, vector<int>& primes) {
-		vector<int> ugly(n,INT_MAX);
-		vector<int> leastIndex(primes.size(),0);
-		ugly[0]=1;
-		for(int i=0;i<n;i++)
+	int nthSuperUglyNumber(int n, vector<int> &primes)
+	{
+		int N = primes.size();
+		vector<int> dp(n, INT_MAX), lastIndex(N);
+		dp[0] = 1;
+		for (int i = 1; i < n; ++i)
 		{
-			for(int j=0;j<primes.size();j++)
-				ugly[i]=min(ugly[i],primes[j]*ugly[leastIndex[j]]);
-			for(int j=0;j<primes.size();j++)
-				leastIndex[j]+=(ugly[i]==primes[j]*ugly[leastIndex[j]]?1:0);
+			for (int j = 0; j < N; ++j)
+				dp[i] = min(dp[i], primes[j] * dp[lastIndex[j]]);
+			for (int j = 0; j < N; ++j)
+			{
+				if (dp[i] == primes[j] * dp[lastIndex[j]])
+					++lastIndex[j];
+			}
 		}
-		return ugly[n-1];
+		return dp[n - 1];
 	}
 };
