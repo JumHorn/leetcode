@@ -1,84 +1,46 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
-public:
-    void gameOfLife(vector<vector<int> >& board) {
-		if(board.empty()||board[0].empty())
-			return;
-		if(board.size()==1)//only one row
-		{
-			if(board[0].size()==1)
-			{
-				board[0][0]=0;
-				return;
-			}
-			int tmp=getNext(board[0][0],board[0][1]);
-			int i;
-			for(i=1;i<(int)(board[0].size()-1);i++)
-			{
-				int t=getNext(board[0][i],board[0][i-1]+board[0][i+1]);
-				board[0][i-1]=tmp;
-				tmp=t;
-			}
-			board[0][i]=getNext(board[0][i],board[0][i-1]);
-			board[0][i-1]=tmp;
-			return;
-		}
-        vector<int> v(board[0].size());
-        vector<int> tmp(board[0].size());
-		int i=0,j=0;
-		v[j]=getNext(board[i][j],board[i+1][j]+board[i][j+1]+board[i+1][j+1]);
-		for(j=1;j<(int)(board[0].size()-1);j++)
-		{
-			v[j]=getNext(board[i][j],board[i][j+1]+board[i][j-1]+board[i+1][j]+board[i+1][j-1]+board[i+1][j+1]);
-		}
-		v[j]=getNext(board[i][j],board[i+1][j]+board[i][j-1]+board[i+1][j-1]);
-		for(i=1;i<(int)(board.size()-1);i++)//the first and last row not included
-		{
-			j=0;
-			tmp[j]=getNext(board[i][j],board[i-1][j]+board[i+1][j]+board[i][j+1]+board[i-1][j+1]+board[i+1][j+1]);
-			for(j=1;j<(int)(board[0].size()-1);j++)//the first and last column not included
-			{
-				int sum=0;
-				for(int m=i-1;m<=i+1;m++)
-					for(int n=j-1;n<=j+1;n++)
-						sum+=board[m][n];
-				tmp[j]=getNext(board[i][j],sum-board[i][j]);
-			}
-			tmp[j]=getNext(board[i][j],board[i-1][j]+board[i+1][j]+board[i][j-1]+board[i-1][j-1]+board[i+1][j-1]);
-			board[i-1]=v;
-			v=tmp;
-		}
-		j=0;
-		tmp[j]=getNext(board[i][j],board[i-1][j]+board[i][j+1]+board[i-1][j+1]);
-		for(j=1;j<(int)(board[0].size()-1);j++)
-		{
-			tmp[j]=getNext(board[i][j],board[i][j+1]+board[i][j-1]+board[i-1][j]+board[i-1][j-1]+board[i-1][j+1]);
-		}
-        tmp[j]=getNext(board[i][j],board[i-1][j]+board[i][j-1]+board[i-1][j-1]);
-		board[i-1]=v;
-        board[i]=tmp;
-    }
+/*
+bit 0 store origin state
+bit 1 store next population
+*/
 
-	int getNext(int cell,int live)
+class Solution
+{
+public:
+	void gameOfLife(vector<vector<int>> &board)
 	{
-		if(cell==1)
+		int M = board.size(), N = board[0].size();
+
+		for (int row = 0; row < M; ++row)
 		{
-			if(live<2)
-				return 0;
-			else if(live>3)
-				return 0;
-			else
-				return 1;
+			for (int col = 0; col < N; ++col)
+			{
+				int neighbors[] = {0, 1, -1}, liveNeighbors = 0;
+				for (int i = 0; i < 3; ++i)
+				{
+					for (int j = 0; j < 3; ++j)
+					{
+						if (!(neighbors[i] == 0 && neighbors[j] == 0)) //not origin cell
+						{
+							int r = row + neighbors[i], c = col + neighbors[j];
+							if (r >= 0 && r < M && c >= 0 && c < N && (board[r][c] & 1))
+								liveNeighbors += 1;
+						}
+					}
+				}
+				if ((board[row][col] == 1) && (liveNeighbors == 2 || liveNeighbors == 3))
+					board[row][col] |= 2;
+				if (board[row][col] == 0 && liveNeighbors == 3)
+					board[row][col] |= 2;
+			}
 		}
-		else
+		for (int row = 0; row < M; row++)
 		{
-			if(live==3)
-				return 1;
-			else
-				return 0;
+			for (int col = 0; col < N; col++)
+				board[row][col] >>= 1;
 		}
 	}
 };
