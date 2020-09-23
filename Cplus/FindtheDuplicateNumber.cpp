@@ -1,18 +1,24 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findDuplicate(vector<int>& nums) {
-		for(int i=0;i<nums.size()-1;i++)
+	int findDuplicate(vector<int> &nums)
+	{
+		int tortoise = 0, hare = nums[0];
+		while (tortoise != hare)
 		{
-			for(int j=i+1;j<nums.size();j++)
-			{
-				if((nums[i]^nums[j])==0)
-				{
-					return nums[i];
-				}
-			}
+			tortoise = nums[tortoise];
+			hare = nums[nums[hare]];
 		}
-    }
+		tortoise = 0;
+		hare = nums[hare];
+		while (tortoise != hare)
+		{
+			tortoise = nums[tortoise];
+			hare = nums[hare];
+		}
+		return tortoise;
+	}
 };
