@@ -1,45 +1,54 @@
-#include<vector>
-#include<algorithm>
-#include<unordered_set>
-#include<climits>
+#include <queue>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+/*
+topological sort
+remove leaf node layer by layer
+*/
+
+class Solution
+{
 public:
-    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
-        if(edges.empty())
-            return {0};
+	vector<int> findMinHeightTrees(int n, vector<vector<int>> &edges)
+	{
+		if (edges.empty())
+			return {0};
 		vector<unordered_set<int>> graph(n);
-		for(int i=0;i<(int)edges.size();i++)
+		for (auto &edge : edges)
 		{
-			graph[edges[i][0]].insert(edges[i][1]);
-			graph[edges[i][1]].insert(edges[i][0]);
+			graph[edge[0]].insert(edge[1]);
+			graph[edge[1]].insert(edge[0]);
 		}
-        vector<int> movenode(n);
-        vector<int> leftnode(n);
-        while(n>2)
-        {
-            int leafnode=0;
-            for(int i=0;i<(int)graph.size();i++)
-            {
-                if(leftnode[i]!=-1&&graph[i].size()==1)
-                {
-                    movenode[leafnode]=i;
-                    leafnode++;
-                }
-            }
-            for(int i=0;i<leafnode;i++)
-            {
-                graph[*graph[movenode[i]].begin()].erase(movenode[i]);
-                graph[movenode[i]].clear();
-                leftnode[movenode[i]]=-1;
-            }
-            n-=leafnode;
-        }
-        vector<int> res;
-        for(int i=0;i<(int)leftnode.size();i++)
-            if(leftnode[i]!=-1)
-                res.push_back(i);
+		queue<int> leavenode;
+		for (int i = 0; i < n; ++i)
+		{
+			if ((int)graph[i].size() == 1)
+				leavenode.push(i);
+		}
+		while (n > 2)
+		{
+			int size = leavenode.size();
+			n -= size;
+			while (--size >= 0)
+			{
+				auto node = leavenode.front();
+				leavenode.pop();
+				for (auto child : graph[node])
+				{
+					graph[child].erase(node);
+					if ((int)graph[child].size() == 1)
+						leavenode.push(child);
+				}
+			}
+		}
+		vector<int> res;
+		while (!leavenode.empty())
+		{
+			res.push_back(leavenode.front());
+			leavenode.pop();
+		}
 		return res;
-    }
+	}
 };
