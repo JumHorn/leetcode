@@ -4,26 +4,26 @@ using namespace std;
 class Solution
 {
 public:
-	int superPow(int a, vector<int>& b)
+	int superPow(int a, vector<int> &b)
 	{
 		a %= 1337;
 		if (a == 0)
 			return 0;
-		return superPow(a, b, b.size() - 1);
+		return recursive(a, b, b.size() - 1);
 	}
 
-	int superPow(int a, vector<int>& b, int index)
+	int recursive(int a, vector<int> &b, int index)
 	{
-		if (index == 0)
-			return powMod(a, b[0], MOD);
-		return powMod(superPow(a, b, index - 1), 10, MOD) * powMod(a, b[index], MOD) % MOD;
+		if (index < 0)
+			return 1;
+		return powMod(recursive(a, b, index - 1), 10) * powMod(a, b[index]) % MOD;
 	}
 
-	int powMod(int a, int b, int mod)
+	int powMod(int a, int b) //pow(a,b) with MOD
 	{
 		int res = 1;
 		for (int i = 0; i < b; i++)
-			res = (res * a) % mod;
+			res = (res * a) % MOD;
 		return res;
 	}
 
