@@ -1,33 +1,35 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int wiggleMaxLength(vector<int>& nums) {
-        if(nums.empty())
-            return 0;
-		int (*dp)[2]=new int[nums.size()][2];
-        dp[0][0]=dp[0][1]=1;
-		for(int i=1;i<(int)nums.size();i++)
-        {
-            if(nums[i]-nums[i-1]==0)
-            {
-                dp[i][0]=dp[i-1][0];
-                dp[i][1]=dp[i-1][1];
-                continue;
-            }
-            if(nums[i]-nums[i-1]>0)
-            {
-                dp[i][0]=max(dp[i-1][0],dp[i-1][1]+1);
-                dp[i][1]=dp[i-1][1];
-            }
-            else
-            {
-                dp[i][1]=max(dp[i][1],dp[i-1][0]+1);
-                dp[i][0]=dp[i-1][0];
-            }
-        }
-		return max(dp[nums.size()-1][0],dp[nums.size()-1][1]);
-    }
+	int wiggleMaxLength(vector<int> &nums)
+	{
+		int N = nums.size();
+		if (nums.empty())
+			return 0;
+		vector<vector<int>> dp(N, vector<int>(2)); //{up,down}
+		dp[0][0] = dp[0][1] = 1;
+		for (int i = 1; i < N; ++i)
+		{
+			if (nums[i] == nums[i - 1])
+			{
+				dp[i][0] = dp[i - 1][0];
+				dp[i][1] = dp[i - 1][1];
+			}
+			else if (nums[i] > nums[i - 1])
+			{
+				dp[i][0] = dp[i - 1][1] + 1;
+				dp[i][1] = dp[i - 1][1];
+			}
+			else
+			{
+				dp[i][1] = dp[i - 1][0] + 1;
+				dp[i][0] = dp[i - 1][0];
+			}
+		}
+		return max(dp[N - 1][0], dp[N - 1][1]);
+	}
 };
