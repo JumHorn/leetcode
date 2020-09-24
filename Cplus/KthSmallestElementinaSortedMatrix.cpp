@@ -1,26 +1,26 @@
-#include<vector>
-#include<climits>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int kthSmallest(vector<vector<int> >& matrix, int k) {
-		vector<int> index(matrix.size(),0);
-		int res=2147483648;
-		for(int i=0;i<k;i++)
+	int kthSmallest(vector<vector<int>> &matrix, int k)
+	{
+		priority_queue<pair<int, int>> q;
+		int M = matrix.size(), N = matrix[0].size();
+		for (int i = 0; i < M; ++i)
+			q.push({-matrix[i][0], i});
+		vector<int> index(M);
+		int res = 0;
+		while (--k >= 0)
 		{
-			res=INT_MAX;
-			int m=0;
-			for(int j=0;j<matrix.size();j++)
-			{
-				if(index[j]<matrix.size()&&matrix[j][index[j]]<res)
-				{
-					res=matrix[j][index[j]];
-					m=j;
-				}
-			}
-			index[m]++;
+			res = -q.top().first;
+			int i = q.top().second;
+			q.pop();
+			if (++index[i] < N)
+				q.push({-matrix[i][index[i]], i});
 		}
 		return res;
-    }
+	}
 };
