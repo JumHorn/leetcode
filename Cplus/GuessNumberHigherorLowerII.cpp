@@ -8,31 +8,20 @@ class Solution
 public:
 	int getMoneyAmount(int n)
 	{
-		vector<vector<int>> dp(n + 1, vector<int>(n + 1, INT_MAX));
-		for (int i = 0; i <= n; i++)
-			dp[i][i] = 0;
-		for (int i = 1; i < n; i++)
-			dp[i][i + 1] = i;
-		for (int i = 1; i < n - 1; i++)
-			dp[i][i + 2] = i + 1;
-		for (int k = 3; k < n; k++)
+		vector<vector<int>> dp(n + 1, vector<int>(n + 1, n * n));
+		for (int i = 0; i < n; ++i)
 		{
-			for (int i = 1; i <= n - k; i++)
+			dp[i + 1][i + 1] = 0;
+			dp[i][i + 1] = i;
+		}
+		for (int l = 2; l <= n; ++l)
+		{
+			for (int i = 0, j = l; j <= n; ++i, ++j)
 			{
-				int j = i + k;
-				for (int n = i + 1; n < j; n++)
-				{
-					dp[i][j] = min(dp[i][j], max(dp[i][n - 1], dp[n + 1][j]) + n);
-				}
+				for (int k = i + 1; k < j; ++k)
+					dp[i][j] = min(dp[i][j], max(dp[i][k - 1], dp[k + 1][j]) + k);
 			}
 		}
 		return dp[1][n];
 	}
 };
-
-int main()
-{
-	Solution sol;
-	sol.getMoneyAmount(6);
-	return 0;
-}
