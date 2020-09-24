@@ -1,35 +1,27 @@
-#include<vector>
-#include<algorithm>
-#include<functional>
-#include<climits>
-#include<unordered_map>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount+1);
-		return coinChange(coins,amount,dp);
-    }
-
-	int coinChange(vector<int>& coins,int amount,vector<int>& dp)
+	int coinChange(vector<int> &coins, int amount)
 	{
-        if(amount<0)
-			return -1;
-        if(amount==0)
-			return 0;
-        if(dp[amount]!=0)
-            return dp[amount];
-        int res=INT_MAX;
-		for(int i=0;i<(int)coins.size();i++)
+		vector<int> dp(amount + 1, -1);
+		dp[0] = 0;
+		for (int i = 1; i <= amount; ++i)
 		{
-			int tmp=coinChange(coins,amount-coins[i],dp);
-			if(tmp>=0)
-				res=min(res,tmp+1);
+			for (auto c : coins)
+			{
+				if (c <= i && dp[i - c] != -1)
+				{
+					if (dp[i] == -1)
+						dp[i] = dp[i - c] + 1;
+					else
+						dp[i] = min(dp[i], dp[i - c] + 1);
+				}
+			}
 		}
-        if(res==INT_MAX)
-            res=-1;
-        dp[amount]=res;
-		return res;
+		return dp.back();
 	}
 };
