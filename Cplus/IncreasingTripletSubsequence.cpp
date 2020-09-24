@@ -1,19 +1,22 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <climits>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool increasingTriplet(vector<int>& nums) {
-		int one=INT_MAX,two=INT_MAX;
-		for(int i=0;i<(int)nums.size();i++)
+	bool increasingTriplet(vector<int> &nums)
+	{
+		int one = INT_MAX, two = INT_MAX;
+		for (auto n : nums)
 		{
-			if(nums[i]>two)
+			if (n > two)
 				return true;
-			if(nums[i]>one)
-				two=nums[i];
+			if (n > one)
+				two = n;
 			else
-				one=min(one,nums[i]);
+				one = min(one, n);
 		}
 		return false;
 	}
