@@ -1,43 +1,36 @@
-#include<vector>
-#include<queue>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class Solution {
-	struct PairsSum
-	{
-		int p0;
-		int p1;
-		PairsSum(int v0,int v1):p0(v0),p1(v1)
-		{}
-		bool operator<(const PairsSum& others) const
-		{
-			return p0+p1<=others.p0+others.p1;
-		}
-	};
+class Solution
+{
 public:
-    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-		priority_queue<PairsSum> q;
-		for(int i=0;i<(int)nums1.size();i++)
-			for(int j=0;j<(int)nums2.size();j++)
+	vector<vector<int>> kSmallestPairs(vector<int> &nums1, vector<int> &nums2, int k)
+	{
+		auto f = [=](pair<int, int> &lhs, pair<int, int> &rhs) { return lhs.first + lhs.second < rhs.first + rhs.second; };
+		priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(f)> q(f);
+		for (int i = 0; i < (int)nums1.size(); i++)
+		{
+			for (int j = 0; j < (int)nums2.size(); j++)
 			{
-				if((int)q.size()<k)
+				if ((int)q.size() < k)
+					q.push({nums1[i], nums2[j]});
+				else
 				{
-					q.push(PairsSum(nums1[i],nums2[j]));
-					continue;
+					if (q.top().first + q.top().second <= nums1[i] + nums2[j])
+						break;
+					q.pop();
+					q.push({nums1[i], nums2[j]});
 				}
-				PairsSum tmp(nums1[i],nums2[j]);
-				if(q.top()<tmp)
-					break;
-				q.pop();
-				q.push(tmp);
 			}
-		k=k>(int)q.size()?q.size():k;
+		}
+		k = k > (int)q.size() ? q.size() : k;
 		vector<vector<int>> res(k);
-		for(int i=0;i<k;i++)
-        {
-			res[k-i-1]={q.top().p0,q.top().p1};
-            q.pop();
-        }
-		return res;	
-    }
+		for (int i = 0; i < k; i++)
+		{
+			res[k - i - 1] = {q.top().first, q.top().second};
+			q.pop();
+		}
+		return res;
+	}
 };
