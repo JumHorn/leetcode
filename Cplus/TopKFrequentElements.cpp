@@ -1,69 +1,33 @@
-#include<iostream>
-#include<vector>
-#include<map>
+#include <queue>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> topKFrequent(vector<int>& nums, int k) {
-        vector<int> res;
-	    map<int,int> dic;
-		for(int i=0;i<nums.size();i++)
-		{
-			dic[nums[i]]++;
-		}		
-		for(int i=0;i<k;i++)
-		{
-			res.push_back(findmax(dic));
-		}
-		return res;
-    }
-	int findmax(map<int,int>& dic)
+	vector<int> topKFrequent(vector<int> &nums, int k)
 	{
-		int minval=0;
-		int res;
-		map<int,int>::iterator it;
-		for(map<int,int>::iterator iter=dic.begin();iter!=dic.end();iter++)
+		vector<int> res;
+		unordered_map<int, int> m;
+		for (auto n : nums)
+			++m[n];
+		priority_queue<pair<int, int>> q;
+		for (auto iter : m)
 		{
-			if(iter->second>minval)
+			if (q.size() < k)
+				q.push({-iter.second, iter.first});
+			else if (iter.second > -q.top().first)
 			{
-				minval=iter->second;
-				res=iter->first;
-				it=iter;
+				q.pop();
+				q.push({-iter.second, iter.first});
 			}
 		}
-		dic.erase(it);
+		while (!q.empty())
+		{
+			res.push_back(q.top().second);
+			q.pop();
+		}
 		return res;
 	}
 };
-
-//java solution
-//开辟一个大的数组能存储最大的value值的下标
-//将value作为下标，key作为值存储到数组中，再从数组中反向查找k个值
-
-// public List<Integer> topKFrequent(int[] nums, int k) {
-
-// 	List<Integer>[] bucket = new List[nums.length + 1];
-// 	Map<Integer, Integer> frequencyMap = new HashMap<Integer, Integer>();
-
-// 	for (int n : nums) {
-// 		frequencyMap.put(n, frequencyMap.getOrDefault(n, 0) + 1);
-// 	}
-
-// 	for (int key : frequencyMap.keySet()) {
-// 		int frequency = frequencyMap.get(key);
-// 		if (bucket[frequency] == null) {
-// 			bucket[frequency] = new ArrayList<>();
-// 		}
-// 		bucket[frequency].add(key);
-// 	}
-
-// 	List<Integer> res = new ArrayList<>();
-
-// 	for (int pos = bucket.length - 1; pos >= 0 && res.size() < k; pos--) {
-// 		if (bucket[pos] != null) {
-// 			res.addAll(bucket[pos]);
-// 		}
-// 	}
-// 	return res;
-// }
