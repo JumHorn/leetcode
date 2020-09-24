@@ -1,25 +1,30 @@
-#include<cmath>
+#include <cmath>
 using namespace std;
 
-class Solution {
+/*
+If an optimal product contains a factor f >= 4,
+then you can replace it with factors 2 and f-2 without losing optimality,
+as 2*(f-2) = 2f-4 >= f. So you never need a factor greater than or equal to 4,
+meaning you only need factors 1, 2 and 3
+and 1 is of course wasteful and you'd only use it for n=2 and n=3
+*/
+
+class Solution
+{
 public:
-    int integerBreak(int n) {
-		if(n==3)
+	int integerBreak(int n)
+	{
+		if (n < 3)
+			return 1;
+		if (n == 3)
 			return 2;
-		int max=1;
-		for(int i=0;i<n/2;i++)
+		int res = 1;
+		while (n > 4)
 		{
-			int last=(n%(i+1))*(i+1);
-			if(n%(i+1)==0)
-				last=i+1;
-			if(n%(i+1)==1)
-				last=i+2;
-			int tmp=pow(i+1,n/(i+1)-1)*last;
-			if(tmp>max)
-			{
-				max=tmp;
-			}
+			res *= 3;
+			n -= 3;
 		}
-		return max;
-    }
+		res *= n;
+		return res;
+	}
 };
