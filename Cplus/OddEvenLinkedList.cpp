@@ -1,32 +1,36 @@
-#include<iostream>
-//Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+
+
+// Definition for singly-linked list.
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* oddEvenList(ListNode* head) {
-		if(head==NULL||head->next==NULL)
-		{
+	ListNode *oddEvenList(ListNode *head)
+	{
+		if (head == nullptr || head->next == nullptr)
 			return head;
-		}
-		ListNode* even=head;
-		ListNode* odd=head->next;
-		ListNode* tail=odd->next;
-		while(tail!=NULL)
+		ListNode *even = head;
+		ListNode *odd = head->next;
+		ListNode *tail = odd->next;
+		while (tail != nullptr)
 		{
-			odd->next=tail->next;
-			odd=odd->next;
-			tail->next=even->next;
-			even->next=tail;
-			even=even->next;
-			tail=odd;
-			if(tail!=NULL)
-			tail=tail->next;
+			odd->next = tail->next;
+			odd = odd->next;
+			tail->next = even->next;
+			even->next = tail;
+			even = even->next;
+			tail = odd;
+			if (tail != nullptr)
+				tail = tail->next;
 		}
 		return head;
-    }
+	}
 };
