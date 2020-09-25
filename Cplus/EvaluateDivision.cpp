@@ -1,54 +1,51 @@
-#include<vector>
-#include<string>
-#include<map>
-#include<unordered_map>
-#include<unordered_set>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
+	typedef unordered_map<string, unordered_map<string, double>> GRAPH;
+
 public:
-    vector<double> calcEquation(vector<pair<string, string> > equations, vector<double>& values, vector<pair<string, string>> queries) {
-        unordered_map<string,map<string,double> > graph;
-		for(int i=0;i<(int)equations.size();i++)
+	vector<double> calcEquation(vector<vector<string>> &equations, vector<double> &values, vector<vector<string>> &queries)
+	{
+		GRAPH graph;
+		for (int i = 0; i < (int)equations.size(); ++i)
 		{
-			graph[equations[i].first][equations[i].second]=values[i];
-			graph[equations[i].second][equations[i].first]=1.0/values[i];
+			graph[equations[i][0]][equations[i][1]] = values[i];
+			graph[equations[i][1]][equations[i][0]] = 1.0 / values[i];
 		}
-		vector<double> res(queries.size(),1.0);
-		for(int i=0;i<(int)queries.size();i++)
+		vector<double> res(queries.size(), 1.0);
+		for (int i = 0; i < (int)queries.size(); ++i)
 		{
-			if(graph.find(queries[i].first)==graph.end()||graph.find(queries[i].second)==graph.end())
+			if (graph.find(queries[i][0]) == graph.end() || graph.find(queries[i][1]) == graph.end())
 			{
-				res[i]=-1.0;
+				res[i] = -1.0;
 				continue;
 			}
-			unordered_set<string> visited;
-			visited.insert(queries[i].first);
-			if(!calcEquation(graph,visited,queries[i].first,queries[i].second,res[i]))
-				res[i]=-1.0;
+			unordered_set<string> seen = {queries[i][0]};
+			if (!backTracking(graph, seen, queries[i][0], queries[i][1], res[i]))
+				res[i] = -1.0;
 		}
 		return res;
-    }
-	
-	bool calcEquation(unordered_map<string,map<string,double> >& graph,unordered_set<string>& visited,const string& src,string& dst,double& value)
+	}
+
+	bool backTracking(GRAPH &graph, unordered_set<string> &seen, const string &src, const string &dst, double &value)
 	{
-		if(src==dst)
+		if (src == dst)
 			return true;
-		map<string,double>::iterator iter=graph[src].find(dst);
-		if(iter!=graph[src].end())
+		for (auto &iter : graph[src])
 		{
-			value*=iter->second;
-			return true;
-		}
-		for(iter=graph[src].begin();iter!=graph[src].end();++iter)
-		{
-			if(visited.find(iter->first)==visited.end())
+			if (seen.find(iter.first) == seen.end())
 			{
-				visited.insert(iter->first);
-				value*=iter->second;
-				if(calcEquation(graph,visited,iter->first,dst,value))
+				seen.insert(iter.first);
+				value *= iter.second;
+				if (backTracking(graph, seen, iter.first, dst, value))
 					return true;
-				value/=iter->second;
+				value /= iter.second;
+				seen.erase(iter.first);
 			}
 		}
 		return false;
