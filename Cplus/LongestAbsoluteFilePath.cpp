@@ -9,29 +9,29 @@ public:
 	int lengthLongestPath(string input)
 	{
 		stack<int> s;
-		s.push(0);	//dummy node
+		s.push(0); //dummy node
 		int index = 0, res = 0, len = input.size();
 		while (index < len)
 		{
-			int t = 0;
+			int tab = 0;
 			while (input[index] == '\t')
 			{
-				++t;
+				++tab;
 				++index;
 			}
-			while (!s.empty() && t + 1 < (int)s.size())
+			while (tab + 1 < (int)s.size())
 				s.pop();
 			int count = 0;
-			bool flag = false;
+			bool file = false;
 			while (index < len && input[index] != '\n')
 			{
 				if (input[index] == '.')
-					flag = true;
+					file = true;
 				++count;
 				++index;
 			}
 			++index;
-			if (flag)
+			if (file)
 				res = max(res, s.top() + count);
 			else
 				s.push(count + s.top() + 1);
