@@ -1,40 +1,36 @@
-#include<string>
-#include<sstream>
+#include <stack>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string decodeString(string s) {
-		stringstream ss;
-		int index=0,num=0;
-		for(int i=0;i<s.length();i++)
+	string decodeString(string s)
+	{
+		stack<pair<int, string>> stk; //{count,previous str}
+		string res;
+		for (int i = 0, n = 0; i < (int)s.length(); ++i)
 		{
-			if(s[i]<'0'||s[i]>'9')
-				continue;
-			ss<<s.substr(index,i-index);
-			for(index=i;s[index]!='[';index++)
-				num=10*num+(s[index]-'0');
-			int bracket=1;
-			for(int j=index+1;j<s.length();j++)
+			if (isalpha(s[i]))
+				res.push_back(s[i]);
+			else if (isdigit(s[i]))
 			{
-				if(s[j]==']')
-					bracket--;
-				else if(s[j]=='[')
-					bracket++;
-				if(bracket==0)
-				{
-					bracket=j;
-					break;
-				}
+				n = 0;
+				while (s[i] != '[')
+					n = n * 10 + s[i++] - '0';
+				stk.push({n, res});
+				res.clear();
 			}
-			i=bracket;
-			string tmp=decodeString(s.substr(index+1,bracket-index-1));
-			for(int k=0;k<num;k++)
-				ss<<tmp;
-			num=0;
-			index=bracket+1;
+			else
+			{
+				string data;
+				for (int j = 0; j < stk.top().first; ++j)
+					data += res;
+				data = stk.top().second + data;
+				res = data;
+				stk.pop();
+			}
 		}
-		ss<<s.substr(index,s.length()-index);
-		return ss.str();
-    }
+		return res;
+	}
 };
