@@ -1,44 +1,48 @@
-#include<iostream>
+#include <cmath>
 using namespace std;
 
-//Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+/*
+Algorithm:
+Reservoir Sampling
+*/
+
+// Definition for singly-linked list.
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    /** @param head The linked list's head.
+	/** @param head The linked list's head.
         Note that the head is guaranteed to be not null, so it contains at least one node. */
-	int len;
-	ListNode* head;
-    Solution(ListNode* head) {
-		this->head=head;
-		len=1;
-		ListNode* p=head;
-        while(p->next!=NULL)
+	Solution(ListNode *head) : head(head)
+	{
+	}
+
+	/** Returns a random node's value. */
+	int getRandom()
+	{
+		int res = head->val, n = 2;
+		for (ListNode *p = head->next; p; p = p->next)
 		{
-			len++;
-			p=p->next;
+			if (rand() % n++ == 0)
+				res = p->val;
 		}
-		p->next=head;
-    }
-    
-    /** Returns a random node's value. */
-    int getRandom() {
-		int num=1 + std::rand()/((RAND_MAX + 1u)/len);
-		for(int i=0;i<num;i++)
-		{
-			head=head->next;
-		}
-		return head->val;
-    }
+		return res;
+	}
+
+private:
+	ListNode *head;
 };
 
 /**
  * Your Solution object will be instantiated and called as such:
- * Solution obj = new Solution(head);
- * int param_1 = obj.getRandom();
+ * Solution* obj = new Solution(head);
+ * int param_1 = obj->getRandom();
  */
