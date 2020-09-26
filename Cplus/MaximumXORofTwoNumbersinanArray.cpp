@@ -1,20 +1,30 @@
-#include<iostream>
-#include<vector>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findMaximumXOR(vector<int>& nums) {
-		int max=0;
-		for(int i=0;i<nums.size()-1;i++)
+	int findMaximumXOR(vector<int> &nums)
+	{
+		int res = 0, mask = 0;
+		for (int i = 31; i >= 0; --i)
 		{
-			for(int j=i+1;j<nums.size();j++)
+			mask |= 1 << i;
+			unordered_set<int> s;
+			for (auto n : nums)
+				s.insert(n & mask);
+			int max = (res | 1 << i);
+			for (auto n : s)
 			{
-				if((nums[i]^nums[j])>max)
-					max=(nums[i]^nums[j]);
+				int another = n ^ max;
+				if (s.find(another) != s.end())
+				{
+					res = max;
+					break;
+				}
 			}
-		}		
-		return max;
-    }
+		}
+		return res;
+	}
 };
-
