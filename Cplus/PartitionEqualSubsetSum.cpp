@@ -1,31 +1,40 @@
-#include<vector>
-#include<numeric>
-#include<algorithm>
-#include<functional>
+#include <algorithm>
+#include <cmath>
+#include <functional>
+#include <numeric>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool canPartition(vector<int>& nums) {
-		int all=accumulate(nums.begin(),nums.end(),0);
-		if(all&0x1)
-			return false;
-		all/=2;
-		sort(nums.begin(),nums.end(),greater<int>());
-		if(nums.front()>all)
-			return false;
-		return combination(nums,0,all);
-    }
-
-	bool combination(vector<int>& nums,int start,int all)
+	bool canPartition(vector<int> &nums)
 	{
-		if(0==all)
-			return true;
-		if(all<0)
+		int N = nums.size();
+		int sum = accumulate(nums.begin(), nums.end(), 0);
+		if (sum % 2 != 0)
 			return false;
-		for(int i=start;i<(int)nums.size();i++)
-			if(combination(nums,i+1,all-nums[i]))
+		sort(nums.begin(), nums.end(), greater<int>());
+		if (nums.front() * 2 > sum)
+			return false;
+		unordered_set<int> diff;
+		diff.insert(0);
+		for (auto n : nums)
+		{
+			unordered_set<int> next_diff;
+			if (diff.find(sum) != diff.end())
 				return true;
-		return false;
+			for (auto d : diff)
+			{
+				if (d > sum)
+					continue;
+				next_diff.insert(abs(d - n));
+				next_diff.insert(d + n);
+			}
+			diff = next_diff;
+			sum -= n;
+		}
+		return diff.find(0) != diff.end();
 	}
 };
