@@ -26,11 +26,12 @@ char* originalDigits(char* s)
 	}
 	count[9] = map['i' - 'a'];
 	char* res = (char*)malloc(sizeof(char) * 50000);
-	res[0] = '\0';
+	int size = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 0; j < count[i]; ++j)
-			strcat(res, digits[i]);
+		memset(&res[size], i + '0', count[i]);
+		size += count[i];
 	}
+	res[size] = '\0';
 	return res;
 }
