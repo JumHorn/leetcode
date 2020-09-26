@@ -1,52 +1,48 @@
-#include<vector>
-#include<string>
-#include<unordered_set>
-#include<queue>
+#include <queue>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minMutation(string start, string end, vector<string>& bank) {
-        unordered_set<string> visited;
-		queue<string> *p=new queue<string>();
-		queue<string> *q=new queue<string>();
-		int res=0;
-		p->push(start);
-		visited.insert(start);
-		while(!p->empty())
+	int minMutation(string start, string end, vector<string> &bank)
+	{
+		unordered_set<string> seen, geneBank(bank.begin(), bank.end());
+		queue<string> q;
+		int res = 0;
+		if (geneBank.find(end) == geneBank.end())
+			return -1;
+		q.push(start);
+		seen.insert(start);
+		while (!q.empty())
 		{
-			res++;
-			while(!p->empty())
+			++res;
+			int size = q.size();
+			while (--size >= 0)
 			{
-				for(int i=0;i<(int)bank.size();i++)
+				auto genestr = q.front();
+				q.pop();
+				char gene[] = "ACGT";
+				for (int i = 0; i < (int)genestr.length(); ++i)
 				{
-					if(visited.find(bank[i])!=visited.end())
-						continue;
-					int tmp=minMutation(p->front(),bank[i]);
-					if(tmp==1)
+					char old = genestr[i];
+					for (int j = 0; j < 4; ++j)
 					{
-						tmp=minMutation(bank[i],end);
-						if(tmp==0)
+						genestr[i] = gene[j];
+						if (genestr == end)
 							return res;
-						q->push(bank[i]);
-						visited.insert(bank[i]);
+						if (seen.find(genestr) == seen.end() && geneBank.find(genestr) != geneBank.end())
+						{
+							seen.insert(genestr);
+							q.push(genestr);
+						}
 					}
+					genestr[i] = old;
 				}
-				p->pop();
 			}
-			queue<string>* tmp=p;
-			p=q;
-			q=tmp;
 		}
 		return -1;
-    }
-
-	int minMutation(const string& l,const string& r)
-	{
-		int res=0,index=-1;
-		while(++index<(int)l.size())
-			if(l[index]!=r[index])
-				res++;
-		return res;
 	}
 };
