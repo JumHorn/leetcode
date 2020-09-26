@@ -9,35 +9,28 @@ public:
 	vector<int> findRightInterval(vector<vector<int>> &intervals)
 	{
 		int n = intervals.size();
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			intervals[i].push_back(i);
-		sort(intervals.begin(), intervals.end(), *this);
+		sort(intervals.begin(), intervals.end());
 		vector<int> res(n);
-		priority_queue<pair<int, int>> q;
-		q.push({-intervals[0][1], 0});
-		for (int i = 1; i < n; i++)
+		auto f = [&](int lhs, int rhs) { return intervals[lhs][1] > intervals[rhs][1]; };
+		priority_queue<int, vector<int>, decltype(f)> q(f);
+		if (!intervals.empty())
+			q.push(0);
+		for (int i = 1; i < n; ++i)
 		{
-			while (!q.empty())
+			while (!q.empty() && intervals[q.top()][1] <= intervals[i][0])
 			{
-				if (intervals[q.top().second][1] > intervals[i][0])
-					break;
-				res[intervals[q.top().second][2]] = intervals[i][2];
+				res[intervals[q.top()][2]] = intervals[i][2];
 				q.pop();
 			}
-			q.push({-intervals[i][1], i});
+			q.push(i);
 		}
 		while (!q.empty())
 		{
-			res[intervals[q.top().second][2]] = -1;
+			res[intervals[q.top()][2]] = -1;
 			q.pop();
 		}
 		return res;
-	}
-
-	bool operator()(vector<int> &lhs, vector<int> &rhs)
-	{
-		if (lhs[0] != rhs[0])
-			return lhs[0] < rhs[0];
-		return lhs[2] < rhs[2];
 	}
 };
