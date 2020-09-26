@@ -1,48 +1,29 @@
-#include<algorithm>
-#include<vector>
+#include <algorithm>
+#include <vector>
 using namespace std;
-//Definition for an interval.
-struct Interval {
-    int start;
-    int end;
-    Interval() : start(0), end(0) {}
-    Interval(int s, int e) : start(s), end(e) {}
-};
 
-class Solution {
+class Solution
+{
 public:
-    int eraseOverlapIntervals(vector<Interval>& intervals) {
-		int res=0,len=0;
-        sort(intervals.begin(),intervals.end(),*this);
-        // for(int i=0;i<intervals.size();i++)
-        // {
-        //     cout<<intervals[i].start<<" "<<intervals[i].end<<endl;
-        // }
-		while(len<intervals.size())
-		{
-            int i;
-			for(i=len+1;i<intervals.size();i++)
-			{
-				if(intervals[i].start<intervals[len].end)
-				{
-					res++;
-				}
-				else
-				{
-                    len=i;
-					break;
-				}
-			}
-            if(i==intervals.size())
-                break;
-		}
-		return res;
-    }
-
-	bool operator()(const Interval& i1,const Interval& i2)
+	int eraseOverlapIntervals(vector<vector<int>> &intervals)
 	{
-		if(i1.end<i2.end)
-			return true;
-		return false;
+		sort(intervals.begin(), intervals.end(), *this);
+		if (intervals.empty())
+			return 0;
+		int res = 1, maxright = intervals[0][1], N = intervals.size();
+		for (int i = 1; i < N; ++i)
+		{
+			if (intervals[i][0] >= maxright)
+			{
+				++res;
+				maxright = intervals[i][1];
+			}
+		}
+		return N - res;
+	}
+
+	bool operator()(const vector<int> &lhs, const vector<int> &rhs)
+	{
+		return lhs[1] < rhs[1];
 	}
 };
