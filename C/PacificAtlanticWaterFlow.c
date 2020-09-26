@@ -48,19 +48,19 @@ int **pacificAtlantic(int **matrix, int matrixSize, int *matrixColSize, int *ret
 	memset(color1, 0, sizeof(color1));
 	memset(color2, 0, sizeof(color2));
 
-	for (int i = 0; i < M; i++)
+	for (int i = 0; i < M; ++i)
 	{
 		dfs(matrix, M, N, color1, i, 0);
 		dfs(matrix, M, N, color2, i, N - 1);
 	}
-	for (int j = 0; j < N; j++)
+	for (int j = 0; j < N; ++j)
 	{
 		dfs(matrix, M, N, color1, 0, j);
 		dfs(matrix, M, N, color2, M - 1, j);
 	}
-	for (int i = 0; i < M; i++)
+	for (int i = 0; i < M; ++i)
 	{
-		for (int j = 0; j < N; j++)
+		for (int j = 0; j < N; ++j)
 		{
 			if (color1[i][j] == 1 && color2[i][j] == 1)
 			{
