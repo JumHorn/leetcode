@@ -8,40 +8,42 @@ public:
 	{
 		if (matrix.empty() || matrix[0].empty())
 			return {};
-		int m = matrix.size(), n = matrix[0].size();
-		vector<vector<int>> dp1(m, vector<int>(n)), dp2(m, vector<int>(n)), res;
-		for (int i = 0; i < m; i++)
+		int M = matrix.size(), N = matrix[0].size();
+		vector<vector<int>> color1(M, vector<int>(N)), color2(M, vector<int>(N)), res;
+		for (int i = 0; i < M; ++i)
 		{
-			dfs(matrix, dp1, i, 0);
-			dfs(matrix, dp2, i, n - 1);
+			dfs(matrix, color1, i, 0);
+			dfs(matrix, color2, i, N - 1);
 		}
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < N; ++j)
 		{
-			dfs(matrix, dp1, 0, j);
-			dfs(matrix, dp2, m - 1, j);
+			dfs(matrix, color1, 0, j);
+			dfs(matrix, color2, M - 1, j);
 		}
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < n; j++)
-				if (dp1[i][j] == 1 && dp2[i][j] == 1)
+			for (int j = 0; j < N; ++j)
+			{
+				if (color1[i][j] == 1 && color2[i][j] == 1)
 					res.push_back({i, j});
+			}
 		}
 		return res;
 	}
 
-	void dfs(vector<vector<int>> &matrix, vector<vector<int>> &dp, int i, int j)
+	void dfs(vector<vector<int>> &matrix, vector<vector<int>> &color, int row, int col)
 	{
-		if (dp[i][j] != 0)
+		if (color[row][col] != 0)
 			return;
-		dp[i][j] = 1;
-		int m = matrix.size(), n = matrix[0].size();
-		if (i - 1 >= 0 && matrix[i - 1][j] >= matrix[i][j])
-			dfs(matrix, dp, i - 1, j);
-		if (j - 1 >= 0 && matrix[i][j - 1] >= matrix[i][j])
-			dfs(matrix, dp, i, j - 1);
-		if (i + 1 < m && matrix[i + 1][j] >= matrix[i][j])
-			dfs(matrix, dp, i + 1, j);
-		if (j + 1 < n && matrix[i][j + 1] >= matrix[i][j])
-			dfs(matrix, dp, i, j + 1);
+		color[row][col] = 1;
+		int M = matrix.size(), N = matrix[0].size();
+		if (row - 1 >= 0 && matrix[row - 1][col] >= matrix[row][col])
+			dfs(matrix, color, row - 1, col);
+		if (col - 1 >= 0 && matrix[row][col - 1] >= matrix[row][col])
+			dfs(matrix, color, row, col - 1);
+		if (row + 1 < M && matrix[row + 1][col] >= matrix[row][col])
+			dfs(matrix, color, row + 1, col);
+		if (col + 1 < N && matrix[row][col + 1] >= matrix[row][col])
+			dfs(matrix, color, row, col + 1);
 	}
 };
