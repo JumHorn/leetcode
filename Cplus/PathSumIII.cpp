@@ -17,24 +17,20 @@ class Solution
 public:
 	int pathSum(TreeNode *root, int sum)
 	{
-		int res = 0;
-		postorder(root, sum, res);
-		return res;
+		unordered_map<int, int> count = {{0, 1}}; //{val,count}
+		return preorder(root, 0, sum, count);
 	}
 
-	unordered_map<int, int> postorder(TreeNode *root, int sum, int &count)
+	int preorder(TreeNode *root, int sum, int target, unordered_map<int, int> &count)
 	{
 		if (root == nullptr)
-			return {};
-		auto left = postorder(root->left, sum, count);
-		auto right = postorder(root->right, sum, count);
-		unordered_map<int, int> res;
-		for (auto l : left)
-			res[l.first + root->val] += l.second;
-		for (auto r : right)
-			res[r.first + root->val] += r.second;
-		++res[root->val];
-		count += res[sum];
+			return 0;
+		sum += root->val;
+		int res = count[sum - target];
+		++count[sum];
+		res += preorder(root->left, sum, target, count);
+		res += preorder(root->right, sum, target, count);
+		--count[sum];
 		return res;
 	}
 };
