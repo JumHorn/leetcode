@@ -1,55 +1,40 @@
-#include<iostream>
-#include<stack>
+#include <unordered_map>
 using namespace std;
 
 // Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    int pathSum(TreeNode* root, int sum) {
-        int result=0;
-        stack<TreeNode*> s;
-		TreeNode* node=root;
-		while(node||!s.empty())
-		{
-			result+=hasPathSum(node,sum);
-			s.push(node);
-			node=node->left;
-			while(!node&&!s.empty())
-			{
-				node=s.top();
-				node=node->right;
-				s.pop();
-			}
-		}
-		return result;
-    }
-    int hasPathSum(struct TreeNode *root, int sum) {
-        if (root == NULL) return 0;
-        // if (root->val == sum) return 1+hasPathSum(root->left, sum-root->val) + hasPathSum(root->right, sum-root->val);
-        // return hasPathSum(root->left, sum-root->val) + hasPathSum(root->right, sum-root->val);
-        // 化简为下面的一步,由于将加法和判断和在一起，速度提高很多
-        return (root->val==sum) + hasPathSum(root->left, sum-root->val) + hasPathSum(root->right, sum-root->val);
-    }
-};
+	int pathSum(TreeNode *root, int sum)
+	{
+		int res = 0;
+		postorder(root, sum, res);
+		return res;
+	}
 
-//other methode
-class Solution0 {
-public:
-    int pathSum(TreeNode* root, int sum) {
-        if(!root) return 0;
-        return sumUp(root, 0, sum) + pathSum(root->left, sum) + pathSum(root->right, sum);
-    }
-private:
-    int sumUp(TreeNode* root, int pre, int& sum){
-        if(!root) return 0;
-        int current = pre + root->val;
-        return (current == sum) + sumUp(root->left, current, sum) + sumUp(root->right, current, sum);
-    }
+	unordered_map<int, int> postorder(TreeNode *root, int sum, int &count)
+	{
+		if (root == nullptr)
+			return {};
+		auto left = postorder(root->left, sum, count);
+		auto right = postorder(root->right, sum, count);
+		unordered_map<int, int> res;
+		for (auto l : left)
+			res[l.first + root->val] += l.second;
+		for (auto r : right)
+			res[r.first + root->val] += r.second;
+		++res[root->val];
+		count += res[sum];
+		return res;
+	}
 };
