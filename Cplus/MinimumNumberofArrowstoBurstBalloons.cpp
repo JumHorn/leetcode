@@ -1,58 +1,31 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findMinArrowShots(vector<pair<int, int> >& points) {
-		if(points.empty())
-			return 0;
-		ascending(points);
-       	return countArrow(points,0);
-    }
-
-	int countArrow(vector<pair<int,int> >& points,int start)
+	int findMinArrowShots(vector<vector<int>> &points)
 	{
-        if(points.size()-start<2)
-			return points.size()-start;
-		int i=0,minindex=0,minsecond=INT_MAX;
-		for(i=start;i<points.size();i++)
+		if (points.empty())
+			return 0;
+		sort(points.begin(), points.end(), *this);
+		int maxright = points[0][1], res = 1;
+		for (auto &p : points)
 		{
-			if(points[i].second<minsecond)
+			if (p[0] > maxright)
 			{
-				minsecond=points[i].second;
-				minindex=i;
+				++res;
+				maxright = p[1];
 			}
 		}
-		int j=0;
-		for(j=minindex+1;j<points.size();j++)
-		{
-			if(points[j].first>minsecond)
-				break;
-		}
-		return 1+countArrow(points,j);
+		return res;
 	}
 
-	void ascending(vector<pair<int,int> >& points)
+	bool operator()(vector<int> &lhs, vector<int> &rhs)
 	{
-		for(int i=0;i<points.size()-1;i++)
-		{
-			bool s=true;
-			for(int j=points.size()-1;j>i;j--)
-			{
-				if(points[j].first<points[j-1].first)
-				{
-					int tmp=points[j].first;
-                    points[j].first=points[j-1].first;
-                    points[j-1].first=tmp;
-					tmp=points[j].second;
-                    points[j].second=points[j-1].second;
-                    points[j-1].second=tmp;
-					s=false;
-				}
-			}
-			if(s)
-				break;
-		}
+		if (lhs[1] != rhs[1])
+			return lhs[1] < rhs[1];
+		return lhs[0] < rhs[0];
 	}
 };
