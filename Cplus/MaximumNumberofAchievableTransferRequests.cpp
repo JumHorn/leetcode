@@ -7,56 +7,32 @@ class Solution
 public:
 	int maximumRequests(int n, vector<vector<int>> &requests)
 	{
-		vector<vector<int>> graph(n, vector<int>(n));
-		int res = 0;
-		for (auto &request : requests)
+		int N = requests.size(), res = 0;
+		for (int mask = 0; mask < 1 << N; ++mask)
 		{
-			if (request[0] != request[1])
-				++graph[request[0]][request[1]];
-			else
-				++res;
-		}
-		for (int i = 0; i < n; ++i)
-		{
-			vector<int> seen(n);
-			stack<int> order;
-			if (dfs(graph, i, seen, order))
+			vector<int> indegree(n), outdegree(n);
+			for (int i = 0; i < N; ++i)
 			{
-				--i;
-				++res;
-				int end = order.top();
-				order.pop();
-				--graph[order.top()][end];
-				while (end != order.top())
+				if ((1 << i) & mask)
 				{
-					int to = order.top();
-					order.pop();
-					int at = order.top();
-					--graph[at][to];
-					++res;
+					++outdegree[requests[i][0]];
+					++indegree[requests[i][1]];
 				}
 			}
+			if (indegree == outdegree)
+				res = max(res, bitCount(mask));
 		}
 		return res;
 	}
 
-	bool dfs(vector<vector<int>> &graph, int at, vector<int> &seen, stack<int> &order)
+	int bitCount(int n)
 	{
-		int N = graph.size();
-		order.push(at);
-		if (seen[at] == 1)
-			return true;
-		seen[at] = 1;
-		for (int i = 0; i < N; ++i)
+		int res = 0;
+		while (n != 0)
 		{
-			if (graph[at][i] > 0)
-			{
-				if (dfs(graph, i, seen, order))
-					return true;
-			}
+			++res;
+			n &= n - 1;
 		}
-		seen[at] = 0;
-		order.pop();
-		return false;
+		return res;
 	}
 };
