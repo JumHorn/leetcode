@@ -1,5 +1,4 @@
 #include <numeric>
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -14,31 +13,42 @@ public:
 		if (perimeter % 4 != 0)
 			return false;
 		int sidelen = perimeter / 4;
-		vector<unordered_map<int, bool>> dp(1 << nums.size());
-		return backTracking(nums, sidelen, perimeter, 0, dp);
+		vector<vector<int>> dp(1 << nums.size(), vector<int>(4));
+		return backTracking(nums, sidelen, 0, 0, dp);
 	}
 
-	bool backTracking(vector<int> &nums, int sidelen, int perimeter, int mask, vector<unordered_map<int, bool>> &dp)
+	bool backTracking(vector<int> &nums, int sidelen, int sideformed, int mask, vector<vector<int>> &dp)
 	{
-		if (perimeter == 0)
+		if (dp[mask][sideformed] != 0)
+			return dp[mask][sideformed] == 1;
+		int N = nums.size(), perimeter = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			if ((mask & (1 << i)) != 0)
+				perimeter += nums[i];
+		}
+		if (perimeter > 0 && perimeter % sidelen == 0)
+			++sideformed;
+		if (sideformed == 3)
 			return true;
+
 		//not finish side len
-		if (dp[mask].find(perimeter) != dp[mask].end())
-			return dp[mask][perimeter];
-		int len = perimeter - perimeter / sidelen * sidelen;
-		if (len == 0)
-			len = sidelen;
-		for (int i = 0; i < (int)nums.size(); ++i)
+		int len = sidelen - (perimeter - perimeter / sidelen * sidelen);
+		for (int i = 0; i < N; ++i)
 		{
 			if ((mask & (1 << i)) == 0)
 			{
 				if (nums[i] <= len)
 				{
-					if (backTracking(nums, sidelen, perimeter - nums[i], mask ^ (1 << i), dp))
-						return dp[mask][perimeter] = true;
+					if (backTracking(nums, sidelen, sideformed, mask | (1 << i), dp))
+					{
+						dp[mask][sideformed] = 1;
+						return true;
+					}
 				}
 			}
 		}
-		return dp[mask][perimeter] = false;
+		dp[mask][sideformed] = -1;
+		return false;
 	}
 };
