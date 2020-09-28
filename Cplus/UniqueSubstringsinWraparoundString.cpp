@@ -1,28 +1,27 @@
-#include<string>
-#include<vector>
-#include<numeric>
-#include<algorithm>
+#include <algorithm>
+#include <numeric>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findSubstringInWraproundString(string p) {
-		if(p.empty())
+	int findSubstringInWraproundString(string p)
+	{
+		if (p.empty())
 			return 0;
-		vector<int> res(26);
-		int dp;
-		char pre=p.back();
-		res[p.back()-'a']=1;
-		dp=1;
-		for(int i=p.size()-2;i>=0;i--)
+		vector<int> dp(26);
+		int count, next = -1;
+		for (int i = p.size() - 1; i >= 0; --i)
 		{
-			if((p[i]!='z'&&pre==p[i]+1)||(p[i]=='z'&&pre=='a'))
-                dp++;
-            else
-			    dp=1;
-			res[p[i]-'a']=max(res[p[i]-'a'],dp);
-            pre=p[i];
+			if ((p[i] - 'a' + 1) % 26 == next)
+				++count;
+			else
+				count = 1;
+			dp[p[i] - 'a'] = max(dp[p[i] - 'a'], count);
+			next = p[i] - 'a';
 		}
-		return accumulate(res.begin(),res.end(),0);
-    }
+		return accumulate(dp.begin(), dp.end(), 0);
+	}
 };
