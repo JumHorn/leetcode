@@ -1,33 +1,32 @@
-#include<vector>
-#include<algorithm>
-#include<unordered_set>
-#include<set>
+#include <algorithm>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > findSubsequences(vector<int>& nums) {
-        vector<vector<int> > res;
-		vector<int> tmp;
-		findSubsequences(res,nums,tmp,0);
-		return res;
-    }
-
-	void findSubsequences(vector<vector<int> >& res,vector<int>& nums,vector<int>& tmp,int start)
+	vector<vector<int>> findSubsequences(vector<int> &nums)
 	{
-		if(tmp.size()>1)
+		vector<vector<int>> res;
+		vector<int> instance;
+		dfs(nums, 0, instance, res);
+		return res;
+	}
+
+	void dfs(vector<int> &nums, int index, vector<int> &instance, vector<vector<int>> &res)
+	{
+		if (instance.size() > 1)
+			res.push_back(instance);
+		unordered_set<int> s;
+		for (int i = index; i < nums.size(); i++)
 		{
-		    res.push_back(tmp);
-		}
-		unordered_set<int> visited;
-		for(int i=start;i<nums.size();i++)
-		{
-			if((tmp.empty()||nums[i]>=tmp.back())&&visited.find(nums[i])==visited.end())
+			if ((instance.empty() || nums[i] >= instance.back()) && s.find(nums[i]) == s.end())
 			{
-				tmp.push_back(nums[i]);
-				findSubsequences(res,nums,tmp,i+1);
-				tmp.pop_back();
-				visited.insert(nums[i]);
+				s.insert(nums[i]);
+				instance.push_back(nums[i]);
+				dfs(nums, i + 1, instance, res);
+				instance.pop_back();
 			}
 		}
 	}
