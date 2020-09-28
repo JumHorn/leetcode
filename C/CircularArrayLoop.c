@@ -1,33 +1,30 @@
+#include <stdbool.h>
 
+/*
+tag each num with given tag
+each turn find the taged num means there is a circle
+so the base means the minimum tag in this turn
+*/
 
-bool circularArrayLoop(int* nums, int numsSize)
+bool circularArrayLoop(int *nums, int numsSize)
 {
-	int label = 1000;
+	int tag = 1000;
 	for (int i = 0; i < numsSize; i++)
 	{
 		if (nums[i] <= 1000)
 		{
-			int index = i, count = ++label;
-			bool forward = (nums[index] > 0);
+			int index = i, base = ++tag, head = nums[index];
 			while (nums[index] <= 1000)
 			{
-				int tmp = nums[index];
-				nums[index] = ++label;
-				index = ((index + tmp) % numsSize + numsSize) % numsSize;
-				if (nums[index] <= 1000)
-					if ((forward && nums[index] < 0) || (!forward && nums[index] > 0))
-						break;
-				if (nums[index] < count && nums[index] > 1000)
+				int val = nums[index];
+				nums[index] = ++tag;
+				index = ((index + val) % numsSize + numsSize) % numsSize;
+				if (nums[index] >= base && nums[index] < tag) //current turn
+					return true;
+				if (nums[index] > 1000 || (head ^ nums[index]) < 0)
 					break;
-				if (nums[index] >= count && nums[index] <= label)
-				{
-					if (nums[index] != label)
-						return true;
-					break;
-				}
 			}
 		}
 	}
 	return false;
 }
-
