@@ -1,36 +1,41 @@
-#include<vector>
-#include<unordered_map>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool canIWin(int maxChoosableInteger, int desiredTotal) {
-        if(desiredTotal<=0)
-            return true;
-		if(maxChoosableInteger*(maxChoosableInteger+1)/2<desiredTotal)
-			return false;
-		vector<unordered_map<int,int>> dp(desiredTotal+1);
-		return canIWin(0,maxChoosableInteger,desiredTotal,dp);
-    }
-
-	bool canIWin(int n,int m,int t,vector<unordered_map<int,int>>& dp)
+	bool canIWin(int maxChoosableInteger, int desiredTotal)
 	{
-		if(t<=0)
+		int M = maxChoosableInteger, T = desiredTotal;
+		if (T <= 1)
+			return true;
+		if (M * (M + 1) / 2 < T)
 			return false;
-		if(dp[t].find(n)!=dp[t].end())
-			return dp[t][n];
-		for(int i=0;i<m;i++)
+		if (M * (M + 1) / 2 == T) //who choose last one wins
+			return M & 1;
+		vector<int> dp(1 << M);
+		return memdp(0, M, T, dp);
+	}
+
+	bool memdp(int mask, int choose, int total, vector<int> &dp)
+	{
+		if (total <= 0)
+			return false;
+		if (dp[mask] != 0)
+			return dp[mask] == 1;
+		for (int i = 0; i < choose; ++i)
 		{
-			if((n&(1<<i))==0)
+			if ((mask & (1 << i)) == 0)
 			{
-				if(!canIWin(n|(1<<i),m,t-i-1,dp))
+				if (!memdp(mask | (1 << i), choose, total - i - 1, dp))
 				{
-					dp[t][n]=true;
+					dp[mask] = 1;
 					return true;
 				}
 			}
 		}
-		dp[t][n]=false;
+		dp[mask] = -1;
 		return false;
 	}
 };
