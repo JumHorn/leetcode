@@ -1,21 +1,23 @@
-#include<map>
-#include<vector>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findMaxLength(vector<int>& nums) {
-		int res=0,total=0;
-		map<int,int> hash;
-        hash[0]=-1;
-		for(int i=0;i<nums.size();i++)
+	int findMaxLength(vector<int> &nums)
+	{
+		int res = 0, diff = 0; //count(1)-count(0)
+		unordered_map<int, int> hash;
+		hash[0] = -1;
+		for (int i = 0; i < (int)nums.size(); ++i)
 		{
-			nums[i]?total++:total--;
-			if(hash.count(total)!=0)
-				res=max(res,i-hash[total]);
+			nums[i] ? ++diff : --diff;
+			if (hash.find(diff) != hash.end())
+				res = max(res, i - hash[diff]);
 			else
-				hash[total]=i;
+				hash[diff] = i;
 		}
 		return res;
-    }
+	}
 };
