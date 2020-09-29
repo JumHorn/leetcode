@@ -1,40 +1,24 @@
-#include<iostream>
-#include<vector>
+#include <stack>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> nextGreaterElements(vector<int>& nums) {
-		vector<int> res(nums.size(),-1);
-		for(int i=0;i<nums.size();i++)
+	vector<int> nextGreaterElements(vector<int> &nums)
+	{
+		int N = nums.size();
+		stack<int> s;
+		vector<int> res(N, -1);
+		for (int i = 0; i < 2 * N; ++i)
 		{
-			int j;
-			for(j=1;j<nums.size();j++)
+			while (!s.empty() && nums[s.top()] < nums[i % N])
 			{
-				int index=(i+j)%nums.size();
-				if(nums[i]<nums[index])
-				{
-					res[i]=nums[index];
-					break;
-				}
+				res[s.top()] = nums[i % N];
+				s.pop();
 			}
+			s.push(i % N);
 		}
 		return res;
-    }
+	}
 };
-
-//public class Solution {
-//
-//    public int[] nextGreaterElements(int[] nums) {
-//        int[] res = new int[nums.length];
-//        Stack<Integer> stack = new Stack<>();
-//        for (int i = 2 * nums.length - 1; i >= 0; --i) {
-//            while (!stack.empty() && nums[stack.peek()] <= nums[i % nums.length]) {
-//                stack.pop();
-//            }
-//            res[i % nums.length] = stack.empty() ? -1 : nums[stack.peek()];
-//            stack.push(i % nums.length);
-//        }
-//        return res;
-//    }
-//}
