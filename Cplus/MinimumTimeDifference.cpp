@@ -1,29 +1,34 @@
-#include<vector>
-#include<string>
-#include<algorithm>
+#include <algorithm>
+#include <climits>
+#include <sstream>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findMinDifference(vector<string>& timePoints) {
-		int res=INT_MAX;
-		sort(timePoints.begin(),timePoints.end());       
-		for(vector<string>::iterator iter=timePoints.begin();iter!=timePoints.end()-1;iter++)
-		{
-			int diff=timeDiff(iter,iter+1);
-			if(diff<res)
-				res=diff;
-		}
-		int tmp=24*60-timeDiff(timePoints.begin(),timePoints.end()-1);
-		if(tmp<res)
-			res=tmp;
-		return res;
-    }
-
-	int timeDiff(vector<string>::iterator it1,vector<string>::iterator it2)
+	int findMinDifference(vector<string> &timePoints)
 	{
-		int t1=((*it1)[0]*10+(*it1)[1])*60+((*it1)[3]*10+(*it1)[4]);
-		int t2=((*it2)[0]*10+(*it2)[1])*60+((*it2)[3]*10+(*it2)[4]);
-		return t2-t1;
+		int res = INT_MAX;
+		sort(timePoints.begin(), timePoints.end());
+		for (int i = 1; i < (int)timePoints.size(); ++i)
+			res = min(res, timeDiff(timePoints[i - 1], timePoints[i]));
+		res = min(res, 1440 + timeDiff(timePoints.back(), timePoints.front()));
+		return res;
+	}
+
+	int timeDiff(string &t0, string &t1)
+	{
+		return timeToZero(t1) - timeToZero(t0);
+	}
+
+	int timeToZero(string &time)
+	{
+		stringstream ss(time);
+		int hour, minute;
+		char c;
+		ss >> hour >> c >> minute;
+		return hour * 60 + minute;
 	}
 };
