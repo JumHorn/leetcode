@@ -1,30 +1,27 @@
-#include<string>
-#include<sstream>
-#include<algorithm>
-#include<vector>
+#include <algorithm>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int longestPalindromeSubseq(string s) {
-		int dp[1000][1000]={{0}};
-		return longestPalindromeSubseq(s,0,s.length()-1,dp);
-    }
-
-	int longestPalindromeSubseq(const string& s,int l,int r,int (*dp)[1000])
+	int longestPalindromeSubseq(string s)
 	{
-		if(l>r)
-			return 0;
-		if(l==r)
-			return 1;
-		if(dp[l][r]>0)
-			return dp[l][r];
-		int res;
-		if(s[l]==s[r])
-			res=longestPalindromeSubseq(s,l+1,r-1,dp)+2;
-		else
-			res=max(longestPalindromeSubseq(s,l+1,r,dp),longestPalindromeSubseq(s,l,r-1,dp));
-		dp[l][r]=res;
-		return res;
+		int N = s.length();
+		vector<int> dp(N), next_dp(N);
+		for (int i = N - 1; i >= 0; --i)
+		{
+			next_dp[i] = 1;
+			for (int j = i + 1; j < N; ++j)
+			{
+				if (s[i] == s[j])
+					next_dp[j] = dp[j - 1] + 2;
+				else
+					next_dp[j] = max(dp[j], next_dp[j - 1]);
+			}
+			dp.swap(next_dp);
+		}
+		return dp[N - 1];
 	}
 };
