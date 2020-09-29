@@ -1,35 +1,39 @@
-#include<string>
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string findLongestWord(string s, vector<string>& d) {
+	string findLongestWord(string s, vector<string> &d)
+	{
 		string res;
-		sort(d.begin(),d.end(),*this);
-		for(int i=0;i<d.size();i++)
+		sort(d.begin(), d.end(), *this);
+		for (auto &str : d)
 		{
-			for(int j=0,k=0;j<s.length();j++) //this little optimization lead to 40%
-			{
-				if(d[i][k]==s[j])
-					k++;
-				if(k==d[i].length())
-					return d[i];
-			}
+			if (isSubsequence(str, s))
+				return str;
 		}
 		return res;
-    }
+	}
 
-	bool operator()(const string& s1,const string& s2)
+	bool isSubsequence(const string &lhs, const string &rhs)
 	{
-		if(s1.length()>s2.length())
-			return true;
-        else if(s1.length()<s2.length())
-            return false;
+		unsigned int i = 0, j = 0;
+		while (i < lhs.size() && j < rhs.size())
+		{
+			if (lhs[i] == rhs[j])
+				++i;
+			++j;
+		}
+		return i == lhs.size();
+	}
 
-		if(s1<s2)
-			return true;
-		return false;
+	bool operator()(const string &s1, const string &s2)
+	{
+		if (s1.length() != s2.length())
+			return s1.length() > s2.length();
+		return s1 < s2;
 	}
 };
