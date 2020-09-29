@@ -5,12 +5,6 @@ using namespace std;
 
 class Solution
 {
-private:
-	int rows;
-	int cols;
-	int total;
-	unordered_map<int, int> m;
-
 public:
 	Solution(int n_rows, int n_cols)
 	{
@@ -35,6 +29,12 @@ public:
 	{
 		total = rows * cols;
 	}
+
+private:
+	int rows;
+	int cols;
+	int total;
+	unordered_map<int, int> m;
 };
 
 /**
@@ -43,12 +43,3 @@ public:
  * vector<int> param_1 = obj->flip();
  * obj->reset();
  */
-
-int main()
-{
-	Solution sol(2, 2);
-	sol.flip();
-	sol.flip();
-	sol.flip();
-	sol.flip();
-}
