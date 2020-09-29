@@ -1,16 +1,11 @@
-#include<iostream>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findLUSlength(string a, string b) {
-        if(a==b)
-        {
-            return -1;
-        }
-        return a.length()>b.length()?a.length():b.length();
-    }
+	int findLUSlength(string a, string b)
+	{
+		return a == b ? -1 : max(a.length(), b.length());
+	}
 };
-
-int main()
-{}
