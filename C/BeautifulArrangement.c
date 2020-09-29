@@ -1,25 +1,26 @@
+#include <string.h>
 
-int recursive(int seen, int index, int N)
+int memdp(int N, int index, int mask, int (*dp)[N])
 {
-	if (index == N)
+	if (index >= N)
 		return 1;
-	int res = 0, old_seen = seen;
-	for (int i = 0; i < N; i++)
+	if (dp[mask][index] != -1)
+		return dp[mask][index];
+	int res = 0;
+	for (int i = 0; i < N; ++i)
 	{
-		seen = old_seen;
-		if ((seen & (1 << i)) == 0)
+		if ((mask & (1 << i)) == 0)
 		{
 			if ((i + 1) % (index + 1) == 0 || (index + 1) % (i + 1) == 0)
-			{
-				seen = (seen | (1 << i));
-				res += recursive(seen, index + 1, N);
-			}
+				res += memdp(N, index + 1, mask | (1 << i), dp);
 		}
 	}
-	return res;
+	return dp[mask][index] = res;
 }
 
 int countArrangement(int N)
 {
-	return recursive(0, 0, N);
+	int dp[1 << N][N];
+	memset(dp, -1, sizeof(dp));
+	return memdp(N, 0, 0, dp);
 }
