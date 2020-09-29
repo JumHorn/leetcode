@@ -1,25 +1,24 @@
-#include<vector>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findTargetSumWays(vector<int>& nums, int S) {
-		if(nums.empty())
-			return 0;
-        return targetSum(nums,0,S);
-    }
-
-	int targetSum(vector<int>& nums,int index,int S)
+	int findTargetSumWays(vector<int> &nums, int S)
 	{
-		if(index==nums.size()-1)
+		unordered_map<int, int> hash, next_hash; //{value,count}
+		hash[0] = 1;
+		for (auto n : nums)
 		{
-			int res=0;
-			if(S==nums[index])
-				res++;
-			if(S==-nums[index])
-				res++;
-			return res;
+			next_hash.clear();
+			for (auto m : hash)
+			{
+				next_hash[m.first + n] += m.second;
+				next_hash[m.first - n] += m.second;
+			}
+			hash.swap(next_hash);
 		}
-		return targetSum(nums,index+1,S+nums[index])+targetSum(nums,index+1,S-nums[index]);
+		return hash[S];
 	}
 };
