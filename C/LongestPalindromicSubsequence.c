@@ -2,21 +2,24 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int longestPalindromeSubseq(char* s)
+int longestPalindromeSubseq(char *s)
 {
 	int N = strlen(s);
-	int dp[N][N];
+	int dp[N];
 	memset(dp, 0, sizeof(dp));
 	for (int i = N - 1; i >= 0; --i)
 	{
-		dp[i][i] = 1;
+		dp[i] = 1;
+		int pre = 0, next;
 		for (int j = i + 1; j < N; ++j)
 		{
+			next = dp[j];
 			if (s[i] == s[j])
-				dp[i][j] = dp[i + 1][j - 1] + 2;
+				dp[j] = pre + 2;
 			else
-				dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+				dp[j] = max(dp[j], dp[j - 1]);
+			pre = next;
 		}
 	}
-	return dp[0][N - 1];
+	return dp[N - 1];
 }
