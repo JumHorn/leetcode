@@ -5,34 +5,31 @@ using namespace std;
 class Solution
 {
 public:
-	Solution(vector<vector<int>> &rects) : dp(rects.size()), m_rects(rects)
+	Solution(vector<vector<int>> &rects) : prefixsum(rects.size() + 1), m_rects(rects)
 	{
-		for (int i = 0; i < (int)dp.size(); i++)
-			dp[i] = (rects[i][3] - rects[i][1] + 1) * (rects[i][2] - rects[i][0] + 1);
-		for (int i = 1; i < (int)dp.size(); i++)
-			dp[i] += dp[i - 1];
-		maxpoint = dp.back();
+		for (int i = 0; i < (int)rects.size(); ++i)
+			prefixsum[i + 1] = prefixsum[i] + (rects[i][3] - rects[i][1] + 1) * (rects[i][2] - rects[i][0] + 1);
+		maxpoint = prefixsum.back();
 	}
 
 	vector<int> pick()
 	{
-		int tmp = rand() % maxpoint, lo = 0, hi = m_rects.size() - 1, mi;
-		if (tmp < dp[0])
-			return {m_rects[0][0] + tmp % (m_rects[0][2] - m_rects[0][0] + 1), m_rects[0][1] + tmp / (m_rects[0][2] - m_rects[0][0] + 1)};
+		int r = rand() % maxpoint, lo = 0, hi = prefixsum.size();
 		while (lo < hi)
 		{
-			mi = (hi - lo) / 2 + lo;
-			if (dp[mi] <= tmp)
+			int mi = (hi - lo) / 2 + lo;
+			if (prefixsum[mi] <= r)
 				lo = mi + 1;
 			else
 				hi = mi;
 		}
-		tmp -= dp[lo - 1];
-		return {m_rects[lo][0] + tmp % (m_rects[lo][2] - m_rects[lo][0] + 1), m_rects[lo][1] + tmp / (m_rects[lo][2] - m_rects[lo][0] + 1)};
+		r -= prefixsum[lo - 1];
+		int side = m_rects[lo - 1][2] - m_rects[lo - 1][0] + 1;
+		return {m_rects[lo - 1][0] + r % side, m_rects[lo - 1][1] + r / side};
 	}
 
 private:
-	vector<int> dp;
+	vector<int> prefixsum;
 	vector<vector<int>> m_rects;
 	int maxpoint;
 };
