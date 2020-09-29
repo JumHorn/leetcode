@@ -13,7 +13,7 @@ struct TreeNode
 class Solution
 {
 public:
-	TreeNode *convertBST(TreeNode *root)
+	TreeNode *bstToGst(TreeNode *root)
 	{
 		int sum = 0;
 		reverseInorder(root, sum);

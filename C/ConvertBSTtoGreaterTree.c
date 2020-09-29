@@ -1,6 +1,5 @@
-#include <stdlib.h>
 
-//Definition for a binary tree node.
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
@@ -18,7 +17,7 @@ void reverseInorder(struct TreeNode *root, int *sum)
 	reverseInorder(root->left, sum);
 }
 
-struct TreeNode *bstToGst(struct TreeNode *root)
+struct TreeNode *convertBST(struct TreeNode *root)
 {
 	int sum = 0;
 	reverseInorder(root, &sum);
