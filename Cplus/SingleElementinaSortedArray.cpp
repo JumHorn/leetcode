@@ -10,20 +10,12 @@ public:
 		while (lo < hi)
 		{
 			int mi = (hi - lo) / 2 + lo;
-			if (mi % 2 == 0)
-			{
-				if (mi != N - 1 && nums[mi] == nums[mi + 1])
-					lo = mi + 2;
-				else
-					hi = mi;
-			}
+			if (mi % 2 == 1)
+				--mi;
+			if (nums[mi] == nums[mi + 1])
+				lo = mi + 2;
 			else
-			{
-				if (mi != 0 && nums[mi] == nums[mi - 1])
-					lo = mi + 1;
-				else
-					hi = mi;
-			}
+				hi = mi;
 		}
 		return nums[lo];
 	}
