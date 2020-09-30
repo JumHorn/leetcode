@@ -1,38 +1,46 @@
-#include<vector>
-#include<queue>
-#include<set>
+#include <climits>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > updateMatrix(vector<vector<int> >& matrix) {
-		queue<pair<int,int> > q;
-		int direction[4][2]={{-1,0},{1,0},{0,-1},{0,1}};
-		for(int i=0;i<matrix.size();i++)
-			for(int j=0;j<matrix[0].size();j++)
-			{
-				if(matrix[i][j]==0)
-					q.push(pair<int,int>(i,j));
-				else
-					matrix[i][j]=INT_MAX;
-			}
-		while(!q.empty())
+	vector<vector<int>> updateMatrix(vector<vector<int>> &matrix)
+	{
+		if (matrix.empty() || matrix[0].empty())
+			return matrix;
+		int M = matrix.size(), N = matrix[0].size();
+		queue<pair<int, int>> q; //{row,col}
+		for (int i = 0; i < M; ++i)
 		{
-			for(int i=0;i<4;i++)
+			for (int j = 0; j < N; ++j)
 			{
-				int x=q.front().first+direction[i][0],y=q.front().second+direction[i][1];
-				if(x>=0&&x<matrix.size()&&y>=0&&y<matrix[0].size())
+				if (matrix[i][j] == 0)
+					q.push({i, j});
+				else
+					matrix[i][j] = INT_MAX;
+			}
+		}
+		while (!q.empty())
+		{
+			auto pos = q.front();
+			q.pop();
+			for (int i = 0; i < 4; ++i)
+			{
+				int path[] = {-1, 0, 1, 0, -1};
+				int x = pos.first + path[i], y = pos.second + path[i + 1];
+				if (x >= 0 && x < M && y >= 0 && y < N)
 				{
-					int tmp=matrix[q.front().first][q.front().second];
-					if(matrix[x][y]>tmp)
+					int val = matrix[pos.first][pos.second];
+					if (matrix[x][y] > val)
 					{
-						matrix[x][y]=tmp+1;
-						q.push(pair<int,int>(x,y));
+						matrix[x][y] = val + 1;
+						q.push({x, y});
 					}
 				}
 			}
-            q.pop();
 		}
-        return matrix;
-    }
+		return matrix;
+	}
 };
