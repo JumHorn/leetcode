@@ -1,23 +1,30 @@
-#include<string>
-#include<vector>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minDistance(string word1, string word2) {
-		vector<vector<int> > dp(word1.length()+1,vector<int>(word2.length()+1));
-		for(int i=0;i<=word1.length();i++)
-			dp[i][0]=i;
-		for(int i=0;i<=word2.length();i++)
-			dp[0][i]=i;
-		for(int i=1;i<=word1.length();i++)
-			for(int j=1;j<=word2.length();j++)
+	int minDistance(string word1, string word2)
+	{
+		int N1 = word1.length(), N2 = word2.length();
+		vector<int> dp(N2 + 1);
+		for (int j = 1; j <= N2; ++j)
+			dp[j] = j;
+		for (int i = 0; i < N1; ++i)
+		{
+			int pre = dp[0], next;
+			dp[0] = i + 1;
+			for (int j = 0; j < N2; ++j)
 			{
-				if(word1[i-1]==word2[j-1])
-					dp[i][j]=dp[i-1][j-1];
+				next = dp[j + 1];
+				if (word1[i] == word2[j])
+					dp[j + 1] = pre;
 				else
-					dp[i][j]=min(dp[i-1][j],dp[i][j-1])+1;
+					dp[j + 1] = min(dp[j + 1], dp[j]) + 1;
+				pre = next;
 			}
-		return dp.back().back();
-    }
+		}
+		return dp[N2];
+	}
 };
