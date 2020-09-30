@@ -1,59 +1,31 @@
-#include<vector>
-#include<map>
-#include<algorithm>
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int leastBricks(vector<vector<int>>& wall) {
-		map<int,int> bricks;
-		int height=0;
-	    for(vector<vector<int> >::iterator iter=wall.begin();iter!=wall.end();iter++)
-		{
-			addOne(bricks);
-			height++;
-			int len=0;
-			for(vector<int>::iterator it=iter->begin();it!=iter->end()-1;it++)
-			{
-				len+=*it;
-				if(bricks.count(len)==0)
-				{
-					bricks[len]=height-1;
-				}
-				else
-				{
-					bricks[len]--;
-				}
-			}
-		}
-		//find min
-		int res=INT_MAX;
-		if(bricks.size()==0)
-		{
-			res=wall.size();
-		}
-		for(map<int,int>::iterator iter=bricks.begin();iter!=bricks.end();iter++)
-		{
-			if(iter->second<res)
-				res=iter->second;
-		}
-		return res;
-    }
-	
-	void addOne(map<int,int>& bricks)
+	int leastBricks(vector<vector<int>> &wall)
 	{
-		for(map<int,int>::iterator iter=bricks.begin();iter!=bricks.end();iter++)
+		unordered_map<int, int> m; //{edge,crossed walls}
+		for (int i = 0; i < (int)wall.size(); ++i)
 		{
-			iter->second++;
+			int prefixsum = 0;
+			for (int j = 0; j < (int)wall[i].size() - 1; ++j)
+			{
+				prefixsum += wall[i][j];
+				if (m.find(prefixsum) == m.end())
+					m[prefixsum] = i - 1;
+				else
+					--m[prefixsum];
+			}
+			for (auto &n : m)
+				++n.second;
 		}
+		int res = wall.size();
+		for (auto &n : m)
+			res = min(res, n.second);
+		return res;
 	}
 };
-
-//int leastBricks(vector<vector<int>>& wall) {
-//    unordered_map<int, int> edges;
-//    auto min_bricks = wall.size();
-//    for (auto row : wall)
-//        for (auto i = 0, width = 0; i < row.size() - 1; ++i) // skip last brick
-//            min_bricks = min(min_bricks, wall.size() - (++edges[width += row[i]]));
-//    return min_bricks;
-//}
