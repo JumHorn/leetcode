@@ -1,41 +1,59 @@
-#include<iostream>
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class DSU
+{
 public:
-    int findCircleNum(vector<vector<int> >& M) {
- 		int iresult=1;
-		for(int i=0;i<M.size();i++)
-		{
-			for(int j=i;j<M.size();j++)
-			{
-				if(M[i][j]==1)
-					markfriends(M,++iresult,i,j);
-			}
-		}
- 		return iresult-1;		
-    }
-
-	void markfriends(vector<vector<int> >& M,int mark, int i, int j)
+	DSU(int s) : parent(s)
 	{
-		if(i<0||j<0||i>=M.size()||j>=M.size()||j<i)
+		for (int i = 0; i < s; i++)
+			parent[i] = i;
+		size = s;
+	}
+
+	int Find(int x)
+	{
+		if (x != parent[x])
+			parent[x] = Find(parent[x]);
+		return parent[x];
+	}
+
+	bool Union(int x, int y)
+	{
+		int xr = Find(x), yr = Find(y);
+		if (xr == yr)
+			return false;
+		--size;
+		parent[yr] = xr;
+		return true;
+	}
+
+	int countGroup()
+	{
+		return size;
+	}
+
+private:
+	vector<int> parent;
+	int size;
+};
+
+class Solution
+{
+public:
+	int findCircleNum(vector<vector<int>> &M)
+	{
+		int m = M.size();
+		DSU dsu(m);
+		vector<int> group(M.size());
+		for (int i = 0; i < m - 1; ++i)
 		{
-			return;
-		}
-		if(M[i][j]!=1)
-		{
-			return;
-		}
-		M[i][j]=mark;
-		for(int m=i;m<M.size();m++)
-		{
-			if(M[i][m]==1)
+			for (int j = i + 1; j < m; ++j)
 			{
-				M[i][m]=mark;
-				for(int n=0;n<=m;n++)
-					markfriends(M,mark,n,m);
+				if (M[i][j] == 1)
+					dsu.Union(i, j);
 			}
 		}
+		return dsu.countGroup();
 	}
 };
