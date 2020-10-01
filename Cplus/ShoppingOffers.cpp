@@ -7,24 +7,21 @@ class Solution
 public:
 	int shoppingOffers(vector<int> &price, vector<vector<int>> &special, vector<int> &needs)
 	{
-		int res = 0;
-		for (int i = 0; i < (int)needs.size(); i++)
+		int res = 0, N = needs.size();
+		for (int i = 0; i < N; ++i)
 			res += needs[i] * price[i];
-		for (int i = 0; i < (int)special.size(); i++)
+		for (auto &sp : special)
 		{
-			vector<int> tmp(needs);
-			bool flag = true;
-			for (int j = 0; j < (int)tmp.size(); j++)
+			vector<int> newneeds(needs);
+			int j;
+			for (j = 0; j < N; j++)
 			{
-				tmp[j] -= special[i][j];
-				if (tmp[j] < 0)
-				{
-					flag = false;
+				newneeds[j] -= sp[j];
+				if (newneeds[j] < 0)
 					break;
-				}
 			}
-			if (flag)
-				res = min(res, shoppingOffers(price, special, tmp) + special[i].back());
+			if (j == N)
+				res = min(res, shoppingOffers(price, special, newneeds) + sp.back());
 		}
 		return res;
 	}
