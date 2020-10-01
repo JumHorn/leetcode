@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <sstream>
 #include <stack>
 #include <string>
 #include <vector>
@@ -11,41 +12,32 @@ public:
 	{
 		vector<int> res(n);
 		stack<Function> s;
-		for (int i = 0; i < (int)logs.size(); i++)
+		for (auto &log : logs)
 		{
-			int j = 0;
-			Function tmp;
-			while (logs[i][j] != ':')
-				j++;
-			tmp.id = stoi(logs[i].substr(0, j));
-			int k = ++j;
-			while (logs[i][k] != ':')
-				k++;
-			bool state = (logs[i].substr(j, k - j) == "start");
+			Function func;
+			stringstream ss(log);
+			string token;
+			getline(ss, token, ':');
+			func.id = stoi(token);
+			getline(ss, token, ':');
+			bool state = (token == "start");
+			getline(ss, token, ':');
 			if (state)
 			{
-				tmp.start = stoi(logs[i].substr(k + 1));
-				s.push(tmp);
+				func.start = stoi(token);
+				s.push(func);
 			}
 			else
 			{
-				s.top().end = stoi(logs[i].substr(k + 1));
-				tmp = s.top();
+				s.top().end = stoi(token);
+				func = s.top();
 				s.pop();
-				int time = tmp.end - tmp.start + 1;
-				res[tmp.id] += time - tmp.sched;
+				int time = func.end - func.start + 1;
+				res[func.id] += time - func.sched;
 				if (!s.empty())
 					s.top().sched += time;
 			}
 		}
-		// while (!s.empty())
-		// {
-		// 	int time = s.top().end - s.top().start + 1;
-		// 	res[s.top().id] = time - s.top().sched;
-		// 	s.pop();
-		// 	if (!s.empty())
-		// 		s.top().sched += time;
-		// }
 		return res;
 	}
 
