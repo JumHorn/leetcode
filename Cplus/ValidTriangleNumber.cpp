@@ -1,21 +1,22 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int triangleNumber(vector<int>& nums) {
-		sort(nums.begin(),nums.end());
-		nums.push_back(INT_MAX);
-	    int res=0;
-		for(int i=0;i<nums.size()-1;i++)
+	int triangleNumber(vector<int> &nums)
+	{
+		sort(nums.begin(), nums.end());
+		int res = 0, N = nums.size();
+		for (int i = 0; i < N - 2; ++i)
 		{
-			for(int j=i+1;j<nums.size()-1;j++)
+			for (int j = i + 1; j < N - 1; ++j)
 			{
-				int sum=nums[i]+nums[j],k=j;
-				while(nums[++k]<sum)res++;
+				auto iter = lower_bound(nums.begin() + j + 1, nums.end(), nums[i] + nums[j]);
+				res += iter - nums.begin() - j - 1;
 			}
-		}	
+		}
 		return res;
-    }
+	}
 };
