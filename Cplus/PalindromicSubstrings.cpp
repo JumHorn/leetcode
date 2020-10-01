@@ -1,36 +1,26 @@
-#include<iostream>
-#include<string>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int result;
-    int countSubstrings(string s) {
-        result = s.length();
-        for(int i=2;i<=s.length();i++) //length
-        {
-            for(int j=i-1;j<s.length();j++)//index
-            {
-                result+=palindrom(s,j,i);
-            }
-        }
-        return result;
-    }
-
-    int palindrom(string& s,int index,int length)
-    {
-        int i=index-length+1,j=index;
-        while(i<j)
-        {
-            if(s[i]!=s[j])
-            {
-                return 0;
-            }
-            i++;
-            j--;
-        }
-        return 1;
-    }
+	int countSubstrings(string s)
+	{
+		int N = s.length(), res = N;
+		vector<vector<bool>> dp(N, vector<bool>(N));
+		for (int i = N - 1; i >= 0; --i)
+		{
+			dp[i][i] = true;
+			for (int j = i + 1; j < N; ++j)
+			{
+				if (s[i] == s[j] && (j - i == 1 || dp[i + 1][j - 1]))
+				{
+					dp[i][j] = true;
+					++res;
+				}
+			}
+		}
+		return res;
+	}
 };
-
-//Manacher's Algorithm
