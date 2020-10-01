@@ -1,52 +1,44 @@
-#include<iostream>
-using namespace std;
-//Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    TreeNode* addOneRow(TreeNode* root, int v, int d) {
-		if(root==NULL)
-		{
-			return new TreeNode(v);
-		}
-		if(d==1)
-		{
-			TreeNode* tmp=new TreeNode(v);
-			tmp->left=root;
-			return tmp;
-		}
-		root->left=addRow(root->left,true,v,d-1);
-		root->right=addRow(root->right,false,v,d-1);
-		return root;
-    }
-
-	TreeNode* addRow(TreeNode* root,bool lr,int v,int d)
+	TreeNode *addOneRow(TreeNode *root, int v, int d)
 	{
-		if(d==1)
+		if (d == 1 && root != nullptr)
 		{
-			TreeNode* tmp=new TreeNode(v);
-			if(lr)
-			{
-				tmp->left=root;
-			}
+			TreeNode *res = new TreeNode(v);
+			res->left = root;
+			return res;
+		}
+		return preorder(root, nullptr, v, d);
+	}
+
+	TreeNode *preorder(TreeNode *root, TreeNode *parent, int v, int d)
+	{
+		if (d == 1)
+		{
+			TreeNode *res = new TreeNode(v);
+			if (parent->left == root)
+				res->left = root;
 			else
-			{
-				tmp->right=root;
-			}
-			return tmp;
+				res->right = root;
+			return res;
 		}
-		if(root==NULL)
-		{
-			return NULL;
-		}
-		root->left=addRow(root->left,true,v,d-1);
-		root->right=addRow(root->right,false,v,d-1);
+		if (root == nullptr)
+			return nullptr;
+		root->left = preorder(root->left, root, v, d - 1);
+		root->right = preorder(root->right, root, v, d - 1);
 		return root;
 	}
 };
