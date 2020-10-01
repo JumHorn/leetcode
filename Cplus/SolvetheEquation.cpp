@@ -1,65 +1,45 @@
 #include <cctype>
+#include <sstream>
 #include <string>
 using namespace std;
+
+/*
+generate a standard formular with x be 1x and 0x must be before every =
+*/
 
 class Solution
 {
 public:
 	string solveEquation(string equation)
 	{
-		int coefficient = 0, val = 0, flag = 1, i = 0, n = equation.length();
-		while (i < n)
+		int coefficient = 0, y = 0, val = 0, sign = 1;
+		stringstream ss;
+		for (int i = 0; i < (int)equation.size(); ++i)
 		{
-			if (equation[i] == '=')
+			if (equation[i] == 'x' && (i == 0 || !isdigit(equation[i - 1])))
+				ss << '1';
+			else if (equation[i] == '=')
+				ss << "+0x";
+			ss << equation[i];
+		}
+		while (ss.peek() == '=' || ss >> val)
+		{
+			char c = ss.peek();
+			if (c == 'x')
 			{
-				flag = -1;
-				i++;
+				coefficient += val * sign;
+				ss >> c;
 			}
-			else if (equation[i] == '+')
+			else if (c == '=')
 			{
-				i++;
-			}
-			else if (equation[i] == '-')
-			{
-				int j = ++i;
-				while (j < n && isdigit(equation[j]))
-					j++;
-				if (j < n && equation[j] == 'x')
-				{
-					if (j == i)
-						coefficient -= flag;
-					else
-						coefficient -= flag * stoi(equation.substr(i, j - i));
-					i = j + 1;
-				}
-				else
-				{
-					val -= flag * stoi(equation.substr(i, j - i));
-					i = j;
-				}
+				sign = -1;
+				ss >> c;
 			}
 			else
-			{
-				int j = i;
-				while (j < n && isdigit(equation[j]))
-					j++;
-				if (j < n && equation[j] == 'x')
-				{
-					if (j == i)
-						coefficient += flag;
-					else
-						coefficient += flag * stoi(equation.substr(i, j - i));
-					i = j + 1;
-				}
-				else
-				{
-					val += flag * stoi(equation.substr(i, j - i));
-					i = j;
-				}
-			}
+				y += val * sign;
 		}
 		if (coefficient == 0)
-			return val == 0 ? "Infinite solutions" : "No solution";
-		return "x=" + to_string(-val / coefficient);
+			return y == 0 ? "Infinite solutions" : "No solution";
+		return "x=" + to_string(-y / coefficient);
 	}
 };
