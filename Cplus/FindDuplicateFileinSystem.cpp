@@ -1,38 +1,34 @@
-#include <map>
+#include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	vector<vector<string>> findDuplicate(vector<string>& paths)
+	vector<vector<string>> findDuplicate(vector<string> &paths)
 	{
-		map<string, vector<string>> m;
-		for (int i = 0; i < (int)paths.size(); i++)
+		unordered_map<string, vector<string>> m;
+		for (auto path : paths)
 		{
-			int j = 0, len = paths[i].size();
-			while (paths[i][j] != ' ')
-				++j;
-			string pathname = paths[i].substr(0, j);
-			int k = ++j;
-			while (k < len)
+			stringstream ss(path);
+			string dir, file;
+			getline(ss, dir, ' ');
+			while (getline(ss, file, ' '))
 			{
-				j = k;
-				while (paths[i][k] != '(')
-					k++;
-				string filename = paths[i].substr(j, k - j);
-				j = ++k;
-				while (paths[i][k] != ')')
-					++k;
-				m[paths[i].substr(j, k - j)].push_back(pathname + "/" + filename);
-				k += 2;
+				int index = file.find('(');
+				string fileName = dir + '/' + file.substr(0, index);
+				string fileContent = file.substr(index + 1, file.size() - 1 - index - 1);
+				m[fileContent].push_back(fileName);
 			}
 		}
 		vector<vector<string>> res;
-		for (auto n : m)
+		for (auto &n : m)
+		{
 			if (n.second.size() > 1)
 				res.push_back(n.second);
+		}
 		return res;
 	}
 };
