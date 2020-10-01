@@ -1,41 +1,46 @@
-#include<vector>
+#include <vector>
 using namespace std;
-//  For all the node
-//  traverse the graph to find the value appeared three times 
-//  if we can not find one,return the last one
-//  If we can, return the value last appeared
-class Solution {
+
+class DSU
+{
 public:
-	vector<int> parent;
-    vector<int> findRedundantConnection(vector<vector<int> >& edges) {
-		parent.reserve(edges.size()+1);
-		for(int i=0;i<edges.size()+1;i++)
-			parent[i]=i;
-		vector<vector<int> >::iterator iter;
-		for(iter=edges.begin();iter!=edges.end();iter++)
-		{
-			if(!Union(iter->at(0),iter->at(1)))
-			{
-				return *iter;
-			}
-		}
-		return vector<int>();
-    }
+	DSU(int size) : parent(size)
+	{
+		for (int i = 0; i < size; ++i)
+			parent[i] = i;
+	}
 
 	int Find(int x)
 	{
-		int tmp=x;
-		while(parent[x]!=x)
-			x=parent[x];
-		return parent[tmp]=x;
+		if (x != parent[x])
+			parent[x] = Find(parent[x]);
+		return parent[x];
 	}
 
-	bool Union(int x,int y)
+	bool Union(int x, int y)
 	{
-		int xr=Find(x),yr=Find(y);
-		if(xr==yr)
+		int xr = Find(x), yr = Find(y);
+		if (xr == yr)
 			return false;
-		parent[yr]=xr;
+		parent[yr] = xr;
 		return true;
+	}
+
+private:
+	vector<int> parent;
+};
+
+class Solution
+{
+public:
+	vector<int> findRedundantConnection(vector<vector<int>> &edges)
+	{
+		DSU dsu(edges.size() + 1);
+		for (auto &edge : edges)
+		{
+			if (!dsu.Union(edge[0], edge[1]))
+				return edge;
+		}
+		return {};
 	}
 };
