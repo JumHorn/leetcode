@@ -11,10 +11,12 @@ public:
 		int res = 0, N = nums.size();
 		for (int i = 0; i < N - 2; ++i)
 		{
-			for (int j = i + 1; j < N - 1; ++j)
+			int k = i + 2;
+			for (int j = i + 1; j < N - 1 && nums[i] != 0; ++j)
 			{
-				auto iter = lower_bound(nums.begin() + j + 1, nums.end(), nums[i] + nums[j]);
-				res += iter - nums.begin() - j - 1;
+				while (k < N && nums[i] + nums[j] > nums[k])
+					++k;
+				res += k - j - 1;
 			}
 		}
 		return res;
