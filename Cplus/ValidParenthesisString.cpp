@@ -1,24 +1,26 @@
-#include<string>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool checkValidString(string s) {
-		int low=0,high=0;//the number of left bracket in range [low,high]
-		for(int i=0;i<(int)s.length();i++)
+	bool checkValidString(string s)
+	{
+		int low = 0, high = 0; //the number of left bracket in range [low,high]
+		for (auto c : s)
 		{
-            if(s[i]=='(')
-                low++;
-            else if(low>0)
-                low--;
+			if (c == '(')
+				++low;
+			else if (low > 0)
+				--low;
 
-            if(s[i]!=')')
-                high++;
-            else
-                high--;
-            if(high<0)
-                return false;
+			if (c == ')')
+				--high;
+			else
+				++high;
+			if (high < 0)
+				return false;
 		}
-        return low==0;
-    }
+		return low == 0;
+	}
 };
