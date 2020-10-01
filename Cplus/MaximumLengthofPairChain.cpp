@@ -1,35 +1,27 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findLongestChain(vector<vector<int> >& pairs) {
-        sort(pairs.begin(),pairs.end(),*this);
-		vector<int> dp(pairs.size(),1);
-		for(int i=1;i<(int)dp.size();i++)
-		{
-			int res=1;
-			for(int j=i-1;j>=0;j--)
-			{
-				if(pairs[i][0]>pairs[j][1])
-				{
-					res=max(res,dp[j]+1);
-				}
-			}
-			dp[i]=res;
-		}
-		return dp.back();
-    }
-
-	bool operator()(vector<int>& a,vector<int>& b)
+	int findLongestChain(vector<vector<int>> &pairs)
 	{
-		if(a[0]<b[0])
-			return true;
-		if(a[0]>b[0])
-			return false;
-		if(a[1]<b[1])
-			return true;
-		return false;
+		sort(pairs.begin(), pairs.end(), *this);
+		int res = 1;
+		for (int i = 1, j = 0; i < (int)pairs.size(); ++i)
+		{
+			if (pairs[i][0] > pairs[j][1])
+			{
+				++res;
+				j = i;
+			}
+		}
+		return res;
+	}
+
+	bool operator()(vector<int> &a, vector<int> &b)
+	{
+		return a[1] < b[1];
 	}
 };
