@@ -1,61 +1,31 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findPairs(vector<int>& nums, int k) {
-        if(nums.size()==0)
-        {
-            return 0;
-        }
-        sort(nums.begin(),nums.end());
-        if(k==0)
-        {
-            int temp = nums[0],same=0;
-            for(int i=1;i<nums.size();i++)
-            {
-                if(temp==nums[i])
-                {
-                    same++;
-                    while(i<nums.size()&&temp==nums[i])
-                        i++;
-                    if(i==nums.size())
-                    {
-                        break;
-                    }
-                }
-                temp=nums[i];
-            }
-            return same;
-        }
-        if(k<0)return 0;
-        int temp = nums[0];
-        vector<int> numscopy;
-        numscopy.push_back(nums[0]);
-        for(int i=1;i<nums.size();i++)
-        {
-            if(temp!=nums[i])
-            {
-                numscopy.push_back(nums[i]);
-                temp=nums[i];
-            }
-        }
-        int subtractor=0,result=0;
-        for(int i=1;i<numscopy.size();i++)
-        {
-            if(numscopy[i]-numscopy[subtractor]==k)
-            {
-                result++;
-                subtractor++;
-            }
-            else if(numscopy[i]-numscopy[subtractor]>k)
-            {
-                subtractor++;
-                i--;
-            }
-        }
-        return result;
-    }
+	int findPairs(vector<int> &nums, int k)
+	{
+		unordered_map<int, int> m; //{value,count}
+		for (auto n : nums)
+			++m[n];
+		int res = 0;
+		if (k == 0)
+		{
+			for (auto n : m)
+			{
+				if (n.second > 1)
+					++res;
+			}
+			return res;
+		}
+		for (auto n : m)
+		{
+			if (m.find(n.first - k) != m.end())
+				++res;
+		}
+		return res;
+	}
 };
