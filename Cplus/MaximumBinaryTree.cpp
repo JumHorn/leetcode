@@ -1,6 +1,10 @@
 #include <vector>
 using namespace std;
 
+/*
+keep decreasing stack
+*/
+
 // Definition for a binary tree node.
 struct TreeNode
 {
@@ -17,22 +21,19 @@ class Solution
 public:
 	TreeNode *constructMaximumBinaryTree(vector<int> &nums)
 	{
-		return preorder(nums, 0, nums.size());
-	}
-
-	TreeNode *preorder(vector<int> &nums, int first, int last)
-	{
-		if (last <= first)
-			return nullptr;
-		int maxindex = first;
-		for (int i = first + 1; i < last; ++i)
+		vector<TreeNode *> stk;
+		for (auto n : nums)
 		{
-			if (nums[maxindex] < nums[i])
-				maxindex = i;
+			TreeNode *node = new TreeNode(n);
+			while (!stk.empty() && stk.back()->val < n)
+			{
+				node->left = stk.back();
+				stk.pop_back();
+			}
+			if (!stk.empty())
+				stk.back()->right = node;
+			stk.push_back(node);
 		}
-		TreeNode *root = new TreeNode(nums[maxindex]);
-		root->left = preorder(nums, first, maxindex);
-		root->right = preorder(nums, maxindex + 1, last);
-		return root;
+		return stk.front();
 	}
 };
