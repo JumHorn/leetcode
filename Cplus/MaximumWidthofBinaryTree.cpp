@@ -1,55 +1,37 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-//Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    int widthOfBinaryTree(TreeNode* root) {
-		if(root==NULL)
-			return 0;
-		if(root->left==NULL)
-		{
-			int tmp=widthOfBinaryTree(root->right);
-			return tmp>1?tmp:1;
-		}
-		if(root->right==NULL)
-		{
-			int tmp=widthOfBinaryTree(root->left);
-			return tmp>1?tmp:1;
-		}
-		int res=1;
-		vector<int> layer;
-		encode(root,0,0);
-		calcuWidth(root,layer,0,res);
-		return res;
-    }
-	
-	void calcuWidth(TreeNode* root,vector<int>& layer,int level,int& res)
+	int widthOfBinaryTree(TreeNode *root)
 	{
-		if(root==NULL)
-			return;
-		if(level==(int)layer.size())
-			layer.push_back(root->val);
-		else
-			res=max(res,root->val-layer[level]+1);
-		calcuWidth(root->left,layer,level+1,res);
-		calcuWidth(root->right,layer,level+1,res);
+		vector<int> layer; //each layer's left most index
+		int res = 0;
+		preorder(root, 0, 0, layer, res);
+		return res;
 	}
 
-	void encode(TreeNode* root,int num,int leftright)
+	void preorder(TreeNode *root, int height, unsigned long long index, vector<int> &layer, int &width)
 	{
-		if(root==NULL)
+		if (root == nullptr)
 			return;
-		root->val=num*2+leftright;
-		encode(root->left,root->val,0);
-		encode(root->right,root->val,1);
+		if (height >= (int)layer.size())
+			layer.push_back(index);
+		width = max((unsigned long long)width, index - layer[height] + 1);
+		preorder(root->left, height + 1, index * 2, layer, width);
+		preorder(root->right, height + 1, index * 2 + 1, layer, width);
 	}
 };
