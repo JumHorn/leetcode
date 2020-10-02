@@ -1,3 +1,4 @@
+#include <stdbool.h>
 
 char *predictPartyVictory(char *senate)
 {
@@ -5,48 +6,22 @@ char *predictPartyVictory(char *senate)
 	while (true)
 	{
 		int r = 0, d = 0;
-		char *p = senate;
+		char *p = senate, *q = senate;
 		while (*p)
 		{
 			if (*p == 'R')
-			{
-				if (skip > 0)
-				{
-					*p = '.';
-					--skip;
-				}
-				else
-				{
-					++r;
-					--skip;
-				}
-			}
-			else if (*p == 'D')
-			{
-				if (skip < 0)
-				{
-					*p = '.';
-					++skip;
-				}
-				else
-				{
-					++d;
-					++skip;
-				}
-			}
+				--skip >= 0 ? *p = '.' : ++r;
+			else
+				++skip <= 0 ? *p = '.' : ++d;
+			if (*p != '.')
+				*q++ = *p;
 			++p;
 		}
+		*q = '\0';
 		if (d + skip <= 0)
 			return "Radiant";
 		if (r - skip <= 0)
 			return "Dire";
 	}
 	return "";
-}
-
-int main()
-{
-	char str[] = "DRRDRD";
-	predictPartyVictory(str);
-	return 0;
 }
