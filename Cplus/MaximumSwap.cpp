@@ -1,31 +1,28 @@
-#include<string>
-#include<algorithm>
+#include <algorithm>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int maximumSwap(int num) {
-		string tmp=to_string(num);
-		for(int i=0;i<(int)tmp.length();i++)
+	int maximumSwap(int num)
+	{
+		string val = to_string(num);
+		int N = val.length();
+		for (int i = 0; i < N; ++i)
 		{
-			char big='\0';
-			int k;
-			for(int j=i+1;j<(int)tmp.length();j++)
+			int k = i;
+			for (int j = i + 1; j < N; ++j)
 			{
-				if(big<=tmp[j])
-				{
-					big=tmp[j];
-					k=j;
-				}
+				if (val[k] <= val[j])
+					k = j;
 			}
-			if(big>tmp[i])
+			if (k != i && val[k] > val[i])
 			{
-                while(k<(int)tmp.length()-1&&tmp[k]==tmp[k+1])
-                    k++;
-				swap(tmp[i],tmp[k]);
-				return stoul(tmp);
+				swap(val[i], val[k]);
+				break;
 			}
 		}
-		return stoul(tmp);
-    }
+		return stoi(val);
+	}
 };
