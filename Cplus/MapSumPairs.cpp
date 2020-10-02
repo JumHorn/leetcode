@@ -1,54 +1,40 @@
-#include<iostream>
-#include<string>
-#include<map>
+#include <string>
+#include <unordered_map>
 using namespace std;
 
-class MapSum {
+class MapSum
+{
 public:
-    /** Initialize your data structure here. */
-
-	map<string,int> dictionary;
-
-    MapSum() {
-        
-    }
-    
-    void insert(string key, int val) {
-        dictionary[key]=val;
-    }
-    
-    int sum(string prefix) {
-        int res=0;
-		for(map<string,int>::iterator iter=dictionary.begin();iter!=dictionary.end();iter++)
-		{
-			if(stringCompare(iter->first,prefix))
-			{
-				res+=iter->second;
-			}
-		}
-		return res;
-    }
-
-	bool stringCompare(const string& key,const string& prefix)
+	/** Initialize your data structure here. */
+	MapSum()
 	{
-		if(key.length()<prefix.length())
-		{
-			return false;
-		}
-		for(int i=0;i<prefix.length();i++)
-		{
-			if(key[i]!=prefix[i])
-			{
-				return false;
-			}
-		}
-		return true;
 	}
+
+	void insert(string key, int val)
+	{
+		int delta = val - m[key];
+		m[key] = val;
+		string prefix;
+		for (auto c : key)
+		{
+			prefix += c;
+			prefixsum[prefix] += delta;
+		}
+	}
+
+	int sum(string prefix)
+	{
+		return prefixsum[prefix];
+	}
+
+private:
+	unordered_map<string, int> m;		  //{str,value}
+	unordered_map<string, int> prefixsum; //{prefix,sum}
 };
 
 /**
  * Your MapSum object will be instantiated and called as such:
- * MapSum obj = new MapSum();
- * obj.insert(key,val);
- * int param_2 = obj.sum(prefix);
+ * MapSum* obj = new MapSum();
+ * obj->insert(key,val);
+ * int param_2 = obj->sum(prefix);
  */
