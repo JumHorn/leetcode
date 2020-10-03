@@ -1,52 +1,21 @@
-#include<iostream>
-#include<string>
-#include<algorithm>
+#include <algorithm>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int repeatedStringMatch(string A, string B) {
-        int result=1;
-        string temp=A;
-        while(A.size()<B.size())
-        {
-            A+=temp;
-            result++;
-        }
-        if(A.find(B)!=string::npos)
-        {
-            return result;
-        }
-        else
-        {
-            A+=A;
-            if(A.find(B)!=string::npos)
-            {
-                return result+1;
-            }
-        }
-        return -1;
-    }
+	int repeatedStringMatch(string A, string B)
+	{
+		int Alen = A.size(), Blen = B.size();
+		for (int i = 0; i < Alen; ++i)
+		{
+			int j = 0;
+			while (j < Blen && A[(i + j) % Alen] == B[j])
+				++j;
+			if (j == Blen)
+				return (i + j - 1) / Alen + 1;
+		}
+		return -1;
+	}
 };
-
-//time limit exceeded
-// class Solution0 {
-// public:
-//     int repeatedStringMatch(string A, string B) {
-//         int result=1;
-//         string temp=A;
-//         do
-//         {
-//             if(A.find(B)==string::npos)
-//             {
-//                 A+=temp;
-//                 result++;
-//             }
-//             else
-//             {
-//                 return result;
-//             }
-//         }while(result<3||A.size()<=2*B.size());
-//         return -1;
-//     }
-// };
