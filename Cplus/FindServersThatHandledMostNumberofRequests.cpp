@@ -1,3 +1,5 @@
+#include <queue>
+#include <set>
 #include <vector>
 using namespace std;
 
@@ -6,25 +8,38 @@ class Solution
 public:
 	vector<int> busiestServers(int k, vector<int> &arrival, vector<int> &load)
 	{
-		vector<pair<int, int>> v(k); //{last load,count}
+		//{last load,server id}
+		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+		vector<int> server(k); //server request count
+		set<int> s;			   //free serverid
+		for (int i = 0; i < k; ++i)
+			s.insert(i);
 		int maxcount = 0;
 		for (int i = 0; i < (int)arrival.size(); ++i)
 		{
-			for (int j = i; j - i < (int)arrival.size(); ++j)
+			while (!q.empty() && q.top().first <= arrival[i])
 			{
-				int server = j % k;
-				if (v[server].first <= arrival[i])
-				{
-					maxcount = max(maxcount, ++v[server].second);
-					v[server].first = arrival[i] + load[i];
-					break;
-				}
+				s.insert(q.top().second);
+				q.pop();
 			}
+			if (s.empty())
+				continue;
+			int id = *s.begin();
+			auto iter = s.lower_bound(i % k);
+			if (iter != s.end())
+			{
+				id = *iter;
+				s.erase(iter);
+			}
+			else
+				s.erase(s.begin());
+			maxcount = max(maxcount, ++server[id]);
+			q.push({arrival[i] + load[i], id});
 		}
 		vector<int> res;
 		for (int i = 0; i < k; ++i)
 		{
-			if (v[i].second == maxcount)
+			if (server[i] == maxcount)
 				res.push_back(i);
 		}
 		return res;
