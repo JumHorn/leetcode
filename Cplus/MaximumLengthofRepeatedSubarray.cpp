@@ -1,26 +1,24 @@
-#include<vector>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findLength(vector<int>& A, vector<int>& B) {
-		int res=0;
-		A.push_back(101);
-		B.push_back(102);
-		for(int i=0;i<A.size()-1;i++)
+	int findLength(vector<int> &A, vector<int> &B)
+	{
+		int M = A.size(), N = B.size();
+		vector<vector<int>> dp(M + 1, vector<int>(N + 1));
+		int res = 0;
+		for (int i = 0; i < M; ++i)
 		{
-			int tmp=i;
-			for(int j=0;j<B.size()-1;j++)
+			for (int j = 0; j < N; ++j)
 			{
-				int len=0,n=j;
-                tmp=i;
-				while(A[tmp++]==B[n++])
-					len++;
-				res=max(res,len);
+				if (A[i] == B[j])
+					dp[i + 1][j + 1] = dp[i][j] + 1;
+				res = max(res, dp[i + 1][j + 1]);
 			}
-			if(res>A.size()-1-i)
-                return res;
 		}
 		return res;
-    }
+	}
 };
