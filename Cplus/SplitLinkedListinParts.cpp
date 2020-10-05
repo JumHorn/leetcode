@@ -17,18 +17,6 @@ public:
 	vector<ListNode *> splitListToParts(ListNode *root, int k)
 	{
 		int size = listSize(root);
-		if (size <= k)
-		{
-			vector<ListNode *> res(k, nullptr);
-			for (int i = 0; i < size; ++i)
-			{
-				res[i] = root;
-				ListNode *p = root;
-				root = root->next;
-				p->next = NULL;
-			}
-			return res;
-		}
 		vector<ListNode *> res;
 		int part = size / k;
 		for (int i = 0; i < k; ++i)
@@ -36,9 +24,12 @@ public:
 			res.push_back(root);
 			for (int j = 0; j < part - (i >= size % k ? 1 : 0); ++j)
 				root = root->next;
-			ListNode *p = root;
-			root = root->next;
-			p->next = NULL;
+			if (root != nullptr)
+			{
+				ListNode *p = root;
+				root = root->next;
+				p->next = nullptr;
+			}
 		}
 		return res;
 	}
