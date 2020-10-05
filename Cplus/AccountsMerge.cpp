@@ -1,91 +1,70 @@
-#include<vector>
-#include<string>
-#include<set>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class DSU
+{
 public:
-    vector<vector<string> > accountsMerge(vector<vector<string> >& accounts) {
-		if(accounts.empty())
-			return accounts;
-		vector<pair<string,set<string> > > v;
-		set<string> tmp;
-		createNewAccount(accounts[0],tmp);
-		v.push_back(pair<string,set<string> >(accounts[0][0],tmp));
-		for(int i=1;i<(int)accounts.size();i++)
+	string Find(const string &str)
+	{
+		if (parent.find(str) != parent.end() && str != parent[str])
+			parent[str] = Find(parent[str]);
+		else
+			parent[str] = str;
+		return parent[str];
+	}
+
+	bool Union(const string &x, const string &y)
+	{
+		string xr = Find(x), yr = Find(y);
+		if (xr == yr)
+			return false;
+		parent[yr] = xr;
+		return true;
+	}
+
+private:
+	unordered_map<string, string> parent;
+};
+
+class Solution
+{
+public:
+	vector<vector<string>> accountsMerge(vector<vector<string>> &accounts)
+	{
+		DSU dsu;
+		unordered_map<string, string> emailToName; //{email,name}
+		for (auto &account : accounts)
 		{
-			int j=0;
-			for(;j<(int)v.size();j++)
+			int N = account.size();
+			for (int i = 1; i < N; ++i)
 			{
-				if(accounts[i][0]==v[j].first)
-				{
-					//if the two account can be merged,merge directly,then break
-					//if the two account can not be merged,continue to find if the same name still exist 
-					if(canBeMerged(accounts[i],v[j].second))
-					{
-						for(int k=1;k<(int)accounts[i].size();k++)
-						{
-							v[j].second.insert(accounts[i][k]);
-						}
-						for(int n=j+1;n<(int)v.size();n++)
-						{
-							if(v[j].first==v[n].first)
-							{
-								if(canBeMerged(v[j].second,v[n].second))
-								{
-									for(set<string>::iterator iter=v[n].second.begin();iter!=v[n].second.end();++iter)
-										v[j].second.insert(*iter);
-									v.erase(v.begin()+n);
-									//n--;
-								}
-							}
-						}
-						break;
-					}
-				}
+				emailToName[account[i]] = account[0];
+				dsu.Union(account[1], account[i]);
 			}
-			//this account can not be merged insert the new account to v
-			if(j==(int)v.size())
-			{
-				tmp.clear();
-				createNewAccount(accounts[i],tmp);
-				v.push_back(pair<string,set<string> >(accounts[i][0],tmp));
-			}
-		}			
-		//convert result
-		vector<vector<string> > res;
-		for(int i=0;i<(int)v.size();i++)
-		{
-			vector<string> vtmp;
-			vtmp.push_back(v[i].first);
-			for(set<string>::iterator iter=v[i].second.begin();iter!=v[i].second.end();++iter)
-			{
-				vtmp.push_back(*iter);
-			}
-			res.push_back(vtmp);
 		}
+		vector<vector<string>> res;
+		unordered_map<string, int> emailToIndex; //{email,index}
+		for (auto iter : emailToName)
+		{
+			auto group = dsu.Find(iter.first);
+			int index = res.size();
+			if (emailToIndex.find(group) != emailToIndex.end())
+				index = emailToIndex[group];
+			else
+				emailToIndex[group] = index;
+			if (index < (int)res.size())
+				res[index].push_back(iter.first);
+			else
+			{
+				res.push_back({iter.second});
+				res.back().push_back(iter.first);
+			}
+		}
+		for (auto &account : res)
+			sort(account.begin() + 1, account.end());
 		return res;
-    }
-	
-	bool canBeMerged(set<string>& src,set<string>& tmp)
-	{
-		for(set<string>::iterator iter=tmp.begin();iter!=tmp.end();++iter)
-			if(src.find(*iter)!=src.end())
-				return true;
-		return false;
-	}
-
-	bool canBeMerged(vector<string>& account,set<string>& tmp)
-	{
-		for(int i=1;i<(int)account.size();i++)
-			if(tmp.find(account[i])!=tmp.end())
-				return true;
-		return false;
-	}
-
-	void createNewAccount(vector<string>& account,set<string>& tmp)
-	{
-		for(int i=1;i<(int)account.size();i++)
-			tmp.insert(account[i]);
 	}
 };
