@@ -1,66 +1,52 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-// Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+//Definition for singly-linked list.
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    vector<ListNode*> splitListToParts(ListNode* root, int k) {
-		int len=0;
-		ListNode* tmp=root;
-		while(tmp)
+	vector<ListNode *> splitListToParts(ListNode *root, int k)
+	{
+		int size = listSize(root);
+		if (size <= k)
 		{
-			len++;
-			tmp=tmp->next;
+			vector<ListNode *> res(k, nullptr);
+			for (int i = 0; i < size; ++i)
+			{
+				res[i] = root;
+				ListNode *p = root;
+				root = root->next;
+				p->next = NULL;
+			}
+			return res;
 		}
-		vector<ListNode*> res;
-		tmp=root;
-		if(len<=k)
+		vector<ListNode *> res;
+		int part = size / k;
+		for (int i = 0; i < k; ++i)
 		{
-			while(tmp)
-			{
-				res.push_back(tmp);
-				tmp=advance(tmp,1);
-			}
-			for(int i=0;i<k-len;i++)
-			{
-				res.push_back(NULL);
-			}
-		}
-		else
-		{
-			int remain=len%k;
-			int step=len/k;
-			for(int i=0;i<remain;i++)
-			{
-				res.push_back(tmp);
-				tmp=advance(tmp,step+1);
-			}
-			res.push_back(tmp);
-			for(int i=0;i<k-remain-1;i++)
-			{
-				tmp=advance(tmp,step);
-				res.push_back(tmp);
-			}
+			res.push_back(root);
+			for (int j = 0; j < part - (i >= size % k ? 1 : 0); ++j)
+				root = root->next;
+			ListNode *p = root;
+			root = root->next;
+			p->next = NULL;
 		}
 		return res;
-    }
+	}
 
-	ListNode* advance(ListNode* l,int n)
+	int listSize(ListNode *head)
 	{
-		ListNode* t=l;
-		l=l->next;
-		for(int i=1;i<n;i++)
-		{
-			t=t->next;
-			l=l->next;
-		}
-		t->next=NULL;
-		return l;
+		if (head == nullptr)
+			return 0;
+		return listSize(head->next) + 1;
 	}
 };
