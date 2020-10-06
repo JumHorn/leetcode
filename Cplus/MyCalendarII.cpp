@@ -12,18 +12,20 @@ public:
 	{
 		++boundary[start];
 		--boundary[end];
-		int active = 0, res = 0;
+		int sum = 0;
 		for (auto &n : boundary)
 		{
-			active += n.second;
-			res = max(res, active);
+			sum += n.second;
+			if (sum >= 3)
+			{
+				if (--boundary[start] == 0)
+					boundary.erase(start);
+				if (++boundary[end] == 0)
+					boundary.erase(end);
+				return false;
+			}
 		}
-		if (res < 3)
-			return true;
-		//reset
-		--boundary[start];
-		++boundary[end];
-		return false;
+		return true;
 	}
 
 private:
