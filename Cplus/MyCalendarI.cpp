@@ -1,47 +1,37 @@
-#include<list>
+#include <set>
 using namespace std;
 
-class MyCalendar {
+class MyCalendar
+{
 public:
-	list<pair<int,int> > l;
-    MyCalendar() {
-        l.push_back(make_pair(-1,-1));
-    }
-    
-    bool book(int start, int end) {
-        for(list<pair<int,int> >::iterator iter=l.begin();iter!=l.end();iter++)
+	MyCalendar()
+	{
+	}
+
+	bool book(int start, int end)
+	{
+		auto iter = s.lower_bound({start, end});
+		if (iter != s.end())
 		{
-			list<pair<int,int> >::iterator tmp=iter;
-			tmp++;
-			if(start>iter->first&&(tmp==l.end()||start<tmp->first))
-			{
-				if(start<iter->second)
-					return false;
-				tmp=iter;
-				tmp++;
-				if(tmp==l.end())
-				{
-					l.insert(tmp,make_pair(start,end));
-					return true;
-				}
-				else
-				{
-					if(end>tmp->first)
-						return false;
-					else
-					{
-						l.insert(tmp,make_pair(start,end));
-						return true;
-					}
-				}
-			}
+			if (end > iter->first)
+				return false;
 		}
-		return false;
-    }
+		if (iter != s.begin())
+		{
+			--iter;
+			if (iter->second > start)
+				return false;
+		}
+		s.insert({start, end});
+		return true;
+	}
+
+private:
+	set<pair<int, int>> s;
 };
 
 /**
  * Your MyCalendar object will be instantiated and called as such:
- * MyCalendar obj = new MyCalendar();
- * bool param_1 = obj.book(start,end);
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
  */
