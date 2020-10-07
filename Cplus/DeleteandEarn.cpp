@@ -1,21 +1,40 @@
-#include<vector>
+#include <map>
+#include <vector>
 using namespace std;
 
-class Solution {
+/*
+the following is the evolution of house rob
+dp[i]=max(dp[i-1],dp[i-2]+x)
+*/
+
+class Solution
+{
 public:
-    int deleteAndEarn(vector<int>& nums) {
-        if(nums.size()==0)
-            return 0;
-		vector<int> hash(10001,0);
-		for(int i=0;i<nums.size();i++)
-			hash[nums[i]]++;
-        int good=hash.size()-1;
-        while(hash[good]==0)good--;
-		for(int i=1;i<=good;i++)
-			hash[i]*=i;
-		hash[2]=max(hash[1],hash[2]);
-		for(int i=3;i<=good;i++)
-			hash[i]=max(hash[i-1],hash[i-2]+hash[i]);
-		return hash[good];
-    }
+	int deleteAndEarn(vector<int> &nums)
+	{
+		int N = nums.size();
+		if (nums.empty())
+			return 0;
+		map<int, int> dp;
+		for (auto n : nums)
+			dp[n] += n;
+		int a = dp.begin()->second, b = 0;
+		for (auto iter = ++dp.begin(); iter != dp.end(); ++iter)
+		{
+			auto pre = iter;
+			--pre;
+			if (iter->first == pre->first + 1)
+			{
+				int tmp = max(a, b + iter->second);
+				b = a;
+				a = tmp;
+			}
+			else
+			{
+				b = a;
+				a = a + iter->second;
+			}
+		}
+		return a;
+	}
 };
