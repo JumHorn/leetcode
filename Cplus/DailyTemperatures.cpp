@@ -1,23 +1,23 @@
-#include<vector>
-#include<stack>
+#include <stack>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> dailyTemperatures(vector<int>& temperatures) {
-        vector<int> result(temperatures.size());
+	vector<int> dailyTemperatures(vector<int> &T)
+	{
+		vector<int> res(T.size());
 		stack<int> s;
-		for(int i=0;i<(int)temperatures.size();i++)
+		for (int i = 0; i < (int)T.size(); ++i)
 		{
-			while(!s.empty())
+			while (!s.empty() && T[s.top()] < T[i])
 			{
-				if(temperatures[i]<=temperatures[s.top()])
-					break;
-				result[s.top()]=i-s.top();
+				res[s.top()] = i - s.top();
 				s.pop();
 			}
 			s.push(i);
 		}
-        return result;
-    }
+		return res;
+	}
 };
