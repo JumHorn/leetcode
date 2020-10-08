@@ -1,22 +1,20 @@
+#include <stdbool.h>
 
-
-int reachNumber(int target){
-	int sum=0,i=1;
-	if(target<0)
-		target=-target;
-	while(true)
+int reachNumber(int target)
+{
+	int sum = 0, steps = 1;
+	if (target < 0)
+		target = -target;
+	while (true)
 	{
-		sum+=i;
-		if(sum==target)
-			return i;
-		if(sum>target)
+		sum += steps;
+		if (sum == target)
+			return steps;
+		if (sum > target)
 			break;
-		i++;
+		++steps;
 	}
-	if((sum-target)%2==0)
-		return i;
-	return i+1+i%2;
+	if ((sum - target) % 2 == 0)
+		return steps;
+	return steps + 1 + steps % 2;
 }
-
-
-
