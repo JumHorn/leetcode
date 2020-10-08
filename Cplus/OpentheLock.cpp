@@ -1,53 +1,50 @@
-#include<vector>
-#include<string>
-#include<unordered_set>
-#include<list>
+#include <queue>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int openLock(vector<string>& deadends, string target) {
-		if(target=="0000")
+	int openLock(vector<string> &deadends, string target)
+	{
+		if (target == "0000")
 			return 0;
-		if(find(deadends.begin(),deadends.end(),"0000")!=deadends.end())
+		unordered_set<string> dead(deadends.begin(), deadends.end());
+		if (dead.find("0000") != dead.end())
 			return -1;
-		unordered_set<string> dds(deadends.begin(), deadends.end());
-        unordered_set<string> visited;
-		list<string> bfs;
-		bfs.push_back("0000");
-		visited.insert("0000");
-		int res=0;
-		while(bfs.size()!=0)
+		unordered_set<string> seen;
+		queue<string> q;
+		q.push("0000");
+		seen.insert("0000");
+		int res = 0;
+		while (q.size() != 0)
 		{
-			res++;
-			int size=bfs.size();
-			for(int i=0;i<size;i++)
+			++res;
+			int size = q.size();
+			while (--size >= 0)
 			{
-				string t=*bfs.begin();
-				bfs.erase(bfs.begin());
-				for(int i=0;i<4;i++)
+				for (int i = 0; i < 4; ++i)
 				{
-					string tmp=t;
-					tmp[i]=(tmp[i]+1)>9+'0'?'0':(tmp[i]+1);
-					if(tmp==target)
-						return res;
-					if(visited.find(tmp)==visited.end()&&dds.find(tmp)==dds.end())
+					string lock = q.front();
+					// lock[i] = (lock[i] - '0' + 1) % 10 + '0';
+					// lock[i] = (lock[i] - '0' + 10 - 2) % 10 + '0';
+					for (int j = 0; j < 2; ++j)
 					{
-						bfs.push_back(tmp);
-						visited.insert(tmp);
-					}
-					tmp=t;
-					tmp[i]=(tmp[i]-1)<'0'?'9':(tmp[i]-1);
-					if(tmp==target)
-						return res;
-					if(visited.find(tmp)==visited.end()&&dds.find(tmp)==dds.end())
-					{
-						bfs.push_back(tmp);
-						visited.insert(tmp);
+						lock[i] = (lock[i] - '0' + j * 7 + 1) % 10 + '0';
+						if (lock == target)
+							return res;
+						if (seen.find(lock) == seen.end() && dead.find(lock) == dead.end())
+						{
+							seen.insert(lock);
+							q.push(lock);
+						}
 					}
 				}
+				q.pop();
 			}
 		}
 		return -1;
-    }
+	}
 };
