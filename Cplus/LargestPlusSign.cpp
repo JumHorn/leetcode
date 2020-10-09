@@ -7,50 +7,44 @@ class Solution
 public:
 	int orderOfLargestPlusSign(int N, vector<vector<int>> &mines)
 	{
-		vector<vector<int>> board(N, vector<int>(N, 1));
+		vector<int> hash(N * N);
 		for (auto &mine : mines)
-			board[mine[0]][mine[1]] = 0;
-		// vector<vector<vector<int>>> dp(N + 2, vector<vector<int>>(N + 2, vector<int>(4)));//time limited exceeded
-		int dp[502][502][4] = {{{0}}};
+			hash[mine[0] * N + mine[1]] = 1;
+		vector<vector<int>> dp(N, vector<int>(N));
+		for (auto &mine : mines)
+			hash[mine[0] * N + mine[1]] = 1;
+		int count = 0;
 		for (int i = 0; i < N; ++i)
 		{
+			count = 0;
 			for (int j = 0; j < N; ++j)
 			{
-				if (board[i][j] == 1)
-					dp[i + 1][j + 1][0] = dp[i][j + 1][0] + 1;
+				count = hash[i * N + j] == 1 ? 0 : count + 1;
+				dp[i][j] = count;
 			}
-		}
-		for (int i = N - 1; i >= 0; --i)
-		{
-			for (int j = 0; j < N; ++j)
+			count = 0;
+			for (int j = N - 1; j >= 0; --j)
 			{
-				if (board[i][j] == 1)
-					dp[i + 1][j + 1][1] = dp[i + 2][j + 1][1] + 1;
+				count = hash[i * N + j] == 1 ? 0 : count + 1;
+				dp[i][j] = min(dp[i][j], count);
 			}
 		}
+
+		int res = 0;
 		for (int j = 0; j < N; ++j)
 		{
+			count = 0;
 			for (int i = 0; i < N; ++i)
 			{
-				if (board[i][j] == 1)
-					dp[i + 1][j + 1][2] = dp[i + 1][j][2] + 1;
+				count = hash[i * N + j] == 1 ? 0 : count + 1;
+				dp[i][j] = min(dp[i][j], count);
 			}
-		}
-		for (int j = N - 1; j >= 0; --j)
-		{
-			for (int i = 0; i < N; ++i)
+			count = 0;
+			for (int i = N - 1; i >= 0; --i)
 			{
-				if (board[i][j] == 1)
-					dp[i + 1][j + 1][3] = dp[i + 1][j + 2][3] + 1;
-			}
-		}
-		int res = 0;
-		for (int i = 1; i <= N; ++i)
-		{
-			for (int j = 1; j <= N; ++j)
-			{
-				if (board[i - 1][j - 1] == 1)
-					res = max(res, min({dp[i][j][0], dp[i][j][1], dp[i][j][2], dp[i][j][3]}));
+				count = hash[i * N + j] == 1 ? 0 : count + 1;
+				dp[i][j] = min(dp[i][j], count);
+				res = max(res, dp[i][j]);
 			}
 		}
 		return res;
