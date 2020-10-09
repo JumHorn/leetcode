@@ -1,14 +1,11 @@
-#include <math.h>
 
 int kthGrammar(int N, int K)
 {
-	int index = pow(2, N) - 1 + K;
-	int flag = 0;
-	while (index != 1)
+	int res = 0;
+	while (K > 1)
 	{
-		flag += (index & 1);
-		index >>= 1;
+		res ^= 1 ^ (K & 1);
+		K = (K + 1) >> 1;
 	}
-	return flag % 2;
+	return res;
 }
-
