@@ -1,25 +1,30 @@
-#include<vector>
-#include<unordered_set>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool isBipartite(vector<vector<int> >& graph) {
-		vector<char> color(graph.size());
-        for(int i=0;i<(int)graph.size();i++)
-		    if(color[i]==0&&!isBipartite(graph,color,i,1))
-                return false;
-        return true;
+	bool isBipartite(vector<vector<int>> &graph)
+	{
+		int N = graph.size();
+		vector<int> color(N);
+		for (int i = 0; i < N; ++i)
+		{
+			if (color[i] == 0 && !backTracking(graph, color, i, 1))
+				return false;
+		}
+		return true;
 	}
 
-	bool isBipartite(vector<vector<int> >& graph,vector<char>& color,int n,char c)
+	bool backTracking(vector<vector<int>> &graph, vector<int> &color, int node, int c)
 	{
-		if(color[n]!=0)
-			return color[n]==c;
-		color[n]=c;
-		for(int i=0;i<(int)graph[n].size();i++)
+		if (color[node] != 0)
+			return color[node] == c;
+		color[node] = c;
+		for (int i = 0; i < (int)graph[node].size(); ++i)
 		{
-			if(!isBipartite(graph,color,graph[n][i],-c))
+			if (!backTracking(graph, color, graph[node][i], -c))
 				return false;
 		}
 		return true;
