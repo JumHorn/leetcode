@@ -9,44 +9,38 @@ class Solution
 public:
 	bool pyramidTransition(string bottom, vector<string> &allowed)
 	{
-		for (auto n : allowed)
-			dp[n[0] - 'A'][n[1] - 'A'][n[2] - 'A'] = 1;
-		string layer(bottom.size(), 'a');
+		vector<vector<vector<int>>> triangle(7, vector<vector<int>>(7, vector<int>(7)));
+		for (auto &str : allowed)
+			triangle[str[0] - 'A'][str[1] - 'A'][str[2] - 'A'] = 1;
+		string nextbottom;
 		unordered_set<string> seen;
-		return backTrace(bottom, bottom.size(), layer, 0, seen);
+		return backTracking(bottom, 0, nextbottom, seen, triangle);
 	}
 
-	bool backTrace(string bottom, int len, string &tmp, int index, unordered_set<string> &seen)
+	bool backTracking(string &bottom, int index, string &nextbottom, unordered_set<string> &seen, vector<vector<vector<int>>> &triangle)
 	{
-		if (len == 1)
+		int N = bottom.size();
+		if (N == 1)
 			return true;
-		if (seen.find(bottom.substr(0, len)) != seen.end())
+		if (seen.find(bottom) != seen.end())
 			return false;
-		if (index == len - 1)
+		if (nextbottom.size() == N - 1)
 		{
-			for (int i = 0; i < index; i++)
-				bottom[i] = tmp[i];
-			return backTrace(bottom, len - 1, tmp, 0, seen);
+			string next, newbottom(nextbottom);
+			return backTracking(newbottom, 0, next, seen, triangle);
 		}
-		for (int i = index + 1; i < len; i++)
+		for (int i = 0; i < 7; ++i)
 		{
-			int j = 0;
-			for (; j < 7; j++)
+			if (triangle[bottom[index] - 'A'][bottom[index + 1] - 'A'][i] == 1)
 			{
-				if (dp[bottom[i - 1] - 'A'][bottom[i] - 'A'][j] == 1)
-				{
-					tmp[i - 1] = 'A' + j;
-					if (backTrace(bottom, len, tmp, index + 1, seen))
-						return true;
-					seen.insert(tmp.substr(0, index + 1));
-				}
+				nextbottom.push_back('A' + i);
+				if (backTracking(bottom, index + 1, nextbottom, seen, triangle))
+					return true;
+				nextbottom.pop_back();
 			}
-			if (j == 7)
-				return false;
 		}
+		if (index == 0)
+			seen.insert(bottom);
 		return false;
 	}
-
-private:
-	int dp[7][7][7];
 };
