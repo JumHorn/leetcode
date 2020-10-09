@@ -1,36 +1,31 @@
-#include<vector>
-#include<queue>
-#include<climits>
-#include<algorithm>
+#include <algorithm>
+#include <climits>
+#include <functional>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
-        vector<vector<pair<int,int>>> graph(n);
-		for(int i=0;i<(int)flights.size();i++)
-			graph[flights[i][0]].push_back({flights[i][1],flights[i][2]});
-		queue<pair<int,int>> q;
-		q.push({src,0});
-		int res=INT_MAX;
-		while(!q.empty()&&K-->=0)
+	int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int K)
+	{
+		vector<vector<pair<int, int>>> graph(n);
+		for (auto &flight : flights)
+			graph[flight[0]].push_back({flight[1], flight[2]});
+		priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> q; //{price,pos,stops}
+		q.push({0, src, K + 1});
+		while (!q.empty())
 		{
-			int size=q.size();
-			while(--size>=0)
-			{
-				pair<int,int> tmp=q.front();
-				q.pop();
-				for(int i=0;i<(int)graph[tmp.first].size();i++)
-				{
-                    int newsrc=graph[tmp.first][i].first;
-                    int cost=tmp.second+graph[tmp.first][i].second;
-                    if(newsrc==dst)
-                        res=min(res,cost);
-                    else if(cost<res)
-					    q.push({newsrc,cost});
-				}
-			}
+			int price = q.top()[0], pos = q.top()[1], stops = q.top()[2];
+			q.pop();
+			if (pos == dst)
+				return price;
+			if (stops == 0)
+				continue;
+			for (int i = 0; i < (int)graph[pos].size(); ++i)
+				q.push({price + graph[pos][i].second, graph[pos][i].first, stops - 1});
 		}
-		return res==INT_MAX?-1:res;
-    }
+		return -1;
+	}
 };
