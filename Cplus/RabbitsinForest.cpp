@@ -1,38 +1,23 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int numRabbits(vector<int>& answers) {
-		if(answers.empty())
+	int numRabbits(vector<int> &answers)
+	{
+		sort(answers.begin(), answers.end());
+		int res = 0, colorcount = 0, N = answers.size();
+		for (int i = 0; i < N;)
 		{
-			return 0;
+			colorcount = answers[i] + 1;
+			int j = i + 1;
+			while (j < N && j - i < colorcount && answers[i] == answers[j])
+				++j;
+			i = j;
+			res += colorcount;
 		}
-		sort(answers.begin(),answers.end());        
-		int tmp=0;
-		unsigned int i;
-		for(i=0;i<answers.size();i++)
-		{
-			if(answers[i]!=0)
-			{
-				break;
-			}
-			tmp++;
-		}
-		int sum=tmp;
-		int flag=i;
-		tmp=answers[i];
-		for(i+=1;i<answers.size();i++)
-		{
-			if(tmp!=answers[i])
-			{
-				sum+=((i-flag)/(tmp+1)+((i-flag)%(tmp+1)?1:0))*(tmp+1);
-				tmp=answers[i];
-				flag=i;
-			}
-		}
-		return sum+((i-flag)/(tmp+1)+((i-flag)%(tmp+1)?1:0))*(tmp+1);
-    }
+		return res;
+	}
 };
