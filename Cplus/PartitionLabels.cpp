@@ -1,36 +1,26 @@
-#include<iostream>
-#include<vector>
-#include<string>
+#include <algorithm>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> partitionLabels(string S) {
-		vector<int> result;
-        int head = 0,tail = S.length()-1,i,j;
-		while(head != tail+1)
+	vector<int> partitionLabels(string S)
+	{
+		int N = S.length();
+		vector<int> lastpos(26);
+		for (int i = 0; i < N; ++i)
+			lastpos[S[i] - 'a'] = i;
+		vector<int> res;
+		for (int i = 0, j = 0; i < N; ++i)
 		{
-			i = head;
-			for(j = tail;j>=i;j--)
-			{
-				if(S[j]==S[i])
-				{
-					break;
-				}
-			}
-			for(int l=i+1;l<j;l++)
-			{
-				for(int k = tail;k>j;k--)
-				{
-					if(S[k]==S[l])
-					{
-						j = k;
-					}
-				}
-			}
-			result.push_back(j-head+1);
-			head = j+1;
-		}	
-		return result;
-    }
+			j = max(j, lastpos[S[i] - 'a']);
+			if (i == j)
+				res.push_back(i + 1);
+		}
+		for (int i = res.size() - 1; i > 0; --i)
+			res[i] -= res[i - 1];
+		return res;
+	}
 };
