@@ -1,19 +1,29 @@
-#include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
+/*
+another gray code to decimal always used
+
+int grayCodeToDecimal(int n)
+{
+	int res = 0;
+	while (n != 0)
+	{
+		res ^= n;
+		n >>= 1;
+	}
+	return res;
+}
+*/
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* grayCode(int n, int* returnSize)
+int *grayCode(int n, int *returnSize)
 {
-	*returnSize = pow(2, n);
-	int* res = (int*)malloc(sizeof(int) * (*returnSize));
-	memset(res, 0, sizeof(int) * (*returnSize));
-	for (int i = 0, size = 1; i < n; ++i)
-	{
-		for (int j = size - 1; j >= 0; --j)
-			res[size++] = res[j] | (1 << i);
-	}
+	*returnSize = (1 << n);
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	for (int i = 0; i < (1 << n); ++i)
+		res[i] = i ^ (i >> 1);
 	return res;
 }
