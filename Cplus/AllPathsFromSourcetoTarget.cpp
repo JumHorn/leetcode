@@ -1,37 +1,30 @@
-#include<iostream>
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
-private:
-	vector<vector<int> > *m_pGraph;
-    vector<vector<int> > result;
+class Solution
+{
 public:
-    vector<vector<int> > allPathsSourceTarget(vector<vector<int> >& graph) {
-	   this->m_pGraph = &graph;
-	   vector<int> path;
-	   path.push_back(0);
-	   recursive(path);
-	   return result;
-    }
-
-	void recursive(vector<int> path)
+	vector<vector<int>> allPathsSourceTarget(vector<vector<int>> &graph)
 	{
-		for(int i=0;i<(*m_pGraph)[path[path.size()-1]].size();i++)
+		vector<vector<int>> res;
+		vector<int> instance = {0};
+		dfs(graph, 0, instance, res);
+		return res;
+	}
+
+	void dfs(vector<vector<int>> &graph, int node, vector<int> &instance, vector<vector<int>> &res)
+	{
+		int N = graph.size();
+		if (node == N - 1)
 		{
-			if((*m_pGraph)[path[path.size()-1]][i]==m_pGraph->size()-1)
-			{
-				vector<int> temp = path;
-				temp.push_back(m_pGraph->size()-1);
-				result.push_back(temp);
-			}
-			else
-			{
-				//TODO 消除成环的图
-				vector<int> temp = path;
-				temp.push_back((*m_pGraph)[path[path.size()-1]][i]);
-				recursive(temp);
-			}
+			res.push_back(instance);
+			return;
+		}
+		for (int i = 0; i < graph[node].size(); ++i)
+		{
+			instance.push_back(graph[node][i]);
+			dfs(graph, graph[node][i], instance, res);
+			instance.pop_back();
 		}
 	}
 };
