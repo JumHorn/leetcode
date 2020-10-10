@@ -1,28 +1,27 @@
-#include<vector>
+#include <numeric>
+#include <vector>
 using namespace std;
 
-//do not consider duplicate array like 2,2,2,2,2  
-class Solution {
+/*
+dp[i] means the number of valid subarray ending with A[i]
+*/
+
+class Solution
+{
 public:
-    int numSubarrayBoundedMax(vector<int>& A, int L, int R) {
-		int index=0,count=0,res=0;
-		for(int i=0;i<A.size();i++)
+	int numSubarrayBoundedMax(vector<int> &A, int L, int R)
+	{
+		int N = A.size(), pre = -1;
+		vector<int> dp(N + 1);
+		for (int i = 0; i < N; ++i)
 		{
-			if(A[i]>=L&&A[i]<=R)
-			{
-				count=i-index+1;
-				res+=count;
-			}
-			else if(A[i]<L)
-			{
-				res+=count;
-			}
+			if (A[i] >= L && A[i] <= R)
+				dp[i + 1] = i - pre;
+			else if (A[i] < L)
+				dp[i + 1] = dp[i];
 			else
-			{
-				count=0;
-				index=i+1;
-			}
+				pre = i;
 		}
-		return res;
-    }
+		return accumulate(dp.begin(), dp.end(), 0);
+	}
 };
