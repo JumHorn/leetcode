@@ -8,34 +8,24 @@ public:
 	int expressiveWords(string S, vector<string> &words)
 	{
 		int res = 0;
-		for (int i = 0; i < (int)words.size(); i++)
-			res += checkStretchy(S, words[i]);
+		for (auto &word : words)
+		{
+			if (checkStretchy(S, word))
+				++res;
+		}
 		return res;
 	}
 
-	int checkStretchy(string &s, string &word)
+	bool checkStretchy(string &s, string &word)
 	{
-		int n = s.length(), j = 0;
-		if (word.size() > s.size())
-			return 0;
-		for (int i = 0; i < (int)word.length();)
+		int N = s.length(), W = word.length(), j = 0;
+		for (int i = 0; i < N; ++i)
 		{
-			if (j >= s.length() || word[i] != s[j])
-				return 0;
-			int k = j;
-			while (i < (int)word.size() && j < (int)s.size() && s[k] == word[i] && s[k] == s[j])
-			{
-				i++;
-				j++;
-			}
-			if (s[j] == s[k])
-			{
-				while (j < n && s[j] == s[k])
-					j++;
-				if (j - k < 3)
-					return 0;
-			}
+			if (j < W && s[i] == word[j])
+				++j;
+			else if ((i <= 1 || s[i] != s[i - 2] || s[i] != s[i - 1]) && (i <= 0 || i >= N - 1 || s[i] != s[i + 1] || s[i] != s[i - 1]))
+				return false;
 		}
-		return j == s.length() ? 1 : 0;
+		return j == W;
 	}
 };
