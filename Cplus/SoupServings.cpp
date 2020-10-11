@@ -8,11 +8,11 @@ public:
 	{
 		if (N >= 5000)
 			return 1;
-		map<pair<int, int>, double> m;
-		return recursive(N, N, m);
+		map<pair<int, int>, double> dp;
+		return memdp(N, N, dp);
 	}
 
-	double recursive(int A, int B, map<pair<int, int>, double>& m)
+	double memdp(int A, int B, map<pair<int, int>, double> &dp)
 	{
 		if (A <= 0 && B <= 0)
 			return 0.5;
@@ -20,11 +20,11 @@ public:
 			return 1;
 		if (B <= 0)
 			return 0;
-		if (m.find({A, B}) != m.end())
-			return m[{A, B}];
-		double res = 0.25 * (recursive(A - 100, B, m) + recursive(A - 75, B - 25, m) + recursive(A - 50, B - 50, m) + recursive(A - 25, B - 75, m));
-		m[{A, B}] = res;
-		return res;
+		if (dp.find({A, B}) != dp.end())
+			return dp[{A, B}];
+		double res = 0;
+		for (int i = 0; i <= 75; i += 25)
+			res += memdp(A - (100 - i), B - i, dp);
+		return dp[{A, B}] = res * 0.25;
 	}
 };
-
