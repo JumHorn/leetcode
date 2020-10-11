@@ -1,24 +1,18 @@
-#include<stdlib.h>
+#include <stdlib.h>
 
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    struct TreeNode *left;
-    struct TreeNode *right;
+struct TreeNode
+{
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-int checkNode(struct TreeNode* root)
+struct TreeNode *pruneTree(struct TreeNode *root)
 {
-	if(root==NULL)
-		return 0;
-	return checkNode(root->left)+checkNode(root->right)+root->val;
+	if (!root)
+		return root;
+	root->left = pruneTree(root->left);
+	root->right = pruneTree(root->right);
+	return (root->val == 0 && !root->left && !root->right) ? NULL : root;
 }
-
-struct TreeNode* pruneTree(struct TreeNode* root){
-	if(checkNode(root)==0)
-		return NULL;
-	root->left=pruneTree(root->left);
-	root->right=pruneTree(root->right);
-	return root;
-}
-
