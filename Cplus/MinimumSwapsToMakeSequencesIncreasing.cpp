@@ -1,61 +1,28 @@
-#include<vector>
-#include<climits>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minSwap(vector<int>& A, vector<int>& B) {
-		vector<vector<int>> dp(A.size(),vector<int>(2,-1));
-		int res=minSwap(A,B,1,dp);
-		if(A[0]!=B[0])
-		{
-			swap(A[0],B[0]);
-			res=min(res,minSwap(A,B,1,dp)+1);	
-		}
-		return res;        
-    }
-
-	int minSwap(vector<int>& A,vector<int>& B,int index,vector<vector<int>>& dp)
+	int minSwap(vector<int> &A, vector<int> &B)
 	{
-		if(index>=(int)A.size())
-			return 0;
-		int res=INT_MAX;
-		if(A[index]==B[index])
-        {
-            if(dp[index][0]!=-1)
-                return dp[index][0];
-			res=minSwap(A,B,index+1,dp);
-            dp[index][0]=res;
-            return res;
-        }
-		bool flag=true;
-		if(A[index]>A[index-1]&&B[index]>B[index-1])
+		int N = A.size();
+		vector<vector<int>> dp(N, vector<int>(2)); //{swap,not swap}
+		dp[0][1] = 1;
+		for (int i = 1; i < N; ++i)
 		{
-			flag=false;
-            if(dp[index][0]!=-1)
-                res=dp[index][0];
-            else
-            {
-			    res=min(res,minSwap(A,B,index+1,dp));
-                dp[index][0]=res;
-            }
+			dp[i][0] = dp[i][1] = N; //max result
+			if (A[i] > A[i - 1] && B[i] > B[i - 1])
+				dp[i][0] = min(dp[i][0], dp[i - 1][0]);
+			if (A[i] > B[i - 1] && B[i] > A[i - 1])
+				dp[i][0] = min(dp[i][0], dp[i - 1][1]);
+
+			if (B[i] > A[i - 1] && A[i] > B[i - 1])
+				dp[i][1] = min(dp[i][1], dp[i - 1][0] + 1);
+			if (B[i] > B[i - 1] && A[i] > A[i - 1])
+				dp[i][1] = min(dp[i][1], dp[i - 1][1] + 1);
 		}
-		if(A[index]>B[index-1]&&B[index]>A[index-1])
-		{
-			flag=false;
-			swap(A[index],B[index]);
-            if(dp[index][1]!=-1)
-                res=dp[index][1];
-            else
-            {
-			    res=min(res,minSwap(A,B,index+1,dp)+1);
-                dp[index][1]=res;
-            }
-            swap(A[index],B[index]);
-		}
-		if(flag)
-			res=10000;
-		return res;
+		return min(dp[N - 1][0], dp[N - 1][1]);
 	}
 };
