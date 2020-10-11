@@ -1,32 +1,33 @@
-#include<vector>
-#include<unordered_set>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> eventualSafeNodes(vector<vector<int> >& graph) {
-        vector<int> state(graph.size());//0 unvisited 1 safe 2 unsafe
-		vector<int> res;
-		for(int i=0;i<graph.size();i++)
-			if(eventualSafeNodes(graph,state,i))
-				res.push_back(i);
-		return res;
-    }
-	bool eventualSafeNodes(vector<vector<int> >& graph,vector<int>& state,int start)
+	vector<int> eventualSafeNodes(vector<vector<int>> &graph)
 	{
-		if(state[start]!=0)
-			return state[start]==1;
-        state[start]=2;
-		for(int i=0;i<graph[start].size();i++)
+		int N = graph.size();
+		vector<int> res, state(N); //0 unvisited 1 safe 2 unsafe
+		for (int i = 0; i < N; ++i)
 		{
-			if(!eventualSafeNodes(graph,state,graph[start][i]))
-			{
-				state[start]=2;
-				return false;
-			}
+			if (dfs(graph, i, state))
+				res.push_back(i);
 		}
-		state[start]=1;
+		return res;
+	}
+
+	bool dfs(vector<vector<int>> &graph, int node, vector<int> &state)
+	{
+		if (state[node] != 0)
+			return state[node] == 1;
+		state[node] = 2;
+		for (int i = 0; i < (int)graph[node].size(); ++i)
+		{
+			if (!dfs(graph, graph[node][i], state))
+				return false;
+		}
+		state[node] = 1;
 		return true;
 	}
 };
