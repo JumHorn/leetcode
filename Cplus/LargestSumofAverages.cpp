@@ -1,7 +1,5 @@
-#include<vector>
-#include<algorithm>
-#include<functional>
-#include<numeric>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
 /*
@@ -12,27 +10,28 @@ k=3 A=9,1,2,3,9
 2     X    10   10.5 11.0    12.75
 3     X    X    12   13.5    20.0
 
-dp[k][i]=max(dp[k-1][i],dp[k-1][j]+(sum[j+1,i]/(i-j));(j<i)
+dp[i][k]=max(dp[i][k-1],dp[j][k-1]+(sum[j+1,i]/(i-j));(j<i and j>=k-1)
 */
 
-class Solution {
+class Solution
+{
 public:
-    double largestSumOfAverages(vector<int>& A, int K) {
-		vector<vector<double> > dp(K,vector<double>(A.size()));
-		for(int i=0;i<A.size();i++)
-			dp[0][i]=accumulate(A.begin(),A.begin()+i+1,0.0)/(i+1);
-		for(int k=1;k<K;k++)
-			for(int i=k;i<A.size();i++)
+	double largestSumOfAverages(vector<int> &A, int K)
+	{
+		int N = A.size();
+		vector<int> prefixsum(N + 1);
+		vector<vector<double>> dp(N, vector<double>(K));
+		for (int i = 0; i < N; ++i)
+			prefixsum[i + 1] = prefixsum[i] + A[i];
+		for (int k = 0; k < K; ++k)
+		{
+			for (int i = 0; i < N; ++i)
 			{
-				double max=dp[k-1][i];
-				for(int j=0;j<i;j++)
-				{
-					double tmp=accumulate(A.begin()+j+1,A.begin()+i+1,0.0)/(i-j)+dp[k-1][j];
-					if(tmp>max)
-						max=tmp;
-				}
-				dp[k][i]=max;
+				dp[i][k] = prefixsum[i + 1] * 1.0 / (i + 1);
+				for (int j = k - 1; j < i && k > 0; ++j)
+					dp[i][k] = max(dp[i][k], dp[j][k - 1] + (prefixsum[i + 1] - prefixsum[j + 1]) * 1.0 / (i - j));
 			}
-		return dp.back().back();
-    }
+		}
+		return dp[N - 1][K - 1];
+	}
 };
