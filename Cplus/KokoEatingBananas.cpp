@@ -1,27 +1,29 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minEatingSpeed(vector<int>& piles, int H) {
-		int low=1,high=1000000000;
-		while(low<high)
-		{
-			int middle=low+(high-low)/2;
-			if(eatAll(piles,middle,H))
-				high=middle;
-			else
-				low=middle+1;
-		}
-		return low;
-    }
-
-	bool eatAll(vector<int>& piles,int k,int H)
+	int minEatingSpeed(vector<int> &piles, int H)
 	{
-		int hour=0;
-		for(int i=0;i<piles.size();i++)
-			hour+=(piles[i]-1)/k+1;
-		return hour<=H;
+		int lo = 1, hi = 1e9;
+		while (lo < hi)
+		{
+			int mi = lo + (hi - lo) / 2;
+			if (timeToEatAll(piles, mi) > H)
+				lo = mi + 1;
+			else
+				hi = mi;
+		}
+		return lo;
+	}
+
+	int timeToEatAll(vector<int> &piles, int k)
+	{
+		int hour = 0;
+		for (auto pile : piles)
+			hour += (pile - 1) / k + 1;
+		return hour;
 	}
 };
