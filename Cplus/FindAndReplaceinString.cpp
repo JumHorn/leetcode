@@ -6,56 +6,26 @@ using namespace std;
 class Solution
 {
 public:
-	string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets)
+	string findReplaceString(string S, vector<int> &indexes, vector<string> &sources, vector<string> &targets)
 	{
-		if (indexes.empty())
-			return S;
-		string res;
-		int n = indexes.size();
+		int N = indexes.size(), index = 0;
+		vector<pair<int, int>> v;
 		//sort indexes
-		for (int i = 0; i < n - 1; i++)
+		for (int i = 0; i < N; ++i)
+			v.push_back({indexes[i], i});
+		sort(v.begin(), v.end());
+		string res;
+		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j < n - 1 - i; j++)
+			res += S.substr(index, v[i].first - index);
+			index = v[i].first;
+			int j = v[i].second;
+			if (S.compare(v[i].first, sources[j].length(), sources[j]) == 0)
 			{
-				if (indexes[j] > indexes[j + 1])
-				{
-					swap(indexes[j], indexes[j + 1]);
-					swap(sources[j], sources[j + 1]);
-					swap(targets[j], targets[j + 1]);
-				}
+				res += targets[j];
+				index += sources[j].length();
 			}
 		}
-
-		if (indexes[0] != 0)
-			res = S.substr(0, indexes[0]);
-		for (int i = 0; i < n; i++)
-		{
-			if (S.substr(indexes[i], sources[i].size()) == sources[i])
-			{
-				res += targets[i];
-				if (i < n - 1)
-				{
-					if (indexes[i + 1] > indexes[i] + (int)sources[i].size())
-						res += S.substr(indexes[i] + sources[i].size(), indexes[i + 1] - indexes[i] - sources[i].size());
-				}
-				else
-				{
-					if ((int)S.size() > indexes[i] + (int)sources[i].size())
-						res += S.substr(indexes[i] + (int)sources[i].size());
-				}
-			}
-			else
-			{
-				if (i < n - 1)
-				{
-					res += S.substr(indexes[i], indexes[i + 1] - indexes[i]);
-				}
-				else
-				{
-					res += S.substr(indexes[i]);
-				}
-			}
-		}
-		return res;
+		return res + S.substr(index);
 	}
 };
