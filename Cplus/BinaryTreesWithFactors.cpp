@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -9,21 +8,25 @@ public:
 	int numFactoredBinaryTrees(vector<int> &A)
 	{
 		sort(A.begin(), A.end());
-		unordered_map<int, long> dp;
-		int res = 0;
-		for (auto n : A)
+		int res = 0, N = A.size();
+		vector<long> dp(N);
+		for (int k = 0; k < N; ++k)
 		{
-			dp[n] = 1;
-			for (auto m : dp)
+			dp[k] = 1;
+			int i = 0, j = k - 1;
+			while (i <= j)
 			{
-				if (n % m.first == 0)
+				if ((long)A[i] * A[j] == A[k])
 				{
-					int val = n / m.first;
-					if (dp.find(val) != dp.end())
-						dp[n] = (dp[n] + m.second * dp[val] % MOD) % MOD;
+					dp[k] = (dp[k] + dp[i] * dp[j] * (i == j ? 1 : 2) % MOD) % MOD;
+					++i;
 				}
+				else if ((long)A[i] * A[j] < A[k])
+					++i;
+				else
+					--j;
 			}
-			res = (res + dp[n]) % MOD;
+			res = (res + dp[k]) % MOD;
 		}
 		return res;
 	}
