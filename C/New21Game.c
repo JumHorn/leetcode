@@ -1,13 +1,16 @@
-#include <stdlib.h>
+
+/*
+dp[i]-dp[i-1]=1.0/w*(dp[i+w]-dp[i])
+*/
 
 double new21Game(int N, int K, int W)
 {
 	if (K == 0 || N >= K + W)
 		return 1.0;
-	double* dp = (double*)malloc(sizeof(double) * (N + 1));
+	double dp[N + 1];
 	dp[0] = 1.0;
 	double sum = 1.0, res = 0.0;
-	for (int i = 1; i <= N; i++)
+	for (int i = 1; i <= N; ++i)
 	{
 		dp[i] = sum / W;
 		if (i >= K)
@@ -19,4 +22,3 @@ double new21Game(int N, int K, int W)
 	}
 	return res;
 }
-
