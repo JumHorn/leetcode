@@ -1,44 +1,44 @@
-#include<string>
-#include<map>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string pushDominoes(string dominoes) {
-        if(dominoes.size()<2)
-            return dominoes;
-		map<int,char> m;
-		for(int i=0;i<dominoes.length();i++)
-			if(dominoes[i]!='.')
-				m[i]=dominoes[i];
-        if(m.empty())
-            return dominoes;
-		map<int,char>::iterator it1=m.begin(),it2;
-		it2=it1;
-		for(++it2;it2!=m.end();++it1,++it2)
+	string pushDominoes(string dominoes)
+	{
+		int N = dominoes.size(), pre = -1; //pre right
+		for (int i = 0; i < N; ++i)
 		{
-			if(it1->second=='R'&&it2->second=='L')
+			if (dominoes[i] == 'R')
+				pre = i;
+			else if (dominoes[i] == 'L')
 			{
-				int i=it1->first+1;
-				int j=it2->first-1;
-				while(i<j)
+				if (pre == -1)
+					pushLeft(dominoes, i - 1);
+				else
 				{
-					dominoes[i++]='R';
-					dominoes[j--]='L';
+					int middle = (i - pre) / 2 + pre;
+					pushLeft(dominoes, middle, i);
+					if ((i - pre + 1) % 2 == 1)
+						dominoes[middle] = '.';
 				}
+				pre = -1;
 			}
-			else if(it1->second==it2->second)
-				for(int i=it1->first+1;i<it2->first;i++)
-					dominoes[i]=it1->second;
+			else if (pre != -1)
+				dominoes[i] = 'R';
 		}
-		it1=m.begin();
-		it2=--m.end();
-		if(it1->second=='L')
-			for(int i=0;i<it1->first;i++)
-				dominoes[i]='L';
-		if(it2->second=='R')
-			for(int i=it2->first+1;i<dominoes.size();i++)
-				dominoes[i]='R';
 		return dominoes;
-    }
+	}
+
+	void pushLeft(string &dominoes, int index) //push to first not vertical
+	{
+		while (index >= 0 && dominoes[index] == '.')
+			dominoes[index--] = 'L';
+	}
+
+	void pushLeft(string &dominoes, int middle, int right) //push to middle
+	{
+		while (middle < right)
+			dominoes[right--] = 'L';
+	}
 };
