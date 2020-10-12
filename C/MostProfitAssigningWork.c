@@ -8,35 +8,24 @@ int cmp(const void *lhs, const void *rhs)
 	return *(int *)lhs - *(int *)rhs;
 }
 
-void swap(int *lhs, int *rhs)
-{
-	int tmp = *lhs;
-	*lhs = *rhs;
-	*rhs = tmp;
-}
-
 int maxProfitAssignment(int *difficulty, int difficultySize, int *profit, int profitSize, int *worker, int workerSize)
 {
 	qsort(worker, workerSize, sizeof(int), cmp);
 	//sort by difficulty
+	int job[profitSize][2];
 	for (int i = 0; i < difficultySize; ++i)
 	{
-		for (int j = difficultySize - 1; j > i; --j)
-		{
-			if (difficulty[j - 1] > difficulty[j])
-			{
-				swap(&difficulty[j - 1], &difficulty[j]);
-				swap(&profit[j - 1], &profit[j]);
-			}
-		}
+		job[i][0] = difficulty[i];
+		job[i][1] = profit[i];
 	}
+	qsort(job, profitSize, sizeof(job[0]), cmp);
 
 	int res = 0, d = 0, p = 0;
 	for (int i = 0; i < workerSize; ++i)
 	{
-		while (d < difficultySize && worker[i] >= difficulty[d])
+		while (d < difficultySize && worker[i] >= job[d][0])
 		{
-			p = max(p, profit[d]);
+			p = max(p, job[d][1]);
 			++d;
 		}
 		res += p;
