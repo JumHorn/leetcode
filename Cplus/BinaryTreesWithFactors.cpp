@@ -1,35 +1,33 @@
-#include<vector>
-#include<set>
-#include<unordered_map>
+#include <algorithm>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
-	const static int MOD=1e9+7;
+class Solution
+{
 public:
-    int numFactoredBinaryTrees(vector<int>& A) {
-        set<int> s(A.begin(),A.end());
-		unordered_map<int,long> dp;
-		for(set<int>::iterator it0=s.begin();it0!=s.end();++it0)
+	int numFactoredBinaryTrees(vector<int> &A)
+	{
+		sort(A.begin(), A.end());
+		unordered_map<int, long> dp;
+		int res = 0;
+		for (auto n : A)
 		{
-			for(set<int>::iterator it1=s.begin();it1!=it0;++it1)
+			dp[n] = 1;
+			for (auto m : dp)
 			{
-                if((*it0)%(*it1)==0)
-                {
-                    int tmp=(*it0)/(*it1);
-                    if(s.find(tmp)!=s.end())
-                    {
-                        // if(*it1==tmp)
-                        //     dp[*it0]=(dp[*it0]+dp[*it1]*dp[tmp])%MOD;
-                        // else
-                        dp[*it0]=(dp[*it0]+dp[*it1]*dp[tmp])%MOD;
-                    }
-                }
+				if (n % m.first == 0)
+				{
+					int val = n / m.first;
+					if (dp.find(val) != dp.end())
+						dp[n] = (dp[n] + m.second * dp[val] % MOD) % MOD;
+				}
 			}
-			++dp[*it0];
+			res = (res + dp[n]) % MOD;
 		}
-		int res=0;
-		for(unordered_map<int,long>::iterator it=dp.begin();it!=dp.end();++it)
-			res=(res+it->second)%MOD;
 		return res;
-    }
+	}
+
+private:
+	static const int MOD = 1e9 + 7;
 };
