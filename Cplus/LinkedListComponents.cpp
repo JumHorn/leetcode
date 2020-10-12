@@ -1,47 +1,35 @@
-#include<iostream>
-#include<vector>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
 // Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    int numComponents(ListNode* head, vector<int>& G) {
-        vector<int> v;
-		while(head!=NULL)
+	int numComponents(ListNode *head, vector<int> &G)
+	{
+		int res = 0;
+		unordered_set<int> s(G.begin(), G.end());
+		while (head != nullptr)
 		{
-			v.push_back(head->val);
-			head=head->next;
-		}
-		for(int i=0;i<G.size();i++)
-		{
-			for(int j=0;j<v.size();j++)
+			if (s.find(head->val) != s.end())
 			{
-				if(G[i]==v[j])
-				{
-					v[j]=-1;
-					break;
-				}
+				++res;
+				while (head != nullptr && s.find(head->val) != s.end())
+					head = head->next;
 			}
+			else
+				head = head->next;
 		}
-		int res=0;
-		for(int i=0;i<v.size();i++)
-		{
-			if(v[i]==-1)
-			{
-				res++;
-				do
-				{
-					i++;
-				}
-				while(i<v.size()&&v[i]==-1);
-			}
-		}	
 		return res;
-    }
+	}
 };
