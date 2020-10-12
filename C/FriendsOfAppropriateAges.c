@@ -1,33 +1,25 @@
-#include <stdlib.h>
+#include <stdbool.h>
 
-int cmp(const void* lhs, const void* rhs)
+bool request(int a, int b)
 {
-	return *(int*)lhs - *(int*)rhs;
+	return !(b <= 0.5 * a + 7 || b > a || (b > 100 && a < 100));
 }
 
-int numFriendRequests(int* ages, int agesSize)
+int numFriendRequests(int *ages, int agesSize)
 {
-	qsort(ages, agesSize, sizeof(int), cmp);
+	int hash[121] = {0};
+	for (int i = 0; i < agesSize; ++i)
+		++hash[ages[i]];
 	int res = 0;
-	for (int i = 0, j = 1; i < agesSize; i++)
+	for (int i = 0; i < 121; ++i)
 	{
-		if (i == j)
-			j++;
-		while (j < agesSize && ages[j] * 0.5 + 7 < ages[i])
+		if (hash[i] == 0)
+			continue;
+		for (int j = 0; j < 121; ++j)
 		{
-			res += j - i;
-			j++;
+			if (request(i, j))
+				res += hash[i] * (hash[j] - (i == j ? 1 : 0));
 		}
-	}
-	for (int i = 0, j = 1; i < agesSize;)
-	{
-		j = i + 1;
-		while (j < agesSize && ages[i] == ages[j])
-			j++;
-		if (j - i != 1 && ages[i] * 0.5 + 7 < ages[i])
-			res += (j - i) * (j - i - 1) / 2;
-		i = j;
 	}
 	return res;
 }
-
