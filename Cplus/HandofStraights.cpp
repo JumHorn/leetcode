@@ -1,36 +1,30 @@
-#include<vector>
-#include<algorithm>
+#include <map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool isNStraightHand(vector<int>& hand, int W) {
-		if(hand.size()%W!=0)
+	bool isNStraightHand(vector<int> &hand, int W)
+	{
+		int N = hand.size();
+		if (N % W != 0)
 			return false;
-		sort(hand.begin(),hand.end());
-		int start=0;
-		while(start<hand.size())
+		map<int, int> m;
+		for (auto n : hand)
+			++m[n];
+		while (!m.empty())
 		{
-			int m=hand[start];
-			int j=start+1;
-			hand[start]=-1;
-			for(int i=m+1;i<W+m;i++)
+			int start = m.begin()->first, count = m.begin()->second;
+			for (int i = 0; i < W; ++i)
 			{
-				for(;j<hand.size();j++)
-				{
-					if(hand[j]==i)
-					{
-						hand[j]=-1;
-						break;
-					}
-					if(hand[j]>i)
-						return false;
-				}
-				if(j==hand.size())
+				m[start + i] -= count;
+				if (m[start + i] < 0)
 					return false;
+				if (m[start + i] == 0)
+					m.erase(start + i);
 			}
-			while(hand[start]==-1)start++;
 		}
 		return true;
-    }
+	}
 };
