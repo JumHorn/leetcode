@@ -1,4 +1,3 @@
-#include <unordered_map>
 #include <vector>
 using namespace std;
 /*
@@ -20,24 +19,25 @@ public:
 	int lenLongestFibSubseq(vector<int> &A)
 	{
 		int res = 0, N = A.size();
-		unordered_map<int, int> index;
-		for (int i = 0; i < N; ++i)
-			index[A[i]] = i;
 		vector<vector<int>> dp(N, vector<int>(N));
-		for (int i = 1; i < N; ++i)
+		for (int i = 2; i < N; ++i)
 		{
-			for (int j = 0; j < i; ++j)
+			int l = 0, r = i - 1;
+			while (l < r)
 			{
-				dp[i][j] = 2;
-				if (index.find(A[i] - A[j]) != index.end())
+				int sum = A[l] + A[r];
+				if (sum == A[i])
 				{
-					int k = index[A[i] - A[j]];
-					if (k < j)
-						dp[i][j] = dp[j][k] + 1;
-					res = max(res, dp[i][j]);
+					dp[i][r] = dp[r][l] + 1;
+					res = max(res, dp[i][r]);
+					++l;
 				}
+				else if (sum < A[i])
+					++l;
+				else
+					--r;
 			}
 		}
-		return res <= 2 ? 0 : res;
+		return res == 0 ? 0 : res + 2;
 	}
 };
