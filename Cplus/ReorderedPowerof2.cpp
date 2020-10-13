@@ -6,53 +6,23 @@ class Solution
 public:
 	bool reorderedPowerOf2(int N)
 	{
-		if (N == 1)
-			return true;
-		vector<int> num;
-		while (N != 0)
+		vector<int> count = countDigits(N);
+		for (int i = 0; i < 32; ++i)
 		{
-			num.push_back(N % 10);
-			N /= 10;
-		}
-		for (auto &n : num)
-		{
-			if (n != 0)
-			{
-				n = -n; //negetive means visited
-				if (backTracking(num, -n, num.size() - 1))
-					return true;
-				n = -n;
-			}
+			if (countDigits(1u << i) == count)
+				return true;
 		}
 		return false;
 	}
 
-	bool backTracking(vector<int> &num, int val, int count)
+	vector<int> countDigits(unsigned int val)
 	{
-		if (count <= 0)
-			return bitCount(val) == 1;
-		for (auto &n : num)
+		vector<int> count(10);
+		while (val != 0)
 		{
-			if (n >= 0)
-			{
-				int old = n;
-				n = -1;
-				if (backTracking(num, val * 10 + old, count - 1))
-					return true;
-				n = old;
-			}
+			++count[val % 10];
+			val /= 10;
 		}
-		return false;
-	}
-
-	int bitCount(int n)
-	{
-		int res = 0;
-		while (n != 0)
-		{
-			n &= n - 1;
-			res++;
-		}
-		return res;
+		return count;
 	}
 };
