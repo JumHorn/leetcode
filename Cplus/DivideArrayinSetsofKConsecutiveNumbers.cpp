@@ -5,22 +5,23 @@ using namespace std;
 class Solution
 {
 public:
-	bool isPossibleDivide(vector<int>& nums, int k)
+	bool isPossibleDivide(vector<int> &nums, int k)
 	{
-		int n = nums.size();
-		if (n % k != 0)
+		int N = nums.size();
+		if (N % k != 0)
 			return false;
 		map<int, int> m;
-		for (int i = 0; i < n; i++)
-			++m[nums[i]];
+		for (auto n : nums)
+			++m[n];
 		while (!m.empty())
 		{
-			int start = m.begin()->first;
-			for (int i = 0; i < k; i++)
+			int start = m.begin()->first, count = m.begin()->second;
+			for (int i = 0; i < k; ++i)
 			{
-				if (m.find(start + i) == m.end())
+				m[start + i] -= count;
+				if (m[start + i] < 0)
 					return false;
-				if (--m[start + i] == 0)
+				if (m[start + i] == 0)
 					m.erase(start + i);
 			}
 		}
