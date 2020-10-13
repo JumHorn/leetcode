@@ -1,72 +1,69 @@
-#include<vector>
-#include<complex>
+#include <vector>
 using namespace std;
 
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-	TreeNode* head;
-    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
- 		vector<int> res;
-		head=root;
-		allDistance(res,root,target,K);
+	vector<int> distanceK(TreeNode *root, TreeNode *target, int K)
+	{
+		vector<int> res;
+		preorder(target, K, res);
+		postorder(root, target, K, res);
 		return res;
-    }
-
-	int targetDistance(TreeNode* root,TreeNode* target,int k)
-	{
-		if(root==NULL)
-			return -1;
-		if(root==target)
-			return k;
-		int tmp=targetDistance(root->left,target,k+1);
-		if(tmp==-1)
-			tmp=targetDistance(root->right,target,k+1);
-		return tmp;
 	}
 
-	int getDistance(TreeNode* root,TreeNode* node1,TreeNode* node2)
+	pair<bool, int> postorder(TreeNode *root, TreeNode *target, int K, vector<int> &res)
 	{
-		if(root==node1)
-			return targetDistance(node1,node2,0);
-		if(root==node2)
-			return targetDistance(node2,node1,0);
-		int l=targetDistance(root->left,node1,1),r=targetDistance(root->right,node2,1);
-		if(l>0&&r>0)
+		if (root == nullptr)
+			return {false, 0};
+		if (root == target)
+			return {true, 1};
+		auto l = postorder(root->left, target, K, res);
+		auto r = postorder(root->right, target, K, res);
+		if (l.first)
 		{
-			return l+r;
+			if (l.second == K)
+			{
+				res.push_back(root->val);
+				l.first = false;
+			}
+			else if (l.second < K)
+				preorder(root->right, K - l.second - 1, res);
 		}
-		else if(l>0&&r<0)
+		else if (r.first)
 		{
-			return getDistance(root->left,node1,node2);
+			if (r.second == K)
+			{
+				res.push_back(root->val);
+				r.first = false;
+			}
+			else if (r.second < K)
+				preorder(root->left, K - r.second - 1, res);
 		}
-		else if(l<0&&r>0)
-		{
-			return getDistance(root->right,node1,node2);
-		}
-		else
-		{
-			return targetDistance(root->left,node2,1)+targetDistance(root->right,node1,1);
-		}
+		return {l.first || r.first, 1 + (l.first ? l.second : r.second)};
 	}
 
-	void allDistance(vector<int>& v,TreeNode* root,TreeNode* target,int k)
+	void preorder(TreeNode *root, int K, vector<int> &res)
 	{
-		if(root==NULL)
+		if (root == nullptr || K < 0)
 			return;
-        int tmp=getDistance(head,root,target);
-		if(tmp==k)
+		if (K == 0)
 		{
-			v.push_back(root->val);
+			res.push_back(root->val);
+			return;
 		}
-		allDistance(v,root->left,target,k);
-		allDistance(v,root->right,target,k);
+		preorder(root->left, K - 1, res);
+		preorder(root->right, K - 1, res);
 	}
 };
