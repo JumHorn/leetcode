@@ -1,18 +1,16 @@
 
+int gcd(int x, int y)
+{
+	if (x == 0)
+		return y;
+	return gcd(y % x, x);
+}
 
 int mirrorReflection(int p, int q)
 {
-	int n = 0, direction = 0;
-	while (++n > 0)
-	{
-		if (n * q % p == 0)
-		{
-			if (direction == 0)
-				return n * q / p % 2;
-			return 2;
-		}
-		direction = 1 - direction;
-	}
-	return 0;
+	int g = gcd(p, q);
+	int n = p / g, m = q / g;
+	if (n % 2 == 0)
+		return 2;
+	return m % 2 == 0 ? 0 : 1;
 }
-
