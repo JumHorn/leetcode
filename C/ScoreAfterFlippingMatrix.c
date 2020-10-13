@@ -1,32 +1,15 @@
 
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 
-
-int matrixScore(int** A, int ASize, int* AColSize){
-	for(int i=0;i<ASize;i++)
+int matrixScore(int **A, int ASize, int *AColSize)
+{
+	int res = 0, N = *AColSize;
+	for (int j = N - 1; j >= 0; --j)
 	{
-		if(A[i][0]==0)
-			for(int j=0;j<*AColSize;j++)
-				A[i][j]=1-A[i][j];
-	}
-	for(int j=1;j<*AColSize;j++)
-	{
-		int count=0;
-		for(int i=0;i<ASize;i++)
-			count+=A[i][j];
-		if(count*2<ASize)
-			for(int i=0;i<ASize;i++)
-				A[i][j]=1-A[i][j];
-	}
-	int res=0;
-	for(int i=0;i<ASize;i++)
-	{
-		int val=0;
-		for(int j=0;j<*AColSize;j++)
-			if(A[i][j]==1)
-				val+=1<<(*AColSize-j-1);
-		res+=val;
+		int one = 0;
+		for (int i = 0; i < ASize; ++i)
+			one += A[i][j] ^ A[i][0];
+		res += max(one, ASize - one) * (1 << (N - j - 1));
 	}
 	return res;
 }
-
-
