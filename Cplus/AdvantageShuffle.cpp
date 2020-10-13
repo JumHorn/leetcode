@@ -1,34 +1,26 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> advantageCount(vector<int>& A, vector<int>& B) {
-		sort(A.begin(),A.end());
-
-		for(int i=0;i<B.size();i++)
+	vector<int> advantageCount(vector<int> &A, vector<int> &B)
+	{
+		int N = A.size();
+		sort(A.begin(), A.end());
+		vector<int> res(N);
+		vector<pair<int, int>> v; //{B val,B index}
+		for (int i = 0; i < N; ++i)
+			v.push_back({B[i], i});
+		sort(v.begin(), v.end());
+		for (int i = N - 1, j = N - 1, k = 0; i >= 0; --i)
 		{
-            int j=0;
-			for(j=0;j<A.size();j++)
-				if(A[j]>B[i])
-				{
-					B[i]=A[j];
-					A[j]=INT_MIN;
-					break;
-				}
-            if(j==A.size())
-                B[i]=INT_MIN;
+			if (A[j] > v[i].first)
+				res[v[i].second] = A[j--];
+			else
+				res[v[i].second] = A[k++];
 		}
-		for(int i=0,j=0;i<B.size();i++)
-		{
-			if(B[i]==INT_MIN)
-			{
-				while(A[j]==INT_MIN)
-					j++;
-				B[i]=A[j++];
-			}
-		}
-		return B;
-    }
+		return res;
+	}
 };
