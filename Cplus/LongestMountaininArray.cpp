@@ -1,28 +1,26 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int longestMountain(vector<int>& A) {
-		int index=1,left,res=0,mid;
-		while(index<(int)A.size())
+	int longestMountain(vector<int> &A)
+	{
+		int res = 0, peek, N = A.size();
+		for (int i = 1, j = 0; i < N;)
 		{
-			while(index<(int)A.size()&&A[index]<=A[index-1])
-				index++;
-			if(index==(int)A.size())
-				break;
-			left=index-1;
-			while(index<(int)A.size()&&A[index]>A[index-1])
-				index++;
-			if(index<(int)A.size()&&A[index]==A[index-1])
-				continue;
-            mid=index-1;
-			while(index<(int)A.size()&&A[index]<A[index-1])
-				index++;
-			if(index<=(int)A.size()&&mid!=index-1)
-				res=max(res,index-left);
+			while (i < N && A[i] > A[i - 1]) //up
+				++i;
+			peek = i - 1;					 //peek
+			while (i < N && A[i] < A[i - 1]) //down
+				++i;
+			if (i - 1 < N && j != peek && i - 1 != peek)
+				res = max(res, i - j);
+			while (i < N && A[i] == A[i - 1]) //skip equal
+				++i;
+			j = i - 1;
 		}
 		return res;
-    }
+	}
 };
