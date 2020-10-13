@@ -1,38 +1,22 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int maxDistToClosest(vector<int>& seats) {
-		int res=0;
-		int index=0;
-		if(seats[0]==0)
+	int maxDistToClosest(vector<int> &seats)
+	{
+		int res = 0, pre = -1, N = seats.size();
+		for (int i = 0; i < N; ++i)
 		{
-			while(index<(int)seats.size()&&seats[index]==0)
-				index++;
-			res=index;
-		}
-		while(index<(int)seats.size())
-		{
-			if(seats[index]==0)
+			if (seats[i] == 1)
 			{
-				int tmp=index;
-				while(index<(int)seats.size()&&seats[index]==0)
-					index++;
-				tmp=index-tmp;
-				res=max(res,tmp/2+tmp%2);
+				res = pre < 0 ? i : max(res, (i - pre) / 2);
+				pre = i;
 			}
-			else
-				index++;
-		}		
-		--index;
-		if(seats[index]==0)
-		{
-			while(index>=0&&seats[index]==0)
-				--index;
-			res=max(res,(int)seats.size()-index-1);
 		}
+		res = max(res, N - 1 - pre);
 		return res;
-    }
+	}
 };
