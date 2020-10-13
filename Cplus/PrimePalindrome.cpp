@@ -9,31 +9,24 @@ public:
 	{
 		string s = to_string(N);
 		int len = s.length();
-		string half = s.substr(0, len / 2 + len % 2);
-		int flag = 0;
-		if (len % 2 != 0)
-			flag = 1;
-		int num = stoi(half);
+		string half = s.substr(0, (len + 1) / 2);
+		int odd = len % 2, num = stoi(half);
 		len = half.length();
 		while (true)
 		{
 			string half = to_string(num);
 			if (len != (int)half.length())
 			{
-				flag = 1 - flag;
-				len = half.length();
-				if (flag == 0)
-				{
-					len--;
-					half = half.substr(0, len);
-				}
+				len = half.length() - odd;
+				half = half.substr(0, len);
+				odd = 1 - odd;
 			}
-			string last = half.substr(0, half.length() - flag);
+			string last = half.substr(0, half.length() - odd);
 			reverse(last.begin(), last.end());
 			int res = stoi(half + last);
 			if (res >= N && isPrimer(res))
 				return res;
-			num++;
+			++num;
 		}
 		return 0;
 	}
@@ -42,9 +35,11 @@ public:
 	{
 		if (N == 1)
 			return false;
-		for (int i = 2; i * i <= N; i++)
+		for (int i = 2; i * i <= N; ++i)
+		{
 			if (N % i == 0)
 				return false;
+		}
 		return true;
 	}
 };
