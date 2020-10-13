@@ -1,4 +1,3 @@
-#include <stdbool.h>
 
 //Definition for a binary tree node.
 struct TreeNode
@@ -12,41 +11,26 @@ struct TreeNode
 
 typedef struct pair
 {
+	int depth;
 	struct TreeNode *root;
-	bool deepest;
 } pair;
 
-int height(struct TreeNode *root)
+pair postorder(struct TreeNode *root)
 {
-	if (!root)
-		return 0;
-	return 1 + max(height(root->left), height(root->right));
-}
-
-pair postorder(struct TreeNode *root, int layer)
-{
-	pair res = {0, false};
+	pair res = {0, 0};
 	if (!root)
 		return res;
-	if (layer == 1)
-	{
-		res.root = root;
-		res.deepest = true;
-		return res;
-	}
-	pair l = postorder(root->left, layer - 1);
-	pair r = postorder(root->right, layer - 1);
-	if (l.deepest || r.deepest)
-		res.deepest = true;
-	if (l.deepest && r.deepest)
+	pair l = postorder(root->left);
+	pair r = postorder(root->right);
+	res.depth = max(l.depth, r.depth) + 1;
+	if (l.depth == r.depth)
 		res.root = root;
 	else
-		res.root = l.deepest ? l.root : r.root;
+		res.root = (l.depth > r.depth) ? l.root : r.root;
 	return res;
 }
 
 struct TreeNode *subtreeWithAllDeepest(struct TreeNode *root)
 {
-	int h = height(root);
-	return postorder(root, h).root;
+	return postorder(root).root;
 }
