@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <map>
+#include <set>
 using namespace std;
 
 class ExamRoom
@@ -7,113 +7,55 @@ class ExamRoom
 public:
 	ExamRoom(int N)
 	{
-		start = -1;
-		end = -1;
-		m_n = N;
+		size = N;
 	}
 
 	int seat()
 	{
-		if (start == -1)
+		if (student.empty())
 		{
-			start = 0;
-			if (end != -1)
-				m[0] = m_n - 1;
+			student.insert(0);
 			return 0;
 		}
-		if (end == -1)
+		auto iter = student.begin();
+		int pre = *iter, d = -1, res = size - 1;
+		for (++iter; iter != student.end(); ++iter)
 		{
-			end = 0;
-			m[0] = m_n - 1;
-			return m_n - 1;
-		}
-		int len = 0, i;
-		for (auto n : m)
-		{
-			int tmp = n.second - n.first;
-			if (tmp % 2 == 1)
-				--tmp;
-			if (tmp > len)
+			if (*iter - pre > 1)
 			{
-				len = tmp;
-				i = n.first;
+				int emptyseat = (*iter - pre) / 2 + pre;
+				if (emptyseat - pre > d)
+				{
+					d = emptyseat - pre;
+					res = emptyseat;
+				}
 			}
+			pre = *iter;
 		}
-		if (start >= len / 2 && start >= end)
+		--iter;
+		if (size - 1 - *iter > d)
 		{
-			m[0] = m.begin()->first;
-			start = 0;
-			return 0;
+			d = size - 1 - *iter;
+			res = size - 1;
 		}
-		if (end > len / 2 && end > start)
+		iter = student.begin();
+		if (*iter >= d)
 		{
-			m[m.rbegin()->second] = m_n - 1;
-			end = 0;
-			return m_n - 1;
+			d = *iter;
+			res = 0;
 		}
-		int res = i + len / 2;
-		m[res] = m[i];
-		m[i] = res;
+		student.insert(res);
 		return res;
 	}
 
 	void leave(int p)
 	{
-		if (p == 0)
-		{
-			if (end == -1)
-				start = -1;
-			else
-			{
-				start = m[0];
-				m.erase(0);
-				if (start == m_n - 1)
-					start = -1;
-			}
-		}
-		else if (p == m_n - 1)
-		{
-			if (start == -1)
-				end = -1;
-			else
-			{
-				end = m_n - m.rbegin()->first - 1;
-				m[m.rbegin()->first] = m.rbegin()->first;
-				if (end == m_n - 1)
-					end = -1;
-			}
-		}
-		else
-		{
-			auto iter = m.find(p);
-			if (iter == m.end())
-			{
-				end = m_n - m.rbegin()->first - 1;
-				if (end == m_n - 1)
-					end = -1;
-				m.erase(--m.end());
-			}
-			else if (iter == m.begin())
-			{
-				start = iter->second;
-				if (start == m_n - 1)
-					start = -1;
-				m.erase(iter);
-			}
-			else
-			{
-				--iter;
-				m[iter->first] = m[p];
-				m.erase(p);
-			}
-		}
+		student.erase(p);
 	}
 
 private:
-	map<int, int> m;
-	int start;
-	int end;
-	int m_n;
+	set<int> student;
+	int size;
 };
 
 /**
