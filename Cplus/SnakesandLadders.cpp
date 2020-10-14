@@ -10,18 +10,18 @@ public:
 		queue<int> q;
 		int res = 0, N = board.size(), target = N * N;
 		q.push(1);
-		board[N - 1][0] = -2;
+		board[N - 1][0] = -2; //-2 already visited,-1 can not cross
 		while (!q.empty())
 		{
 			int size = q.size();
 			++res;
 			while (--size >= 0)
 			{
-				int tmp = q.front();
+				int pos = q.front();
 				q.pop();
-				for (int k = 1; k <= 6; k++)
+				for (int k = 1; k <= 6; ++k)
 				{
-					int index = tmp + k;
+					int index = pos + k;
 					if (index > target)
 						break;
 					int i, j;
@@ -29,32 +29,23 @@ public:
 					if (board[i][j] == -2)
 						continue;
 					if (board[i][j] != -1)
-					{
-						if (board[i][j] == target)
-							return res;
-						int m = board[i][j];
-						board[i][j] = -2;
-						q.push(m);
-					}
-					else
-					{
-						if (index == target)
-							return res;
-						q.push(index);
-						board[i][j] = -2;
-					}
+						index = board[i][j];
+					board[i][j] = -2;
+					if (index == target)
+						return res;
+					q.push(index);
 				}
 			}
 		}
 		return -1;
 	}
 
-	void getIndex(int index, int N, int &i, int &j)
+	void getIndex(int index, int N, int &row, int &col)
 	{
-		i = (index - 1) / N;
-		j = (index - 1) % N;
-		if (i % 2 == 1)
-			j = N - 1 - j;
-		i = N - 1 - i;
+		row = (index - 1) / N;
+		col = (index - 1) % N;
+		if (row % 2 == 1)
+			col = N - 1 - col;
+		row = N - 1 - row;
 	}
 };
