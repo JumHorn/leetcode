@@ -4,47 +4,38 @@ using namespace std;
 class RLEIterator
 {
 public:
-	RLEIterator(vector<int> &A)
+	RLEIterator(vector<int> &A) : seq(A)
 	{
-		lo = iter = 0;
-		for (int i = 1; i < (int)A.size(); i += 2)
-		{
-			if (A[i - 1] != 0)
-			{
-				prefix.push_back(A[i - 1]);
-				value.push_back(A[i]);
-			}
-		}
-		for (int i = 1; i < (int)prefix.size(); ++i)
-			prefix[i] += prefix[i - 1];
+		size = A.size();
+		curIndex = 1;
+		curCount = A.empty() ? 0 : A[0];
 	}
 
 	int next(int n)
 	{
-		iter += n;
-		if (iter > prefix.back())
-			return -1;
-		long hi = prefix.size() - 1, mi;
-		while (lo < hi)
+		while (curIndex < size)
 		{
-			mi = (hi - lo) / 2 + lo;
-			if (iter > prefix[mi])
-				lo = mi + 1;
-			else
-				hi = mi;
+			if (curCount >= n)
+			{
+				curCount -= n;
+				return seq[curIndex];
+			}
+			n -= curCount;
+			curIndex += 2;
+			curCount = curIndex < size ? seq[curIndex - 1] : 0;
 		}
-		return value[lo];
+		return -1;
 	}
 
 private:
-	vector<long> prefix;
-	vector<int> value;
-	long iter;
-	int lo;
+	int curIndex;
+	int curCount;
+	int size;
+	vector<int> &seq;
 };
 
 /**
  * Your RLEIterator object will be instantiated and called as such:
  * RLEIterator* obj = new RLEIterator(A);
- * int param_1 = obj->next(n);
+ * int param_1 = next(n);
  */
