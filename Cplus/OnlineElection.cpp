@@ -5,16 +5,15 @@ using namespace std;
 class TopVotedCandidate
 {
 public:
-	TopVotedCandidate(vector<int>& persons, vector<int>& times)
+	TopVotedCandidate(vector<int> &persons, vector<int> &times)
 	{
-		vector<int> v(persons.size() + 1);
-		int vote = 0;
-		for (int i = 0; i < (int)times.size(); i++)
+		int vote = 0, N = persons.size();
+		vector<int> count(N + 1);
+		for (int i = 0; i < N; ++i)
 		{
-			++v[persons[i]];
-			if (v[persons[i]] >= vote)
+			if (++count[persons[i]] >= vote)
 			{
-				vote = v[persons[i]];
+				vote = count[persons[i]];
 				m[times[i]] = persons[i];
 			}
 		}
@@ -22,15 +21,11 @@ public:
 
 	int q(int t)
 	{
-		auto iter = m.upper_bound(t);
-		if (iter == m.end())
-			return (--m.end())->second;
-		--iter;
-		return iter->second;
+		return (--m.upper_bound(t))->second;
 	}
 
 private:
-	map<int, int> m;
+	map<int, int> m; //{time,top person}
 };
 
 /**
