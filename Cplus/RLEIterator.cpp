@@ -7,21 +7,15 @@ public:
 	RLEIterator(vector<int> &A)
 	{
 		lo = iter = 0;
-		for (int i = 0; i < (int)A.size(); i++)
+		for (int i = 1; i < (int)A.size(); i += 2)
 		{
-			if (i % 2 == 0)
+			if (A[i - 1] != 0)
 			{
-				if (A[i] == 0)
-				{
-					i++;
-					continue;
-				}
-				prefix.push_back(A[i]);
-			}
-			else
+				prefix.push_back(A[i - 1]);
 				value.push_back(A[i]);
+			}
 		}
-		for (int i = 1; i < (int)prefix.size(); i++)
+		for (int i = 1; i < (int)prefix.size(); ++i)
 			prefix[i] += prefix[i - 1];
 	}
 
