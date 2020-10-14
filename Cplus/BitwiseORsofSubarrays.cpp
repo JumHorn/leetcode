@@ -7,18 +7,19 @@ class Solution
 public:
 	int subarrayBitwiseORs(vector<int> &A)
 	{
-		unordered_set<int> res, dp, nextdp;
-		for (auto n : A)
+		vector<int> res;
+		int left = 0, right;
+		for (int n : A)
 		{
-			dp.insert(n);
-			for (auto m : dp)
+			right = res.size();
+			res.push_back(n);
+			for (int i = left; i < right; ++i)
 			{
-				nextdp.insert(m | n);
-				res.insert(m | n);
+				if (res.back() != (res[i] | n))
+					res.push_back(res[i] | n);
 			}
-			dp.swap(nextdp);
-			nextdp.clear();
+			left = right;
 		}
-		return res.size();
+		return unordered_set<int>(res.begin(), res.end()).size();
 	}
 };
