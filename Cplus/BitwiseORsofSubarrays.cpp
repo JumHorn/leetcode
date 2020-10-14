@@ -1,22 +1,24 @@
-#include<vector>
-#include<unordered_set>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int subarrayBitwiseORs(vector<int>& A) {
-		unordered_set<int> res,last;
-		res.insert(A.front());
-		last.insert(A.front());
-		for(int i=1;i<(int)A.size();i++)
+	int subarrayBitwiseORs(vector<int> &A)
+	{
+		unordered_set<int> res, dp, nextdp;
+		for (auto n : A)
 		{
-			unordered_set<int> tmp;
-			for(unordered_set<int>::iterator iter=last.begin();iter!=last.end();++iter)
-				tmp.insert(*iter|A[i]);
-			tmp.insert(A[i]);
-			res.insert(tmp.begin(),tmp.end());
-			last=tmp;
+			dp.insert(n);
+			for (auto m : dp)
+			{
+				nextdp.insert(m | n);
+				res.insert(m | n);
+			}
+			dp.swap(nextdp);
+			nextdp.clear();
 		}
-		return res.size();	
-    }
+		return res.size();
+	}
 };
