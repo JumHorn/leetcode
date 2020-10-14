@@ -1,46 +1,30 @@
-#include <algorithm>
+#include <unordered_map>
 #include <vector>
 using namespace std;
+
+/*
+longest subarray with at most two different value
+algorithm:
+slide window
+*/
 
 class Solution
 {
 public:
 	int totalFruit(vector<int> &tree)
 	{
-		vector<pair<int, int>> count;
-		int a = tree[0], b = 0;
-		for (auto t : tree)
+		unordered_map<int, int> m;
+		int i, j;
+		for (i = 0, j = 0; j < (int)tree.size(); ++j)
 		{
-			if (t == a)
-				b++;
-			else
+			++m[tree[j]];
+			if ((int)m.size() > 2)
 			{
-				count.push_back({a, b});
-				b = 1;
-				a = t;
+				if (--m[tree[i]] == 0)
+					m.erase(tree[i]);
+				++i;
 			}
 		}
-		count.push_back({a, b});
-		if (count.size() <= 1)
-			return count[0].second;
-		a = count[0].first, b = count[1].first;
-		int res = count[0].second + count[1].second;
-		int tmp = res;
-		for (int i = 2; i < (int)count.size(); i++)
-		{
-			if (count[i].first == a)
-				tmp += count[i].second;
-			else if (count[i].first == b)
-				tmp += count[i].second;
-			else
-			{
-				res = max(res, tmp);
-				tmp = count[i].second + count[i - 1].second;
-				a = count[i].first;
-				b = count[i - 1].first;
-			}
-		}
-		res = max(res, tmp);
-		return res;
+		return j - i;
 	}
 };
