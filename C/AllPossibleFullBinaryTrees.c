@@ -9,48 +9,15 @@ struct TreeNode
 	struct TreeNode *right;
 };
 
-struct TreeNode *deepCopy(struct TreeNode *root)
+struct TreeNode *createNode(int val, struct TreeNode *left, struct TreeNode *right)
 {
-	if (!root)
-		return NULL;
-	struct TreeNode *res = (struct TreeNode *)malloc(sizeof(struct TreeNode));
-	res->val = 0;
-	res->left = deepCopy(root->left);
-	res->right = deepCopy(root->right);
-	return res;
+	struct TreeNode *node = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+	node->left = left;
+	node->right = right;
+	node->val = val;
+	return node;
 }
 
-void createTree(struct TreeNode ***dp, int *dpsize, int N)
-{
-	if (N == 0 || dp[N] != NULL)
-		return;
-	for (int i = 1; i < N; i += 2)
-	{
-		if (dp[i] == NULL)
-			createTree(dp, dpsize, i);
-		if (dp[N - 1 - i] == NULL)
-			createTree(dp, dpsize, N - 1 - i);
-		for (int j = 0; j < dpsize[i]; j++)
-			for (int k = 0; k < dpsize[N - 1 - i]; k++)
-			{
-				struct TreeNode *node = (struct TreeNode *)malloc(sizeof(struct TreeNode));
-				node->val = 0;
-				node->left = deepCopy(dp[i][j]);
-				node->right = deepCopy(dp[N - 1 - i][k]);
-				if (dp[N] == NULL)
-				{
-					dp[N] = (struct TreeNode **)malloc(sizeof(struct TreeNode *));
-					dp[N][0] = node;
-				}
-				else
-				{
-					dp[N] = (struct TreeNode **)realloc(dp[N], (dpsize[N] + 1) * sizeof(struct TreeNode *));
-					dp[N][dpsize[N]] = node;
-				}
-				dpsize[N]++;
-			}
-	}
-}
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
@@ -59,19 +26,23 @@ struct TreeNode **allPossibleFBT(int N, int *returnSize)
 	*returnSize = 0;
 	if (N % 2 == 0)
 		return NULL;
-	struct TreeNode ***dp = (struct TreeNode ***)malloc((N + 1) * sizeof(struct TreeNode **));
-	memset(dp, 0, (N + 1) * sizeof(struct TreeNode **));
-	dp[0] = (struct TreeNode **)malloc(sizeof(struct TreeNode *));
-	dp[1] = (struct TreeNode **)malloc(sizeof(struct TreeNode *));
-	dp[0][0] = NULL;
-	dp[1][0] = (struct TreeNode *)malloc(sizeof(struct TreeNode));
-	dp[1][0]->val = 0;
-	dp[1][0]->left = NULL;
-	dp[1][0]->right = NULL;
-	int *dpsize = (int *)malloc((N + 1) * sizeof(int));
-	memset(dpsize, 0, (N + 1) * sizeof(int));
-	dpsize[0] = dpsize[1] = 1;
-	createTree(dp, dpsize, N);
-	*returnSize = dpsize[N];
-	return dp[N];
+	struct TreeNode *dp[N + 1][5000];
+	int dpSize[N + 1];
+	memset(dpSize, 0, sizeof(dpSize));
+	dp[1][dpSize[1]++] = createNode(0, NULL, NULL);
+	for (int i = 3; i <= N; i += 2)
+	{
+		for (int j = 1; j < i; j += 2)
+		{
+			for (int l = 0; l < dpSize[j]; ++l)
+			{
+				for (int r = 0; r < dpSize[i - 1 - j]; ++r)
+					dp[i][dpSize[i]++] = createNode(0, dp[j][l], dp[i - 1 - j][r]);
+			}
+		}
+	}
+	*returnSize = dpSize[N];
+	struct TreeNode **res = (struct TreeNode **)malloc(sizeof(struct TreeNode *) * (*returnSize));
+	memcpy(res, dp[N], sizeof(struct TreeNode *) * (*returnSize));
+	return res;
 }
