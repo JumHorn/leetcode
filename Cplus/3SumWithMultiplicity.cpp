@@ -20,8 +20,10 @@ public:
 					continue;
 				if (i == j && j == k)
 					res += v[i] * (v[i] - 1) * (v[i] - 2) / 6 % MOD;
-				else if (i == j && j != k)
+				else if (i == j && j < k)
 					res += v[i] * (v[i] - 1) / 2 * v[k] % MOD;
+				else if (i < j && j == k)
+					res += v[j] * (v[j] - 1) / 2 * v[i] % MOD;
 				else if (i < j && j < k)
 					res += v[i] * v[j] * v[k] % MOD;
 			}
