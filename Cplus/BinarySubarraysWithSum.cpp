@@ -1,5 +1,5 @@
-#include<vector>
-#include<unordered_map>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
 /*
@@ -7,53 +7,25 @@ slide window
 add all subarray which end with i,when i updated
 */
 
-class Solution {
+class Solution
+{
 public:
-    int numSubarraysWithSum(vector<int>& A, int S) {
-		if(A.empty())
-			return 0;
-		int res=0;
-		int i=-1,j=0,sum=0;
-		while(++i<(int)A.size())
+	int numSubarraysWithSum(vector<int> &A, int S)
+	{
+		int res = 0, sum = 0, N = A.size();
+		for (int i = 0, j = 0, k = 0; i < N; ++i)
 		{
-			sum+=A[i];
-			if(sum==S)
-            {
-				res++;
-                for(int k=j;k<i;k++)
-                {
-                    if(A[k]==0)
-                        res++;
-                    else
-                        break;
-                }
-            }
-			else if(sum>S)
-            {
-                while(j<=i&&A[j]==0)
-                    j++;
-                j++;
-                sum--;
-                if(j<=i)
-                    res++;
-                for(int k=j;k<=i;k++)
-                {
-                    if(A[k]==0)
-                        res++;
-                    else
-                        break;
-                }
-            }
+			sum += A[i];
+			while (j < i && sum > S)
+				sum -= A[j++];
+			if (sum == S)
+			{
+				k = max(k, j);
+				while (k < i && A[k] == 0)
+					++k;
+				res += k - j + 1;
+			}
 		}
 		return res;
-    }
+	}
 };
-
-int main()
-{
-    //int a[]={1,0,1,0,1};
-    vector<int> v(5);
-    v[2]=1;
-    Solution sol;
-    sol.numSubarraysWithSum(v,0);
-}
