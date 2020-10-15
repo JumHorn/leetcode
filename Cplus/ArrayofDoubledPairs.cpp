@@ -8,12 +8,12 @@ public:
 	bool canReorderDoubled(vector<int> &A)
 	{
 		map<int, int> positive, negative;
-		for (int i = 0; i < (int)A.size(); i++)
+		for (auto n : A)
 		{
-			if (A[i] >= 0)
-				++positive[A[i]];
+			if (n >= 0)
+				++positive[n];
 			else
-				++negative[-A[i]];
+				++negative[-n];
 		}
 		return doubleCheck(positive) && doubleCheck(negative);
 	}
@@ -22,13 +22,13 @@ public:
 	{
 		while (!m.empty())
 		{
-			int tmp = m.begin()->first;
-			if (m.find(2 * tmp) == m.end())
+			int val = m.begin()->first;
+			if (m.find(2 * val) == m.end())
 				return false;
-			if (--m[tmp] <= 0)
-				m.erase(tmp);
-			if (--m[tmp * 2] <= 0)
-				m.erase(tmp * 2);
+			if (--m[val] <= 0)
+				m.erase(val);
+			if (--m[val * 2] <= 0)
+				m.erase(val * 2);
 		}
 		return true;
 	}
