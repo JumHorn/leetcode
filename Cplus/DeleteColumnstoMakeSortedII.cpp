@@ -1,51 +1,34 @@
-#include<vector>
-#include<string>
-#include<stack>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-	int minDeletionSize(vector<string>& A) {
-		stack<pair<int,int>> index;
-		int M=A.size(),N=A[0].length(),res=0;
-        bool flag=true;
-		for(int i=0;i<N;i++)
+	int minDeletionSize(vector<string> &A)
+	{
+		int M = A.size(), N = A[0].length(), res = 0;
+		vector<pair<int, int>> equal; //{index,previous equal index}
+		for (int i = 0; i < M - 1; ++i)
+			equal.push_back({i, i + 1});
+		for (int j = 0; j < N && !equal.empty(); ++j)
 		{
-			if(flag)
+			bool flag = false;
+			vector<pair<int, int>> nextequal;
+			for (auto &index : equal)
 			{
-				int j=0;
-				for(j=0;j<M-1;j++)
-					if(A[j][i]>A[j+1][i])
-						break;
-				if(j==M-1)
-                {
-                    flag=false;
-                    for(j=0;j<M-1;j++)
-                        if(A[j][i]==A[j+1][i])
-                            index.push({j,j+1});
-                }
-                else
-                    res++;
+				if (A[index.second][j] < A[index.first][j])
+				{
+					flag = true;
+					break;
+				}
+				if (A[index.first][j] == A[index.second][j])
+					nextequal.push_back(index);
 			}
+			if (flag)
+				++res;
 			else
-			{
-                if(index.empty())
-                    return res;
-                stack<pair<int,int>> s=index,tmp;
-                while (!s.empty())
-                {
-                    if(A[s.top().first][i]>A[s.top().second][i])
-                    {
-                        res++;
-                        break;
-                    }
-                    else if(A[s.top().first][i]==A[s.top().second][i])
-                        tmp.push(s.top());
-                    s.pop();
-                }
-                if(s.empty())
-                    index=tmp;
-			}
+				equal.swap(nextequal);
 		}
 		return res;
 	}
