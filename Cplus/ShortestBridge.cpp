@@ -1,43 +1,72 @@
-#include<vector>
-#include<cmath>
+#include <cmath>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int shortestBridge(vector<vector<int> >& A) {
-		bool flag=true;
-		vector<vector<int> > island;
-		int res=INT_MAX;
-		for(int i=0;i<(int)A.size();i++)
-			for(int j=0;j<(int)A[0].size();j++)
+	int shortestBridge(vector<vector<int>> &A)
+	{
+		int M = A.size(), N = A[0].size();
+		queue<pair<int, int>> islandEdge;
+		findLandEdge(A, islandEdge);
+		//BFS
+		int res = 0;
+		while (!islandEdge.empty())
+		{
+			++res;
+			int size = islandEdge.size();
+			while (--size >= 0)
 			{
-				if(A[i][j]==1)
+				int row = islandEdge.front().first, col = islandEdge.front().second;
+				islandEdge.pop();
+				int path[5] = {-1, 0, 1, 0, -1};
+				for (int i = 0; i < 4; ++i)
 				{
-					if(flag)
-					{
-						findIslands(A,island,i,j);
-						flag=false;
-					}
-					else
-						for(int k=0;k<(int)island.size();k++)
-							res=min(res,abs(island[k][0]-i)+abs(island[k][1]-j)-1);
+					int dx = row + path[i], dy = col + path[i + 1];
+					if (dx < 0 || dx >= M || dy < 0 || dy >= N || A[dx][dy] == 2)
+						continue;
+					if (A[dx][dy] == 1)
+						return res;
+					A[dx][dy] = 2;
+					islandEdge.push({dx, dy});
 				}
 			}
-		return res;
-    }
+		}
+		return -1;
+	}
 
-	void findIslands(vector<vector<int> >& A,vector<vector<int> >& island,int i,int j)
+	void findLandEdge(vector<vector<int>> &A, queue<pair<int, int>> &islandEdge)
 	{
-		if(i<0||j<0||i>=(int)A.size()||j>=(int)A[0].size()||A[i][j]==0)
+		int M = A.size(), N = A[0].size();
+		for (int i = 0; i < M; ++i)
+		{
+			for (int j = 0; j < N; ++j)
+			{
+				if (A[i][j] == 1)
+				{
+					dfs(A, i, j, islandEdge);
+					return;
+				}
+			}
+		}
+	}
+
+	void dfs(vector<vector<int>> &A, int row, int col, queue<pair<int, int>> &islandEdge)
+	{
+		int M = A.size(), N = A[0].size();
+		if (row < 0 || row >= M || col < 0 || col >= N || A[row][col] == 2)
 			return;
-		vector<int> tmp(2);
-		tmp[0]=i;
-		tmp[1]=j;
-		island.push_back(tmp);
-		A[i][j]=0;
-		findIslands(A,island,i+1,j);
-		findIslands(A,island,i-1,j);
-		findIslands(A,island,i,j+1);
-		findIslands(A,island,i,j-1);
+		if (A[row][col] == 0)
+		{
+			islandEdge.push({row, col});
+			return;
+		}
+		A[row][col] = 2; //0 water 1 island 2 visited
+		//board dfs direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		for (int i = 0; i < 4; ++i)
+			dfs(A, row + path[i], col + path[i + 1], islandEdge);
 	}
 };
