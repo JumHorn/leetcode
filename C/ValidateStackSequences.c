@@ -1,29 +1,16 @@
+#include <stdbool.h>
 
-
-bool validateStackSequences(int* pushed, int pushedSize, int* popped, int poppedSize)
+bool validateStackSequences(int *pushed, int pushedSize, int *popped, int poppedSize)
 {
-	int i = -1, j = 0;
-	for (int k = 0; k < pushedSize; k++)
+	int top = -1, poppedIdx = 0;
+	for (int k = 0; k < pushedSize; ++k)
 	{
-		if (popped[j] == pushed[k])
+		pushed[++top] = pushed[k];
+		while (top != -1 && popped[poppedIdx] == pushed[top])
 		{
-			j++;
-			while (i != -1 && popped[j] == pushed[i])
-			{
-				j++;
-				i--;
-			}
+			++poppedIdx;
+			--top;
 		}
-		else
-			pushed[++i] = pushed[k];
 	}
-	while (j < poppedSize)
-	{
-		if (popped[j] != pushed[i])
-			return false;
-		j++;
-		i--;
-	}
-	return true;
+	return top == -1;
 }
-
