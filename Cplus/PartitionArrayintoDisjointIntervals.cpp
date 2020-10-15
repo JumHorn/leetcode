@@ -1,4 +1,4 @@
-#include <map>
+#include <climits>
 #include <vector>
 using namespace std;
 
@@ -7,20 +7,18 @@ class Solution
 public:
 	int partitionDisjoint(vector<int> &A)
 	{
-		map<int, int> count; //{val,count}
-		for (auto n : A)
-			++count[n];
 		int N = A.size();
-		int res = 1, maxval = A[0];
-		if (--count[A[0]] == 0)
-			count.erase(A[0]);
-		for (int i = 1; i < N && maxval > count.begin()->first; ++i)
+		vector<int> minright(N + 1);
+		minright[N] = INT_MAX;
+		for (int i = N - 1; i >= 0; --i)
+			minright[i] = min(minright[i + 1], A[i]);
+		int res = 0, maxleft = 0;
+		for (int i = 0; i < N; ++i)
 		{
-			res = i + 1;
-			maxval = max(maxval, A[i]);
-			if (--count[A[i]] == 0)
-				count.erase(A[i]);
+			maxleft = max(maxleft, A[i]);
+			if (maxleft <= minright[i + 1])
+				return i + 1;
 		}
-		return res;
+		return 0;
 	}
 };
