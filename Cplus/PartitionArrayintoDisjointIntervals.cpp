@@ -1,39 +1,26 @@
-#include<vector>
-#include<algorithm>
+#include <map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-	int partitionDisjoint(vector<int>& A) {
-		int i=0;
-		int right=getIndex(A,i);
-		int rightvalue=A[i];
-		if(right<=i)
-		{
-			return i+1;
-		}
-		for(int j=i+1;j<=right;j++)
-		{
-			int tmp=getIndex(A,j);
-			if(tmp>right)
-			{
-				right=tmp;
-				rightvalue=A[j];
-			}
-			else if(A[j]==rightvalue)
-				right++;
-			if(right==(int)A.size())
-				return right+1;
-		}
-		return 0;
-	}
-
-	int getIndex(vector<int>& arr,int start)
+	int partitionDisjoint(vector<int> &A)
 	{
-		int res=0;
-		for(int i=0;i<(int)arr.size();i++)
-			if(arr[start]>arr[i])
-				res++;
+		map<int, int> count; //{val,count}
+		for (auto n : A)
+			++count[n];
+		int N = A.size();
+		int res = 1, maxval = A[0];
+		if (--count[A[0]] == 0)
+			count.erase(A[0]);
+		for (int i = 1; i < N && maxval > count.begin()->first; ++i)
+		{
+			res = i + 1;
+			maxval = max(maxval, A[i]);
+			if (--count[A[i]] == 0)
+				count.erase(A[i]);
+		}
 		return res;
 	}
 };
