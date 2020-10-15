@@ -1,21 +1,13 @@
 
-
-
-int minAddToMakeValid(char * S){
-	int left=0,res=0;
-	while(*S)
+int minAddToMakeValid(char *S)
+{
+	int left = 0, res = 0;
+	while (*S)
 	{
-		if(*S=='(')
-			left++;
-		else if(*S==')')
-		{
-			if(left>0)
-				left--;
-			else
-				res++;
-		}
-		++S;
+		if (*S++ == '(')
+			++left;
+		else
+			left > 0 ? --left : ++res;
 	}
-	return res+left;
+	return res + left;
 }
-
