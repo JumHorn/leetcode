@@ -1,6 +1,6 @@
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -8,35 +8,36 @@ class Solution
 public:
 	vector<string> wordSubsets(vector<string> &A, vector<string> &B)
 	{
-		vector<int> v(26);
-		for (int i = 0; i < (int)B.size(); i++)
+		vector<int> count(26);
+		for (auto &str : B)
 		{
-			vector<int> tmp(26);
-			for (int j = 0; j < (int)B[i].length(); j++)
+			vector<int> v(26);
+			for (auto c : str)
 			{
-				int index = B[i][j] - 'a';
-				if (++tmp[index] > v[index])
-					v[index] = tmp[index];
+				int index = c - 'a';
+				count[index] = max(++v[index], count[index]);
 			}
 		}
 
 		vector<string> res;
-		for (int i = 0; i < (int)A.size(); i++)
+		for (auto &str : A)
 		{
-			if (checkString(A[i], v))
-				res.push_back(A[i]);
+			if (checkString(str, count))
+				res.push_back(str);
 		}
 		return res;
 	}
 
-	bool checkString(string &s, vector<int> &v)
+	bool checkString(string &s, vector<int> &count)
 	{
-		vector<int> tmp(26);
-		for (int i = 0; i < (int)s.length(); i++)
-			++tmp[s[i] - 'a'];
-		for (int i = 0; i < 26; i++)
-			if (tmp[i] < v[i])
+		vector<int> v(26);
+		for (auto c : s)
+			++v[c - 'a'];
+		for (int i = 0; i < 26; ++i)
+		{
+			if (v[i] < count[i])
 				return false;
+		}
 		return true;
 	}
 };
