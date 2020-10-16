@@ -2,43 +2,38 @@
 
 #define swap(a, b) (a) ^= (b) ^= (a) ^= (b)
 
-void reverse(int* A, int start, int end)
+void reverse(int *arr, int first, int last)
 {
-	while (start < end)
+	while (first < last)
 	{
-		swap(A[start], A[end]);
-		start++;
-		end--;
+		swap(arr[first], arr[last]);
+		++first;
+		--last;
 	}
 }
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* pancakeSort(int* A, int ASize, int* returnSize)
+int *pancakeSort(int *arr, int arrSize, int *returnSize)
 {
-	int* res = (int*)malloc(sizeof(int) * (ASize * 2 - 1));
+	int *res = (int *)malloc(sizeof(int) * (arrSize * 2));
 	*returnSize = 0;
-	for (int i = 0; i < ASize - 1; i++)
+	for (int i = 0; i < arrSize; ++i)
 	{
-		int index = 0, min = A[0];
-		for (int j = 0; j < ASize - i; j++)
+		int index = 0; //max index
+		for (int j = 1; j < arrSize - i; ++j)
 		{
-			if (A[j] < min)
-			{
+			if (arr[j] > arr[index])
 				index = j;
-				min = A[j];
-			}
 		}
-		if (index != ASize - i - 1)
+		if (index != arrSize - i - 1)
 		{
 			res[(*returnSize)++] = index + 1;
-			reverse(A, 0, index);
-			res[(*returnSize)++] = ASize - i;
-			reverse(A, 0, ASize - i - 1);
+			reverse(arr, 0, index);
+			res[(*returnSize)++] = arrSize - i;
+			reverse(arr, 0, arrSize - i - 1);
 		}
 	}
-	res[(*returnSize)++] = ASize;
 	return res;
 }
-
