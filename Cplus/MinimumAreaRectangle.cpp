@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <climits>
 #include <set>
 #include <vector>
 using namespace std;
@@ -9,13 +10,15 @@ public:
 	int minAreaRect(vector<vector<int>> &points)
 	{
 		int res = INT_MAX, n = points.size();
-		set<vector<int>> s(points.begin(), points.end());
-		for (int i = 0; i < n; i++)
+		set<pair<int, int>> s;
+		for (auto &point : points)
+			s.insert({point[0], point[1]});
+		for (auto &p1 : points)
 		{
-			int x1 = points[i][0], y1 = points[i][1];
-			for (int j = 0; j < n; j++)
+			int x1 = p1[0], y1 = p1[1];
+			for (auto &p2 : points)
 			{
-				int x2 = points[j][0], y2 = points[j][1];
+				int x2 = p2[0], y2 = p2[1];
 				if (x2 > x1 && y2 > y1)
 				{
 					if (s.find({x1, y2}) != s.end() && s.find({x2, y1}) != s.end())
