@@ -17,17 +17,19 @@ int *deckRevealedIncreasing(int *deck, int deckSize, int *returnSize)
 	int *res = (int *)malloc(sizeof(int) * deckSize);
 	memset(res, 0, sizeof(int) * deckSize);
 	qsort(deck, deckSize, sizeof(int), cmp);
-	int count = 0, index = 0;
-	while (true)
+	int size = deckSize, queue[size], front = 0, rear = 0;
+	for (int i = 0; i < deckSize; ++i)
 	{
-		res[index] = deck[count++];
-		if (count >= deckSize)
-			break;
-		while (res[index] != 0)
-			index = (index + 1) % deckSize;
-		index = (index + 1) % deckSize;
-		while (res[index] != 0)
-			index = (index + 1) % deckSize;
+		queue[rear] = i;
+		rear = (rear - 1 + size) % size; //push back
+	}
+	for (int i = 0; i < deckSize; ++i)
+	{
+		res[queue[front]] = deck[i];
+		front = (front - 1 + size) % size; //pop front
+		queue[rear] = queue[front];
+		rear = (rear - 1 + size) % size;   //push back
+		front = (front - 1 + size) % size; //pop front
 	}
 	return res;
 }
