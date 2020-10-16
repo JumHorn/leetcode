@@ -1,22 +1,22 @@
-#include<vector>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minIncrementForUnique(vector<int>& A) {
-		vector<int> freq(40001);
-		for(int i=0;i<(int)A.size();i++)
-			++freq[A[i]];		
-		int res=0;
-		for(int i=0;i<40000;i++)
+	int minIncrementForUnique(vector<int> &A)
+	{
+		sort(A.begin(), A.end());
+		int res = 0, N = A.size();
+		for (int i = 1; i < N; ++i)
 		{
-			if(freq[i]>1)
+			if (A[i] <= A[i - 1])
 			{
-				res+=freq[i]-1;
-				freq[i+1]+=freq[i]-1;
+				res += A[i - 1] + 1 - A[i];
+				A[i] = A[i - 1] + 1;
 			}
 		}
-		res+=(freq[40000]-1)*freq[40000]/2;
 		return res;
-    }
+	}
 };
