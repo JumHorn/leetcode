@@ -7,15 +7,10 @@ void recursive(int num, int N, int K, int *res, int *size)
 		res[(*size)++] = num;
 		return;
 	}
-	if (K == 0)
-		recursive(num * 10 + num % 10, N - 1, K, res, size);
-	else
-	{
-		if (num % 10 + K <= 9)
-			recursive(num * 10 + num % 10 + K, N - 1, K, res, size);
-		if (num % 10 - K >= 0)
-			recursive(num * 10 + num % 10 - K, N - 1, K, res, size);
-	}
+	if (num % 10 + K <= 9)
+		recursive(num * 10 + num % 10 + K, N - 1, K, res, size);
+	if (num % 10 - K >= 0 && K > 0)
+		recursive(num * 10 + num % 10 - K, N - 1, K, res, size);
 }
 
 /**
