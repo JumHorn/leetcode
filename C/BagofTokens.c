@@ -2,12 +2,13 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int cmp(const void* lhs, const void* rhs)
+//cmp function don't consider overflow
+int cmp(const void *lhs, const void *rhs)
 {
-	return *(int*)lhs - *(int*)rhs;
+	return *(int *)lhs - *(int *)rhs;
 }
 
-int bagOfTokensScore(int* tokens, int tokensSize, int P)
+int bagOfTokensScore(int *tokens, int tokensSize, int P)
 {
 	int res = 0, i = 0, j = tokensSize - 1, score = 0;
 	qsort(tokens, tokensSize, sizeof(int), cmp);
@@ -29,4 +30,3 @@ int bagOfTokensScore(int* tokens, int tokensSize, int P)
 	}
 	return res;
 }
-
