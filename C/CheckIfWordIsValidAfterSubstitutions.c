@@ -1,26 +1,16 @@
+#include <stdbool.h>
 
-
-bool isValid(char *S)
+bool isValid(char *s)
 {
 	int top = -1;
-	char *p = S;
+	char *p = s;
 	while (*p)
 	{
-		if (*p != 'c')
-			S[++top] = *p;
+		if (*p == 'c' && top >= 1 && s[top] == 'b' && s[top - 1] == 'a')
+			top -= 2;
 		else
-		{
-			if (top < 1)
-				S[++top] = *p;
-			else
-			{
-				if (S[top] == 'b' && S[top - 1] == 'a')
-					top -= 2;
-				else
-					S[++top] = *p;
-			}
-		}
-		p++;
+			s[++top] = *p;
+		++p;
 	}
 	return top == -1;
 }
