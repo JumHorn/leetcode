@@ -1,42 +1,36 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+Convert a number into negative base representation
+https://www.geeksforgeeks.org/convert-number-negative-base-representation/
+any negative number can be a base
+I should use math fomular to solve this problem
+most important thing to remember is, remainder will always be positive
+*/
+
+void reverse(char *arr, int first, int last)
+{
+	while (first < last)
+	{
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
+		++first;
+		--last;
+	}
+}
+
 char *baseNeg2(int N)
 {
-	char source[32] = {0}, nega[32] = {0};
-	for (int i = 0; i < 32; i++)
+	char *res = (char *)malloc(sizeof(char) * 40);
+	int resSize = 0;
+	while (N != 0)
 	{
-		if (N & (1u << i))
-		{
-			if (i % 2 == 1)
-				nega[30 - i] = 1;
-			source[31 - i] = 1;
-		}
+		res[resSize++] = (N & 1) + '0';
+		N = -(N >> 1);
 	}
-	int carry = 0;
-	for (int i = 31; i >= 0; i--)
-	{
-		int tmp = carry + source[i] + nega[i];
-		if (tmp > 1)
-		{
-			tmp = 0;
-			source[i] = '0';
-			--i;
-			carry = source[i] ? 0 : 1;
-			source[i] = 1 - source[i];
-			source[i] += '0';
-		}
-		else
-		{
-			carry = 0;
-			source[i] = tmp ? '1' : '0';
-		}
-	}
-	int index = 0;
-	while (index < 31 && source[index] == '0')
-		++index;
-	char *res = (char *)malloc((31 - index + 2) * sizeof(int));
-	memcpy(res, source + index, 31 - index + 1);
-	res[31 - index + 1] = '\0';
-	return res;
+	res[resSize] = '\0';
+	reverse(res, 0, resSize - 1);
+	return resSize == 0 ? "0" : res;
 }
