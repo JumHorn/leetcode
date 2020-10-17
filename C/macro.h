@@ -146,7 +146,7 @@ DSU *dsu_init(int N)
 	DSU *dsu = (DSU *)malloc(sizeof(DSU));
 	dsu->parent = (int *)malloc(sizeof(int) * N);
 	dsu->rank = (int *)malloc(sizeof(int) * N);
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < N; ++i)
 	{
 		dsu->parent[i] = i;
 		dsu->rank[i] = 1;
