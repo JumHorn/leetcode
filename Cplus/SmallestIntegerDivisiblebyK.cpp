@@ -6,18 +6,12 @@ class Solution
 public:
 	int smallestRepunitDivByK(int K)
 	{
-		unordered_set<int> m;
-		int d = 1, r = 0;
-		while (true)
+		int remainder = 0;
+		for (int i = 1; i <= K; ++i)
 		{
-			d %= K;
-			if (d == 0)
-				return m.size() + 1;
-			if (m.find(d) != m.end())
-				break;
-			m.insert(d);
-			d *= 10;
-			d += 1;
+			remainder = (remainder * 10 + 1) % K;
+			if (remainder == 0)
+				return i;
 		}
 		return -1;
 	}
