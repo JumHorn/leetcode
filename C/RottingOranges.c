@@ -1,50 +1,47 @@
 #include <stdbool.h>
 
-bool rotting(int **grid, int gridSize, int colSize, int rotnum)
+int orangesRotting(int **grid, int gridSize, int *gridColSize)
 {
-	bool res = false;
-	for (int i = 0; i < gridSize; ++i)
+	int M = gridSize, N = *gridColSize, fresh = 0, rot = 0;
+	int size = M * N, queue[size], front = 0, rear = 0; //circle queue
+	for (int i = 0; i < M; ++i)
 	{
-		for (int j = 0; j < colSize; ++j)
+		for (int j = 0; j < N; ++j)
 		{
-			if (grid[i][j] == rotnum)
+			if (grid[i][j] == 2)
 			{
-				//board dfs direction
-				int path[5] = {-1, 0, 1, 0, -1};
-				for (int k = 0; k < 4; ++k)
+				queue[rear] = i * N + j;
+				rear = (rear - 1 + size) % size; //push back
+			}
+			if (grid[i][j] == 1)
+				++fresh;
+		}
+	}
+	if (fresh == 0)
+		return 0;
+
+	int res = -1;
+	while (front != rear)
+	{
+		++res;
+		int s = (front - rear + size) % size; //size
+		while (--s >= 0)
+		{
+			int i = queue[front] / N, j = queue[front] % N;
+			front = (front - 1 + size) % size; //pop front
+			int path[5] = {-1, 0, 1, 0, -1};
+			for (int k = 0; k < 4; ++k)
+			{
+				int dx = i + path[k], dy = j + path[k + 1];
+				if (dx >= 0 && dx < M && dy >= 0 && dy < N && grid[dx][dy] == 1)
 				{
-					int dx = i + path[k], dy = j + path[k + 1];
-					if (dx >= 0 && dx < gridSize && dy >= 0 && dy < colSize && grid[dx][dy] == 1)
-					{
-						res = true;
-						grid[dx][dy] = rotnum + 1;
-					}
+					grid[dx][dy] = 0;
+					++rot;
+					queue[rear] = dx * N + dy;
+					rear = (rear - 1 + size) % size; //push back
 				}
 			}
 		}
 	}
-	return res;
-}
-
-bool checkGrid(int **grid, int gridSize, int colSize)
-{
-	for (int i = 0; i < gridSize; ++i)
-	{
-		for (int j = 0; j < colSize; ++j)
-		{
-			if (grid[i][j] == 1)
-				return false;
-		}
-	}
-	return true;
-}
-
-int orangesRotting(int **grid, int gridSize, int *gridColSize)
-{
-	int step = 0, rotnum = 1;
-	while (rotting(grid, gridSize, gridColSize[0], ++rotnum))
-		++step;
-	if (!checkGrid(grid, gridSize, gridColSize[0]))
-		return -1;
-	return step;
+	return fresh == rot ? res : -1;
 }
