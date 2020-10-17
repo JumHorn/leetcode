@@ -2,13 +2,15 @@
 #include <string>
 using namespace std;
 
-//Definition for a binary tree node.
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
@@ -16,32 +18,16 @@ class Solution
 public:
 	string smallestFromLeaf(TreeNode *root)
 	{
-		string tmp, res;
-		preorder(root, tmp, res);
-		return res;
+		return preorder(root, "");
 	}
 
-	void preorder(TreeNode *root, string &tmp, string &res)
+	string preorder(TreeNode *root, string str)
 	{
-		if (root == NULL)
-			return;
-		tmp.push_back(root->val + 'a');
-		if (root->left == NULL && root->right == NULL)
-		{
-			if (res.empty())
-			{
-				res = tmp;
-				reverse(res.begin(), res.end());
-			}
-			else
-			{
-				string t = tmp;
-				reverse(t.begin(), t.end());
-				res = min(res, t);
-			}
-		}
-		preorder(root->left, tmp, res);
-		preorder(root->right, tmp, res);
-		tmp.pop_back();
+		if (root == nullptr)
+			return "~";
+		str = string(1, root->val + 'a') + str;
+		if (root->left == root->right) //root->left == nullptr && root->right == nullptr
+			return str;
+		return min(preorder(root->left, str), preorder(root->right, str));
 	}
 };
