@@ -3,57 +3,52 @@
 #include <vector>
 using namespace std;
 
+class DSU
+{
+public:
+	DSU(int size) : parent(size)
+	{
+		for (int i = 0; i < size; ++i)
+			parent[i] = i;
+	}
+
+	int Find(int x)
+	{
+		if (x != parent[x])
+			parent[x] = Find(parent[x]);
+		return parent[x];
+	}
+
+	bool Union(int x, int y)
+	{
+		int xr = Find(x), yr = Find(y);
+		if (xr == yr)
+			return false;
+		parent[yr] = xr;
+		return true;
+	}
+
+private:
+	vector<int> parent;
+};
+
 class Solution
 {
 public:
-	bool equationsPossible(vector<string>& equations)
+	bool equationsPossible(vector<string> &equations)
 	{
-		vector<vector<int>> equal(26, vector<int>(26));
-		vector<vector<int>> notequal(26, vector<int>(26));
-		for (int i = 0; i < 26; i++)
-			equal[i][i] = 1;
-		for (auto& e : equations)
+		DSU equal(26);
+		for (auto &e : equations)
 		{
+			int a = e[0] - 'a', b = e[3] - 'a';
 			if (e[1] == '=')
-			{
-				for (int i = 0; i < 26; i++)
-				{
-					if (equal[e[0] - 'a'][i] == 1)
-					{
-						if (notequal[i][e[3] - 'a'] == 1)
-							return false;
-						equal[i][e[3] - 'a'] = 1;
-						equal[e[3] - 'a'][i] = 1;
-					}
-					if (equal[e[3] - 'a'][i] == 1)
-					{
-						if (notequal[i][e[0] - 'a'] == 1)
-							return false;
-						equal[i][e[0] - 'a'] = 1;
-						equal[e[0] - 'a'][i] = 1;
-					}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < 26; i++)
-				{
-					if (equal[e[0] - 'a'][i] == 1)
-					{
-						if (equal[i][e[3] - 'a'] == 1)
-							return false;
-						notequal[i][e[3] - 'a'] = 1;
-						notequal[e[3] - 'a'][i] = 1;
-					}
-					if (equal[e[3] - 'a'][i] == 1)
-					{
-						if (equal[i][e[0] - 'a'] == 1)
-							return false;
-						notequal[i][e[0] - 'a'] = 1;
-						notequal[e[0] - 'a'][i] = 1;
-					}
-				}
-			}
+				equal.Union(a, b);
+		}
+		for (auto &e : equations)
+		{
+			int a = e[0] - 'a', b = e[3] - 'a';
+			if (e[1] == '!' && equal.Find(a) == equal.Find(b))
+				return false;
 		}
 		return true;
 	}
