@@ -1,20 +1,17 @@
+#include <algorithm>
 #include <map>
 #include <vector>
 using namespace std;
-//Definition for a binary tree node.
+
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
-struct Value
-{
-	int val;
-	int Y;
-	Value(int v, int y) : val(v), Y(y) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
@@ -23,31 +20,24 @@ public:
 	vector<vector<int>> verticalTraversal(TreeNode *root)
 	{
 		vector<vector<int>> res;
-		map<int, vector<Value>> m;
+		map<int, vector<pair<int, int>>> m; //{index,{layer,value}}
 		preorder(root, 0, 0, m);
-		for (auto n : m)
+		for (auto &n : m)
 		{
-			res.push_back(vector<int>());
-			sort(n.second.begin(), n.second.end(), *this);
+			res.push_back({});
+			sort(n.second.begin(), n.second.end());
 			for (auto x : n.second)
-				res.back().push_back(x.val);
+				res.back().push_back(x.second);
 		}
 		return res;
 	}
 
-	void preorder(TreeNode *root, int x, int y, map<int, vector<Value>> &m)
+	void preorder(TreeNode *root, int x, int y, map<int, vector<pair<int, int>>> &m)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return;
-		m[x].push_back({root->val, y});
+		m[x].push_back({y, root->val});
 		preorder(root->left, x - 1, y + 1, m);
 		preorder(root->right, x + 1, y + 1, m);
-	}
-
-	bool operator()(const Value &lhs, const Value &rhs)
-	{
-		if (lhs.Y != rhs.Y)
-			return lhs.Y < rhs.Y;
-		return lhs.val < rhs.val;
 	}
 };
