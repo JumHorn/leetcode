@@ -2,44 +2,33 @@
 #include <vector>
 using namespace std;
 
-//Definition for singly-linked list.
+// Definition for singly-linked list.
 struct ListNode
 {
 	int val;
-	ListNode* next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
 class Solution
 {
 public:
-	vector<int> nextLargerNodes(ListNode* head)
+	vector<int> nextLargerNodes(ListNode *head)
 	{
 		vector<int> res;
-		while (head != NULL)
+		stack<pair<int, int>> s; //{value,index}
+		for (int index = 0; head != nullptr; ++index)
 		{
-			res.push_back(head->val);
-			head = head->next;
-		}
-		stack<int> s;
-		for (int i = 0; i < (int)res.size(); i++)
-		{
-			if (s.empty())
-				s.push(i);
-			else
+			res.push_back(0);
+			while (!s.empty() && s.top().first < head->val)
 			{
-				while (!s.empty() && res[i] > res[s.top()])
-				{
-					res[s.top()] = res[i];
-					s.pop();
-				}
-				s.push(i);
+				res[s.top().second] = head->val;
+				s.pop();
 			}
-		}
-		while (!s.empty())
-		{
-			res[s.top()] = 0;
-			s.pop();
+			s.push({head->val, index});
+			head = head->next;
 		}
 		return res;
 	}
