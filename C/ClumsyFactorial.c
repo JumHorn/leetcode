@@ -1,27 +1,19 @@
 
-int recursive(int N, int flag, int pre, int res)
-{
-	if (N == 0)
-		return res;
-	flag %= 4;
-	if (flag == 0) //*
-		res = recursive(N - 1, flag + 1, pre * N, res - pre + pre * N);
-	else if (flag == 1) // /
-		res = recursive(N - 1, flag + 1, pre / N, res - pre + pre / N);
-	else if (flag == 2) // +
-		res = recursive(N - 1, flag + 1, N, res + N);
-	else // -
-		res = recursive(N - 1, flag + 1, -N, res - N);
-	return res;
-}
-
 int clumsy(int N)
 {
-	return recursive(N - 1, 0, N, N);
-}
-
-int main()
-{
-	clumsy(5);
-	return 0;
+	if (N == 1)
+		return 1;
+	if (N == 2)
+		return 2;
+	if (N == 3)
+		return 6;
+	if (N == 4)
+		return 7;
+	if (N % 4 == 1)
+		return N + 2;
+	if (N % 4 == 2)
+		return N + 2;
+	if (N % 4 == 3)
+		return N - 1;
+	return N + 1;
 }
