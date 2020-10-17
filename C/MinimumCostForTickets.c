@@ -1,26 +1,25 @@
-#include<stdlib.h>
-#include<string.h>
+#include <string.h>
 
-#define min(a,b) (((a)>(b))?(b):(a))
-#define max(a,b) (((a)>(b))?(a):(b))
+#define min(a, b) (((a) > (b)) ? (b) : (a))
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int mincostTickets(int* days, int daysSize, int* costs, int costsSize){
-	int *dp=(int*)malloc((days[daysSize-1]+1)*sizeof(int));
-	memset(dp,0,(days[daysSize-1]+1)*sizeof(int));
-	int index=0;
-	for(int i=1;i<=days[daysSize-1];i++)
+int mincostTickets(int *days, int daysSize, int *costs, int costsSize)
+{
+	int N = days[daysSize - 1] + 1;
+	int dp[N + 1];
+	memset(dp, 0, (N + 1) * sizeof(int));
+	int index = 0;
+	for (int i = dp[index]; i < N; ++i)
 	{
-		if(i!=days[index])
-		{
-			dp[i]=dp[i-1];
-		}
+		if (i != days[index])
+			dp[i + 1] = dp[i];
 		else
 		{
-			index++;
-			dp[i]=dp[i-1]+costs[0];
-			dp[i]=min(dp[i],dp[max(0,i-7)]+costs[1]);
-			dp[i]=min(dp[i],dp[max(0,i-30)]+costs[2]);
+			++index;
+			dp[i + 1] = dp[i] + costs[0];
+			dp[i + 1] = min(dp[i + 1], dp[max(0, i + 1 - 7)] + costs[1]);
+			dp[i + 1] = min(dp[i + 1], dp[max(0, i + 1 - 30)] + costs[2]);
 		}
 	}
-	return dp[days[daysSize-1]];
+	return dp[N];
 }
