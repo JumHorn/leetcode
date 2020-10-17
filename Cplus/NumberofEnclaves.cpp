@@ -4,40 +4,38 @@ using namespace std;
 class Solution
 {
 public:
-	int numEnclaves(vector<vector<int>>& A)
+	int numEnclaves(vector<vector<int>> &A)
 	{
-		int ones = 0, m = A.size(), n = A[0].size();
-		for (int i = 0; i < m; i++)
-			for (int j = 0; j < n; j++)
-				if (A[i][j] == 1)
-					ones++;
-		for (int j = 0; j < n; j++)
+		int ones = 0, M = A.size(), N = A[0].size();
+		for (auto &v : A)
 		{
-			ones -= recursive(A, 0, j);
-			ones -= recursive(A, m - 1, j);
+			for (auto n : v)
+				ones += n;
 		}
-		for (int i = 1; i < m - 1; i++)
+		for (int j = 0; j < N; ++j)
 		{
-			ones -= recursive(A, i, 0);
-			ones -= recursive(A, i, n - 1);
+			ones -= dfs(A, 0, j);
+			ones -= dfs(A, M - 1, j);
+		}
+		for (int i = 1; i < M - 1; ++i)
+		{
+			ones -= dfs(A, i, 0);
+			ones -= dfs(A, i, N - 1);
 		}
 		return ones;
 	}
 
-	int recursive(vector<vector<int>>& A, int i, int j)
+	int dfs(vector<vector<int>> &A, int row, int col)
 	{
-		if (A[i][j] == 0)
+		int M = A.size(), N = A[0].size();
+		if (row < 0 || row >= M || col < 0 || col >= N || A[row][col] == 0)
 			return 0;
-		A[i][j] = 0;
+		//board dfs direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		A[row][col] = 0;
 		int res = 1;
-		if (i > 0)
-			res += recursive(A, i - 1, j);
-		if (i < (int)A.size() - 1)
-			res += recursive(A, i + 1, j);
-		if (j > 0)
-			res += recursive(A, i, j - 1);
-		if (j < (int)A[0].size() - 1)
-			res += recursive(A, i, j + 1);
+		for (int i = 0; i < 4; ++i)
+			res += dfs(A, row + path[i], col + path[i + 1]);
 		return res;
 	}
 };
