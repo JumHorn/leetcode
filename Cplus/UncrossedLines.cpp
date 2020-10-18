@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <unordered_map>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 class Solution
@@ -8,18 +8,21 @@ class Solution
 public:
 	int maxUncrossedLines(vector<int> &A, vector<int> &B)
 	{
-		int n = A.size(), m = B.size();
-		vector<vector<int>> dp(n + 1, vector<int>(m + 1));
-		for (int i = 0; i < n; i++)
+		int M = A.size(), N = B.size();
+		vector<int> dp(N + 1);
+		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < m; j++)
+			int pre = dp[0];
+			for (int j = 0; j < N; ++j)
 			{
+				int next = dp[j + 1];
 				if (A[i] == B[j])
-					dp[i + 1][j + 1] = max(dp[i + 1][j + 1], dp[i][j] + 1);
+					dp[j + 1] = pre + 1;
 				else
-					dp[i + 1][j + 1] = max(dp[i + 1][j + 1], max(dp[i + 1][j], dp[i][j + 1]));
+					dp[j + 1] = max(dp[j], dp[j + 1]);
+				pre = next;
 			}
 		}
-		return dp.back().back();
+		return dp[N];
 	}
 };
