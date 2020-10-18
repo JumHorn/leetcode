@@ -1,39 +1,45 @@
 #include <limits.h>
-
-#define max(a, b) (((a) > (b)) ? (a) : (b))
-#define min(a, b) (((a) < (b)) ? (a) : (b))
-#define abs(a, b) ((((a) - (b)) >= 0) ? ((a) - (b)) : ((b) - (a)))
+#include <stdlib.h>
 
 //Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
-	struct TreeNode* left;
-	struct TreeNode* right;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-int postorder(struct TreeNode* root, int* big, int* small)
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+
+typedef struct pair
+{
+	int big;
+	int small;
+} pair;
+
+pair postorder(struct TreeNode *root, int *diff)
 {
 	if (!root)
-		return 0;
-	int res = 0, lmax = INT_MIN, lmin = INT_MAX, rmax = INT_MIN, rmin = INT_MAX;
-	int resl = postorder(root->left, &lmax, &lmin);
-	int resr = postorder(root->right, &rmax, &rmin);
-	*big = max(lmax, rmax);
-	*small = min(lmin, rmin);
-	if (*big != INT_MIN)
-		res = max(res, abs(*big, root->val));
-	if (*small != INT_MAX)
-		res = max(res, abs(*small, root->val));
-	*big = max(*big, root->val);
-	*small = min(*small, root->val);
-	res = max(res, max(resl, resr));
+	{
+		pair res = {INT_MIN, INT_MAX};
+		return res;
+	}
+	pair l = postorder(root->left, diff);
+	pair r = postorder(root->right, diff);
+	pair res = {max(l.big, r.big), min(l.small, r.small)};
+	if (res.big >= res.small)
+		*diff = max(*diff, abs(res.big - root->val));
+	if (res.big >= res.small)
+		*diff = max(*diff, abs(res.small - root->val));
+	res.big = max(res.big, root->val);
+	res.small = min(res.small, root->val);
 	return res;
 }
 
-int maxAncestorDiff(struct TreeNode* root)
+int maxAncestorDiff(struct TreeNode *root)
 {
-	int big = INT_MIN, small = INT_MAX;
-	return postorder(root, &big, &small);
+	int res = 0;
+	postorder(root, &res);
+	return res;
 }
-
