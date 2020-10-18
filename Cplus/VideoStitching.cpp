@@ -7,28 +7,31 @@ class Solution
 public:
 	int videoStitching(vector<vector<int>> &clips, int T)
 	{
-		const int MAX = clips.size() + 2;
 		sort(clips.begin(), clips.end(), *this);
-		vector<int> dp(T + 1, MAX);
-		for (int i = 0; i < (int)clips.size(); i++)
+		if (clips[0][0] > 0)
+			return -1;
+		int maxend = clips[0][1], end = maxend, res = 1;
+		int N = clips.size();
+		for (int i = 1; i < N && end < T; ++i)
 		{
-			for (int j = clips[i][0]; j <= clips[i][1]; j++)
+			if (clips[i][0] > end)
 			{
-				if (j > T)
-					break;
-				if (clips[i][0] == 0)
-					dp[j] = 1;
-				else
-					dp[j] = min(dp[j], dp[clips[i][0]] + 1);
+				if (clips[i][0] > maxend)
+					return -1;
+				end = maxend;
+				++res;
 			}
+			maxend = max(maxend, clips[i][1]);
 		}
-		return dp[T] == MAX ? -1 : dp[T];
+		if (end >= T)
+			return res;
+		return maxend >= T ? res + 1 : -1;
 	}
 
 	bool operator()(vector<int> &lhs, vector<int> &rhs)
 	{
 		if (lhs[0] != rhs[0])
 			return lhs[0] < rhs[0];
-		return lhs[1] < rhs[1];
+		return lhs[1] > rhs[1];
 	}
 };
