@@ -7,26 +7,18 @@ class Solution
 public:
 	vector<int> numMovesStonesII(vector<int> &stones)
 	{
-		int n = stones.size();
-		int minimum_moves = n, maximum_moves = 0;
 		sort(stones.begin(), stones.end());
-		for (int i = 2; i < n - 1; i++)
-			maximum_moves += stones[i] - stones[i - 1] - 1;
-		maximum_moves += max(stones[1] - stones[0], stones[n - 1] - stones[n - 2]) - 1;
-		int end = stones[0] + n;
-		for (int i = 0, j = 0; i < n;)
+		int i = 0, N = stones.size(), low = N;
+		int high = max(stones[N - 1] - N + 2 - stones[1], stones[N - 2] - stones[0] - N + 2);
+		for (int j = 0; j < N; ++j)
 		{
-			if (stones[i] < end)
-			{
-				if (stones[i] - stones[j] + 1 == n - 1 && i - j + 1 == n - 1)
-					minimum_moves = min(minimum_moves, 2);
-				else
-					minimum_moves = min(minimum_moves, n - (i - j + 1));
-				i++;
-			}
+			while (stones[j] - stones[i] >= N)
+				++i;
+			if (j - i + 1 == N - 1 && stones[j] - stones[i] == N - 2)
+				low = min(low, 2);
 			else
-				end = stones[++j] + n;
+				low = min(low, N - (j - i + 1));
 		}
-		return {minimum_moves, maximum_moves};
+		return {low, high};
 	}
 };
