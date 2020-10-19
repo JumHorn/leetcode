@@ -9,7 +9,7 @@ public:
 	{
 		int i = arr1.size(), j = arr2.size();
 		int carry0 = 0, carry1 = 0;
-		vector<int> sum;
+		vector<int> res;
 		while (i > 0 || j > 0 || carry0 > 0 || carry1 > 0)
 		{
 			int bit = 0;
@@ -23,15 +23,11 @@ public:
 				carry0 = carry1 - bit / 2;
 				carry1 = 0;
 			}
-			sum.push_back(bit % 2);
+			res.push_back(bit % 2);
 		}
-		vector<int> res;
-		int N = sum.size();
-		i = N - 1;
-		while (i >= 0 && sum[i] == 0)
-			--i;
-		while (i >= 0)
-			res.push_back(sum[i--]);
-		return res.empty() ? vector<int>(1, 0) : res;
+		while ((int)res.size() > 1 && res.back() == 0)
+			res.pop_back();
+		reverse(res.begin(), res.end());
+		return res;
 	}
 };
