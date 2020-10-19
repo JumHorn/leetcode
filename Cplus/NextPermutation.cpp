@@ -12,10 +12,16 @@ public:
 		{
 			if (nums[i] > nums[i - 1])
 			{
-				int j = N - 1;
-				while (nums[j] <= nums[i - 1])
-					--j;
-				swap(nums[i - 1], nums[j]);
+				int lo = i, hi = N;
+				while (lo < hi)
+				{
+					int mi = (hi - lo) / 2 + lo;
+					if (nums[mi] > nums[i - 1])
+						lo = mi + 1;
+					else
+						hi = mi;
+				}
+				swap(nums[i - 1], nums[lo - 1]);
 				reverse(nums.begin() + i, nums.end());
 				return;
 			}
