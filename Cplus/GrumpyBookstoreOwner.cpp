@@ -5,20 +5,21 @@ using namespace std;
 class Solution
 {
 public:
-	int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int X)
+	int maxSatisfied(vector<int> &customers, vector<int> &grumpy, int X)
 	{
-		int satisfied = 0, n = customers.size();
-		for (int i = 0; i < n; i++)
+		int satisfied = 0, N = customers.size();
+		for (int i = 0; i < N; ++i)
+		{
 			if (grumpy[i] == 0)
 				satisfied += customers[i];
+		}
 		int res = 0;
-		for (int i = 0, j = 0; i < n; i++)
+		for (int i = 0; i < N; ++i)
 		{
-			if (i - j + 1 > X)
+			if (i >= X)
 			{
-				if (grumpy[j] == 1)
-					satisfied -= customers[j];
-				j++;
+				if (grumpy[i - X] == 1)
+					satisfied -= customers[i - X];
 			}
 			if (grumpy[i] == 1)
 				satisfied += customers[i];
