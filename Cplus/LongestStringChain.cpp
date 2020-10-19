@@ -8,41 +8,38 @@ class Solution
 public:
 	int longestStrChain(vector<string> &words)
 	{
-		int n = words.size();
-		vector<vector<int>> charboard(n, vector<int>(26));
+		int N = words.size();
 		sort(words.begin(), words.end(), *this);
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < (int)words[i].length(); j++)
-				charboard[i][words[i][j] - 'a']++;
-		}
-		vector<int> dp(n, 1);
+		vector<int> dp(N);
 		int res = 1;
-		for (int i = 1; i < n; i++)
+		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j < i; j++)
+			dp[i] = 1;
+			for (int j = i - 1; j >= 0; --j)
 			{
-				if (words[i].length() - 1 == words[j].length())
+				if (words[i].length() - words[j].length() > 1)
+					break;
+				if (words[i].length() == words[j].length())
+					continue;
+				if (checkValid(words[j], words[i]))
 				{
-					if (checkValid(charboard[j], charboard[i]))
-					{
-						dp[i] = dp[j] + 1;
-						res = max(res, dp[i]);
-					}
+					dp[i] = max(dp[i], dp[j] + 1);
+					res = max(res, dp[i]);
 				}
 			}
 		}
 		return res;
 	}
 
-	bool checkValid(vector<int> &a, vector<int> &b)
+	bool checkValid(string &lhs, string &rhs) //lhs is subsequence of rhs or not
 	{
-		for (int i = 0; i < (int)a.size(); i++)
+		int M = lhs.length(), N = rhs.length(), i = 0;
+		for (int j = 0; i < M && j < N; ++j)
 		{
-			if (a[i] > b[i])
-				return false;
+			if (lhs[i] == rhs[j])
+				++i;
 		}
-		return true;
+		return i == M;
 	}
 
 	bool operator()(const string &lhs, const string &rhs)
