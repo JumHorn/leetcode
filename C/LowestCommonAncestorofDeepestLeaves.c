@@ -2,42 +2,34 @@
 struct TreeNode
 {
 	int val;
-	struct TreeNode* left;
-	struct TreeNode* right;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-struct NodeDepth
-{
-	struct TreeNode* node;
-	int height;
-};
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 
-struct NodeDepth postorder(struct TreeNode* root)
+typedef struct pair
 {
+	int depth;
+	struct TreeNode *root;
+} pair;
+
+pair postorder(struct TreeNode *root)
+{
+	pair res = {0, 0};
 	if (!root)
-	{
-		struct NodeDepth res = {root, 0};
 		return res;
-	}
-	struct NodeDepth leftnode = postorder(root->left);
-	struct NodeDepth rightnode = postorder(root->right);
-	if (leftnode.height < rightnode.height)
-	{
-		struct NodeDepth res = {rightnode.node, rightnode.height + 1};
-		return res;
-	}
-	if (leftnode.height > rightnode.height)
-	{
-		struct NodeDepth res = {leftnode.node, leftnode.height + 1};
-		return res;
-	}
-	struct NodeDepth res = {root, leftnode.height + 1};
+	pair l = postorder(root->left);
+	pair r = postorder(root->right);
+	res.depth = max(l.depth, r.depth) + 1;
+	if (l.depth == r.depth)
+		res.root = root;
+	else
+		res.root = (l.depth > r.depth) ? l.root : r.root;
 	return res;
 }
 
-struct TreeNode* lcaDeepestLeaves(struct TreeNode* root)
+struct TreeNode *lcaDeepestLeaves(struct TreeNode *root)
 {
-	if (!root)
-		return root;
-	return postorder(root).node;
+	return postorder(root).root;
 }
