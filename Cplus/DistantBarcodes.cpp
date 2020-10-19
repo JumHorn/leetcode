@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <queue>
 #include <unordered_map>
 #include <vector>
 using namespace std;
@@ -7,37 +6,31 @@ using namespace std;
 class Solution
 {
 public:
-	vector<int> rearrangeBarcodes(vector<int>& barcodes)
+	vector<int> rearrangeBarcodes(vector<int> &barcodes)
 	{
-		unordered_map<int, int> m;
-		priority_queue<pair<int, int>> q;
-		for (int i = 0; i < (int)barcodes.size(); i++)
-			++m[barcodes[i]];
-		for (auto n : m)
-			q.push({n.second, n.first});
-		vector<int> res;
-		auto tmp = q.top();
-		q.pop();
-		res.push_back(tmp.second);
-		if (--tmp.first > 0)
-			q.push(tmp);
-		while (!q.empty())
+		int N = barcodes.size();
+		unordered_map<int, int> m; //{val,count}
+		vector<int> res(N);
+		int mostvalue = 0;
+		for (auto n : barcodes)
 		{
-			auto top1 = q.top();
-			q.pop();
-			if (top1.second != res.back())
-			{
-				res.push_back(top1.second);
-				if (--top1.first > 0)
-					q.push(top1);
+			if (++m[n] > m[mostvalue])
+				mostvalue = n;
+		}
+		int i = 0;
+		for (; --m[mostvalue] >= 0; i += 2)
+			res[i] = mostvalue;
+		for (auto n : m)
+		{
+			if (n.second <= 0)
 				continue;
+			while (--n.second >= 0)
+			{
+				if (i >= N)
+					i = 1;
+				res[i] = n.first;
+				i += 2;
 			}
-			auto top2 = q.top();
-			q.pop();
-			res.push_back(top2.second);
-			if (--top2.first > 0)
-				q.push(top2);
-			q.push(top1);
 		}
 		return res;
 	}
