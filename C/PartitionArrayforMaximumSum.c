@@ -1,21 +1,19 @@
-#include<stdlib.h>
-#include<string.h>
+#include <string.h>
 
-int maxSumAfterPartitioning(int* A, int ASize, int K){
-	int *dp=(int*)malloc((ASize+1)*sizeof(int));
-    memset(dp,0,sizeof(int)*(ASize+1));
-	dp[1]=A[0];
-	for(int i=1;i<ASize;i++)
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int maxSumAfterPartitioning(int *arr, int arrSize, int k)
+{
+	int dp[arrSize + 1];
+	memset(dp, 0, sizeof(int) * (arrSize + 1));
+	for (int i = 0; i < arrSize; ++i)
 	{
-		int max=A[i],index=i-K>=0?i-K:-1;
-		for(int j=i;j>index;j--)
+		int maxval = arr[i];
+		for (int j = i; j >= max(0, i - k + 1); --j)
 		{
-			if(A[j]>max)
-				max=A[j];
-			if(max*(i-j+1)+dp[j]>dp[i+1])
-				dp[i+1]=max*(i-j+1)+dp[j];
+			maxval = max(maxval, arr[j]);
+			dp[i + 1] = max(dp[i + 1], dp[j] + (i - j + 1) * maxval);
 		}
 	}
-	return dp[ASize];
+	return dp[arrSize];
 }
-
