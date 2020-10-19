@@ -6,20 +6,20 @@ class Solution
 public:
 	bool isRobotBounded(string instructions)
 	{
-		int direction[4] = {0}, d = 0;
-		for (int i = 0; i < 4; i++)
+		int x = 0, y = 0, i = 0;
+		int d[][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		for (char &ins : instructions)
 		{
-			for (auto n : instructions)
+			if (ins == 'R')
+				i = (i + 1) % 4;
+			else if (ins == 'L')
+				i = (i + 3) % 4;
+			else
 			{
-				if (n == 'G')
-					direction[d]++;
-				else if (n == 'L')
-					d = (d - 1 + 4) % 4;
-				else
-					d = (d + 1) % 4;
+				x += d[i][0];
+				y += d[i][1];
 			}
 		}
-		return direction[0] == direction[2] && direction[1] == direction[3];
+		return (x == 0 && y == 0) || i > 0;
 	}
 };
-
