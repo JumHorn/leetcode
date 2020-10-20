@@ -1,5 +1,5 @@
 
-int findPoisonedDuration(int* timeSeries, int timeSeriesSize, int duration)
+int findPoisonedDuration(int *timeSeries, int timeSeriesSize, int duration)
 {
 	int res = 0, poison_lasted = -1;
 	for (int i = 0; i < timeSeriesSize; i++)
@@ -12,4 +12,3 @@ int findPoisonedDuration(int* timeSeries, int timeSeriesSize, int duration)
 	}
 	return res;
 }
-

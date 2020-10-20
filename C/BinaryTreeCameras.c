@@ -1,4 +1,4 @@
-
+#include <stdbool.h>
 
 //Definition for a binary tree node.
 struct TreeNode
@@ -41,4 +41,3 @@ int minCameraCover(struct TreeNode *root)
 	}
 	return res;
 }
-

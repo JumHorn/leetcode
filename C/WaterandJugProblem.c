@@ -1,4 +1,4 @@
-
+#include <stdbool.h>
 
 int gcd(int x, int y)
 {
@@ -17,4 +17,3 @@ bool canMeasureWater(int x, int y, int z)
 		return z == x || z == 0;
 	return z % gcd(x, y) == 0;
 }
-

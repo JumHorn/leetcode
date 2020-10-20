@@ -1,6 +1,6 @@
+#include <stdbool.h>
 
-
-bool checkStraightLine(int** coordinates, int coordinatesSize, int* coordinatesColSize)
+bool checkStraightLine(int **coordinates, int coordinatesSize, int *coordinatesColSize)
 {
 	for (int i = 2; i < coordinatesSize; i++)
 	{
@@ -10,4 +10,3 @@ bool checkStraightLine(int** coordinates, int coordinatesSize, int* coordinatesC
 	}
 	return true;
 }
-

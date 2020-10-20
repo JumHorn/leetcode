@@ -5,12 +5,12 @@ using kmp preprocess
 create next array using dp
 */
 
-char* longestPrefix(char* s)
+char *longestPrefix(char *s)
 {
 	int n = strlen(s);
 	int next[n];
 	memset(next, 0, sizeof(next));
-	for (int i = 1; i < n; i++)
+	for (int i = 1; i < n; ++i)
 	{
 		int j = next[i - 1];
 		while (j > 0 && s[j] != s[i])
@@ -22,4 +22,3 @@ char* longestPrefix(char* s)
 	s[next[n - 1]] = '\0';
 	return s;
 }
-

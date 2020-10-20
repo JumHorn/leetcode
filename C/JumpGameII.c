@@ -1,5 +1,5 @@
 
-int jump(int* nums, int numsSize)
+int jump(int *nums, int numsSize)
 {
 	if (numsSize <= 1)
 		return 0;
@@ -16,4 +16,3 @@ int jump(int* nums, int numsSize)
 	}
 	return res;
 }
-

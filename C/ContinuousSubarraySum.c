@@ -1,6 +1,6 @@
+#include <stdbool.h>
 
-
-bool checkSubarraySum(int* nums, int numsSize, int k)
+bool checkSubarraySum(int *nums, int numsSize, int k)
 {
 	for (int i = 0; i < numsSize - 1; i++)
 		nums[i + 1] += nums[i];
@@ -17,4 +17,3 @@ bool checkSubarraySum(int* nums, int numsSize, int k)
 		}
 	return false;
 }
-

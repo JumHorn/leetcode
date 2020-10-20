@@ -1,11 +1,12 @@
+#include <stdbool.h>
 
-#define HEAD0 128  //(1<<7)
-#define HEAD1 192  //(1<<7)|(1<<6)
-#define HEAD2 224  //(1<<7)|(1<<6)|(1<<5)
-#define HEAD3 240  //(1<<7)|(1<<6)|(1<<5)|(1<<4)
-#define HEAD4 248  //(1<<7)|(1<<6)|(1<<5)|(1<<4)|(1<<3)
+#define HEAD0 128 //(1<<7)
+#define HEAD1 192 //(1<<7)|(1<<6)
+#define HEAD2 224 //(1<<7)|(1<<6)|(1<<5)
+#define HEAD3 240 //(1<<7)|(1<<6)|(1<<5)|(1<<4)
+#define HEAD4 248 //(1<<7)|(1<<6)|(1<<5)|(1<<4)|(1<<3)
 
-bool validUtf8(int* data, int dataSize)
+bool validUtf8(int *data, int dataSize)
 {
 	int i = 0, len = 0;
 	while (i < dataSize)
@@ -29,4 +30,3 @@ bool validUtf8(int* data, int dataSize)
 	}
 	return true;
 }
-
