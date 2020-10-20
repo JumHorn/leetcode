@@ -1,56 +1,43 @@
-#include <list>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
-//Definition for a binary tree node.
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
-	TreeNode* left;
-	TreeNode* right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
 {
 public:
-	vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete)
+	vector<TreeNode *> delNodes(TreeNode *root, vector<int> &to_delete)
 	{
-		list<TreeNode*> res;
-		bool deletes[1001] = {0};
-		for (int i = 0; i < (int)to_delete.size(); i++)
-			deletes[to_delete[i]] = true;
-		res.push_back(root);
-		auto iter = res.begin();
-		while (iter != res.end())
-		{
-			*iter = dfs(*iter, deletes, res);
-			++iter;
-		}
-		for (auto iter = res.begin(); iter != res.end();)
-		{
-			if (*iter == NULL)
-				iter = res.erase(iter);
-			else
-				++iter;
-		}
-		return vector<TreeNode*>(res.begin(), res.end());
+		vector<TreeNode *> res;
+		unordered_set<int> delets(to_delete.begin(), to_delete.end());
+		preorder(root, true, delets, res);
+		return res;
 	}
 
-	TreeNode* dfs(TreeNode* root, bool* deletes, list<TreeNode*>& res)
+	TreeNode *preorder(TreeNode *root, bool parentDeleted, unordered_set<int> &deletes, vector<TreeNode *> &forest)
 	{
-		if (root == NULL)
-			return NULL;
-		if (deletes[root->val])
+		if (root == nullptr)
+			return nullptr;
+		if (deletes.find(root->val) == deletes.end())
 		{
-			if (root->left != NULL)
-				res.push_back(root->left);
-			if (root->right != NULL)
-				res.push_back(root->right);
-			return NULL;
+			if (parentDeleted)
+				forest.push_back(root);
+			parentDeleted = false;
 		}
-		root->left = dfs(root->left, deletes, res);
-		root->right = dfs(root->right, deletes, res);
-		return root;
+		else
+			parentDeleted = true;
+		root->left = preorder(root->left, parentDeleted, deletes, forest);
+		root->right = preorder(root->right, parentDeleted, deletes, forest);
+		return parentDeleted ? nullptr : root;
 	}
 };
