@@ -9,7 +9,7 @@ class DSU
 public:
 	DSU(int size) : parent(size)
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; ++i)
 			parent[i] = i;
 	}
 
@@ -42,8 +42,9 @@ public:
 		for (auto &p : pairs)
 			dsu.Union(p[0], p[1]);
 		vector<int> parent(s.length());
-		unordered_map<int, string> m;
-		for (int i = 0; i < (int)s.length(); i++)
+		unordered_map<int, string> m; //{parent,char}
+		int N = s.length();
+		for (int i = 0; i < N; ++i)
 		{
 			int p = dsu.Find(i);
 			parent[i] = p;
@@ -51,7 +52,7 @@ public:
 		}
 		for (auto &n : m)
 			sort(n.second.begin(), n.second.end(), greater<char>());
-		for (int i = 0; i < (int)s.length(); i++)
+		for (int i = 0; i < N; ++i)
 		{
 			s[i] = m[parent[i]].back();
 			m[parent[i]].pop_back();
@@ -59,4 +60,3 @@ public:
 		return s;
 	}
 };
-
