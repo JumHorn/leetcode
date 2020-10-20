@@ -6,37 +6,33 @@ using namespace std;
 class Solution
 {
 public:
-	int shortestPathBinaryMatrix(vector<vector<int>>& grid)
+	int shortestPathBinaryMatrix(vector<vector<int>> &grid)
 	{
-		if (grid[0][0] == 1 || grid.back().back() == 1)
-			return -1;
-		if (grid.size() == 1)
-			return 1;
-		vector<vector<int>> visited(grid.size(), vector<int>(grid.size()));
-		queue<pair<int, int>> q;
 		int res = 0, N = grid.size();
+		if (grid[0][0] == 1 || grid[N - 1][N - 1] == 1)
+			return -1;
+		if (N == 1)
+			return 1;
 		int dir[][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
-		q.push({0, 0});
-		visited[0][0] = 1;
+		queue<int> q;
+		q.push(0);
 		while (!q.empty())
 		{
-			int size = q.size();
 			++res;
+			int size = q.size();
 			while (--size >= 0)
 			{
-				int x = q.front().first, y = q.front().second;
+				int x = q.front() / N, y = q.front() % N;
 				q.pop();
-				for (int i = 0; i < 8; i++)
+				for (int i = 0; i < 8; ++i)
 				{
 					int dx = x + dir[i][0], dy = y + dir[i][1];
-					if (dx < 0 || dy < 0 || dx >= N || dy >= N)
+					if (dx < 0 || dx >= N || dy < 0 || dy >= N || grid[dx][dy] == 1)
 						continue;
-					if (visited[dx][dy] == 1 || grid[dx][dy] == 1)
-						continue;
+					grid[dx][dy] = 1;
 					if (dx == N - 1 && dy == N - 1)
 						return res + 1;
-					visited[dx][dy] = 1;
-					q.push({dx, dy});
+					q.push(dx * N + dy);
 				}
 			}
 		}
