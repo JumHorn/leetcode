@@ -7,13 +7,13 @@ public:
 	vector<int> corpFlightBookings(vector<vector<int>> &bookings, int n)
 	{
 		vector<int> res(n);
-		for (int i = 0; i < (int)bookings.size(); i++)
+		for (auto book : bookings)
 		{
-			res[bookings[i][0] - 1] += bookings[i][2];
-			if (bookings[i][1] < n)
-				res[bookings[i][1]] -= bookings[i][2];
+			res[book[0] - 1] += book[2];
+			if (book[1] < n)
+				res[book[1]] -= book[2];
 		}
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 			res[i] += res[i - 1];
 		return res;
 	}
