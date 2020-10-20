@@ -1,5 +1,5 @@
+#include <unordered_map>
 #include <vector>
-#include <map>
 using namespace std;
 
 class Solution
@@ -7,37 +7,22 @@ class Solution
 public:
 	int minSumOfLengths(vector<int> &arr, int target)
 	{
-		map<int, int> m; //{len,count}
-		int n = arr.size();
-		int sum = arr[0];
-		for (int i = 0, j = 1;;)
+		int N = arr.size(), sum = 0, res = N + 1, curMinLen = N + 1;
+		vector<int> dp(N + 1, N + 1);
+		unordered_map<int, int> m; //{value,index}
+		m[0] = 0;
+		for (int i = 0; i < N; ++i)
 		{
-			if (sum == target)
+			sum += arr[i];
+			int diff = sum - target;
+			if (m.find(diff) != m.end())
 			{
-				++m[j - i];
-				i = j;
-				sum = 0;
+				curMinLen = min(curMinLen, i - m[diff] + 1);
+				res = min(res, dp[m[diff]] + i - m[diff] + 1);
 			}
-			else if (sum > target)
-				sum -= arr[i++];
-			else
-			{
-				if (j >= n)
-					break;
-				while (j < n && sum < target)
-					sum += arr[j++];
-			}
+			dp[i + 1] = curMinLen;
+			m[sum] = i + 1;
 		}
-		int res = 0, count = 0;
-		for (auto iter : m)
-		{
-			if (count >= 2)
-				break;
-			res += iter.first * min(iter.second, 2 - count);
-			count += iter.second;
-		}
-		if (count < 2)
-			return -1;
-		return res;
+		return res > N ? -1 : res;
 	}
 };
