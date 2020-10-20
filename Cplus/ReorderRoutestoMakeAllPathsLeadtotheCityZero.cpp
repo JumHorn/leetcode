@@ -5,26 +5,27 @@ using namespace std;
 class Solution
 {
 public:
-	int minReorder(int n, vector<vector<int>>& connections)
+	int minReorder(int n, vector<vector<int>> &connections)
 	{
 		vector<unordered_map<int, int>> graph(n);
-		for (auto& conn : connections)
+		for (auto &conn : connections)
 		{
-			graph[conn[0]][conn[1]] = 1;
+			graph[conn[0]][conn[1]] = 1; //real edge
+			graph[conn[1]][conn[0]] = 0; //virtual edge
 		}
-		int res = 0;
-		for (int i = 1; i < n; i++)
-		{
-			res += dfs(graph, i);
-		}
-		return res;
+		return dfs(graph, 0);
 	}
 
-	int dfs(vector<unordered_map<int, int>>& graph, int at)
+	int dfs(vector<unordered_map<int, int>> &graph, int at)
 	{
-		if (at == 0)
-			return 0;
-		if (graph[at].find(0) != graph[at].end())
-			return 0;
+		int res = 0;
+		for (auto &to : graph[at])
+		{
+			if (to.second == 1)
+				++res;
+			graph[to.first].erase(at);
+			res += dfs(graph, to.first);
+		}
+		return res;
 	}
 };
