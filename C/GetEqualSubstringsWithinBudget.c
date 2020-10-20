@@ -1,25 +1,16 @@
-#define max(a, b) (((a) > (b)) ? (a) : (b))
-#define abs(a) (((a) < 0) ? (-(a)) : (a))
+#include <stdlib.h>
 
 int equalSubstring(char *s, char *t, int maxCost)
 {
-	int i = 0, j = 0, res = 0, sum = 0;
-	while (s[i])
+	int i = 0, j = 0, cost = 0;
+	for (; s[j]; ++j)
 	{
-		sum += abs(s[i] - t[i]);
-		if (sum <= maxCost)
-			res = max(res, i - j + 1);
-		else
+		cost += abs(s[j] - t[j]);
+		if (cost > maxCost)
 		{
-			while (j <= i)
-			{
-				sum -= abs(s[j] - t[j]);
-				j++;
-				if (sum <= maxCost)
-					break;
-			}
+			cost -= abs(s[i] - t[i]);
+			++i;
 		}
-		i++;
 	}
-	return res;
+	return j - i;
 }
