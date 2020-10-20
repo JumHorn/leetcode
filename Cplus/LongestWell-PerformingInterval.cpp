@@ -1,32 +1,32 @@
 #include <algorithm>
-#include <unordered_map>
+#include <stack>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int longestWPI(vector<int>& hours)
+	int longestWPI(vector<int> &hours)
 	{
-		hours[0] = hours[0] > 8 ? 1 : -1;
-		for (int i = 1; i < (int)hours.size(); i++)
+		int N = hours.size(), res = 0;
+		vector<int> prefixsum(N + 1);
+		for (int i = 0; i < N; ++i)
+			prefixsum[i + 1] = prefixsum[i] + (hours[i] > 8 ? 1 : -1);
+		stack<int> s; //decreasing stack with value's index
+		s.push(0);
+		for (int i = 0; i <= N; ++i)
 		{
-			hours[i] = hours[i] > 8 ? 1 : -1;
-			hours[i] += hours[i - 1];
+			if (prefixsum[i] < prefixsum[s.top()])
+				s.push(i);
 		}
-		if (hours[hours.size() - 1] > 0)
-			return hours.size();
-		unordered_map<int, int> m;
-		m[0] = -1;
-		int res = 0;
-		for (int i = 0; i < (int)hours.size(); i++)
+		for (int i = N; i >= 0; --i)
 		{
-			if (m.find(hours[i] - 1) != m.end())
-				res = max(res, i - m[hours[i] - 1]);
-			if (m.find(hours[i]) == m.end())
-				m[hours[i]] = i;
+			while (!s.empty() && prefixsum[i] - prefixsum[s.top()] >= 1)
+			{
+				res = max(res, i - s.top());
+				s.pop();
+			}
 		}
 		return res;
 	}
 };
-
