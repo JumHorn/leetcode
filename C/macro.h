@@ -1,7 +1,7 @@
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-// all ready defined in math.h
+// all ready defined in stdlib.h
 #define abs(x) (((x) < 0) ? (-(x)) : (x))
 
 // linux kernel swap version
@@ -291,4 +291,34 @@ int **mallocRes(int **data, int dataSize, int *dataColSize, int *returnSize, int
 	}
 	return res;
 }
-/********malloc result********/
+/********end of malloc result********/
+
+// create graph
+typedef struct GraphNode
+{
+	int node;
+	struct GraphNode *next;
+} GraphNode;
+
+GraphNode *createNode(int val)
+{
+	GraphNode *node = (GraphNode *)malloc(sizeof(GraphNode));
+	node->node = val;
+	node->next = NULL;
+	return node;
+}
+
+// void createGraph(int N, int **edges, int edgeSize)
+// {
+// 	GraphNode *graph[N];
+// 	for (int i = 0; i < edgeSize; ++i)
+// 	{
+// 		GraphNode *node = createNode(edges[i][1]);
+// 		node->next = graph[edges[i][0]];
+// 		graph[edges[i][0]] = node;
+// 		node = createNode(edges[i][0]);
+// 		node->next = graph[edges[i][1]];
+// 		graph[edges[i][1]] = node;
+// 	}
+// }
+/********end of create graph********/
