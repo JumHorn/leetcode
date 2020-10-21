@@ -336,6 +336,7 @@ GraphNode *createNode(int val)
 void createGraph(int N, int **edges, int edgeSize)
 {
 	GraphNode *graph[N];
+	memset(graph, 0, sizeof(graph));
 	for (int i = 0; i < edgeSize; ++i)
 	{
 		GraphNode *node = createNode(edges[i][1]);
