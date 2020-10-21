@@ -11,42 +11,20 @@ class Solution
 public:
 	int maxAbsValExpr(vector<int> &arr1, vector<int> &arr2)
 	{
-		int n = arr1.size(), res = 0;
-		//A+B
-		for (int i = 1, index = 0; i < n; i++)
+		int res = 0, N = arr1.size();
+		vector<int> coeff = {1, -1};
+		for (int p : coeff)
 		{
-			int tmp = arr1[i] - arr1[index] + arr2[i] - arr2[index] + i - index;
-			res = max(res, tmp);
-
-			if (arr1[i] + arr2[i] + 2 * i < arr1[index] + arr2[index] + 2 * index)
-				index = i;
-		}
-		//A-B
-		for (int i = 1, index = 0; i < n; i++)
-		{
-			int tmp = arr1[i] - arr1[index] - arr2[i] + arr2[index] + i - index;
-			res = max(res, tmp);
-
-			if (arr1[i] - arr2[i] + 2 * i < arr1[index] - arr2[index] + 2 * index)
-				index = i;
-		}
-		//-A+B
-		for (int i = 1, index = 0; i < n; i++)
-		{
-			int tmp = -arr1[i] + arr1[index] + arr2[i] - arr2[index] + i - index;
-			res = max(res, tmp);
-
-			if (-arr1[i] + arr2[i] + 2 * i < -arr1[index] + arr2[index] + 2 * index)
-				index = i;
-		}
-		//-A-B
-		for (int i = 1, index = 0; i < n; i++)
-		{
-			int tmp = -arr1[i] + arr1[index] - arr2[i] + arr2[index] + i - index;
-			res = max(res, tmp);
-
-			if (-arr1[i] - arr2[i] + 2 * i < -arr1[index] - arr2[index] + 2 * index)
-				index = i;
+			for (int q : coeff)
+			{
+				int smallest = p * arr1[0] + q * arr2[0] + 0;
+				for (int i = 1; i < N; ++i)
+				{
+					int cur = p * arr1[i] + q * arr2[i] + i;
+					res = max(res, cur - smallest);
+					smallest = min(smallest, cur);
+				}
+			}
 		}
 		return res;
 	}
