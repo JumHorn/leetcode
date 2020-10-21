@@ -1,52 +1,26 @@
+/*
+Aggregate the entire array in sum.
+Find the maximum subbaray sum maxsub for 2-concatenated array (note the special case when k == 1).
+if sum is a positive, maxsub will always span across two arrays.
+If sum > 0, add it k - 2 times to maxsub.
+*/
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
-#define MOD (int)(1e9 + 7)
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 
 int kConcatenationMaxSum(int *arr, int arrSize, int k)
 {
-	int res = 0;
-	long sum = 0;
-	if (k == 1)
+	static const int MOD = 1e9 + 7;
+	int res = 0, dp = 0, sum = 0, N = arrSize;
+	//kadane
+	for (int i = 0; i < min(2, k) * N; ++i)
 	{
-		for (int i = 0; i < arrSize; i++)
-		{
-			sum = max(sum + arr[i], arr[i]);
-			res = max(res, sum);
-		}
-		return res % MOD;
+		dp = max(dp, 0) + arr[i % N];
+		res = max(res, dp);
+		if (i < N)
+			sum += arr[i];
 	}
-
-	for (int i = 0; i < 2 * arrSize; i++)
-	{
-		sum = max(sum + arr[i % arrSize], arr[i % arrSize]);
-		res = max(res, sum);
-	}
-	if (k == 2)
-		return res % MOD;
-
-	sum = 0;
-	for (int i = 0; i < 3 * arrSize; i++)
-	{
-		sum = max(sum + arr[i % arrSize], arr[i % arrSize]);
-		res = max(res, sum);
-	}
-
-	sum = 0;
-	for (int i = 0; i < arrSize; i++)
-		sum += arr[i];
-	sum = (max(sum, 0) % MOD) * (k - 2);
-	int left = 0, right = 0, all = 0;
-	for (int i = 0; i < arrSize; i++)
-	{
-		all += arr[i];
-		left = max(left, all);
-	}
-	all = 0;
-	for (int i = arrSize - 1; i >= 0; i--)
-	{
-		all += arr[i];
-		right = max(right, all);
-	}
-	res = max(res % MOD, sum % MOD + left % MOD + right % MOD);
-	return res % MOD;
+	while (sum > 0 && --k >= 2)
+		res = (res + sum) % MOD;
+	return res;
 }
