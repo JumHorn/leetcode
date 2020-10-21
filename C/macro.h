@@ -123,6 +123,31 @@ void make_heap(int *ptr, int size)
 }
 /********end of max heap********/
 
+//divide and conquer
+void merge(int *arr, int *dup, int first, int mid, int last)
+{
+	int i = first, j = mid, d = 0;
+	while (i < mid && j < last)
+		dup[d++] = arr[i] < arr[j] ? arr[i++] : arr[j++];
+	while (i < mid)
+		dup[d++] = arr[i++];
+	while (j < last)
+		dup[d++] = arr[j++];
+	memcpy(arr + first, dup, (last - first) * sizeof(int));
+}
+
+void divide(int *sum, int *dup, int first, int last)
+{
+	if (last - first < 2)
+		return;
+	int mid = (last - first) / 2 + first;
+	divide(sum, dup, first, mid);
+	divide(sum, dup, mid, last);
+	//to do
+	merge(sum, dup, first, mid, last);
+}
+/********end of divide and conquer********/
+
 // cross product
 int crossProduct(int *pointA, int *pointB, int *pointC)
 {
@@ -133,6 +158,22 @@ int crossProduct(int *pointA, int *pointB, int *pointC)
 	return x1 * y2 - x2 * y1;
 }
 /********end of cross product********/
+
+//kmp next array
+void createKMP(char *pattern)
+{
+	int N = strlen(pattern);
+	int next[N];
+	for (int i = 1, j = 0; i < N; ++i)
+	{
+		while (j > 0 && pattern[i] != pattern[j])
+			j = next[j - 1];
+		if (pattern[i] == pattern[j])
+			++j;
+		next[i] = j;
+	}
+}
+/********end of kmp next array********/
 
 // DSU
 typedef struct DSU
@@ -277,22 +318,6 @@ void update(int *tree, int size, int index, int delta)
 }
 /********end of Fenwick tree(BIT)********/
 
-//malloc result
-int **mallocRes(int **data, int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
-{
-	*returnSize = dataSize;
-	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	memcpy(*returnColumnSizes, dataColSize, sizeof(int) * (*returnSize));
-	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
-	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
-		memcpy(res[i], data[i], sizeof(int) * ((*returnColumnSizes)[i]));
-	}
-	return res;
-}
-/********end of malloc result********/
-
 // create graph
 typedef struct GraphNode
 {
@@ -308,17 +333,33 @@ GraphNode *createNode(int val)
 	return node;
 }
 
-// void createGraph(int N, int **edges, int edgeSize)
-// {
-// 	GraphNode *graph[N];
-// 	for (int i = 0; i < edgeSize; ++i)
-// 	{
-// 		GraphNode *node = createNode(edges[i][1]);
-// 		node->next = graph[edges[i][0]];
-// 		graph[edges[i][0]] = node;
-// 		node = createNode(edges[i][0]);
-// 		node->next = graph[edges[i][1]];
-// 		graph[edges[i][1]] = node;
-// 	}
-// }
+void createGraph(int N, int **edges, int edgeSize)
+{
+	GraphNode *graph[N];
+	for (int i = 0; i < edgeSize; ++i)
+	{
+		GraphNode *node = createNode(edges[i][1]);
+		node->next = graph[edges[i][0]];
+		graph[edges[i][0]] = node;
+		node = createNode(edges[i][0]);
+		node->next = graph[edges[i][1]];
+		graph[edges[i][1]] = node;
+	}
+}
 /********end of create graph********/
+
+//malloc result
+int **mallocRes(int **data, int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
+{
+	*returnSize = dataSize;
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	memcpy(*returnColumnSizes, dataColSize, sizeof(int) * (*returnSize));
+	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
+	for (int i = 0; i < *returnSize; ++i)
+	{
+		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
+		memcpy(res[i], data[i], sizeof(int) * ((*returnColumnSizes)[i]));
+	}
+	return res;
+}
+/********end of malloc result********/
