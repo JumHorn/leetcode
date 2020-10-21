@@ -9,23 +9,19 @@ public:
 	int mctFromLeafValues(vector<int> &arr)
 	{
 		int N = arr.size();
-		vector<vector<int>> dp(N, vector<int>(N, -1));
-		return memdp(arr, 0, N - 1, dp);
-	}
-
-	int memdp(vector<int> &arr, int first, int last, vector<vector<int>> &dp) //[first,last]
-	{
-		if (first >= last)
-			return 0;
-		if (dp[first][last] != -1)
-			return dp[first][last];
-		int res = INT_MAX;
-		for (int i = first; i < last; ++i)
+		vector<vector<int>> dp(N, vector<int>(N)), maxVal(N, vector<int>(N));
+		maxVal[0][0] = arr[0];
+		for (int j = 1; j < N; ++j)
 		{
-			int val = (*max_element(arr.begin() + first, arr.begin() + i + 1)) *
-					  (*max_element(arr.begin() + i + 1, arr.begin() + last + 1));
-			res = min(res, val + memdp(arr, first, i, dp) + memdp(arr, i + 1, last, dp));
+			maxVal[j][j] = arr[j];
+			for (int i = j - 1; i >= 0; --i)
+			{
+				maxVal[i][j] = max(maxVal[i][j - 1], arr[j]);
+				dp[i][j] = INT_MAX;
+				for (int k = i; k < j; ++k)
+					dp[i][j] = min(dp[i][j], dp[i][k] + dp[k + 1][j] + maxVal[i][k] * maxVal[k + 1][j]);
+			}
 		}
-		return dp[first][last] = res;
+		return dp[0][N - 1];
 	}
 };
