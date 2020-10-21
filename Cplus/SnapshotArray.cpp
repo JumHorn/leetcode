@@ -8,7 +8,7 @@ class SnapshotArray
 public:
 	SnapshotArray(int length) : data(length), snapid(0)
 	{
-		for (int i = 0; i < length; i++)
+		for (int i = 0; i < length; ++i)
 			data[i][0] = 0;
 	}
 
@@ -24,16 +24,13 @@ public:
 
 	int get(int index, int snap_id)
 	{
-		if (data[index].find(snap_id) != data[index].end())
-			return data[index][snap_id];
-		auto iter = data[index].lower_bound(snap_id);
-		--iter;
-		return iter->second;
+		auto iter = data[index].upper_bound(snap_id);
+		return (--iter)->second;
 	}
 
 private:
 	vector<map<int, int>> data;
-	int snapid;	 //0 based
+	int snapid; //0 based
 };
 
 /**
