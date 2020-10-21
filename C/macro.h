@@ -349,6 +349,34 @@ void createGraph(int N, int **edges, int edgeSize)
 }
 /********end of create graph********/
 
+//DynamicArray
+typedef struct DynamicArray
+{
+	int *data;
+	int size;
+	int capacity;
+} DynamicArray;
+
+DynamicArray *arr_init()
+{
+	DynamicArray *arr = (DynamicArray *)malloc(sizeof(DynamicArray));
+	arr->size = 0;
+	arr->capacity = 4;
+	arr->data = (int *)malloc(sizeof(int) * arr->capacity);
+	return arr;
+}
+
+void arr_append(DynamicArray *arr, int val)
+{
+	if (arr->size >= arr->capacity)
+	{
+		arr->capacity <<= 1;
+		arr->data = (int *)realloc(arr->data, sizeof(int) * arr->capacity);
+	}
+	arr->data[arr->size++] = val;
+}
+/********end of DynamicArray********/
+
 //malloc result
 int **mallocRes(int **data, int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
 {
