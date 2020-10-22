@@ -1,49 +1,17 @@
+#include <string.h>
 
-
-
-char * removeDuplicates(char * s, int k){
-	char* p=s,*top=s;
-	while(*p)
+char *removeDuplicates(char *s, int k)
+{
+	int top = 0, N = strlen(s);
+	int count[N];
+	count[0] = 0;
+	for (int i = 0; i < N; ++i, ++top)
 	{
-		int count=0;
-		char c=*p;
-		char *q=top;
-		while(q!=s)
-		{
-			--q;
-			if(*q==c)
-				count++;
-			else
-				break;
-			if(count==k)
-				break;
-		}
-		char *p1=p;
-		while(*p1&&*p1==c&&count!=k)
-		{
-			p1++;
-			count++;
-		}
-		if(count<k)
-		{
-			if(p!=top)
-			{
-				while(p!=p1)
-					*top++=*p++;
-			}
-			else
-				top=p1;
-		}
-		else
-		{
-			if(q==s&&*s==c)
-				top=q;
-			else
-				top=q+1;
-		}
-		
-		p=p1;
+		s[top] = s[i];
+		count[top] = (top > 0 && s[top - 1] == s[i] ? count[top - 1] + 1 : 1);
+		if (count[top] == k)
+			top -= k;
 	}
-	*top='\0';
+	s[top] = '\0';
 	return s;
 }
