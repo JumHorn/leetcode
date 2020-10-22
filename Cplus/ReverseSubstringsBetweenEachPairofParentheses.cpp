@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <stack>
 #include <string>
 using namespace std;
 
@@ -7,40 +8,40 @@ class Solution
 public:
 	string reverseParentheses(string s)
 	{
-		int index = 0;
-		return recursive(s, index, 0);
-	}
-
-	string recursive(string& s, int& index, int count)
-	{
-		string res;
-		while (index < (int)s.length() && s[index] != ')')
+		stack<pair<int, string>> stk; //{left parenthese count,str}
+		stk.push({-1, ""});
+		int left = 0, pos = 0, N = s.length(); //last parentheses pos
+		for (int i = 0; i <= N; ++i)
 		{
-			if (s[index] == '(')
+			if (s[i] == ')' || i == N)
 			{
-				++index;
-				if (count % 2 == 0)
-					res = res + recursive(s, index, count + 1);
-				else
-					res = recursive(s, index, count + 1) + res;
-			}
-			else
-			{
-				int i = index;
-				while (i < (int)s.length() && s[i] != ')' && s[i] != '(')
-					i++;
-				if (count % 2 == 0)
-					res = res + s.substr(index, i - index);
-				else
+				string val = s.substr(pos, i - pos);
+				if (left % 2 == 1)
+					reverse(val.begin(), val.end());
+				stk.push({left, val});
+				pos = i + 1;
+				--left;
+
+				while (left < stk.top().first)
 				{
-					string tmp = s.substr(index, i - index);
-					reverse(tmp.begin(), tmp.end());
-					res = tmp + res;
+					val = stk.top().second;
+					stk.pop();
+					if (stk.top().first % 2 == 1)
+						stk.top().second = val + stk.top().second;
+					else
+						stk.top().second += val;
 				}
-				index = i;
+			}
+			else if (s[i] == '(')
+			{
+				string val = s.substr(pos, i - pos);
+				if (left % 2 == 1)
+					reverse(val.begin(), val.end());
+				stk.push({left, val});
+				pos = i + 1;
+				++left;
 			}
 		}
-		++index;
-		return res;
+		return stk.top().second;
 	}
 };
