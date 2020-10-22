@@ -1,7 +1,8 @@
 #include <algorithm>
+#include <sstream>
 #include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -20,8 +21,9 @@ public:
 	vector<string> invalidTransactions(vector<string> &transactions)
 	{
 		vector<trans> v;
-		unordered_set<int> seen;
-		for (int i = 0; i < (int)transactions.size(); i++)
+		unordered_set<int> seen; //{index}
+		int N = transactions.size();
+		for (int i = 0; i < N; ++i)
 		{
 			trans s = split(transactions[i]);
 			s.index = i;
@@ -30,9 +32,9 @@ public:
 			v.push_back(s);
 		}
 		sort(v.begin(), v.end(), *this);
-		for (int i = 0; i < (int)v.size() - 1; i++)
+		for (int i = 0; i < N - 1; ++i)
 		{
-			for (int j = i + 1; j < (int)v.size(); j++)
+			for (int j = i + 1; j < N; ++j)
 			{
 				if (v[j].name != v[i].name)
 					break;
@@ -45,29 +47,23 @@ public:
 				}
 			}
 		}
-		vector<string> res(seen.size());
-		int i = 0;
+		vector<string> res;
 		for (auto n : seen)
-			res[i++] = transactions[n];
+			res.push_back(transactions[n]);
 		return res;
 	}
 
 	trans split(const string &tran)
 	{
+		stringstream ss(tran);
 		trans res;
-		int i = 0, j = 0;
-		while (tran[j] != ',')
-			j++;
-		res.name = tran.substr(i, j - i);
-		i = ++j;
-		while (tran[j] != ',')
-			j++;
-		res.time = stoi(tran.substr(i, j - i));
-		i = ++j;
-		while (tran[j] != ',')
-			j++;
-		res.amount = stoi(tran.substr(i, j - i));
-		res.city = tran.substr(j + 1);
+		char comma;
+		getline(ss, res.name, ',');
+		ss >> res.time;
+		ss >> comma;
+		ss >> res.amount;
+		ss >> comma;
+		ss >> res.city;
 		return res;
 	}
 
@@ -79,8 +75,6 @@ public:
 			return lhs.time < rhs.time;
 		if (lhs.amount != rhs.amount)
 			return lhs.amount < rhs.amount;
-		if (lhs.city != rhs.city)
-			return lhs.city < rhs.city;
-		return false;
+		return lhs.city < rhs.city;
 	}
 };
