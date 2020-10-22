@@ -1,19 +1,19 @@
-#include<vector>
-#include<unordered_map>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int,int> indexmap;
-		unordered_map<int,int>::iterator iter;
-		for(int i=0;i<(int)nums.size();i++)
+	vector<int> twoSum(vector<int> &nums, int target)
+	{
+		unordered_map<int, int> m; //{value,index}
+		for (int i = 0; i < (int)nums.size(); ++i)
 		{
-            iter=indexmap.find(target-nums[i]);
-            if(iter!=indexmap.end())
-                return {iter->second,i};
-            indexmap.insert({nums[i],i});
+			if (m.find(target - nums[i]) != m.end())
+				return {m[target - nums[i]], i};
+			m[nums[i]] = i;
 		}
-		return vector<int>();
-    }
+		return {};
+	}
 };
