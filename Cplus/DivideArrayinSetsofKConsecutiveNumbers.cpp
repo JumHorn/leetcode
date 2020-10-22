@@ -1,4 +1,5 @@
 #include <map>
+#include <queue>
 #include <vector>
 using namespace std;
 
@@ -13,18 +14,21 @@ public:
 		map<int, int> m;
 		for (auto n : nums)
 			++m[n];
-		while (!m.empty())
+		queue<int> q;
+		int opened = 0, last = -1;
+		for (auto &n : m)
 		{
-			int start = m.begin()->first, count = m.begin()->second;
-			for (int i = 0; i < k; ++i)
+			if ((opened > 0 && n.first - last > 1) || opened > n.second)
+				return false;
+			q.push(n.second - opened);
+			last = n.first;
+			opened = n.second;
+			if (q.size() == k)
 			{
-				m[start + i] -= count;
-				if (m[start + i] < 0)
-					return false;
-				if (m[start + i] == 0)
-					m.erase(start + i);
+				opened -= q.front();
+				q.pop();
 			}
 		}
-		return true;
+		return opened == 0;
 	}
 };
