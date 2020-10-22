@@ -1,38 +1,38 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-
-/**
- * Note: The returned array must be malloced, assume caller calls free().
- */
 
 int bitFlip(int num, int bit)
 {
 	return num ^ (1 << bit);
 }
 
-int bitCount(int x)
+int bitCount(int n)
 {
-	x -= ((x >> 1) & 0x55555555);
-	x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
-	x = (x + (x >> 4)) & 0x0F0F0F0F;
-	x += x >> 8;
-	x += x >> 16;
-	return x & 0x3F;
+	int res = 0;
+	while (n != 0)
+	{
+		++res;
+		n &= n - 1;
+	}
+	return res;
 }
 
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
 bool *canMakePaliQueries(char *s, int **queries, int queriesSize, int *queriesColSize, int *returnSize)
 {
-	bool *res = (bool *)malloc(queriesSize * sizeof(bool));
 	*returnSize = queriesSize;
-	int len = strlen(s);
-	int *dp = (int *)malloc((len + 1) * sizeof(int));
-	dp[0] = 0;
-	for (int i = 0; i < len; i++)
-		dp[i + 1] = (dp[i] ^ (1 << (s[i] - 'a')));
+	bool *res = (bool *)malloc(sizeof(bool) * (*returnSize));
+	int N = strlen(s), prefixsum[N + 1];
+	prefixsum[0] = 0;
+	for (int i = 0; i < N; ++i)
+		prefixsum[i + 1] = (prefixsum[i] ^ (1 << (s[i] - 'a')));
 
-	for (int i = 0; i < queriesSize; i++)
+	for (int i = 0; i < queriesSize; ++i)
 	{
-		int r = bitCount(dp[queries[i][1] + 1] ^ dp[queries[i][0]]);
+		int r = bitCount(prefixsum[queries[i][1] + 1] ^ prefixsum[queries[i][0]]);
 		res[i] = (queries[i][2] >= (r >> 1));
 	}
 	return res;
