@@ -1,4 +1,4 @@
-#include <cmath>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -7,29 +7,14 @@ class Solution
 public:
 	int numberOfSubarrays(vector<int> &nums, int k)
 	{
-		int res = 0, odd = 0, n = nums.size();
-		if (k > n)
-			return res;
-		for (int i = 0; i < n; i++)
-			nums[i] = nums[i] % 2;
-		int i, j;
-		for (i = 0; i < n; i++)
+		int res = 0, odd = 0;
+		unordered_map<int, int> m; //{odd value,count}
+		m[0] = 1;
+		for (auto n : nums)
 		{
-			odd += nums[i];
-			if (odd >= k)
-				break;
-		}
-		for (j = 0; i < n;)
-		{
-			int right = i + 1;
-			while (right < n && nums[right] != 1)
-				++right;
-			int left = j;
-			while (left < n && nums[left] != 1)
-				++left;
-			res += (left - j + 1) * (right - i);
-			i = right;
-			j = left + 1;
+			odd += n % 2;
+			res += m[odd - k];
+			++m[odd];
 		}
 		return res;
 	}
