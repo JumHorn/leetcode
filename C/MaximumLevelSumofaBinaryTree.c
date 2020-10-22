@@ -1,33 +1,34 @@
-#include<stdlib.h>
-#include<limits.h>
+#include <limits.h>
+#include <stdlib.h>
+
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    struct TreeNode *left;
-    struct TreeNode *right;
+struct TreeNode
+{
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-void addLevel(struct TreeNode* root,int* arr,int layer,int* h)
+void preorder(struct TreeNode *root, int layer, int *arr, int *arrSize)
 {
-	if(!root)
-		return 0;
-	arr[layer]+=root->val;
-	if(layer>*h)
-		*h=layer;
-	addLevel(root->left,arr,layer+1,h);
-	addLevel(root->right,arr,layer+1,h);
+	if (!root)
+		return;
+	arr[layer] += root->val;
+	if (layer >= *arrSize)
+		*arrSize = layer + 1;
+	preorder(root->left, layer + 1, arr, arrSize);
+	preorder(root->right, layer + 1, arr, arrSize);
 }
 
-int maxLevelSum(struct TreeNode* root){
-	struct LinkedList *list=NULL;
-	int arr[100]={0},height;
-	addLevel(root,arr,0,&height);
-	int res=1,tmp=arr[0];
-	for(int i=1;i<height;i++)
-		if(arr[i]>tmp)
-		{
-			tmp=arr[i];
-			res=i+1;
-		}
-	return res;
+int maxLevelSum(struct TreeNode *root)
+{
+	int arr[100] = {0}, arrSize = 0;
+	preorder(root, 0, arr, &arrSize);
+	int res = 0;
+	for (int i = 1; i < arrSize; ++i)
+	{
+		if (arr[i] > arr[res])
+			res = i;
+	}
+	return res + 1;
 }
