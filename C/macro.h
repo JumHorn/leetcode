@@ -164,6 +164,7 @@ void createKMP(char *pattern)
 {
 	int N = strlen(pattern);
 	int next[N];
+	next[0] = 0;
 	for (int i = 1, j = 0; i < N; ++i)
 	{
 		while (j > 0 && pattern[i] != pattern[j])
