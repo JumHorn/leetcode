@@ -1,11 +1,15 @@
+#include <unordered_map>
 #include <vector>
 using namespace std;
-//Definition for singly-linked list.
+
+// Definition for singly-linked list.
 struct ListNode
 {
 	int val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
 class Solution
@@ -13,50 +17,21 @@ class Solution
 public:
 	ListNode *removeZeroSumSublists(ListNode *head)
 	{
-		vector<int> v;
-		ListNode *tmp = head;
-		while (tmp)
+		ListNode dummy;
+		dummy.next = head;
+		unordered_map<int, ListNode *> m; //{prefixsum,ListNode}
+		int prefixsum = 0;
+		for (ListNode *p = &dummy; p != nullptr; p = p->next)
 		{
-			v.push_back(tmp->val);
-			tmp = tmp->next;
+			prefixsum += p->val;
+			m[prefixsum] = p;
 		}
-		for (int i = 0; i < (int)v.size(); i++)
+		prefixsum = 0;
+		for (ListNode *p = &dummy; p != nullptr; p = p->next)
 		{
-			if (v[i] == 0)
-			{
-				v[i] = INT_MAX;
-				continue;
-			}
-			int j = i - 1;
-			int sum = v[i];
-			for (; j >= 0; j--)
-			{
-				if (v[j] != INT_MAX)
-				{
-					sum += v[j];
-					if (sum == 0)
-					{
-						while (j <= i)
-							v[j++] = INT_MAX;
-						break;
-					}
-				}
-			}
+			prefixsum += p->val;
+			p->next = m[prefixsum]->next;
 		}
-		int index = 0;
-		ListNode *dummzy = new ListNode(0);
-		tmp = dummzy;
-		while (head)
-		{
-			if (v[index] != INT_MAX)
-			{
-				tmp->next = head;
-				tmp = tmp->next;
-			}
-			++index;
-			head = head->next;
-			tmp->next = NULL;
-		}
-		return dummzy->next;
+		return dummy.next;
 	}
 };
