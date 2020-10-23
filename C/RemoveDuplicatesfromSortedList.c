@@ -1,4 +1,4 @@
-#include<stdio.h>
+
 // definition for singl-linked list
 struct ListNode
 {
@@ -6,24 +6,19 @@ struct ListNode
 	struct ListNode *next;
 };
 
-int main()
-{}
-
-struct ListNode* deleteDuplicates(struct ListNode *head)
+struct ListNode *deleteDuplicates(struct ListNode *head)
 {
-	struct ListNode *p;
-	p=head;
-	if(p==NULL||p->next==NULL)
-	{
+	if (!head)
 		return head;
-	}
-	else
+	struct ListNode *q = head;
+	for (struct ListNode *p = head->next; p; p = p->next)
 	{
-		if(p->val==p->next->val)
-			p->next=p->next->next;
-		else
-			p=p->next;
-		 deleteDuplicates(p);
+		if (p->val != q->val)
+		{
+			q->next = p;
+			q = p;
+		}
 	}
+	q->next = 0;
 	return head;
 }
