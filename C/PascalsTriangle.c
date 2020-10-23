@@ -1,38 +1,35 @@
-#include<stdio.h>
-#include<malloc.h>
-int main()
+#include <stdlib.h>
+
+int **mallocRes(int size, int *returnSize, int **returnColumnSizes)
 {
-    int ** generate(int numRows,int ** columnSizes);
-    int b[2];  //这里只是直接传递二级指针，所以要在函数内分配空间
-    int **a;
-    int i;
-    generate(2,a);
-    for(i=0;i<2;i++)
-    {
-        printf("%d\n",*a[i]);
-    }
+	*returnSize = size;
+	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	for (int i = 0; i < *returnSize; ++i)
+	{
+		(*returnColumnSizes)[i] = i + 1;
+		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
+	}
+	return res;
 }
 
-int ** generate(int numRows,int ** columnSizes)
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int **generate(int numRows, int *returnSize, int **returnColumnSizes)
 {
-    int **result,i,j;
-    result=(int **)malloc(sizeof(int *)*numRows);  //要分配空间才能使用
-    *columnSizes=(int *)malloc(sizeof(int)*numRows);
-    for(i=1;i<=numRows;i++)
-    {
-        (*columnSizes)[i-1]=i;  //这里[]的优先级高于*，所以要加括号
-        result[i-1]=(int*)malloc(sizeof(int)*i);
-        result[i-1][0]=1;
-        result[i-1][i-1]=1;
-    }
-    if(i<3)
-        return result;
-    for(i=3;i<=numRows;i++)
-    {
-        for(j=1;j<i-1;j++)
-        {
-            result[i-1][j]=result[i-2][j]+result[i-2][j-1];
-        }
-    }
-    return result;
+	int **res = mallocRes(numRows, returnSize, returnColumnSizes);
+	if (numRows == 0)
+		return res;
+	res[0][0] = 1;
+	for (int i = 1; i < numRows; ++i)
+	{
+		res[i][0] = 1;
+		for (int j = 1; j < i; ++j)
+			res[i][j] = res[i - 1][j - 1] + res[i - 1][j];
+		res[i][i] = 1;
+	}
+	return res;
 }
