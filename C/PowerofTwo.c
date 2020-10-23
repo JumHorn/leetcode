@@ -1,12 +1,14 @@
-#include<stdio.h>
-#include<stdbool.h>
-int main()
-{
-	bool isPowerOfTwo(int n);
-}
+#include <stdbool.h>
+
 bool isPowerOfTwo(int n)
 {
-	if(n==1||n==2)return true;
-	if(n<=0||n%2==1)return false;
-	return isPowerOfTwo(n/2);
+	if (n <= 0)
+		return false;
+	int res = 0;
+	while (n != 0)
+	{
+		++res;
+		n &= n - 1;
+	}
+	return res == 1;
 }
