@@ -1,3 +1,5 @@
+#include <queue>
+using namespace std;
 
 // Definition for a binary tree node.
 struct TreeNode
@@ -17,14 +19,25 @@ public:
 	{
 		if (root == nullptr)
 			return 0;
-		if (root->left == root->right)
-			return 1;
-		int l = minDepth(root->left);
-		int r = minDepth(root->right);
-		if (l == 0)
-			return r + 1;
-		if (r == 0)
-			return l + 1;
-		return 1 + (l < r ? l : r);
+		queue<TreeNode *> q;
+		q.push(root);
+		int res = 0;
+		while (!q.empty())
+		{
+			++res;
+			int size = q.size();
+			while (--size >= 0)
+			{
+				TreeNode *node = q.front();
+				q.pop();
+				if (node->left == node->right)
+					return res;
+				if (node->left != nullptr)
+					q.push(node->left);
+				if (node->right != nullptr)
+					q.push(node->right);
+			}
+		}
+		return -1;
 	}
 };
