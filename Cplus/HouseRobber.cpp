@@ -1,23 +1,22 @@
-/*
-A(m)=max{A(m-1),A(m-2)+x}
-*/
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+/*
+dp[i]=max(dp[i-1],dp[i-2]+x)
+*/
+
+class Solution
+{
 public:
-    int rob(vector<int>& nums) {
-		if(nums.empty())
-			return 0;
-		if(nums.size()==1)
-			return nums[0];
-		if(nums.size()==2)
-			return nums[0]>nums[1]?nums[0]:nums[1];
-		if(nums[0]>nums[1])
-			nums[1]=nums[0];
-		int i;
-		for(i=2;i<nums.size();i++)
-			nums[i]=nums[i-1]>nums[i-2]+nums[i]?nums[i-1]:(nums[i-2]+nums[i]);
-		return nums[i-1];
-    }
+	int rob(vector<int> &nums)
+	{
+		int f1 = 0, f2 = 0;
+		for (auto n : nums)
+		{
+			int f3 = max(f2, f1 + n);
+			f1 = f2;
+			f2 = f3;
+		}
+		return f2;
+	}
 };
