@@ -1,41 +1,24 @@
-#include<stdio.h>
+#include <limits.h>
+
 //definition for a binary tree node
-struct TreeNode 
+struct TreeNode
 {
-    int val;
-    struct TreeNode * left;
-    struct TreeNode * right;
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-int main()
+int minDepth(struct TreeNode *root)
 {
-    int minDepth(struct TreeNode *root);
-}
-
-int min(int a ,int b)
-{
-    if(a>b)
-        return b;
-    else
-        return a;
-}
-
-int minDepth(struct TreeNode* root) {
-    if(root==NULL)
-    {
-        return 0;
-    }
-    if(root->left==NULL&&root->right==NULL)
-    {
-        return 1;
-    } 
-    if(root->left==NULL)
-    {
-        return 1+minDepth(root->right);
-    }
-    if(root->right==NULL)
-    {
-        return 1+minDepth(root->left);
-    }
-    return 1 + min(minDepth(root->left), minDepth(root->right));
+	if (!root)
+		return 0;
+	if (root->left == root->right)
+		return 1;
+	int l = minDepth(root->left);
+	int r = minDepth(root->right);
+	if (l == 0)
+		return r + 1;
+	if (r == 0)
+		return l + 1;
+	return 1 + (l < r ? l : r);
 }
