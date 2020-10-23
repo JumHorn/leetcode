@@ -7,45 +7,50 @@ using namespace std;
 class Solution
 {
 public:
-	int maxLength(vector<string>& arr)
+	int maxLength(vector<string> &arr)
 	{
-		vector<int> bit(arr.size());
-		for (int i = 0; i < (int)arr.size(); i++)
-			for (int j = 0; j < (int)arr[i].size(); j++)
+		int N = arr.size();
+		vector<int> bit;
+		for (auto &str : arr)
+		{
+			int mask = 0;
+			for (auto c : str)
 			{
-				if (bit[i] & (1 << (arr[i][j] - 'a')))
+				if (mask & (1 << (c - 'a')))
 				{
-					bit[i] = 0;
+					mask = 0;
 					break;
 				}
-				bit[i] |= 1 << (arr[i][j] - 'a');
+				mask |= 1 << (c - 'a');
 			}
-		vector<unordered_set<int>> v(arr.size());
-		v[0].insert(bit[0]);
-		v[0].insert(0);
-		for (int i = 1; i < (int)arr.size(); i++)
-			for (int j = 0; j < i; j++)
+			bit.push_back(mask);
+		}
+		unordered_set<int> dp;
+		dp.insert(0);
+		dp.insert(bit[0]);
+		for (int i = 1; i < N; ++i)
+		{
+			unordered_set<int> pre_dp = dp;
+			for (auto n : pre_dp)
 			{
-				for (auto n : v[j])
-				{
-					if ((n & bit[i]) == 0)
-						v[i].insert(n | bit[i]);
-				}
+				if ((n & bit[i]) == 0)
+					dp.insert(n | bit[i]);
 			}
+		}
 		int res = 0;
-		for (int i = 0; i < (int)v.size(); i++)
-			for (auto n : v[i])
-				res = max(res, bitCount(n));
+		for (auto n : dp)
+			res = max(res, bitCount(n));
 		return res;
 	}
 
-	int bitCount(int x)
+	int bitCount(int n)
 	{
-		x -= ((x >> 1) & 0x55555555);
-		x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
-		x = (x + (x >> 4)) & 0x0F0F0F0F;
-		x += x >> 8;
-		x += x >> 16;
-		return x & 0x3F;
+		int res = 0;
+		while (n != 0)
+		{
+			++res;
+			n &= n - 1;
+		}
+		return res;
 	}
 };
