@@ -1,70 +1,77 @@
 #include <string>
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
-//definiton of trie
-struct Trie
+//Trie
+class Trie
 {
-	bool isfolder;
-	unordered_map<char, Trie*> node;
-	Trie(bool val = false) : isfolder(val) {}
+	struct TreeNode
+	{
+		int count; //number of words ends with this node
+		vector<TreeNode *> nodes;
+
+		TreeNode() : count(0), nodes(128, nullptr) {}
+	};
+
+public:
+	Trie()
+	{
+		root = new TreeNode();
+	}
+
+	/** Inserts a word into the trie. */
+	void insert(const string &word)
+	{
+		TreeNode *node = root;
+		for (auto c : word)
+		{
+			int index = c;
+			if (node->nodes[index] == NULL)
+				node->nodes[index] = new TreeNode();
+			node = node->nodes[index];
+		}
+		++node->count;
+	}
+
+	void search(vector<string> &res)
+	{
+		string instance;
+		dfs(root, instance, res);
+	}
+
+private:
+	void dfs(TreeNode *node, string &instance, vector<string> &res)
+	{
+		if (node->count > 0)
+		{
+			res.push_back(instance);
+			node->nodes['/'] = nullptr;
+		}
+		for (int i = 0; i < 128; ++i)
+		{
+			if (node->nodes[i] != nullptr)
+			{
+				instance.push_back(i);
+				dfs(node->nodes[i], instance, res);
+				instance.pop_back();
+			}
+		}
+	}
+
+	TreeNode *root;
 };
+/********end of Trie********/
 
 class Solution
 {
 public:
-	vector<string> removeSubfolders(vector<string>& folder)
+	vector<string> removeSubfolders(vector<string> &folder)
 	{
-		root = new Trie();
-		for (auto& n : folder)
-			insertFolder(n);
-		//removeFolder(root);
+		Trie trie;
+		for (auto &f : folder)
+			trie.insert(f);
 		vector<string> res;
-		string tmp;
-		generateFolder(res, tmp, root);
+		trie.search(res);
 		return res;
 	}
-
-	void generateFolder(vector<string>& res, string& tmp, Trie* root)
-	{
-		if (root == NULL)
-			return;
-		if (root->isfolder)
-		{
-			res.push_back(tmp);
-			root->node.erase('/');
-		}
-		for (auto& iter : root->node)
-		{
-			tmp.push_back(iter.first);
-			generateFolder(res, tmp, iter.second);
-			tmp.pop_back();
-		}
-	}
-
-	void removeFolder(Trie* root)
-	{
-		if (root == NULL)
-			return;
-		if (root->isfolder)
-			root->node.erase('/');
-		for (auto& iter : root->node)
-			removeFolder(iter.second);
-	}
-
-	void insertFolder(const string& folder)
-	{
-		Trie* tmp = root;
-		for (auto n : folder)
-		{
-			if (tmp->node.find(n) == tmp->node.end())
-				tmp->node[n] = new Trie();
-			tmp = tmp->node[n];
-		}
-		tmp->isfolder = true;
-	}
-
-private:
-	Trie* root;
 };
