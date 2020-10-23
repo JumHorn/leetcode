@@ -100,14 +100,13 @@ class Trie
 	};
 
 public:
-	/** Initialize your data structure here. */
 	Trie()
 	{
 		root = new TreeNode();
 	}
 
 	/** Inserts a word into the trie. */
-	void insert(string word)
+	void insert(const string &word)
 	{
 		TreeNode *node = root;
 		for (auto c : word)
@@ -128,7 +127,7 @@ public:
 	}
 
 	/** Returns if there is any word in the trie that starts with the given prefix. */
-	bool startsWith(string prefix)
+	bool startsWith(const string &prefix)
 	{
 		TreeNode *node = searchNode(prefix);
 		return node != nullptr;
