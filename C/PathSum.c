@@ -1,19 +1,18 @@
-#include<stdio.h>
+#include <stdbool.h>
+
 //definiton for a bianry tree node
 struct TreeNode
 {
-    int val;
-    struct TreeNode * left;
-    struct TreeNode * right;
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
-int main()
-{
-    bool hasPathSum(struct TreeNode * root);
-}
 
-bool hasPathSum(struct TreeNode *root,int sum)
+bool hasPathSum(struct TreeNode *root, int sum)
 {
-    if (root == NULL) return false;
-    if (root->val == sum && root->left ==  NULL && root->right == NULL) return true;
-    return hasPathSum(root->left, sum-root->val) || hasPathSum(root->right, sum-root->val);
+	if (!root)
+		return false;
+	if (root->left == root->right)
+		return root->val == sum;
+	return hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val);
 }
