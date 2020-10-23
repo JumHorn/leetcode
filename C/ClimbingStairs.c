@@ -1,20 +1,17 @@
-#include<stdio.h>
-int main()
-{
-	int climbStairs(int n);
-}
+/*
+fibonacci sequence
+*/
+
 int climbStairs(int n)
 {
-	if(n<3)
-	{
+	if (n < 2)
 		return n;
-	}
-	int a[100];
-	a[1]=1;
-	a[2]=2;
-	for(int i=3;i<=n;i++)
+	int f1 = 1, f2 = 1;
+	for (int i = 2; i <= n; ++i)
 	{
-		a[i]=a[i-1]+a[i-2];
+		int f3 = f1 + f2;
+		f1 = f2;
+		f2 = f3;
 	}
-	return a[n];
+	return f2;
 }
