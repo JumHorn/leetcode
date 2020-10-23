@@ -1,24 +1,18 @@
-#include<stdio.h>
-int main()
+#include <stdlib.h>
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int *getRow(int rowIndex, int *returnSize)
 {
-    int * getRow(int rowIndex,int *returnSize);
-}
-int * getRow(int rowIndex,int *returnSize)
-{
-    int *result =(int *)malloc(sizeof(int)*(rowIndex+1));
-    int i;
-    long tmp=1;
-    *returnSize=rowIndex+1;
-     result[0]=1;
-     result[rowIndex]=1;
-    
-    if(rowIndex<2)
-        return result;
-    
-    for(i=1;i<=rowIndex/2;i++)
-    {
-        tmp = tmp * (rowIndex - i + 1) /  i ;
-        result[i]=result[rowIndex-i]=tmp;
-    }
-    return result;
+	*returnSize = rowIndex + 1;
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	res[0] = 1;
+	for (int i = 1; i <= rowIndex; ++i)
+	{
+		res[0] = res[i] = 1;
+		for (int j = i - 1; j > 0; --j)
+			res[j] += res[j - 1];
+	}
+	return res;
 }
