@@ -1,45 +1,23 @@
-#include<stdio.h>
-#include<malloc.h>
+#include <stdlib.h>
+#include <string.h>
 
-int main()
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int *plusOne(int *digits, int digitsSize, int *returnSize)
 {
-	int * plusOne(int *digits,int digitsSize,int *returnSize);
+	int carry = 1;
+	for (int i = digitsSize - 1; i >= 0; --i)
+	{
+		carry += digits[i];
+		digits[i] = carry % 10;
+		carry /= 10;
+	}
+	*returnSize = digitsSize + carry;
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	memcpy(&res[carry], digits, sizeof(int) * digitsSize);
+	if (carry == 0)
+		return res;
+	res[0] = 1;
+	return res;
 }
-
-int * plusOne(int *digits,int digitsSize,int *returnSize)
-{
-	int i,carry=1;
-	int *p;
-	//p = (int *)malloc(sizeof(int)*digitsSize);
-	//*returnSize=digitsSize;
-	for(i=digitsSize-1;i>=0;i--)
-	{
-		if(digits[i]+carry>9)
-		{
-			digits[i]=0;
-			carry=1;
-		}
-		else
-		{
-			digits[i]=digits[i]+carry;
-			carry=0;
-		}
-	}
-	if(carry==1)
-	{
-		p=(int *)malloc(sizeof(int)*digitsSize);
-		p[0]=1;
-		*returnSize=digitsSize+1;
-		for(i=0;i<digitsSize;i++)
-		{
-			p[i+1]=digits[i];
-		}
-	}
-	else
-	{
-		p=digits;
-		*returnSize=digitsSize;
-	}
-	return p;
-}
-
