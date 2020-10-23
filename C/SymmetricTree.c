@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdbool.h>
+#include <stdbool.h>
+
 //definition for a binary tree node
 struct TreeNode
 {
@@ -8,26 +8,20 @@ struct TreeNode
 	struct TreeNode *right;
 };
 
-int main()
+bool doSymmetricCheck(struct TreeNode *left, struct TreeNode *right)
 {
-	bool isSymmetric(struct TreeNode *root);
-}
-
-bool isSameTree(struct TreeNode *l,struct TreeNode *r)
-{
-	if(l==NULL&&r==NULL)
+	if (left == right) //left==NULL && right== NULL
 		return true;
-	if(l==NULL||r==NULL)
+	if (!left || !right)
 		return false;
-	if(l->val==r->val)
-		return isSameTree(l->left,r->right)&&isSameTree(l->right,r->left);
-	else
+	if (left->val != right->val)
 		return false;
+	return doSymmetricCheck(left->left, right->right) && doSymmetricCheck(left->right, right->left);
 }
 
 bool isSymmetric(struct TreeNode *root)
 {
-	if(root==NULL)
+	if (!root)
 		return true;
-	return isSameTree(root->left,root->right);
+	return doSymmetricCheck(root->left, root->right);
 }
