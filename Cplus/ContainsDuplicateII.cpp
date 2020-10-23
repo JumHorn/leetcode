@@ -5,23 +5,20 @@ using namespace std;
 class Solution
 {
 public:
-	bool containsNearbyDuplicate(vector<int>& nums, int k)
+	bool containsNearbyDuplicate(vector<int> &nums, int k)
 	{
-		if ((int)nums.size() <= k)
-			k = nums.size() - 1;
-		unordered_set<int> s;
-		for (int i = 0; i <= k; i++)
+		int N = nums.size();
+		if (++k > N)
+			k = N;
+		unordered_set<int> s(nums.begin(), nums.begin() + k);
+		if (s.size() != k)
+			return true;
+		for (int i = k; i < N; ++i)
 		{
-			if (s.find(nums[i]) != s.end())
-				return true;
+			s.erase(nums[i - k]);
 			s.insert(nums[i]);
-		}
-		for (int i = k + 1; i < (int)nums.size(); i++)
-		{
-			s.erase(nums[i - k - 1]);
-			if (s.find(nums[i]) != s.end())
+			if (s.size() != k)
 				return true;
-			s.insert(nums[i]);
 		}
 		return false;
 	}
