@@ -1,13 +1,8 @@
-#include <string.h>
 
 int titleToNumber(char *s)
 {
-	int N = strlen(s), pow = 26, res = 0;
-	long base = 1;
-	for (int i = N - 1; i >= 0; --i)
-	{
-		res += (s[i] - 'A' + 1) * base;
-		base *= pow;
-	}
+	int res = 0;
+	for (int i = 0; s[i]; ++i)
+		res = res * 26 + (s[i] - 'A' + 1);
 	return res;
 }
