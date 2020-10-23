@@ -1,51 +1,38 @@
-#include<iostream>
-#include<cmath>
+#include <algorithm>
+#include <cmath>
 using namespace std;
 
 // Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    bool isBalanced(TreeNode* root) {
-       if(!root)
-       {
-           return true;
-       } 
-       else 
-       {
-           if(!root->left&&!root->right)
-           {
-               return true;
-           }
-           else if(root->left&&root->right)
-           {
-               return (abs(getdepth(root->left)-getdepth(root->right))<2)&&isBalanced(root->left)&&isBalanced(root->right);
-           }
-           else
-           {
-               if(root->left)
-               {
-                   return !root->left->left&&!root->left->right;
-               }
-               else
-               {
-                   return !root->right->left&&!root->right->right;
-               }
-           }
-       }
-    }
-    int getdepth(TreeNode* root)
-    {
-        if(!root)
-        {
-            return 0;
-        }
-        return 1+ max(getdepth(root->left),getdepth(root->right));
-    }
+	bool isBalanced(TreeNode *root)
+	{
+		return postorder(root).first;
+	}
+
+	pair<bool, int> postorder(TreeNode *root)
+	{
+		if (root == nullptr)
+			return {true, 0};
+		auto l = postorder(root->left);
+		if (!l.first)
+			return l;
+		auto r = postorder(root->right);
+		if (!r.first)
+			return r;
+		if (abs(l.second - r.second) > 1)
+			return {false, 0};
+		return {true, max(l.second, r.second) + 1};
+	}
 };
