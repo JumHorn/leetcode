@@ -1,29 +1,18 @@
-#include <algorithm>
-#include <cmath>
 #include <vector>
 using namespace std;
+
+/*
+gray code
+*/
 
 class Solution
 {
 public:
 	vector<int> circularPermutation(int n, int start)
 	{
-		int len = pow(2, n);
-		vector<int> res(len);
-		res[0] = start;
-		int tmp = 0;
-		while (start)
-		{
-			tmp ^= start;
-			start >>= 1;
-		}
-		for (int i = 1; i < len; i++)
-		{
-			tmp++;
-			if (tmp >= len)
-				tmp -= len;
-			res[i] = tmp ^ (tmp >> 1);
-		}
+		vector<int> res(1 << n);
+		for (int i = 0; i < (1 << n); ++i)
+			res[i] = start ^ i ^ (i >> 1);
 		return res;
 	}
 };
