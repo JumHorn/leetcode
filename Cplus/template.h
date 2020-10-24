@@ -112,7 +112,7 @@ public:
 		for (auto c : word)
 		{
 			int index = c - 'a';
-			if (node->nodes[index] == NULL)
+			if (node->nodes[index] == nullptr)
 				node->nodes[index] = new TreeNode();
 			node = node->nodes[index];
 		}
