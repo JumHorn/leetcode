@@ -1,49 +1,51 @@
-#include<stack>
+#include <stack>
 using namespace std;
 
-class MyQueue {
-	stack<int> pushstack;
-	stack<int> popstack;
-
-	void transfer()
-	{
-		while(!pushstack.empty())
-		{
-			popstack.push(pushstack.top());
-			pushstack.pop();
-		}
-	}
+class MyQueue
+{
 public:
-    /** Initialize your data structure here. */
-    MyQueue() {
-        
-    }
-    
-    /** Push element x to the back of queue. */
-    void push(int x) {
-        pushstack.push(x);
-    }
-    
-    /** Removes the element from in front of queue and returns that element. */
-    int pop() {
-        if(popstack.empty())
-			transfer();
-		int res=popstack.top();
-		popstack.pop();
+	/** Initialize your data structure here. */
+	MyQueue()
+	{
+	}
+
+	/** Push element x to the back of queue. */
+	void push(int x)
+	{
+		in.push(x);
+	}
+
+	/** Removes the element from in front of queue and returns that element. */
+	int pop()
+	{
+		int res = peek();
+		out.pop();
 		return res;
-    }
-    
-    /** Get the front element. */
-    int peek() {
-        if(popstack.empty())
-			transfer();
-		return popstack.top();
-    }
-    
-    /** Returns whether the queue is empty. */
-    bool empty() {
-        return pushstack.empty()&&popstack.empty();
-    }
+	}
+
+	/** Get the front element. */
+	int peek()
+	{
+		if (out.empty())
+		{
+			while (!in.empty())
+			{
+				out.push(in.top());
+				in.pop();
+			}
+		}
+		return out.top();
+	}
+
+	/** Returns whether the queue is empty. */
+	bool empty()
+	{
+		return in.empty() && out.empty();
+	}
+
+private:
+	stack<int> in;
+	stack<int> out;
 };
 
 /**
