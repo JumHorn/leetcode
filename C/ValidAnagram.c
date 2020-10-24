@@ -1,31 +1,17 @@
-#include<stdio.h>
-#include<stdbool.h>
-#include<string.h>
-int main()
-{
-	bool isAnagram(char *s,char *t);
-}
+#include <stdbool.h>
+#include <string.h>
 
-bool isAnagram(char *s,char *t)
+bool isAnagram(char *s, char *t)
 {
-	int s_len,t_len,i,j;
-	int frequence[26]={0};
-	s_len=strlen(s);
-	t_len=strlen(t);
-	if(s_len!=t_len)
-	{
+	if (strlen(s) != strlen(t))
 		return false;
-	}
-	for(i=0;i<s_len;i++)
+	int count[26] = {0};
+	for (int i = 0; s[i]; ++i)
+		++count[s[i] - 'a'];
+	for (int i = 0; t[i]; ++i)
 	{
-		frequence[s[i]-'a']++;
-	}
-	for(j=0;j<t_len;j++)
-	{
-		if(--frequence[t[j]-'a']<0)
-		{
+		if (--count[t[i] - 'a'] < 0)
 			return false;
-		}
 	}
 	return true;
 }
