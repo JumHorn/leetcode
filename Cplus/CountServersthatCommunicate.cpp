@@ -1,43 +1,68 @@
 #include <algorithm>
-#include <unordered_set>
+#include <unordered_map>
 #include <vector>
 using namespace std;
+
+//DSU minimum version
+class DSU
+{
+public:
+	DSU(int size) : parent(size)
+	{
+		for (int i = 0; i < size; ++i)
+			parent[i] = i;
+	}
+
+	int Find(int x)
+	{
+		if (x != parent[x])
+			parent[x] = Find(parent[x]);
+		return parent[x];
+	}
+
+	bool Union(int x, int y)
+	{
+		int xp = Find(x), yp = Find(y);
+		if (xp == yp)
+			return false;
+		parent[yp] = xp;
+		return true;
+	}
+
+private:
+	vector<int> parent;
+};
+/********end of DSU minimum version********/
 
 class Solution
 {
 public:
 	int countServers(vector<vector<int>> &grid)
 	{
-		int servers = 0, M = grid.size(), N = grid[0].size();
-		unordered_set<int> row, column;
+		int res = 0, M = grid.size(), N = grid[0].size();
+		DSU dsu(M + N);
 		for (int i = 0; i < M; ++i)
 		{
-			int count = 0;
 			for (int j = 0; j < N; ++j)
 			{
 				if (grid[i][j] == 1)
-					++count;
+					dsu.Union(i, j + M);
 			}
-			if (count == 1)
-				row.insert(i);
-			servers += count;
 		}
-		for (int j = 0; j < N; ++j)
+		unordered_map<int, int> m;
+		for (int i = 0; i < M; ++i)
 		{
-			int count = 0;
-			for (int i = 0; i < M; ++i)
+			for (int j = 0; j < N; ++j)
 			{
 				if (grid[i][j] == 1)
-					++count;
+					++m[dsu.Find(i)];
 			}
-			if (count == 1)
-				column.insert(j);
 		}
-		for (auto r : row)
+		for (auto &n : m)
 		{
-			for (auto c : column)
-				servers -= grid[r][c];
+			if (n.second > 1)
+				res += n.second;
 		}
-		return servers;
+		return res;
 	}
 };
