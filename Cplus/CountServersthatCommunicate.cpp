@@ -6,34 +6,38 @@ using namespace std;
 class Solution
 {
 public:
-	int countServers(vector<vector<int>>& grid)
+	int countServers(vector<vector<int>> &grid)
 	{
-		int sum = 0, m = grid.size(), n = grid[0].size();
+		int servers = 0, M = grid.size(), N = grid[0].size();
 		unordered_set<int> row, column;
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			int count = 0;
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				if (grid[i][j] == 1)
-					count++;
+					++count;
 			}
 			if (count == 1)
 				row.insert(i);
-			sum += count;
+			servers += count;
 		}
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < N; ++j)
 		{
 			int count = 0;
-			for (int i = 0; i < m; i++)
+			for (int i = 0; i < M; ++i)
+			{
 				if (grid[i][j] == 1)
-					count++;
+					++count;
+			}
 			if (count == 1)
 				column.insert(j);
 		}
-		for (auto rowiter : row)
-			for (auto coliter : column)
-				sum -= grid[rowiter][coliter];
-		return sum;
+		for (auto r : row)
+		{
+			for (auto c : column)
+				servers -= grid[r][c];
+		}
+		return servers;
 	}
 };
