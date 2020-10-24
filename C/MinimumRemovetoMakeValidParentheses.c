@@ -1,42 +1,25 @@
 
-
 char *minRemoveToMakeValid(char *s)
 {
-	int count = 0, top = -1;
-	char *p = s;
-	while (*p)
+	int stack[10000], top = -1;
+	for (int i = 0; s[i]; ++i)
 	{
-		if (*p == ')')
-		{
-			if (count > 0)
-			{
-				count--;
-				s[++top] = *p;
-			}
-		}
-		else
-		{
-			if (*p == '(')
-				count++;
-			s[++top] = *p;
-		}
-		++p;
+		if (s[i] == '(')
+			stack[++top] = i;
+		else if (s[i] == ')')
+			top == -1 ? s[i] = '*' : --top;
 	}
-	s[top + 1] = '\0';
-	if (count > 0)
+	while (top != -1)
 	{
-		char *tmp = &s[top];
-		while (count > 0)
-		{
-			if (*tmp == '(')
-				count--;
-			tmp--;
-		}
-		p = ++tmp;
-		while (++tmp != s + top + 1)
-			if (*tmp != '(')
-				*p++ = *tmp;
-		*p = '\0';
+		s[stack[top]] = '*';
+		--top;
 	}
+	int j = 0;
+	for (int i = 0; s[i]; ++i)
+	{
+		if (s[i] != '*')
+			s[j++] = s[i];
+	}
+	s[j] = '\0';
 	return s;
 }
