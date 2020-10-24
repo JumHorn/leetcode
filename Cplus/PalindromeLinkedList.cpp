@@ -1,60 +1,47 @@
-#include<iostream>
-using namespace std;
 
-
- //Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+// Definition for singly-linked list.
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
- 
-class Solution {
+
+class Solution
+{
 public:
-    ListNode* middle;
-    bool isPalindrome(ListNode* head) {
-        //找中间点
-        ListNode *worker,*runner;
-        worker=runner=middle=head;
-        if(head==NULL||head->next==NULL)
-        {
-            return true;
-        }
-        while(runner!=NULL&&runner->next!=NULL)
-        {
-            middle=worker;
-            worker=worker->next;
-            runner = runner->next->next;
-        }
-        if(runner!=NULL)
-        {
-            worker = worker->next;
-        }
+	bool isPalindrome(ListNode *head)
+	{
+		if (head == nullptr || head->next == nullptr)
+			return true;
+		//find middle
+		ListNode *walker = head, *runner = head->next;
+		while (runner != nullptr && runner->next != nullptr)
+		{
+			walker = walker->next;
+			runner = runner->next->next;
+		}
+		runner = reverse(walker->next);
+		walker = head;
+		while (runner != nullptr)
+		{
+			if (walker->val != runner->val)
+				return false;
+			walker = walker->next;
+			runner = runner->next;
+		}
+		return true;
+	}
 
-        //实现逆序
-        reverse(head);
-
-        while(worker!=NULL)
-        {
-            if(worker->val != middle->val)
-            {
-                return false;
-            }
-            worker=worker->next;
-            middle=middle->next;
-        }
-        return true;
-        
-    }
-    ListNode* reverse(ListNode *p)
-    {
-        if(p!=middle)
-        {
-            ListNode* temp = reverse(p->next);
-            temp->next = p;
-        }
-        p->next=NULL;
-        return p;
-    }
-    
+	ListNode *reverse(ListNode *head)
+	{
+		if (head == nullptr || head->next == nullptr)
+			return head;
+		ListNode *res = reverse(head->next);
+		head->next->next = head;
+		head->next = nullptr;
+		return res;
+	}
 };
