@@ -1,26 +1,6 @@
-#include<stdio.h>
-#include<stdbool.h>
-int main()
-{
-	bool isPowerOfFour(int num);
-}
+#include <stdbool.h>
 
 bool isPowerOfFour(int num)
 {
-        if(num==1)
-	{
-		return true;
-	}
-	if(num<3&&num>1||num<=0)
-	{
-		return false;
-	}
-	if(num%4==0)
-	{
-		return isPowerOfFour(num/4);
-	}
-	else
-	{
-	    return false;
-	}
+	return num > 0 && (num & (num - 1)) == 0 && (num & 0x55555555) != 0;
 }
