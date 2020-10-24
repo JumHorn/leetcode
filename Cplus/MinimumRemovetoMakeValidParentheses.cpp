@@ -26,15 +26,16 @@ public:
 				s[index++] = s[i];
 			}
 		}
-		string res;
-		while (!stk.empty())
+		if (stk.empty())
+			return s.substr(0, index);
+		int len = index;
+		for (int i = index - 1; i >= 0; --i)
 		{
-			int pre = stk.top();
-			stk.pop();
-			res = s.substr(pre + 1, index - pre - 1) + res;
-			index = pre;
+			if (stk.empty() || stk.top() != i)
+				s[--index] = s[i];
+			else
+				stk.pop();
 		}
-		res = s.substr(0, index) + res;
-		return res;
+		return s.substr(index, len - index);
 	}
 };
