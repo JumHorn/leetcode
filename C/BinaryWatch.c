@@ -1,44 +1,31 @@
-#include<stdio.h>
-#include<string.h>
-#include<malloc.h>
-int bitcount(int num);
-int main()
+#include <stdio.h>
+#include <stdlib.h>
+
+int bitCount(int n)
 {
-	char** readBinaryWatch(int num,int * returnSzie);
+	int res = 0;
+	while (n != 0)
+	{
+		++res;
+		n &= n - 1;
+	}
+	return res;
 }
 
-char** readBinaryWatch(int num,int * returnSize)
+char **readBinaryWatch(int num, int *returnSize)
 {
-	char** b = malloc((sizeof(char *))*300);
-	char a[300][5]={0};
-	int i,j,k=0;
-	for(i=0;i<12;i++)
+	char **res = (char **)malloc(sizeof(char *) * 200);
+	*returnSize = 0;
+	for (int hour = 0; hour < 12; ++hour)
 	{
-		for(j=0;j<60;j++)
+		for (int minute = 0; minute < 60; ++minute)
 		{
-			if(bitcount(i)+bitcount(j)==num)
+			if (bitCount(hour) + bitCount(minute) == num)
 			{
-				sprintf(a[k++],"%d:%02d",i,j);
+				res[*returnSize] = (char *)malloc(sizeof("00:00"));
+				sprintf(res[(*returnSize)++], "%d:%02d", hour, minute);
 			}
 		}
 	}
-	*returnSize=k;
-	for(i=0;i<k;i++)
-	{
-		b[i]=a[i];
-	}
-	return b;
-}
-int bitcount(int num)
-{
-	int result=0;
-	while(num!=0)
-	{
-		if(num%2==1)
-		{
-			result++;
-		}
-		num=num/2;
-	}
-	return result;
+	return res;
 }
