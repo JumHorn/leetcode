@@ -2,7 +2,6 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 using namespace std;
 
 class Solution
@@ -10,39 +9,20 @@ class Solution
 public:
 	int maxFreq(string s, int maxLetters, int minSize, int maxSize)
 	{
-		int minchar[26] = {0}, mincount = 0;
-		unordered_map<string, int> strmap;
+		unordered_map<string, int> substrCount;
+		unordered_map<char, int> m;
 		int res = 0;
-		for (int i = 0; i < minSize - 1; i++)
-			if (++minchar[s[i] - 'a'] == 1)
-				++mincount;
-		for (int i = minSize - 1; i < (int)s.length(); i++)
+		for (int i = 0; i < minSize; ++i)
+			++m[s[i]];
+		if (m.size() <= maxLetters)
+			res = max(res, ++substrCount[s.substr(0, minSize)]);
+		for (int i = minSize; i < (int)s.length(); ++i)
 		{
-			if (++minchar[s[i] - 'a'] == 1)
-				++mincount;
-			if (mincount <= maxLetters)
-			{
-				res = max(res, ++strmap[s.substr(i - minSize + 1, minSize)]);
-				int maxchar[26] = {0};
-				int maxcount = mincount;
-				memcpy((char*)&maxchar, (char*)&minchar, 26 * sizeof(int));
-				for (int j = i + 1; j < (int)s.length(); j++)
-				{
-					if (j - i + minSize < maxSize)
-					{
-						if (++maxchar[s[j] - 'a'] == 1)
-							++maxcount;
-						if (maxcount <= maxLetters)
-							res = max(res, ++strmap[s.substr(i - minSize + 1, minSize + j - i)]);
-						else
-							break;
-					}
-					else
-						break;
-				}
-			}
-			if (--minchar[s[i - minSize + 1] - 'a'] == 0)
-				--mincount;
+			if (--m[s[i - minSize]] == 0)
+				m.erase(s[i - minSize]);
+			++m[s[i]];
+			if (m.size() <= maxLetters)
+				res = max(res, ++substrCount[s.substr(i - minSize + 1, minSize)]);
 		}
 		return res;
 	}
