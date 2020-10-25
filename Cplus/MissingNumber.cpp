@@ -1,37 +1,17 @@
-#include<iostream>
-#include<vector>
-#include<cstdio>
+#include <algorithm>
+#include <numeric>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int missingNumber(vector<int>& nums) {
-		int *p = new int[nums.size()+1];
-		memset(p,0,sizeof(int)*(nums.size()+1));
-		for(vector<int>::iterator iter=nums.begin();iter!=nums.end();iter++)
-		{
-			*(p+*iter)=-1;
-		}
-		for(int i=0;i<=nums.size();i++)
-		{
-			if(p[i]==0)
-			{
-				return i;
-			}
-		}
-		return 0;
-    }
+	int missingNumber(vector<int> &nums)
+	{
+		int N = nums.size();
+		int res = accumulate(nums.begin(), nums.end(), 0, [](int a, int b) { return a ^ b; });
+		for (int i = 0; i <= N; ++i)
+			res ^= i;
+		return res;
+	}
 };
-
-// The basic idea is to use XOR operation. We all know that a^b^b =a, which means two xor operations with the same number will eliminate the number and reveal the original number.
-// In this solution, I apply XOR operation to both the index and value of the array. In a complete array with no missing numbers, the index and value should be perfectly corresponding( nums[index] = index), so in a missing array, what left finally is the missing number.
-
-// public int missingNumber(int[] nums) {
-
-//     int xor = 0, i = 0;
-// 	for (i = 0; i < nums.length; i++) {
-// 		xor = xor ^ i ^ nums[i];
-// 	}
-
-// 	return xor ^ i;
-// }
