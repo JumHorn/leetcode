@@ -1,41 +1,17 @@
-#include<stdio.h>
-#include<string.h>
-int main()
-{
-	int longestPalindrome(char *s);
-	char a[]="zeusnilemacaronimaisanitratetartinasiaminoracamelinsuez";
-        printf("%d\n",longestPalindrome(a));
-	printf("\n");
-}
+#include <string.h>
 
 int longestPalindrome(char *s)
-{	
-	int statistics[58]={0};
-	int len=strlen(s),i,result=0;
-	for(i=0;i<len;i++)
+{
+	int count['z' - 'A' + 1] = {0}, res = 0, N = strlen(s);
+	for (int i = 0; i < N; ++i)
 	{
-		statistics[s[i]-'A']++;
-	}
-	for(i=0;i<58;i++)
-	{
-		printf("%d\t",statistics[i]);
-		if(statistics[i]%2==0)
-			result+=statistics[i];
-		else
-			result+=statistics[i]-1;
-	}
-	for(i=0;i<26;i++)
-	{
-		if(statistics[i]%2==1)
+		if (++count[s[i] - 'A'] == 2)
 		{
-			result+=1;
-			break;
-		}
-		if(statistics[i+32]%2==1)
-		{
-			result+=1;
-			break;
+			count[s[i] - 'A'] = 0;
+			res += 2;
 		}
 	}
-	return result;
+	if (N % 2 == 0)
+		res += (res == N ? 0 : 1);
+	return res + N % 2;
 }
