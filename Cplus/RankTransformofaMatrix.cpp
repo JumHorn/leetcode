@@ -1,8 +1,44 @@
 #include <climits>
+#include <map>
 #include <queue>
-#include <unordered_set>
 #include <vector>
 using namespace std;
+
+class DSU
+{
+public:
+	DSU(int size, vector<int> &rank) : parent(size), rank(rank)
+	{
+		for (int i = 0; i < size; ++i)
+			parent[i] = i;
+	}
+
+	int Find(int x)
+	{
+		if (x != parent[x])
+			parent[x] = Find(parent[x]);
+		return parent[x];
+	}
+
+	bool Union(int x, int y)
+	{
+		int xr = Find(x), yr = Find(y);
+		if (xr == yr)
+			return false;
+		parent[yr] = xr;
+		rank[xr] = max(rank[xr], rank[yr]);
+		return true;
+	}
+
+	int getRank(int x)
+	{
+		return rank[Find(x)];
+	}
+
+private:
+	vector<int> parent;
+	vector<int> rank;
+};
 
 class Solution
 {
@@ -11,23 +47,24 @@ public:
 	{
 		int M = matrix.size(), N = matrix[0].size();
 		vector<vector<int>> res(M, vector<int>(N));
-		priority_queue<pair<int, int>> q;								//{value,pos}
-		vector<vector<int>> row(M, {INT_MAX, 1}), col(N, {INT_MAX, 1}); //{value,rank}
+		map<int, vector<int>> m; //{value,{pos}}
+		vector<int> rank(M + N);
 		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; ++j)
-				q.push({-matrix[i][j], i * N + j});
+				m[matrix[i][j]].push_back(i * N + j);
 		}
-		while (!q.empty())
+		for (auto &n : m)
 		{
-			int x = q.top().second / N, y = q.top().second % N;
-			int value = -q.top().first;
-			q.pop();
-			int rowrank = row[x][1] + (value <= row[x][0] ? 0 : 1);
-			int colrank = col[y][1] + (value <= col[y][0] ? 0 : 1);
-			res[x][y] = max(rowrank, colrank);
-			row[x][0] = col[y][0] = value;
-			row[x][1] = col[y][1] = res[x][y];
+			vector<int> &pos = n.second;
+			DSU dsu(M + N, rank);
+			for (auto &p : pos)
+				dsu.Union(p / N, p % N + M);
+			for (auto &p : pos)
+			{
+				int i = p / N, j = p % N;
+				rank[i] = rank[j + M] = res[i][j] = dsu.getRank(i) + 1;
+			}
 		}
 		return res;
 	}
