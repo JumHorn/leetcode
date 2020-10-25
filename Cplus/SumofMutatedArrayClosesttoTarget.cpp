@@ -8,35 +8,26 @@ class Solution
 public:
 	int findBestValue(vector<int> &arr, int target)
 	{
+		int N = arr.size();
 		sort(arr.begin(), arr.end());
-		int sum = accumulate(arr.begin(), arr.end(), 0);
-		int s = sum;
-		if (sum <= target)
+		vector<int> sum(N + 1); //if current value choosed as best ,then calculate sum
+		for (int i = 0; i < N; ++i)
+			sum[i + 1] = sum[i] + arr[i];
+		for (int i = N - 1; i >= 0; --i)
+			sum[i + 1] = arr[i] * (N - i) + sum[i];
+		if (sum.back() <= target)
 			return arr.back();
-		for (int i = arr.size() - 1; i > 0; --i)
+		int lo = 0, hi = N + 1;
+		while (lo < hi)
 		{
-			sum -= (arr[i] - arr[i - 1]) * (arr.size() - i);
-			if (sum == target)
-				return arr[i - 1];
-			if (sum < target)
-			{
-				int tmp = (target - sum) / (arr.size() - i);
-				if (target - (sum + tmp * (arr.size() - i)) <= (sum + (tmp + 1) * (arr.size() - 1)) - target)
-					return arr[i - 1] + tmp;
-				else
-					return arr[i - 1] + tmp + 1;
-			}
+			int mi = (hi - lo) / 2 + lo;
+			if (sum[mi] < target)
+				lo = mi + 1;
+			else
+				hi = mi;
 		}
-		int tmp = target / arr.size();
-		if (target - tmp * arr.size() <= ((tmp + 1) * arr.size() - target))
-			return tmp;
-		return tmp + 1;
+		target -= sum[--lo];
+		//slightly increase the last value with int(target * 1.0 / (N - lo) + 0.4)
+		return int(target * 1.0 / (N - lo) + 0.4) + (lo >= 1 ? arr[lo - 1] : 0);
 	}
 };
-
-// int main()
-// {
-// 	Solution sol;
-// 	vector<int> v = {60864, 25176, 27249, 21296, 20204};
-// 	return sol.findBestValue(v, 56803);
-// }
