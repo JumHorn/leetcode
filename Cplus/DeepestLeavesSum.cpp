@@ -1,12 +1,15 @@
-#include <vector>
+#include <algorithm>
 using namespace std;
-//Definition for a binary tree node.
+
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
@@ -14,15 +17,15 @@ class Solution
 public:
 	int deepestLeavesSum(TreeNode *root)
 	{
-		return preorder(root).first;
+		return postorder(root).first;
 	}
 
-	pair<int, int> preorder(TreeNode *root)
+	pair<int, int> postorder(TreeNode *root)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return {0, 0};
-		auto left = preorder(root->left);
-		auto right = preorder(root->right);
+		auto left = postorder(root->left);
+		auto right = postorder(root->right);
 		if (left.second == 0 && right.second == 0)
 			return {root->val, 1};
 		if (left.second > right.second)
