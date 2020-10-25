@@ -21,9 +21,6 @@ public:
 			q.pop();
 			if (x == M - 1 && y == N - 1)
 				return effort;
-			if (seen[x][y] < effort)
-				continue;
-			seen[x][y] = effort;
 			//board dfs direction
 			int path[5] = {-1, 0, 1, 0, -1};
 			for (int i = 0; i < 4; ++i)
@@ -31,12 +28,12 @@ public:
 				int dx = x + path[i], dy = y + path[i + 1];
 				if (dx < 0 || dx >= M || dy < 0 || dy >= N)
 					continue;
-				int neweffort = abs(heights[x][y] - heights[dx][dy]);
-				neweffort = max(neweffort, effort);
-
-				if (neweffort < seen[dx][dy])
+				int curEffort = abs(heights[x][y] - heights[dx][dy]);
+				curEffort = max(curEffort, effort);
+				if (curEffort < seen[dx][dy])
 				{
-					q.push({-neweffort, dx * N + dy});
+					seen[dx][dy] = curEffort;
+					q.push({-curEffort, dx * N + dy});
 				}
 			}
 		}
