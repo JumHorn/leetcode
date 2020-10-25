@@ -5,43 +5,49 @@ using namespace std;
 class CombinationIterator
 {
 public:
-	CombinationIterator(string characters, int combinationLength)
+	CombinationIterator(string characters, int combinationLength) : s(characters)
 	{
-		m_index = 0;
-		string tmp;
-		recursive(characters, tmp, 0, combinationLength);
-	}
-
-	void recursive(const string &characters, string &tmp, int index, int len)
-	{
-		if ((int)tmp.size() == len)
-		{
-			data.push_back(tmp);
-			return;
-		}
-		for (int i = index; i < (int)characters.size(); i++)
-		{
-			tmp.push_back(characters[i]);
-			recursive(characters, tmp, i + 1, len);
-			tmp.pop_back();
-		}
+		len = combinationLength;
+		mask = (1 << characters.length()) - 1;
 	}
 
 	string next()
 	{
-		if (hasNext())
-			return data[m_index++];
-		return "";
+		hasNext();
+		string res;
+		int N = s.length();
+		for (int i = 0; i < N; ++i)
+		{
+			if (mask & (1 << (N - i - 1)))
+				res.push_back(s[i]);
+		}
+		--mask;
+		return res;
 	}
 
 	bool hasNext()
 	{
-		return m_index < (int)data.size();
+		while (mask > 0 && bitCount(mask) != len)
+			--mask;
+		return mask != 0;
 	}
 
 private:
-	vector<string> data;
-	int m_index;
+	int bitCount(int n)
+	{
+		int res = 0;
+		while (n != 0)
+		{
+			++res;
+			n &= n - 1;
+		}
+		return res;
+	}
+
+private:
+	int mask;
+	int len;
+	string &s;
 };
 
 /**
