@@ -1,39 +1,30 @@
-#include<stdio.h>
-#include<string.h>
-#include<stdbool.h>
-int main()
+#include <ctype.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+
+bool isVowel(char c)
 {
-	char * reverseVowels(char *s);
-	bool check(char c);
+	c = tolower(c);
+	return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
 }
-bool check(char c)
+
+char *reverseVowels(char *s)
 {
-
-	if(c>='A'&&c<='Z')c=c+0x20;
-	if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u')
+	int i = 0, j = strlen(s) - 1;
+	while (i < j)
 	{
-		return true;
-	}
-	return false;
-
-}
-char * reverseVowels(char *s)
-{
-	char  c;
-	int i,j=0,len=strlen(s);
-	int m=0,n=len-1;
-
-	while(m<n)
-	{
-		while(!check(s[m])&&m<n)m++;
-		while(!check(s[n])&&m<n)n--;
-
-		c=s[m];
-		s[m]=s[n];
-		s[n]=c;
-
-		m++;
-		n--;
+		if (!isVowel(s[i]))
+			++i;
+		else if (!isVowel(s[j]))
+			--j;
+		else
+		{
+			swap(s[i], s[j]);
+			++i;
+			--j;
+		}
 	}
 	return s;
 }
