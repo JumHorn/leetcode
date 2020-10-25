@@ -1,53 +1,30 @@
-#include<stdio.h>
-void convert(unsigned int num,char * p);
- char s[9]={'t','t','t','t','t','t','t','t','\0'};
-int main()
+
+void reverse(char *arr, int first, int last)
 {
-	char * toHex(int num);
-        char * p;
-        p=toHex(16);
-	printf("%s\n",p);
+	while (first < last)
+	{
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
+		++first;
+		--last;
+	}
 }
 
-char * toHex(int num)
+char *toHex(int num)
 {
-        //static char s[9]={'t','t','t','t','t','t','t','t','\0'};
-	char *p;
-	unsigned int n=num;
-        if(num==0)
-        {
-            return "0";
-        }
-	p=&s[7];
-	convert(n,p);
-	p=s;
-	while(*p=='t')
+	const char *HEX = "0123456789abcdef";
+	unsigned int N = num;
+	if (N == 0)
+		return "0";
+	char *res = (char *)malloc(sizeof(char) * 9);
+	int resSize = 0;
+	while (N != 0)
 	{
-		p++;
-	}  
-	return p;
-}
-void convert(unsigned int num,char * p)
-{
-	if(num==0)
-	{
-		return;
+		res[resSize++] = HEX[N & 0b1111]; //N%16
+		N >>= 4;						  //N/=16
 	}
-	if(num%16<=9&&num%16>=0)
-	{
-	      *p=num%16+48;
-	}
-	else
-	{
-		switch(num%16)
-		{
-			case 10:*p='a';break;
-			case 11:*p='b';break;
-			case 12:*p='c';break;
-			case 13:*p='d';break;
-			case 14:*p='e';break;
-			case 15:*p='f';break;
-		}
-	}
-	convert(num/16,--p);
+	res[resSize] = '\0';
+	reverse(res, 0, resSize - 1);
+	return res;
 }
