@@ -1,29 +1,31 @@
-#include<iostream>
-#include<sstream>
-#include<string>
+#include <algorithm>
+#include <sstream>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string convertToBase7(int num) {
+	string convertToBase7(int num)
+	{
 		stringstream ss;
-		string result,symbol="";
-		if(num==0)
+		if (num == 0)
 			return "0";
-		if(num<0)
+		int sign = 1;
+		if (num < 0)
 		{
-            num=-num;
-            symbol="-";
+			num = -num;
+			sign = -1;
 		}
-		while(num)
+		while (num != 0)
 		{
-			ss<<num%7;
-			num/=7;
+			ss << num % 7;
+			num /= 7;
 		}
-		result=ss.str();
-		reverse(result.begin(),result.end());
-		result.insert(0,symbol);
-		
-		return result;
-    }
+		if (sign == -1)
+			ss << "-";
+		string res = ss.str();
+		reverse(res.begin(), res.end());
+		return res;
+	}
 };
