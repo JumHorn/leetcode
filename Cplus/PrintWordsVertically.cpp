@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <sstream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -7,45 +9,37 @@ class Solution
 public:
 	vector<string> printVertically(string s)
 	{
-		vector<string> v = split(s);
-		int index = 0;
+		int maxWordLen = 0;
+		vector<string> strs = split(s, maxWordLen);
+		int N = strs.size();
 		vector<string> res;
-		while (index < (int)s.length())
+		for (int j = 0; j < maxWordLen; ++j)
 		{
-			string tmp;
-			for (int i = 0; i < (int)v.size(); i++)
+			res.push_back("");
+			for (int i = 0; i < N; ++i)
 			{
-				if (index < (int)v[i].length())
-					tmp += v[i][index];
+				if (j < (int)strs[i].length())
+					res.back().push_back(strs[i][j]);
 				else
-					tmp += " ";
+					res.back().push_back(' ');
 			}
-			int j = tmp.length() - 1;
-			while (j >= 0)
-			{
-				if (tmp[j] != ' ')
-					break;
-				j--;
-			}
-			if (j < 0)
-				break;
-			res.push_back(tmp.substr(0, j + 1));
-			++index;
+			while (!res.back().empty() && res.back().back() == ' ')
+				res.back().pop_back();
 		}
 		return res;
 	}
 
-	vector<string> split(const string &s)
+	vector<string> split(const string &s, int &maxLen)
 	{
 		vector<string> res;
-		int i = 0, j = 0;
-		while (j < (int)s.length())
+		stringstream ss(s);
+		res.push_back("");
+		while (ss >> res.back())
 		{
-			while (j < (int)s.length() && s[j] != ' ')
-				j++;
-			res.push_back(s.substr(i, j - i));
-			i = ++j;
+			maxLen = max(maxLen, (int)res.back().length());
+			res.push_back("");
 		}
+		res.pop_back();
 		return res;
 	}
 };
