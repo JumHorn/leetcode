@@ -6,11 +6,9 @@ class DSU
 public:
 	DSU(int size) : parent(size)
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; ++i)
 			parent[i] = i;
 	}
-
-	~DSU() {}
 
 	int Find(int x)
 	{
@@ -19,21 +17,23 @@ public:
 		return parent[x];
 	}
 
-	bool Union(int x, int y)
+	int Union(int x, int y)
 	{
 		int xr = Find(x), yr = Find(y);
 		if (xr == yr)
-			return false;
+			return 1; //extra edge
 		parent[yr] = xr;
-		return true;
+		return 0;
 	}
 
-	int GetAlonePart()
+	int GetConnectedGroups()
 	{
 		int res = 0;
-		for (int i = 0; i < (int)parent.size(); i++)
+		for (int i = 0; i < (int)parent.size(); ++i)
+		{
 			if (parent[i] == i)
-				res++;
+				++res;
+		}
 		return res;
 	}
 
@@ -46,22 +46,15 @@ class Solution
 public:
 	int makeConnected(int n, vector<vector<int>> &connections)
 	{
-		vector<bool> visited(n, false);
-		int res = 0, alone = 0;
+		int res = 0;
 		DSU dsu(n);
-		for (int i = 0; i < (int)connections.size(); i++)
-		{
-			dsu.Union(connections[i][0], connections[i][1]);
-			if (visited[connections[i][0]] && visited[connections[i][1]])
-				++res;
-			visited[connections[i][0]] = true;
-			visited[connections[i][1]] = true;
-		}
-		alone = dsu.GetAlonePart();
-		if (alone <= 1)
+		for (auto &conn : connections)
+			res += dsu.Union(conn[0], conn[1]);
+		int group = dsu.GetConnectedGroups();
+		if (group <= 1)
 			return 0;
-		if (res < alone - 1)
+		if (res < group - 1)
 			return -1;
-		return alone - 1;
+		return group - 1;
 	}
 };
