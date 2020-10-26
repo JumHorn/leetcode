@@ -4,26 +4,16 @@ class Solution
 public:
 	int minFlips(int a, int b, int c)
 	{
-		int bit = 1, res = 0, d = (a | b);
-		if (d == c)
-			return 0;
-		while (bit <= d || bit <= c)
+		return bitCount(a & ~c) + bitCount(b & ~c) + bitCount((c ^ (a & c)) & (c ^ (b & c)));
+	}
+
+	int bitCount(int n)
+	{
+		int res = 0;
+		while (n != 0)
 		{
-			if ((c & bit) != (d & bit))
-			{
-				if (c & bit)  //1
-				{
-					++res;
-				}
-				else  //0
-				{
-					if (a & bit)
-						++res;
-					if (b & bit)
-						++res;
-				}
-			}
-			bit <<= 1;
+			++res;
+			n &= n - 1;
 		}
 		return res;
 	}
