@@ -1,62 +1,38 @@
-#include<stdio.h>
-#include<malloc.h>
-int main()
+#include <stdlib.h>
+
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int cmp(const void *lhs, const void *rhs)
 {
-	int * intersection(int * nums1,int nums1Size,int * nums2,int nums2Size,int * returnSize);
-        int a[]={1,2,2,1},b[]={1,2};
-	int *p,i,size=2;
-	p=intersection(a,4,b,2,&size);
-	for(i=0;i<2;i++)
-	{
-		printf("%d\n",*p);
-		p++;
-	}
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	if (*(int *)lhs < *(int *)rhs)
+		return -1;
+	return 1;
 }
 
-int * intersection(int * nums1,int nums1Size,int * nums2,int nums2Size,int * returnSize)
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int *intersection(int *nums1, int nums1Size, int *nums2, int nums2Size, int *returnSize)
 {
-	int a[1000]={0};
-	int i,j,k=0;
-	int *p1,*p2;
-	*returnSize=0;
-	p1=nums1;
-	p2=nums2;
-	for(i=0;i<nums1Size;i++,p1++)
+	qsort(nums1, nums1Size, sizeof(int), cmp);
+	qsort(nums2, nums2Size, sizeof(int), cmp);
+	int *res = (int *)malloc(sizeof(int) * max(nums1Size, nums2Size));
+	*returnSize = 0;
+	for (int i = 0, j = 0; i < nums1Size && j < nums2Size;)
 	{
-		for(j=0,p2=nums2;j<nums2Size;j++,p2++)
+		if (nums1[i] == nums2[j])
 		{
-			if(*p1==*p2)
-			{
-				a[k++]=*p1;
-				break;
-			}
+			if (*returnSize == 0 || res[*returnSize - 1] != nums1[i])
+				res[(*returnSize)++] = nums1[i];
+			++i;
+			++j;
 		}
+		else if (nums1[i] < nums2[j])
+			++i;
+		else
+			++j;
 	}
-	for(i=0;i<k;i++)
-	{
-		for(j=0;j<i;j++)
-		{
-			if(a[i]==a[j])
-			{
-				a[i]=-214748364;
-			}
-		}
-	}
-	for(i=0;i<k;i++)
-	{
-	    if(a[i]!=-214748364)
-	    {
-	        (*returnSize)++;
-	    }
-	}
-	int * p = (int*)malloc(sizeof(int)*(*returnSize));
-	p1=p;
-	for(i=0;i<k;i++)
-	{
-		if(a[i]!=-214748364)
-		{
-			*p1++=a[i];
-		}
-	}
-	return p;
+	return res;
 }
