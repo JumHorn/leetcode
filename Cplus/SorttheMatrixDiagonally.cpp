@@ -1,40 +1,29 @@
 #include <algorithm>
+#include <functional>
+#include <queue>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	vector<vector<int>> diagonalSort(vector<vector<int>>& mat)
+	vector<vector<int>> diagonalSort(vector<vector<int>> &mat)
 	{
-		int m = mat.size(), n = mat[0].size();
-		// m rows
-		for (int i = 0; i < m; i++)
+		unordered_map<int, priority_queue<int, vector<int>, greater<int>>> m;
+		int M = mat.size(), N = mat[0].size();
+		for (int i = 0; i < M; ++i)
 		{
-			vector<int> tmp;
-			int j = 0;
-			while (i + j < m && j < n)
-			{
-				tmp.push_back(mat[i + j][j]);
-				j++;
-			}
-			sort(tmp.begin(), tmp.end());
-			for (j = 0; j < (int)tmp.size(); j++)
-				mat[i + j][j] = tmp[j];
+			for (int j = 0; j < N; ++j)
+				m[i - j].push(mat[i][j]);
 		}
-		// n columns
-		for (int j = 1; j < n; j++)
+		for (int i = 0; i < M; ++i)
 		{
-			vector<int> tmp;
-			int i = 0;
-			while (i < m && i + j < n)
+			for (int j = 0; j < N; ++j)
 			{
-				tmp.push_back(mat[i][i + j]);
-				i++;
+				mat[i][j] = m[i - j].top();
+				m[i - j].pop();
 			}
-			sort(tmp.begin(), tmp.end());
-			for (i = 0; i < (int)tmp.size(); i++)
-				mat[i][i + j] = tmp[i];
 		}
 		return mat;
 	}
