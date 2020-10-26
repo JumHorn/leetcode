@@ -1,26 +1,21 @@
 #include <string>
 using namespace std;
 
+/*
+If there is such pattern, the original string could be represented as following:
+origin_str = pattern + pattern + ... + pattern =  m * pattern;
+With doubling:
+origin_str + origin_str = 2 * m * pattern;
+After removing head and rear:
+new_str = pattern_wo_head + (2m-2) * pattern + pattern_wo_rear
+So, origin_str(m * pattern) could be found in new_str if m >= 2.
+*/
+
 class Solution
 {
 public:
 	bool repeatedSubstringPattern(string s)
 	{
-		int N = s.length();
-		for (int i = 1; i <= N / 2; ++i)
-		{
-			if (N % i == 0)
-			{
-				int j = i;
-				for (; j < N; j += i)
-				{
-					if (s.compare(0, i, s, j, i) != 0)
-						break;
-				}
-				if (j == N)
-					return true;
-			}
-		}
-		return false;
+		return (s + s).find(s, 1) < s.length();
 	}
 };
