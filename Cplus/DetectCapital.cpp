@@ -1,48 +1,15 @@
-#include<iostream>
-#include<cctype>
+#include <algorithm>
+#include <cctype>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool detectCapitalUse(string word) {
-        if(word.size()<=1)
-            return true;
-        if(isupper(word[0]))
-        {
-            if(isupper(word[1]))
-            {
-                for(int i=2;i<word.length();i++)
-                {
-                    if(!isupper(word[i]))
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                for(int i=2;i<word.length();i++)
-                {
-                    if(isupper(word[i]))
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        else
-        {
-            for(int i=1;i<word.length();i++)
-            {
-                if(isupper(word[i]))
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+	bool detectCapitalUse(string word)
+	{
+		return all_of(word.begin(), word.end(), ::isupper) ||
+			   all_of(word.begin(), word.end(), ::islower) ||
+			   (isupper(word.front()) && all_of(word.begin() + 1, word.end(), ::islower));
+	}
 };
-
-int main()
-{}
