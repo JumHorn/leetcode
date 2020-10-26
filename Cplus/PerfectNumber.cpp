@@ -1,26 +1,21 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool checkPerfectNumber(int num) {
-        if(num<6)
-        {
-            return false;
-        }
-        int i=2,sum=0;
-        while(i*i<num)
-        {
-            if(num%i==0)
-            {
-                sum+=i+num/i;
-            }
-            i++;
-        } 
-        if(i*i==num)
-        {
-            sum+=i;
-        }
-        return sum+1==num;
-    }
+	bool checkPerfectNumber(int num)
+	{
+		if (num < 6)
+			return false;
+		int res = 0, i = 2;
+		for (; i * i < num; ++i)
+		{
+			if (num % i == 0)
+				res += i + num / i;
+		}
+		if (i * i == num)
+			res += i;
+		return res + 1 == num;
+	}
 };
