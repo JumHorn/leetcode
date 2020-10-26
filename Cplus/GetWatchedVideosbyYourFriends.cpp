@@ -9,45 +9,45 @@ using namespace std;
 class Solution
 {
 public:
-	vector<string> watchedVideosByFriends(vector<vector<string>>& watchedVideos, vector<vector<int>>& friends, int id, int level)
+	vector<string> watchedVideosByFriends(vector<vector<string>> &watchedVideos, vector<vector<int>> &friends, int id, int level)
 	{
-		vector<bool> visited(friends.size(), false);
+		vector<bool> seen(friends.size());
 		queue<int> q;
-		visited[id] = true;
+		seen[id] = true;
 		q.push(id);
-		while (!q.empty() && level > 0)
+		while (!q.empty() && --level >= 0)
 		{
-			level--;
 			int size = q.size();
 			while (--size >= 0)
 			{
-				int tmp = q.front();
+				int node = q.front();
 				q.pop();
-				for (auto n : friends[tmp])
+				for (auto n : friends[node])
 				{
-					if (!visited[n])
+					if (!seen[n])
 					{
+						seen[n] = true;
 						q.push(n);
-						visited[n] = true;
 					}
 				}
 			}
 		}
-		map<string, int> m;
+		map<string, int> m; //{video ,freq}
 		while (!q.empty())
 		{
-			for (auto v : watchedVideos[q.front()])
-				m[v]++;
+			for (auto &video : watchedVideos[q.front()])
+				++m[video];
 			q.pop();
 		}
-		map<int, set<string>> tmp;
-		for (auto n : m)
-			tmp[n.second].insert(n.first);
+		map<int, set<string>> video; //{freq,video}
+		for (auto &n : m)
+			video[n.second].insert(n.first);
 		vector<string> res;
-		for (auto n : tmp)
-			for (auto s : n.second)
+		for (auto &v : video)
+		{
+			for (auto &s : v.second)
 				res.push_back(s);
+		}
 		return res;
 	}
 };
-
