@@ -1,67 +1,34 @@
-#include<stdio.h>
-#include<string.h>
-char a[5100];
-int main()
+#include <stdlib.h>
+#include <string.h>
+
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+void reverse(char *arr, int first, int last)
 {
-	char * addStrings(char *num1,char *num2);
-	char a[]="99",b[]="1";
-	printf("%s\n",addStrings(a,b));
+	while (first < last)
+	{
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
+		++first;
+		--last;
+	}
 }
 
-char * addStrings(char *num1,char *num2)
+char *addStrings(char *num1, char *num2)
 {
-	char *p;
-	//a[5100]='\0';
-	int num1_len,num2_len,i,j,t,k=5099,c=0;//c stand for carry
-	num1_len=strlen(num1);
-	num2_len=strlen(num2);
-	i=num1_len-1;
-	j=num2_len-1;
-	while(i>=0&&j>=0)
+	int N1 = strlen(num1), N2 = strlen(num2), carry = 0, resSize = 0;
+	char *res = (char *)malloc(sizeof(char) * max(N1, N2) + 2);
+	for (int i = N1 - 1, j = N2 - 1; i >= 0 || j >= 0 || carry > 0;)
 	{
-		t=num1[i]-'0'+num2[j]-'0'+c;
-		c=t/10; printf("%d\n",c);
-		a[k]=t%10+'0';printf("%c\n",a[k]);
-
-		k--;
-		i--;
-		j--;
+		if (i >= 0)
+			carry += num1[i--] - '0';
+		if (j >= 0)
+			carry += num2[j--] - '0';
+		res[resSize++] = carry % 10 + '0';
+		carry /= 10;
 	}
-	if(i<0&&j>=0)
-	{
-		while(j>=0)
-		{
-			t=num2[j]-'0'+c;
-			c=t/10;printf("%d\n",c);
-			a[k]=t%10+'0';printf("%c\n",a[k]);
-
-			k--;
-			j--;
-		}
-	}
-	if(i>=0&&j<0)
-	{
-		while(i>=0)
-		{
-			t=num1[i]-'0'+c;
-			c=t/10;
-			a[k]=t%10+'0';
-
-			k--;
-			i--;
-		}
-	}
-	if(i<0&&j<0)
-	{
-		if(c==1)
-		{
-			a[k]='1';printf("%c\n",a[k]);
-		}
-		else
-		{
-			k++;
-		}
-	}
-	p=&a[k];
-	return p;
+	res[resSize] = '\0';
+	reverse(res, 0, resSize - 1);
+	return res;
 }
