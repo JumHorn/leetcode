@@ -1,30 +1,16 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
-public:
-    int arrayPairSum(vector<int>& nums) 
-    {
-        int sum=0;
-        sort(nums.begin(),nums.end());
-        for(int i=0;i<nums.size();i+=2)
-        {
-            sum+=nums[i];
-        }
-        return sum;
-    }
-};
-
-int main()
+class Solution
 {
-    vector<int> vec;
-    vec.push_back(1);
-    vec.push_back(4);
-    vec.push_back(2);
-    vec.push_back(3);
-    Solution sol;
-    cout<<sol.arrayPairSum(vec)<<endl;
-    return 0;
-}
+public:
+	int arrayPairSum(vector<int> &nums)
+	{
+		sort(nums.begin(), nums.end());
+		int sum = 0, N = nums.size();
+		for (int i = 0; i < N; i += 2)
+			sum += nums[i];
+		return sum;
+	}
+};
