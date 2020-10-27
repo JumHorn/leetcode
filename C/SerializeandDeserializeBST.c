@@ -27,21 +27,16 @@ char *serialize(struct TreeNode *root)
 	int top = -1, size = 0;
 	if (!root)
 		return NULL;
-	char *res = (char *)malloc(sizeof(char) * 1000);
+	char *res = (char *)malloc(sizeof(char) * 100000);
 	stack[++top] = root;
 	while (top != -1)
 	{
 		struct TreeNode *node = stack[top--];
 		if (!node) //NULL
-		{
-			sprintf(&res[size], "N,");
-			size += 2;
-		}
+			size += sprintf(&res[size], "N,");
 		else
 		{
-			sprintf(&res[size], "%d,", node->val);
-			while (res[size] != '\0')
-				++size;
+			size += sprintf(&res[size], "%d,", node->val);
 			stack[++top] = node->right;
 			stack[++top] = node->left;
 		}
