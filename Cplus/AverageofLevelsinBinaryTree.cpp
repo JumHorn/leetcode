@@ -1,155 +1,39 @@
-#include<iostream>
-#include<vector>
-#include<queue>
+#include <vector>
 using namespace std;
 
-//  Definition for a binary tree node.
- struct TreeNode {
-     int val;
-     TreeNode *left;
-     TreeNode *right;
-     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- };
- 
-class Solution {
-public:
-    long sum,n;
-    vector<double> res;
-
-    void init()
-    {
-        sum=0;
-        n=0;
-    }
-
-    void add(int val)
-    {
-        sum+=val;
-        n++;
-    }
-
-    void save()
-    {
-        res.push_back(sum*1.0/n);
-    }
-
-    vector<double> averageOfLevels(TreeNode* root) {
-        queue<TreeNode *> treequeue;
-        treequeue.push(root);
-        res.clear();
-        while(true)
-        {
-            init();
-            queue<TreeNode *> temp;
-            while(!treequeue.empty())
-            {
-                TreeNode * node = treequeue.front();
-                if(node==NULL)
-                {
-                    treequeue.pop();
-                    continue;
-                }
-
-                add(node->val);
-
-                //将非空子节点插入temp
-                temp.push(node->left);
-                temp.push(node->right);
-
-                treequeue.pop();
-            }
-            if(temp.empty())
-            {
-                break;
-            }
-            else
-            {
-                treequeue=temp;
-            }
-            save();
-        }
-        return res;
-    }
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-//创建树的函数
-/*
-          3
-    9           20
-            15       7 
-                13
-*/
-TreeNode* createtree()
+class Solution
 {
-    //TreeNode head(3);
-    TreeNode *tree = new TreeNode(3);
-    tree->left=new TreeNode(9);
-    tree->right=new TreeNode(20);
-    tree->right->left=new TreeNode(15);
-    tree->right->right=new TreeNode(7);
-    tree->right->left->right=new TreeNode(13);
+public:
+	vector<double> averageOfLevels(TreeNode *root)
+	{
+		vector<pair<double, int>> data; //{sum of level,node count of level}
+		preorder(root, 0, data);
+		vector<double> res;
+		for (auto &p : data)
+			res.push_back(p.first / p.second);
+		return res;
+	}
 
-    return tree;
-}
-void printvector(vector<double> vec)
-{
-    for(vector<double>::iterator iter=vec.begin();iter!=vec.end();iter++)
-    {
-        cout<<*iter<<",";
-    }
-    cout<<endl;
-}
-//打印树
-//可以递归实现先序，中序，后序
-void print(TreeNode * tree)
-{
-    //代码不简洁
-    // if(tree->left==NULL&&tree->right==NULL)
-    // {
-    //     cout<<tree->val<<endl;
-    //     return;
-    // }
-    // else if(tree->left!=NULL&&tree->right==NULL)
-    // {
-    //     cout<<tree->val<<endl;
-    //     print(tree->left);
-    // }
-    // else if(tree->left==NULL&&tree->right!=NULL)
-    // {
-    //     cout<<tree->val<<endl;
-    //     print(tree->right);
-    // }
-    // else
-    // {
-    //     cout<<tree->val<<endl;
-    //     print(tree->left);
-    //     print(tree->right);
-    // }
-    if(tree==NULL)
-    {
-        return ;
-    }
-    else
-    {
-        cout<<tree->val<<endl;     //先序遍历
-        print(tree->left);
-        print(tree->right);
-
-        // print(tree->left);
-        // cout<<tree->val<<endl;     //中序遍历
-        // print(tree->right);
-
-        // print(tree->left);
-        // print(tree->right);
-        // cout<<tree->val<<endl;     //后序遍历
-    }
-}
-
-int main()
-{
-    TreeNode *head=createtree();
-    print(head);
-    Solution sol;
-    sol.averageOfLevels(head);
-    printvector(sol.res);
-}
+	void preorder(TreeNode *root, int layer, vector<pair<double, int>> &data)
+	{
+		if (root == nullptr)
+			return;
+		if (layer >= (int)data.size())
+			data.push_back({0, 0});
+		data[layer].first += root->val;
+		++data[layer].second;
+		preorder(root->left, layer + 1, data);
+		preorder(root->right, layer + 1, data);
+	}
+};
