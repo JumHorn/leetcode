@@ -1,24 +1,21 @@
-#include<iostream>
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    double findMaxAverage(vector<int>& nums, int k) {
-        double result,temp=0;
-        for(int i=0;i<k;i++)
-        {
-            temp+=nums[i];
-        }
-        result=temp;
-        for(int i=k;i<nums.size();i++)
-        {
-            temp=temp+nums[i]-nums[i-k];
-            if(temp>result)
-            {
-                result=temp;
-            }
-        }
-        return result/k;
-    }
+	double findMaxAverage(vector<int> &nums, int k)
+	{
+		double sum = 0, res = 0;
+		for (int i = 0; i < k; ++i)
+			sum += nums[i];
+		res = sum;
+		for (int i = k; i < (int)nums.size(); ++i)
+		{
+			sum += nums[i] - nums[i - k];
+			if (sum > res)
+				res = sum;
+		}
+		return res / k;
+	}
 };
