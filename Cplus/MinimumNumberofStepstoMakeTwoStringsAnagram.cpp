@@ -1,4 +1,5 @@
 #include <string>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -7,20 +8,18 @@ class Solution
 public:
 	int minSteps(string s, string t)
 	{
-		vector<int> v(26);
-		for (int i = 0; i < (int)s.length(); i++)
+		unordered_map<char, int> m; //{char,count}
+		for (int i = 0; i < (int)s.length(); ++i)
 		{
-			++v[s[i] - 'a'];
-			--v[t[i] - 'a'];
+			++m[s[i]];
+			--m[t[i]];
 		}
-		int positive = 0, negative = 0;
-		for (int i = 0; i < 26; i++)
+		int res = 0;
+		for (auto &n : m)
 		{
-			if (v[i] >= 0)
-				positive += v[i];
-			else
-				negative += v[i];
+			if (n.second > 0)
+				res += n.second;
 		}
-		return min(positive, negative) + abs(positive - negative);
+		return res;
 	}
 };
