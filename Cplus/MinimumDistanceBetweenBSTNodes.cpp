@@ -1,36 +1,35 @@
-#include<iostream>
-#include<cmath>
-#include<algorithm>
+#include <algorithm>
+#include <climits>
 using namespace std;
 
-//Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
-	int res;
+class Solution
+{
 public:
-    int minDiffInBST(TreeNode* root) {
-		res=INT_MAX;
-		int pre=INT_MIN;
-		if(root==NULL)
-			return res;
-		return minDiffInBST(root,pre);
-    }
-
-	int minDiffInBST(TreeNode* root,int& pre)
+	int minDiffInBST(TreeNode *root)
 	{
-		if(root->left!=NULL)
-			minDiffInBST(root->left,pre);
-		if(pre>INT_MIN)
-			res=min(res,root->val-pre);
-		pre=root->val;
-		if(root->right!=NULL)
-			minDiffInBST(root->right,pre);
+		long res = INT_MAX, pre = INT_MIN;
+		inorder(root, pre, res);
 		return res;
+	}
+
+	void inorder(TreeNode *root, long &pre, long &res)
+	{
+		if (root == nullptr)
+			return;
+		inorder(root->left, pre, res);
+		res = min(res, root->val - pre);
+		pre = root->val;
+		inorder(root->right, pre, res);
 	}
 };

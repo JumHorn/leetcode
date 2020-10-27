@@ -1,35 +1,35 @@
-#include<iostream>
+#include <algorithm>
+#include <climits>
 using namespace std;
 
-
 // Definition for a binary tree node.
-struct TreeNode {
-      int val;
-      TreeNode *left;
-      TreeNode *right;
-      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- };
- 
-
-class Solution {
-public:
-    int pre=2147483647;
-    int min=2147483647;
-    int getMinimumDifference(TreeNode* root) {
-        if(!root)
-        {
-            return 0;
-        }
-        getMinimumDifference(root->left);
-        if(root->val-pre<min&&root->val-pre>=0)
-        {
-            min=root->val-pre;
-        }
-        pre=root->val;
-        getMinimumDifference(root->right);
-        return min;
-    }
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-int main()
-{}
+class Solution
+{
+public:
+	int getMinimumDifference(TreeNode *root)
+	{
+		long res = INT_MAX, pre = INT_MIN;
+		inorder(root, pre, res);
+		return res;
+	}
+
+	void inorder(TreeNode *root, long &pre, long &res)
+	{
+		if (root == nullptr)
+			return;
+		inorder(root->left, pre, res);
+		res = min(res, root->val - pre);
+		pre = root->val;
+		inorder(root->right, pre, res);
+	}
+};
