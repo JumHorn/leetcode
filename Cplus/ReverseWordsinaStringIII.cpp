@@ -1,32 +1,19 @@
-#include<iostream>
-#include<string>
-#include<algorithm>
+#include <algorithm>
+#include <sstream>
+#include <string>
 using namespace std;
 
-class solution 
+class Solution
 {
-    public:
-        string reverseWords(string s)
-        {
-            string::iterator iter = s.begin();
-            string::iterator temp = s.begin();
-            while(iter!=s.end())
-            {
-                if(*iter==' ')
-                {
-                    reverse(temp,iter);
-                    temp=iter+1;
-                }
-                iter++;
-            }
-            reverse(temp,iter);
-            return s;
-        }
+public:
+	string reverseWords(string s)
+	{
+		string res, token;
+		for (stringstream ss(s); ss >> token;)
+		{
+			reverse(token.begin(), token.end());
+			res += ' ' + token;
+		}
+		return res.empty() ? "" : res.substr(1);
+	}
 };
-
-int main()
-{
-    solution sol;
-    cout<<sol.reverseWords("testa")<<endl;
-    return 0;
-}
