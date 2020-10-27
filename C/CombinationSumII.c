@@ -8,6 +8,22 @@ int cmp(const void *lhs, const void *rhs)
 	return *(int *)lhs - *(int *)rhs;
 }
 
+//malloc result
+int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
+{
+	*returnSize = dataSize;
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	memcpy(*returnColumnSizes, dataColSize, sizeof(int) * (*returnSize));
+	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
+	for (int i = 0; i < *returnSize; ++i)
+	{
+		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
+		memcpy(res[i], data[i], sizeof(int) * ((*returnColumnSizes)[i]));
+	}
+	return res;
+}
+/********end of malloc result********/
+
 void addOneResult(int (*staticRes)[30], int *size, int *colSize, int *data, int dataSize)
 {
 	memcpy(staticRes[*size], data, sizeof(int) * dataSize);
@@ -47,14 +63,5 @@ int **combinationSum2(int *candidates, int candidatesSize, int target, int *retu
 	*returnSize = 0;
 	qsort(candidates, candidatesSize, sizeof(int), cmp);
 	dfs(candidates, candidatesSize, 0, target, data, 0, staticRes, returnSize, staticResColSize);
-
-	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	memcpy(*returnColumnSizes, staticResColSize, sizeof(int) * (*returnSize));
-	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
-	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
-		memcpy(res[i], staticRes[i], sizeof(int) * ((*returnColumnSizes)[i]));
-	}
-	return res;
+	return mallocRes(staticRes, *returnSize, staticResColSize, returnSize, returnColumnSizes);
 }

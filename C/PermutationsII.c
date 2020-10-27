@@ -9,6 +9,22 @@ int cmp(const void *lhs, const void *rhs)
 	return *(int *)lhs - *(int *)rhs;
 }
 
+//malloc result
+int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
+{
+	*returnSize = dataSize;
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	memcpy(*returnColumnSizes, dataColSize, sizeof(int) * (*returnSize));
+	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
+	for (int i = 0; i < *returnSize; ++i)
+	{
+		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
+		memcpy(res[i], data[i], sizeof(int) * ((*returnColumnSizes)[i]));
+	}
+	return res;
+}
+/********end of malloc result********/
+
 void reverse(int *arr, int first, int last)
 {
 	while (first < last)
@@ -59,13 +75,5 @@ int **permuteUnique(int *nums, int numsSize, int *returnSize, int **returnColumn
 		addOneResult(staticRes, returnSize, staticResColSize, nums, numsSize);
 	} while (nextPermutation(nums, numsSize));
 
-	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	memcpy(*returnColumnSizes, staticResColSize, sizeof(int) * (*returnSize));
-	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
-	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
-		memcpy(res[i], staticRes[i], sizeof(int) * ((*returnColumnSizes)[i]));
-	}
-	return res;
+	return mallocRes(staticRes, *returnSize, staticResColSize, returnSize, returnColumnSizes);
 }

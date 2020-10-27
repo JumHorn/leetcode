@@ -4,6 +4,22 @@
 	if ((a) != (b)) \
 	((a) ^= (b) ^= (a) ^= (b))
 
+//malloc result
+int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
+{
+	*returnSize = dataSize;
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	memcpy(*returnColumnSizes, dataColSize, sizeof(int) * (*returnSize));
+	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
+	for (int i = 0; i < *returnSize; ++i)
+	{
+		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
+		memcpy(res[i], data[i], sizeof(int) * ((*returnColumnSizes)[i]));
+	}
+	return res;
+}
+/********end of malloc result********/
+
 void addOneResult(int (*staticRes)[30], int *size, int *colSize, int *data, int dataSize)
 {
 	memcpy(staticRes[*size], data, sizeof(int) * dataSize);
@@ -33,14 +49,5 @@ int **permute(int *nums, int numsSize, int *returnSize, int **returnColumnSizes)
 	static int staticRes[10000][30], staticResColSize[10000];
 	*returnSize = 0;
 	dfs(nums, numsSize, 0, staticRes, returnSize, staticResColSize);
-
-	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	memcpy(*returnColumnSizes, staticResColSize, sizeof(int) * (*returnSize));
-	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
-	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (int *)malloc(sizeof(int) * ((*returnColumnSizes)[i]));
-		memcpy(res[i], staticRes[i], sizeof(int) * ((*returnColumnSizes)[i]));
-	}
-	return res;
+	return mallocRes(staticRes, *returnSize, staticResColSize, returnSize, returnColumnSizes);
 }
