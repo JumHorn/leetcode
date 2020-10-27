@@ -1,71 +1,48 @@
-#include<iostream>
-#include<vector>
+#include <vector>
 using namespace std;
 
 // Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> result;
-    int max,num,first;
-    vector<int> findMode(TreeNode* root) {
-        max=1;
-        num=0;
-        first=-1;
-        if(!root)
-        {
-            return result;
-        }
-        BFS(root);
-        if(num>max)
-        {
-            result.clear();
-            result.push_back(first);
-        }
-        else if(num==max)
-        {
-            result.push_back(first);
-        }
-        else
-        {
-        }
-        return result;
-    }
-    void BFS(TreeNode* root)
-    {
-        if(!root)
-        {
-            return;
-        }
-        BFS(root->left);
-        if(root->val==first)
-        {
-            num++;
-        }
-        else
-        {
-            if(num>max)
-            {
-                result.clear();
-                max=num;
-                result.push_back(first);
-            }
-            else if(num==max)
-            {
-                result.push_back(first);
-            }
-            else
-            {
-            }
-            num=1;
-        }
-        first=root->val;
-        BFS(root->right);
-    }
+	vector<int> findMode(TreeNode *root)
+	{
+		vector<int> res;
+		int pre = 0, count = 0, maxcount = 1;
+		inorder(root, pre, count, maxcount, res);
+		return res;
+	}
+
+	void inorder(TreeNode *root, int &pre, int &count, int &maxcount, vector<int> &res)
+	{
+		if (root == nullptr)
+			return;
+		inorder(root->left, pre, count, maxcount, res);
+		if (pre != root->val)
+		{
+			pre = root->val;
+			count = 0;
+		}
+		++count;
+		if (count >= maxcount)
+		{
+			if (count > maxcount)
+			{
+				maxcount = count;
+				res.clear();
+			}
+			res.push_back(root->val);
+		}
+		inorder(root->right, pre, count, maxcount, res);
+	}
 };
