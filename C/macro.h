@@ -101,7 +101,7 @@ void pop_heap(int *ptr, int size)
 	while (i < non_leaf)
 	{
 		i = 2 * i + 2;
-		if (ptr[i] < ptr[i - 1])
+		if (ptr[i - 1] > ptr[i])
 			--i;
 		ptr[hole] = ptr[i];
 		hole = i;
