@@ -6,28 +6,21 @@ class ProductOfNumbers
 public:
 	ProductOfNumbers()
 	{
+		prefix.push_back(1);
 	}
 
 	void add(int num)
 	{
 		if (num == 0)
-		{
-			prefix.clear();
-			return;
-		}
-		if (prefix.empty())
-			prefix.push_back(num);
+			prefix = {1};
 		else
 			prefix.push_back(prefix.back() * num);
 	}
 
 	int getProduct(int k)
 	{
-		if (k > (int)prefix.size())
-			return 0;
-		if (k == (int)prefix.size())
-			return prefix.back();
-		return prefix.back() / prefix[prefix.size() - k - 1];
+		int N = prefix.size();
+		return k >= N ? 0 : prefix[N - 1] / prefix[N - k - 1];
 	}
 
 private:
