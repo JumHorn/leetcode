@@ -1,81 +1,31 @@
-#include<iostream>
-#include<algorithm>
+#include <algorithm>
 using namespace std;
 
-//  Definition for a binary tree node.
-struct TreeNode {
+// Definition for a binary tree node.
+struct TreeNode
+{
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
-	public:
-		int result=0,temp;
-		int diameterOfBinaryTree(TreeNode* root) {
-			if(!root)
-			{
-				return 0;
-			}
-			temp=maxlevel(root->left,0)+maxlevel(root->right,0);
-			if(result<temp)
-			{
-				result = temp; 
-			}
-			diameterOfBinaryTree(root->left);
-			diameterOfBinaryTree(root->right);
-			return result;
-		}
+class Solution
+{
+public:
+	int diameterOfBinaryTree(TreeNode *root)
+	{
+		return postorder(root).first;
+	}
 
-		int maxlevel(TreeNode* root,int level)
-		{
-			if(!root)
-			{
-				return level;
-			}
-			return max(maxlevel(root->left,level+1),maxlevel(root->right,level+1));
-		}
+	pair<int, int> postorder(TreeNode *root) //{diameter,height}
+	{
+		if (root == nullptr)
+			return {0, 0};
+		auto l = postorder(root->left);
+		auto r = postorder(root->right);
+		return {max({l.first, r.first, l.second + r.second}), 1 + max(l.second, r.second)};
+	}
 };
-
-//认为顶点的两段的层数就是最大层数，忽略了其他节点
-class Solution0 {
-	public:
-		int diameterOfBinaryTree(TreeNode* root) {
-			if(!root)
-			{
-				return 0;
-			}
-			return maxlevel(root->left,1)+maxlevel(root->right,1)-2;
-		}
-
-		int maxlevel(TreeNode* root,int level)
-		{
-			if(!root)
-			{
-				return level;
-			}
-			return max(maxlevel(root->left,level+1),maxlevel(root->right,level+1));
-		}
-};
-
-
-// public class Solution {
-//     int max = 0;
-    
-//     public int diameterOfBinaryTree(TreeNode root) {
-//         maxDepth(root);
-//         return max;
-//     }
-    
-//     private int maxDepth(TreeNode root) {
-//         if (root == null) return 0;
-        
-//         int left = maxDepth(root.left);
-//         int right = maxDepth(root.right);
-        
-//         max = Math.max(max, left + right);
-        
-//         return Math.max(left, right) + 1;
-//     }
-// }
