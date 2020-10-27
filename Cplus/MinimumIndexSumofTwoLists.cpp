@@ -1,40 +1,34 @@
-#include<iostream>
-#include<vector>
-#include<string>
+#include <climits>
+#include <string>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
-	public:
-		vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
-			int sumindex = INT_MAX;
-			int temp;
-			string result;
-			vector<string> ret;
-			for(vector<string>::iterator iter=list1.begin();iter!=list1.end();iter++)
+class Solution
+{
+public:
+	vector<string> findRestaurant(vector<string> &list1, vector<string> &list2)
+	{
+		int indexsum = INT_MAX;
+		vector<string> res;
+		unordered_map<string, int> m; //{restaurant,index}
+		for (int i = 0; i < (int)list1.size(); ++i)
+			m[list1[i]] = i;
+		for (int i = 0; i < (int)list2.size(); ++i)
+		{
+			if (m.find(list2[i]) != m.end())
 			{
-				vector<string>::iterator it=find(list2.begin(),list2.end(),*iter);
-				if(it==list2.end())
+				if (m[list2[i]] + i <= indexsum)
 				{
-					continue;
-				}
-				temp=distance(list2.begin(),it)+distance(list1.begin(),iter);
-				if(temp<sumindex)
-				{
-					sumindex=temp;
-					ret.clear();
-					ret.push_back(*it);
-					continue;
-				}
-				if(temp==sumindex)
-				{
-					ret.push_back(*it);
+					if (m[list2[i]] + i < indexsum)
+					{
+						indexsum = m[list2[i]] + i;
+						res.clear();
+					}
+					res.push_back(list2[i]);
 				}
 			}
-			return ret;
 		}
+		return res;
+	}
 };
-
-int main()
-{
-
-}
