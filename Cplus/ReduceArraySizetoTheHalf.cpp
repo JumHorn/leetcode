@@ -1,25 +1,25 @@
-#include <map>
 #include <queue>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int minSetSize(vector<int>& arr)
+	int minSetSize(vector<int> &arr)
 	{
-		map<int, int> m;  //value frequence
-		for (int i = 0; i < (int)arr.size(); i++)
-			++m[arr[i]];
+		unordered_map<int, int> m; //value frequence
+		for (auto n : arr)
+			++m[n];
 		priority_queue<int> q;
-		for (auto n : m)
+		for (auto &n : m)
 			q.push(n.second);
-		int res = 0, count = 0;
-		while (2 * count < (int)arr.size())
+		int res = 0, N = arr.size();
+		for (int count = 0; 2 * count < N;)
 		{
+			++res;
 			count += q.top();
 			q.pop();
-			res++;
 		}
 		return res;
 	}
