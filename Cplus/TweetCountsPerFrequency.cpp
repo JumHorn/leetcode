@@ -21,33 +21,15 @@ public:
 
 	vector<int> getTweetCountsPerFrequency(string freq, string tweetName, int startTime, int endTime)
 	{
-		vector<int> res, &time = m[tweetName];
-		sort(time.begin(), time.end());
-		int delta = m_delta[freq], count = 0, start = startTime, end = min(startTime + delta, endTime + 1), n = 1;
-		for (int i = 0; i <= (int)time.size() && start <= endTime; ++i)
+		int delta = m_delta[freq];
+		vector<int> res((endTime - startTime) / delta + 1);
+		for (auto &time : m[tweetName])
 		{
-			if (i == (int)time.size())
+			if (time >= startTime && time <= endTime)
 			{
-				res.push_back(count);
-				break;
+				int index = (time - startTime) / delta;
+				++res[index];
 			}
-			if (time[i] < start)
-				continue;
-			if (time[i] < end)
-				++count;
-			else
-			{
-				--i;
-				res.push_back(count);
-				count = 0;
-				start = startTime + delta * n++;
-				end = min(start + delta, endTime + 1);
-			}
-		}
-		while (start + delta <= endTime)
-		{
-			res.push_back(0);
-			start += delta;
 		}
 		return res;
 	}
