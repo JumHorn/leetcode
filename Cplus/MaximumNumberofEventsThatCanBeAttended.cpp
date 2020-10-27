@@ -1,6 +1,7 @@
 #include <algorithm>
-#include <vector>
+#include <functional>
 #include <queue>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -9,41 +10,19 @@ public:
 	int maxEvents(vector<vector<int>> &events)
 	{
 		sort(events.begin(), events.end());
-		priority_queue<int> q;
-		int res = 0, d = events[0][0], n = events.size();
-		for (int i = 0; i < n;)
+		priority_queue<int, vector<int>, greater<int>> q;
+		int res = 0, d = 0, N = events.size();
+		for (int i = 0; !q.empty() || i < N;)
 		{
-			if (events[i][0] <= d && events[i][1] >= d)
-			{
-				q.push(-events[i][1]);
-				i++;
-			}
-			else
-			{
-				while (!q.empty())
-				{
-					int tmp = -q.top();
-					q.pop();
-					if (tmp >= d)
-					{
-						res++;
-						d++;
-						break;
-					}
-				}
-				if (q.empty())
-					d = events[i][0];
-			}
-		}
-		while (!q.empty())
-		{
-			int tmp = -q.top();
+			if (q.empty())
+				d = events[i][0];
+			while (i < N && events[i][0] <= d)
+				q.push(events[i++][1]);
 			q.pop();
-			if (tmp >= d)
-			{
-				res++;
-				d++;
-			}
+			++res;
+			++d;
+			while (!q.empty() && q.top() < d)
+				q.pop();
 		}
 		return res;
 	}
