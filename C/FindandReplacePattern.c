@@ -33,9 +33,6 @@ char **findAndReplacePattern(char **words, int wordsSize, char *pattern, int *re
 
 	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (char *)malloc(sizeof(char) * (len + 1));
-		strcpy(res[i], words[index[i]]);
-	}
+		res[i] = strdup(words[index[i]]);
 	return res;
 }

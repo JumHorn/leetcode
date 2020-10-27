@@ -32,11 +32,8 @@ void insert(Trie *root, char *s, int index)
 
 char **addString(char **res, int size, char *s)
 {
-	int len = strlen(s);
-	char *tmp = (char *)malloc((len + 1) * sizeof(char));
-	strcpy(tmp, s);
 	res = (char **)realloc(res, size * sizeof(char *));
-	res[size - 1] = tmp;
+	res[size - 1] = strdup(s);
 	return res;
 }
 

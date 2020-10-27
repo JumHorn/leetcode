@@ -40,10 +40,6 @@ char **wordSubsets(char **A, int ASize, char **B, int BSize, int *returnSize)
 
 	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
-	{
-		int len = strlen(A[index[i]]);
-		res[i] = (char *)malloc(sizeof(char) * (len + 1));
-		strcpy(res[i], A[index[i]]);
-	}
+		res[i] = strdup(A[index[i]]);
 	return res;
 }

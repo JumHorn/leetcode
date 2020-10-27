@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -9,7 +10,7 @@ char **removeComments(char **source, int sourceSize, int *returnSize)
 	bool skip = false;
 	char *head;
 	int headrow;
-	for (int i = 0; i < sourceSize; i++)
+	for (int i = 0; i < sourceSize; ++i)
 	{
 		char *p = source[i];
 		while (*p)
@@ -63,16 +64,16 @@ char **removeComments(char **source, int sourceSize, int *returnSize)
 	}
 
 	*returnSize = 0;
-	for (int i = 0; i < sourceSize; i++)
+	for (int i = 0; i < sourceSize; ++i)
+	{
 		if (source[i][0] != '\0')
-			(*returnSize)++;
+			++*returnSize;
+	}
 	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
-	for (int i = 0, j = 0; i < sourceSize; i++)
+	for (int i = 0, j = 0; i < sourceSize; ++i)
+	{
 		if (source[i][0] != '\0')
-		{
-			int len = strlen(source[i]);
-			res[j] = (char *)malloc(sizeof(char) * (len + 1));
-			memcpy(res[j++], source[i], len + 1);
-		}
+			res[j++] = strdup(source[i]);
+	}
 	return res;
 }

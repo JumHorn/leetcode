@@ -23,10 +23,6 @@ char **removeSubfolders(char **folder, int folderSize, int *returnSize)
 	}
 	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
-	{
-		int len = strlen(folder[i]);
-		res[i] = (char *)malloc(sizeof(char) * (len + 1));
-		strcpy(res[i], folder[i]);
-	}
+		res[i] = strdup(folder[i]);
 	return res;
 }

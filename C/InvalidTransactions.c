@@ -83,11 +83,7 @@ char **invalidTransactions(char **transactions, int transactionsSize, int *retur
 	for (int i = 0, j = 0; i < N; ++i)
 	{
 		if (seen[i] == 1)
-		{
-			int len = strlen(transactions[i]);
-			res[j] = (char *)malloc(sizeof(char) * (len + 1));
-			strcpy(res[j++], transactions[i]);
-		}
+			res[j++] = strdup(transactions[i]);
 	}
 	return res;
 }

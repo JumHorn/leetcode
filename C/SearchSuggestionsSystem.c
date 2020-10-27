@@ -43,11 +43,7 @@ char ***suggestedProducts(char **products, int productsSize, char *searchWord, i
 		(*returnColumnSizes)[i] = hi - lo;
 		res[i] = (char **)malloc(sizeof(char *) * (*returnColumnSizes)[i]);
 		for (int j = 0; j < hi - lo; ++j)
-		{
-			int len = strlen(products[j + lo]);
-			res[i][j] = (char *)malloc(sizeof(char) * (len + 1));
-			strcpy(res[i][j], products[j + lo]);
-		}
+			res[i][j] = strdup(products[j + lo]);
 	}
 	return res;
 }
