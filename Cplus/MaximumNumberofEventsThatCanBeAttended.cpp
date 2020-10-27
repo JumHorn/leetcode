@@ -4,20 +4,28 @@
 #include <vector>
 using namespace std;
 
+/*
+sort vector<vector<int>> much slower which is most time consuming
+than sort vector<pair<int,int>>
+*/
+
 class Solution
 {
 public:
 	int maxEvents(vector<vector<int>> &events)
 	{
-		sort(events.begin(), events.end());
 		priority_queue<int, vector<int>, greater<int>> q;
 		int res = 0, d = 0, N = events.size();
+		vector<pair<int, int>> v;
+		for (auto &e : events)
+			v.push_back({e[0], e[1]});
+		sort(v.begin(), v.end());
 		for (int i = 0; !q.empty() || i < N;)
 		{
 			if (q.empty())
-				d = events[i][0];
-			while (i < N && events[i][0] <= d)
-				q.push(events[i++][1]);
+				d = v[i].first;
+			while (i < N && v[i].first <= d)
+				q.push(v[i++].second);
 			q.pop();
 			++res;
 			++d;
