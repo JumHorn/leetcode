@@ -21,29 +21,29 @@ public:
 
 	vector<int> getTweetCountsPerFrequency(string freq, string tweetName, int startTime, int endTime)
 	{
-		sort(m[tweetName].begin(), m[tweetName].end());
-		vector<int> res(1);
+		vector<int> res, &time = m[tweetName];
+		sort(time.begin(), time.end());
 		int delta = m_delta[freq], count = 0, start = startTime, end = min(startTime + delta, endTime + 1), n = 1;
-		for (int i = 0; i < (int)m[tweetName].size(); i++)
+		for (int i = 0; i <= (int)time.size() && start <= endTime; ++i)
 		{
-			if (m[tweetName][i] < start)
-				continue;
-			if (m[tweetName][i] < end)
+			if (i == (int)time.size())
 			{
-				count++;
-				continue;
-			}
-			res.back() = count;
-			i--;
-			start = startTime + delta * n;
-			if (start > endTime)
+				res.push_back(count);
 				break;
-			end = min(start + delta, endTime + 1);
-			count = 0;
-			n++;
-			res.push_back(0);
+			}
+			if (time[i] < start)
+				continue;
+			if (time[i] < end)
+				++count;
+			else
+			{
+				--i;
+				res.push_back(count);
+				count = 0;
+				start = startTime + delta * n++;
+				end = min(start + delta, endTime + 1);
+			}
 		}
-		res.back() = count;
 		while (start + delta <= endTime)
 		{
 			res.push_back(0);
@@ -63,4 +63,3 @@ private:
  * obj->recordTweet(tweetName,time);
  * vector<int> param_2 = obj->getTweetCountsPerFrequency(freq,tweetName,startTime,endTime);
  */
-
