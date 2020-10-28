@@ -1,40 +1,30 @@
-#include<iostream>
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> selfDividingNumbers(int left, int right) {
-        vector<int> result;
-        for(int i=left;i<=right;i++)
-        {
-            if(Dividing(i))
-            {
-                result.push_back(i);
-            }
-        }
-        return result;
-    }
-    bool Dividing(int i)
-    {
-        if(i==0)
-        {
-            return false;
-        }
-        int m=i,n=i%10;
-        while(m!=0)
-        {
-            if(n==0)
-            {
-                return false;
-            }
-            if(i%n!=0)
-            {
-                return false;
-            }
-            m=m/10;
-            n=m%10;
-        }
-        return true;
-    }
+	vector<int> selfDividingNumbers(int left, int right)
+	{
+		vector<int> res;
+		for (int i = left; i <= right; ++i)
+		{
+			if (selfDividing(i))
+				res.push_back(i);
+		}
+		return res;
+	}
+
+	bool selfDividing(int n)
+	{
+		int num = n;
+		while (num != 0)
+		{
+			int d = num % 10;
+			if (d == 0 || n % d != 0)
+				return false;
+			num /= 10;
+		}
+		return true;
+	}
 };
