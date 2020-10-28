@@ -1,65 +1,38 @@
-#include<vector>
-#include<algorithm>
-#include<functional>
+#include <algorithm>
+#include <functional>
+#include <queue>
+#include <vector>
 using namespace std;
 
-class KthLargest {
-	vector<int> v;
-	int kth;
+class KthLargest
+{
 public:
-    KthLargest(int k, vector<int> nums) {
-        kth=k;
-		v=nums;
-		sort(v.begin(),v.end(),greater<int>());
-		if(k<(int)v.size())
-		    v.erase(v.begin()+k,v.end());
-    }
+	KthLargest(int k, vector<int> &nums)
+	{
+		size = k;
+		for (auto n : nums)
+			add(n);
+	}
 
-    int add(int val) {
-        if(v.empty())
-        {
-            v.push_back(val);
-            return v[kth-1];
-        }
-        if(kth==v.size()&&val<=v.back())
-            return v[kth-1];
-		int i=0,j=v.size()-1;
-		while(j>=i)
+	int add(int val)
+	{
+		if ((int)q.size() < size)
+			q.push(val);
+		else if (q.top() < val)
 		{
-			int mid=(j-i)/2+i+(j-i)%2;
-			if(val==v[mid])
-			{
-				v.insert(v.begin()+mid,val);
-                if(kth<(int)v.size())
-				    v.pop_back();
-				return v[kth-1];
-			}
-			if(val>v[mid])
-			{
-                if(i==j)
-                {
-                    v.insert(v.begin()+j,val);
-                    if(kth<(int)v.size())
-		                v.pop_back();
-                    return v[kth-1];
-                }
-				j=mid-1;
-			}
-			else
-			{
-                if(i==j)
-                {
-                    v.insert(v.begin()+j+1,val);
-                    if(kth<(int)v.size())
-		                v.pop_back();
-                    return v[kth-1];
-                }
-				i=mid+1;
-			}
+			q.pop();
+			q.push(val);
 		}
-        v.insert(v.begin()+i,val);
-        if(kth<(int)v.size())
-            v.pop_back();
-        return v[kth-1];
-    }
+		return q.top();
+	}
+
+private:
+	priority_queue<int, vector<int>, greater<int>> q;
+	int size;
 };
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest* obj = new KthLargest(k, nums);
+ * int param_1 = obj->add(val);
+ */
