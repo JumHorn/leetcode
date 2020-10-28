@@ -1,54 +1,33 @@
-#include<iostream>
-#include<stack>
-using namespace std;
+#include <climits>
 
 // Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
- 
-class Solution {
+
+class Solution
+{
 public:
-    int findSecondMinimumValue(TreeNode* root) {
-        int first,second = -1;
-       if(!root)
-       {
-           return -1;
-       }
-       first = root->val;
-       stack<TreeNode*> s;
-       TreeNode* node = root;
-       while(node||!s.empty())
-       {
-           s.push(node);
-           node = node->left;
-           while(!node&&!s.empty())
-           {
-               node = s.top();
-               //InOrder processing
-               if(node->val>first)
-               {
-                   if(second==-1)
-                   {
-                       second = node->val;
-                   }
-                   else
-                   {
-                       if(node->val<second)
-                       {
-                           second = node->val;
-                       }
-                   }
-               }
+	int findSecondMinimumValue(TreeNode *root)
+	{
+		long first = root->val, second = INT_MAX + 1u;
+		preorder(root, first, second);
+		return second > INT_MAX ? -1 : second;
+	}
 
-               s.pop();
-               node=node->right;
-           }
-       }
-
-       return second;
-   }
+	void preorder(TreeNode *root, long &first, long &second)
+	{
+		if (root == nullptr || root->val >= second)
+			return;
+		if (root->val > first)
+			second = root->val;
+		preorder(root->left, first, second);
+		preorder(root->right, first, second);
+	}
 };
