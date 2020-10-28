@@ -1,5 +1,3 @@
-#include <algorithm>
-using namespace std;
 
 class MyCircularDeque
 {
@@ -75,7 +73,7 @@ public:
 	}
 
 private:
-	int* data;
+	int *data;
 	int front;
 	int rear;
 	int len;
