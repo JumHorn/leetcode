@@ -26,14 +26,17 @@ int *inorderTraversal(struct TreeNode *root, int *returnSize)
 	struct TreeNode *cur = root;
 	while (cur || top != -1)
 	{
-		while (cur)
+		if (cur)
 		{
 			stack[++top] = cur;
 			cur = cur->left;
 		}
-		cur = stack[top--];
-		staticRes[size++] = cur->val;
-		cur = cur->right;
+		else
+		{
+			cur = stack[top--];
+			staticRes[size++] = cur->val;
+			cur = cur->right;
+		}
 	}
 
 	*returnSize = size;

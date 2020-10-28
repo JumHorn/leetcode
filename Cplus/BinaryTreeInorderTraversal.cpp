@@ -23,15 +23,18 @@ public:
 		TreeNode *node = root;
 		while (node || !s.empty())
 		{
-			while (node != nullptr)
+			if (node != nullptr)
 			{
 				s.push(node);
 				node = node->left;
 			}
-			node = s.top();
-			s.pop();
-			res.push_back(node->val);
-			node = node->right;
+			else
+			{
+				node = s.top();
+				s.pop();
+				res.push_back(node->val);
+				node = node->right;
+			}
 		}
 		return res;
 	}
