@@ -1,23 +1,22 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int search(vector<int>& nums, int target) {
-		if(nums.empty())
+	int search(vector<int> &nums, int target)
+	{
+		if (nums.empty())
 			return -1;
-		return search(nums,target,0,nums.size()-1);
-    }
-
-    int search(vector<int>& nums, int target,int left,int right) {
-		//int mid=(left+right)/2;
-		int mid = left + (right-left)/2;//avoid overflow
-		if(left>right)
-			return -1;
-		if(nums[mid]==target)
-			return mid;
-		if(nums[mid]<target)
-			return search(nums,target,mid+1,right);
-		return search(nums,target,left,mid-1);
-    }
+		int lo = 0, hi = (int)nums.size() - 1;
+		while (lo < hi)
+		{
+			int mi = (hi - lo) / 2 + lo;
+			if (nums[mi] < target)
+				lo = mi + 1;
+			else
+				hi = mi;
+		}
+		return nums[lo] == target ? lo : -1;
+	}
 };
