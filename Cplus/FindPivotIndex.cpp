@@ -1,31 +1,21 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#include<numeric>
+#include <algorithm>
+#include <numeric>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int pivotIndex(vector<int>& nums) {
-        if(nums.size()==0)
-        {
-            return -1;
-        }
-        if(nums.size()==1)
-        {
-            return 0;
-        }
-        int leftsum=0,rightsum=accumulate(nums.begin(),nums.end(),0)-nums[0],provit=0;
-        while(provit<nums.size())
-        {
-            if(leftsum==rightsum)
-            {
-                return provit;
-            }
-            leftsum+=nums[provit];
-            provit++;
-            rightsum-=nums[provit];
-        }
-        return -1;
-    }
+	int pivotIndex(vector<int> &nums)
+	{
+		int sum = accumulate(nums.begin(), nums.end(), 0);
+		int prefixsum = 0;
+		for (int i = 0; i < (int)nums.size(); ++i)
+		{
+			if (prefixsum == sum - prefixsum - nums[i])
+				return i;
+			prefixsum += nums[i];
+		}
+		return -1;
+	}
 };
