@@ -1,48 +1,73 @@
-#include<iostream>
-#include<vector>
+#include <stack>
+#include <vector>
 using namespace std;
 
-//  Definition for a binary tree node.
- struct TreeNode {
-     int val;
-     TreeNode *left;
-     TreeNode *right;
-     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- };
-
-class Solution {
-public:
-    vector<int> treevec;
-    bool findTarget(TreeNode* root, int k) {
-        TreetoVector(root);
-        for(int i=0;i<treevec.size()-1;i++)
-        {
-            for(int j=i+1;j<treevec.size();j++)
-            {
-                if(treevec[i]+treevec[j]>k)
-                {
-                    break;
-                }
-                if(treevec[i]+treevec[j]==k)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    void TreetoVector(TreeNode* root)
-    {
-        if(!root)
-        {
-            return ;
-        }
-        TreetoVector(root->left);
-        treevec.push_back(root->val);
-        TreetoVector(root->right);
-    }
-       
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-int main()
-{}
+class BSTIterator
+{
+public:
+	BSTIterator(TreeNode *root, bool forward) : node(root), forward(forward)
+	{
+	}
+
+	bool hasNext()
+	{
+		return node != nullptr || !s.empty();
+	}
+
+	int next()
+	{
+		while (node || !s.empty())
+		{
+			if (node)
+			{
+				s.push(node);
+				node = forward ? node->left : node->right;
+			}
+			else
+			{
+				node = s.top();
+				s.pop();
+				int val = node->val;
+				node = forward ? node->right : node->left;
+				return val;
+			}
+		}
+		return -1; // never reach & not necessary
+	}
+
+private:
+	stack<TreeNode *> s;
+	TreeNode *node;
+	bool forward;
+};
+
+class Solution
+{
+public:
+	bool findTarget(TreeNode *root, int k)
+	{
+		if (!root)
+			return false;
+		BSTIterator forward(root, true);
+		BSTIterator backward(root, false);
+		for (int i = forward.next(), j = backward.next(); i < j;)
+		{
+			int sum = i + j;
+			if (sum == k)
+				return true;
+			sum < k ? i = forward.next() : j = backward.next();
+		}
+		return false;
+	}
+};
