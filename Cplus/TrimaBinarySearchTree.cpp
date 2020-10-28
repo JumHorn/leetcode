@@ -1,38 +1,28 @@
-#include<iostream>
-#include<stack>
-using namespace std;
 
 // Definition for a binary tree node.
-struct TreeNode {
+struct TreeNode
+{
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
-	public:
-		TreeNode* trimBST(TreeNode* root, int L, int R) {
-			if(!root)
-			{
-				return NULL;
-			}
-			else
-			{
-				root->left=trimBST(root->left,L,R);
-				root->right=trimBST(root->right,L,R);
-				if(root->val>R)
-				{
-					return root->left;
-				}
-				else if(root->val<L)
-				{
-					return root->right;
-				}	
-				else
-				{
-					return root;
-				}
-			}
-		}
+class Solution
+{
+public:
+	TreeNode *trimBST(TreeNode *root, int low, int high)
+	{
+		if (root == nullptr)
+			return nullptr;
+		root->left = trimBST(root->left, low, high);
+		root->right = trimBST(root->right, low, high);
+		if (root->val < low)
+			return root->right;
+		if (root->val > high)
+			return root->left;
+		return root;
+	}
 };
