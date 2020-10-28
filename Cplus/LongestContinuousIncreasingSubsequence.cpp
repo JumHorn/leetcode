@@ -1,42 +1,20 @@
-#include<iostream>
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findLengthOfLCIS(vector<int>& nums) {
-		if(nums.size()==0)
+	int findLengthOfLCIS(vector<int> &nums)
+	{
+		int res = 0, N = nums.size();
+		for (int i = 1, j = 0; i <= N; ++i)
 		{
-			return 0;
-		}
-		int result = 1, total,subscript=0,i=0;
-		while(subscript<nums.size())
-		{
-			total=1;
-			i=subscript;
-			for(i=i+1;i<nums.size();i++)
+			if (i == N || nums[i - 1] >= nums[i])
 			{
-				if(nums[i]>nums[i-1])
-				{
-					total++;
-				}
-				else
-				{
-					break;
-				}
-            }
-            subscript = i;
-			if(total>result)
-			{
-				result = total;
-            }
-            //原先以为加上这段会时间更短，可是testcase里面没有这种情况
-            //反而因为多加判断变慢了
-            // if(nums.size()-subscript<=total)
-            // {
-            //     break;
-            // }
+				res = max(res, i - j);
+				j = i;
+			}
 		}
-		return result;
-    }
+		return res;
+	}
 };
