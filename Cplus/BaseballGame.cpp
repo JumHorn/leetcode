@@ -1,60 +1,39 @@
-#include<iostream>
-#include<vector>
-#include<string>
-#include<cstdlib>
+#include <stack>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int calPoints(vector<string>& ops) {
-        vector<int> round;
-        int sum=0,temp;
-        for(vector<string>::iterator iter=ops.begin();iter!=ops.end();iter++)
-        {
-            switch(ToInteger(*iter))
-            {
-                case 30001:
-                sum-=round[round.size()-1];
-                round.pop_back();
-                break;
-
-                case 30002:
-                temp=2*round[round.size()-1];
-                sum+=temp;
-                round.push_back(temp);
-                break;
-
-                case 30003:
-                temp=round[round.size()-1]+round[round.size()-2];
-                sum+=temp;
-                round.push_back(temp);
-                break;
-
-                default:
-                temp=ToInteger(*iter);
-                round.push_back(temp);
-                sum+=temp;
-            }
-        }
-        return sum;
-    }
-    int ToInteger(string &s)
-    {
-        if(s=="C")
-        {
-            return 30001;
-        }
-        else if(s=="D")
-        {
-            return 30002;
-        }
-        else if(s=="+")
-        {
-            return 30003;
-        }
-        else
-        {
-            return atoi(s.c_str());
-        }
-    }
+	int calPoints(vector<string> &ops)
+	{
+		stack<int> s;
+		for (auto &op : ops)
+		{
+			if (op == "D")
+				s.push(s.top() * 2);
+			else if (op == "C")
+				s.pop();
+			else if (op == "+")
+			{
+				int a = s.top();
+				s.pop();
+				int b = s.top();
+				s.pop();
+				s.push(b);
+				s.push(a);
+				s.push(a + b);
+			}
+			else
+				s.push(stoi(op));
+		}
+		int res = 0;
+		while (!s.empty())
+		{
+			res += s.top();
+			s.pop();
+		}
+		return res;
+	}
 };
