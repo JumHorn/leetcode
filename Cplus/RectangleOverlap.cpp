@@ -1,29 +1,25 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool isRectangleOverlap(vector<int>& rec1, vector<int>& rec2) {
-		if((long long)(rec1[0]-rec2[0])*(rec1[2]-rec2[2])<0&&(long long)(rec1[1]-rec2[1])*(rec1[3]-rec2[3])<0)
-			return true;
-		if(rec1[0]==rec2[0]||rec1[2]==rec2[2])
-			return Overlap(rec1[1],rec1[3],rec2[1],rec2[3]);
-		if(rec1[1]==rec2[1]||rec1[3]==rec2[3])
-			return Overlap(rec1[0],rec1[2],rec2[0],rec2[2]);
-        return Overlap(rec1,rec2[0],rec2[1])||Overlap(rec1,rec2[2],rec2[3])||Overlap(rec1,rec2[0],rec2[3])||Overlap(rec1,rec2[2],rec2[1])||Overlap(rec2,rec1[0],rec1[1])||Overlap(rec2,rec1[2],rec1[3])||Overlap(rec2,rec1[0],rec1[3])||Overlap(rec2,rec1[2],rec1[1]);
-    }
-
-	bool Overlap(int y1,int y2,int y3,int y4)
+	bool isRectangleOverlap(vector<int> &rec1, vector<int> &rec2)
 	{
-		if(y1>=y3&&y1<y4||y3>=y1&&y3<y2)
-			return true;
-		return false;
+		return !isEmptyRectangle(rec1) &&
+			   !isEmptyRectangle(rec2) &&
+			   lineOverlap(rec1[0], rec1[2], rec2[0], rec2[2]) &&
+			   lineOverlap(rec1[1], rec1[3], rec2[1], rec2[3]);
 	}
 
-	bool Overlap(vector<int>& rec,int x,int y)
+	//two range [x1,x2] [x3,x4] overlap
+	bool lineOverlap(int x1, int x2, int x3, int x4)
 	{
-		if(x>rec[0]&&x<rec[2]&&y>rec[1]&&y<rec[3])
-			return true;
-		return false;
+		return x1 < x4 && x2 > x3;
+	}
+
+	bool isEmptyRectangle(vector<int> &rect)
+	{
+		return rect[0] == rect[2] || rect[1] == rect[3];
 	}
 };
