@@ -1,26 +1,23 @@
-#include<iostream>
-using namespace std;
+
 //Definition for singly-linked list.
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(nullptr) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    ListNode* middleNode(ListNode* head) {
-        ListNode *walker,*runner;
-	    walker=runner=head;
-		while(runner!=NULL)
+	ListNode *middleNode(ListNode *head)
+	{
+		ListNode *slow = head, *fast = head;
+		while (fast != nullptr && fast->next != nullptr)
 		{
-			runner=runner->next;
-			if(runner!=NULL)
-			{
-				walker=walker->next;
-				runner=runner->next;
-			}
-		}	
-		return walker;
-    }
+			slow = slow->next;
+			fast = fast->next->next;
+		}
+		return slow;
+	}
 };
