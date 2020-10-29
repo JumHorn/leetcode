@@ -1,30 +1,31 @@
-#include<vector>
-#include<string>
-#include<unordered_map>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<string> subdomainVisits(vector<string>& cpdomains) {
-		unordered_map<string,int> domainmap;
-	    for(int i=0;i<(int)cpdomains.size();i++)
+	vector<string> subdomainVisits(vector<string> &cpdomains)
+	{
+		unordered_map<string, int> m; //{domain,count}
+		for (auto &cp : cpdomains)
 		{
-			int j=0,c=0;
-			while(cpdomains[i][j]!=' ')
-				j++;
-			c=stoi(cpdomains[i].substr(0,j));
-			domainmap[cpdomains[i].substr(++j)]+=c;;
-			while(cpdomains[i][j]!='.')
-				j++;
-			domainmap[cpdomains[i].substr(++j)]+=c;
-			while(j<(int)cpdomains[i].size()&&cpdomains[i][j]!='.')
-				j++;
-			if(j!=(int)cpdomains[i].size())
-				domainmap[cpdomains[i].substr(j+1)]+=c;
-		}	
+			stringstream ss(cp);
+			int count;
+			string domain;
+			ss >> count >> domain;
+			m[domain] += count;
+			for (int i = 0; i < (int)domain.length(); ++i)
+			{
+				if (domain[i] == '.')
+					m[domain.substr(i + 1)] += count;
+			}
+		}
 		vector<string> res;
-		for(auto& n : domainmap)
-			res.push_back(to_string(n.second)+" "+n.first);
+		for (auto &n : m)
+			res.push_back(to_string(n.second) + " " + n.first);
 		return res;
-    }
+	}
 };
