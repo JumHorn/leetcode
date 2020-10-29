@@ -1,18 +1,16 @@
 
-
-int minDeletionSize(char ** A, int ASize){
-	int res=0,i=0,j=0;
-	char *p=A[0];
-	while(*p)
+int minDeletionSize(char **A, int ASize)
+{
+	int res = 0;
+	for (int i = 0, j = 0; A[0][j]; ++j)
 	{
-		for(i=0;i<ASize-1;i++)
-			if(A[i][j]>A[i+1][j])
+		for (i = 1; i < ASize; ++i)
+		{
+			if (A[i - 1][j] > A[i][j])
 				break;
-		if(i!=ASize-1)
-			res++;
-		j++;
-		++p;
+		}
+		if (i != ASize)
+			++res;
 	}
 	return res;
 }
-
