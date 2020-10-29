@@ -1,21 +1,23 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int> > flipAndInvertImage(vector<vector<int> >& A) {
-        for(int i=0;i<(int)A.size();i++)
+	vector<vector<int>> flipAndInvertImage(vector<vector<int>> &A)
+	{
+		int M = A.size(), N = A[0].size();
+		for (int i = 0; i < M; ++i)
 		{
-			int tmp=A[0].size();
-		    for(int j=0;j*2<tmp;j++)
-		    {
-		        if(A[i][j]==A[i][tmp-j-1])
-                {
-		        	A[i][j]^=1;
-                    A[i][tmp-j-1]=A[i][j];
-                }
-		    }
+			for (int j = 0; j * 2 < N; ++j)
+			{
+				if (A[i][j] == A[i][N - j - 1])
+				{
+					A[i][j] ^= 1;
+					A[i][N - j - 1] = A[i][j];
+				}
+			}
 		}
 		return A;
-    }
+	}
 };
