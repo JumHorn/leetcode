@@ -1,5 +1,4 @@
-#include <vector>
-using namespace std;
+#include <stdbool.h>
 
 // math period problem
 // same problem
@@ -24,23 +23,18 @@ using namespace std;
 
 */
 
-class Solution
+bool isSelfCrossing(int* x, int xSize)
 {
-public:
-	bool isSelfCrossing(vector<int> &x)
-	{
-		int N = x.size();
-		if (N < 4)
-			return false;
-		for (int i = 3; i < N; ++i)
-		{
-			if (x[i] >= x[i - 2] && x[i - 1] <= x[i - 3])
-				return true;
-			if (i > 3 && x[i - 1] == x[i - 3] && x[i] + x[i - 4] >= x[i - 2])
-				return true;
-			if (i > 4 && x[i - 2] >= x[i - 4] && x[i - 1] <= x[i - 3] && x[i - 1] >= x[i - 3] - x[i - 5] && x[i] >= x[i - 2] - x[i - 4])
-				return true;
-		}
+	if (xSize < 4)
 		return false;
+	for (int i = 3; i < xSize; ++i)
+	{
+		if (x[i] >= x[i - 2] && x[i - 1] <= x[i - 3])
+			return true;
+		if (i > 3 && x[i - 1] == x[i - 3] && x[i] + x[i - 4] >= x[i - 2])
+			return true;
+		if (i > 4 && x[i - 2] >= x[i - 4] && x[i - 1] <= x[i - 3] && x[i - 1] >= x[i - 3] - x[i - 5] && x[i] >= x[i - 2] - x[i - 4])
+			return true;
 	}
-};
+	return false;
+}
