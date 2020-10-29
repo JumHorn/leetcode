@@ -1,41 +1,40 @@
-#include<string>
-#include<vector>
-#include<unordered_map>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string mostCommonWord(string paragraph, vector<string>& banned) {
-		int i=0,j=0,len=paragraph.length();
-		unordered_map<string,int> dict;
-		for(int i=0;i<len;i++)
+	string mostCommonWord(string paragraph, vector<string> &banned)
+	{
+		int N = paragraph.length();
+		unordered_map<string, int> m;
+		for (auto &c : paragraph) //make punctuation to ' '
 		{
-			if(paragraph[i]>='A'&&paragraph[i]<='Z')
-				paragraph[i]=paragraph[i]-'A'+'a';
-			if(paragraph[i]<'a'||paragraph[i]>'z')
-				paragraph[i]=' ';
+			if (c >= 'A' && c <= 'Z')
+				c = c - 'A' + 'a';
+			if (c < 'a' || c > 'z')
+				c = ' ';
 		}
-		while(i<len)
-		{
-			while(j<len&&paragraph[j]!=' ')
-				j++;
-			dict[paragraph.substr(i,j-i)]++;
-			while(j<len&&paragraph[j]==' ')
-				j++;
-			i=j;
-		}
-		for(int i=0;i<(int)banned.size();i++)
-			dict.erase(banned[i]);
-		int freq=0;
+		string word;
+		stringstream ss(paragraph);
+		while (ss >> word)
+			++m[word];
+
+		for (auto &ban : banned)
+			m.erase(ban);
+		int freq = 0;
 		string res;
-		for(auto n : dict)
+		for (auto &n : m)
 		{
-			if(n.second>freq)
-            {
-				res=n.first;
-                freq=n.second;
-            }
+			if (n.second > freq)
+			{
+				res = n.first;
+				freq = n.second;
+			}
 		}
 		return res;
-    }
+	}
 };
