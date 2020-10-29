@@ -1,36 +1,24 @@
-#include<vector>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool isToeplitzMatrix(vector<vector<int> >& matrix) {
-		if(matrix.size()<2||matrix[0].size()<2)
-			return true;
-		int m=matrix.size(),n=matrix[0].size();
-		for(int k=0;k<m;k++)
+	bool isToeplitzMatrix(vector<vector<int>> &matrix)
+	{
+		unordered_map<int, int> m;
+		int M = matrix.size(), N = matrix[0].size();
+		for (int i = 0; i < M; ++i)
 		{
-			int i=k,j=0;
-			int tmp=matrix[i][j];
-			while(i<m&&j<n)
+			for (int j = 0; j < N; ++j)
 			{
-				if(matrix[i][j]!=tmp)
+				if (m.find(i - j) == m.end())
+					m[i - j] = matrix[i][j];
+				else if (m[i - j] != matrix[i][j])
 					return false;
-				++i;
-				++j;
 			}
 		}
-		for(int k=1;k<n;k++)
-		{
-			int i=0,j=k;
-			int tmp=matrix[i][j];
-			while(i<m&&j<n)
-			{
-				if(matrix[i][j]!=tmp)
-					return false;
-				++i;
-				++j;
-			}
-		}
-        return true;
-    }
+		return true;
+	}
 };
