@@ -1,49 +1,42 @@
+#include <stdbool.h>
 
-
-//Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    struct TreeNode *left;
-    struct TreeNode *right;
+// Definition for a binary tree node.
+struct TreeNode
+{
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-void dfs(struct TreeNode* root,int x,int y,int depth,int(*p)[2])
+typedef struct tuple
 {
-	if(root->left)
+	int xparent;
+	int xdepth;
+	int yparent;
+	int ydepth;
+} tuple;
+
+void preorder(struct TreeNode *root, int parent, int layer, int x, int y, tuple *data)
+{
+	if (!root)
+		return;
+	if (root->val == x)
 	{
-		if(root->left->val==x)
-		{
-			p[0][0]=root->val;
-			p[0][1]=depth;
-		}
-		else if(root->left->val==y)
-		{
-			p[1][0]=root->val;
-			p[1][1]=depth;
-		}
-		dfs(root->left,x,y,depth+1,p);
+		data->xdepth = layer;
+		data->xparent = parent;
 	}
-	if(root->right)
+	else if (root->val == y)
 	{
-		if(root->right->val==x)
-		{
-			p[0][0]=root->val;
-			p[0][1]=depth;
-		}
-		else if(root->right->val==y)
-		{
-			p[1][0]=root->val;
-			p[1][1]=depth;
-		}
-		dfs(root->right,x,y,depth+1,p);
+		data->ydepth = layer;
+		data->yparent = parent;
 	}
+	preorder(root->left, root->val, layer + 1, x, y, data);
+	preorder(root->right, root->val, layer + 1, x, y, data);
 }
 
-bool isCousins(struct TreeNode* root, int x, int y){
-	if(!root||root->val==x||root->val==y)
-		return false;
-	int node[2][2];
-	dfs(root,x,y,0,node);
-	return node[0][0]!=node[1][0]&&node[0][1]==node[1][1];
+bool isCousins(struct TreeNode *root, int x, int y)
+{
+	tuple data = {0, 0, 1, 1}; //init different
+	preorder(root, -1, 0, x, y, &data);
+	return data.xdepth == data.ydepth && data.xparent != data.yparent;
 }
-
