@@ -1,70 +1,42 @@
-#include<iostream>
-#include<algorithm>
-#include<vector>
+#include <algorithm>
+#include <cctype>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string shortestCompletingWord(string licensePlate, vector<string>& words) {
-	   	transform(licensePlate.begin(),licensePlate.end(),licensePlate.begin(),::tolower);
-		for(string::iterator iter = licensePlate.begin();iter!=licensePlate.end();)
+	string shortestCompletingWord(string licensePlate, vector<string> &words)
+	{
+		string res;
+		vector<int> hash = countAlpha(licensePlate);
+		for (auto &word : words)
 		{
-			if(!::isalpha(*iter))
-			{
-				licensePlate.erase(iter);
-				continue;
-			}
-			iter++;
-		}	
-		sort(licensePlate.begin(),licensePlate.end());
-
-		bool swap = true;
-		int len = words.size();
-		while(swap)
-		{
-			swap = false;
-			for(int i=0;i<len-1;i++)
-			{
-				if(words[i].length()>words[i+1].length())
-				{
-					string temp;
-					temp = words[i];
-					words[i] = words[i+1];
-					words[i+1] = temp;
-					swap = true;
-				}
-			}
-			len--;
-		}	
-
-		int index=0;
-		while(true)
-		{
-			if(words[index].length()>=licensePlate.length())
-			{
-				break;
-			}
-			index++;
+			if (contains(hash, countAlpha(word)) && (res.empty() || res.length() > word.length()))
+				res = word;
 		}
+		return res;
+	}
 
-		for(int i = index;i<words.size();i++)
+	bool contains(const vector<int> &lhs, const vector<int> &rhs) //rhs constain lhs
+	{
+		for (int i = 0; i < (int)lhs.size(); ++i)
 		{
-			string wordtemp = words[i];
-			sort(wordtemp.begin(),wordtemp.end());
-			int j=0,k=0;
-			for(int j=0;j<wordtemp.length();j++)
-			{
-				if(wordtemp[j]==licensePlate[k])
-				{
-					k++;
-					if(k==licensePlate.length())
-					{
-						return words[i];
-					}
-				}
-			}
+			if (lhs[i] > rhs[i])
+				return false;
 		}
+		return true;
+	}
 
-		return "";
-    }
+	vector<int> countAlpha(const string &word)
+	{
+		vector<int> res(26);
+		for (auto c : word)
+		{
+			if (isalpha(c))
+				++res[tolower(c) - 'a'];
+		}
+		return res;
+	}
 };
