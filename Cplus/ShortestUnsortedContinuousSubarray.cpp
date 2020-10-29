@@ -1,32 +1,19 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int findUnsortedSubarray(vector<int>& nums) {
-        vector<int> sorted = nums;
-        int i,j;
-        sort(sorted.begin(),sorted.end());
-        for(i=0;i<nums.size();i++)
-        {
-            if(sorted[i]!=nums[i])
-            {
-                break;
-            }
-        }
-        if(i==nums.size())
-        {
-            return 0;
-        }
-        for(j=nums.size()-1;j>=0;j--)
-        {
-            if(sorted[j]!=nums[j])
-            {
-                break;
-            }
-        }
-        return j-i+1;
-    }
+	int findUnsortedSubarray(vector<int> &nums)
+	{
+		vector<int> sorted = nums;
+		sort(sorted.begin(), sorted.end());
+		int i = 0, j = nums.size() - 1;
+		while (i < j && sorted[i] == nums[i])
+			++i;
+		while (j >= i && sorted[j] == nums[j])
+			--j;
+		return j - i + 1;
+	}
 };
