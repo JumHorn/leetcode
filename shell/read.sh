@@ -1,10 +1,10 @@
+#!bin/bash
+
 while read line;
-do 
+do
 echo $line;
 for n in $line;
-do 
+do
 echo $n;
 done
 done < words.txt
-
-
