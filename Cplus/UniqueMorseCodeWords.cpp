@@ -1,26 +1,26 @@
-#include<vector>
-#include<string>
-#include<unordered_set>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int uniqueMorseRepresentations(vector<string>& words) {
-		vector<string> morsecode=
-		{
-		 ".-","-...","-.-.","-..",".","..-.","--.",
-		 "....","..",".---","-.-",".-..","--","-.",
-		 "---",".--.","--.-",".-.","...","-","..-",
-		 "...-",".--","-..-","-.--","--.."
-		};
+	int uniqueMorseRepresentations(vector<string> &words)
+	{
+		vector<string> morsecode = {
+			".-", "-...", "-.-.", "-..", ".", "..-.", "--.",
+			"....", "..", ".---", "-.-", ".-..", "--", "-.",
+			"---", ".--.", "--.-", ".-.", "...", "-", "..-",
+			"...-", ".--", "-..-", "-.--", "--.."};
 		unordered_set<string> s;
-		for(int i=0;i<(int)words.size();i++)
+		for (auto &word : words)
 		{
-			string tmp;
-			for(int j=0;j<(int)words[i].length();j++)
-				tmp+=morsecode[words[i][j]-'a'];
-			s.insert(tmp);
+			string morsestr;
+			for (auto &c : word)
+				morsestr += morsecode[c - 'a'];
+			s.insert(morsestr);
 		}
 		return s.size();
-    }
+	}
 };
