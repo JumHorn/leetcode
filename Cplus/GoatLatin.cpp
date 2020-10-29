@@ -1,24 +1,24 @@
-#include<string>
-#include<unordered_set>
+#include <sstream>
+#include <string>
+#include <unordered_set>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    string toGoatLatin(string S) {
-        unordered_set<char> vowel={'a','e','i','o','u','A','E','I','O','U'};
-		int i=0,j=0,len=S.length();
-		string res,aaa="a";
-		while(i<len)
+	string toGoatLatin(string S)
+	{
+		unordered_set<char> vowel = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+		stringstream ss(S), res;
+		string aaa = "a", word;
+		while (ss >> word)
 		{
-			while(j<len&&S[j]!=' ')
-				j++;
-			if(vowel.find(S[i])!=vowel.end())
-				res+=" "+S.substr(i,j-i)+"ma"+aaa;
+			if (vowel.find(word[0]) != vowel.end())
+				res << " " << word << "ma" << aaa;
 			else
-				res+=" "+S.substr(i+1,j-i-1)+S[i]+"ma"+aaa;
-			i=++j;
-			aaa+="a";
+				res << " " + word.substr(1) << word[0] << "ma" << aaa;
+			aaa += "a";
 		}
-		return res.substr(1);
-    }
+		return res.str().substr(1);
+	}
 };
