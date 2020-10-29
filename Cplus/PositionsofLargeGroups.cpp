@@ -1,34 +1,23 @@
-#include<vector>
-#include<string>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
-	string lexicographic;
+class Solution
+{
 public:
-    vector<vector<int> > largeGroupPositions(string S) {
-		lexicographic=S;
-        vector<vector<int> > res;
-		vector<int> tmp(2);
-		int i=0;
-		while(i<(int)S.length())
-		{
-			int j=i+1;
-			while(j<(int)S.length()&&S[i]==S[j])
-				j++;
-			if(j-i>=3)
-			{
-				tmp[0]=i;
-				tmp[1]=j-1;
-				res.push_back(tmp);
-			}
-			i=j;
-		}
-		sort(res.begin(),res.end(),*this);
-		return res;
-    }
-
-	bool operator()(vector<int>& v1,vector<int>& v2)
+	vector<vector<int>> largeGroupPositions(string s)
 	{
-		return lexicographic[v1[0]]<lexicographic[v2[0]];
+		vector<vector<int>> res;
+		int N = s.length();
+		for (int i = 0, j = 0; i <= N; ++i)
+		{
+			if (i == N || s[i] != s[j])
+			{
+				if (i - j >= 3)
+					res.push_back({j, i - 1});
+				j = i;
+			}
+		}
+		return res;
 	}
 };
