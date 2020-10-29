@@ -1,38 +1,37 @@
-#include <vector>
-using namespace std;
 
 class CustomStack
 {
 public:
 	CustomStack(int maxSize)
 	{
-		size = maxSize;
+		capacity = maxSize;
+		stack = new int[capacity];
+		top = -1;
 	}
 
 	void push(int x)
 	{
-		if ((int)v.size() < size)
-			v.push_back(x);
+		if (top + 1 < capacity)
+			stack[++top] = x;
 	}
 
 	int pop()
 	{
-		if (v.empty())
+		if (top == -1)
 			return -1;
-		int res = v.back();
-		v.pop_back();
-		return res;
+		return stack[top--];
 	}
 
 	void increment(int k, int val)
 	{
-		for (int i = 0; i < k && i < (int)v.size(); i++)
-			v[i] += val;
+		for (int i = 0; i < k && i <= top; ++i)
+			stack[i] += val;
 	}
 
 private:
-	vector<int> v;
-	int size;
+	int *stack;
+	int top;
+	int capacity;
 };
 
 /**
