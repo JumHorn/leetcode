@@ -295,6 +295,21 @@ HashNode *hash_get(int key)
 	}
 	return head;
 }
+
+void hash_erase(int key)
+{
+	int bucket = (key & (HASH_TABLE_SIZE - 1));
+	HashNode **head = &HashTable[bucket];
+	while (*head)
+	{
+		if ((*head)->key == key)
+		{
+			*head = (*head)->next;
+			break;
+		}
+		head = &(*head)->next;
+	}
+}
 /********end of HASH********/
 
 //Fenwick tree(BIT)
