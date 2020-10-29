@@ -1,23 +1,18 @@
-#include<limits.h>
 
-
-int dominantIndex(int* nums, int numsSize){
-    if(numsSize<2)
-        return 0;
-	int first=INT_MIN,second=INT_MIN,res;
-	for(int i=0;i<numsSize;i++)
+int dominantIndex(int *nums, int numsSize)
+{
+	if (numsSize <= 1)
+		return 0;
+	int first = 0, second = 1;
+	for (int i = 1; i < numsSize; ++i)
 	{
-		if(nums[i]>first)
+		if (nums[i] > nums[first])
 		{
-			second=first;
-			first=nums[i];
-			res=i;
+			second = first;
+			first = i;
 		}
-		else if(nums[i]>second)
-			second=nums[i];
+		else if (nums[i] > nums[second])
+			second = i;
 	}
-	if(first>=2*second)
-		return res;
-	return -1;
+	return nums[first] >= 2 * nums[second] ? first : -1;
 }
-
