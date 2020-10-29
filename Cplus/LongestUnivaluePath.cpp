@@ -1,62 +1,37 @@
-#include<iostream>
+#include <algorithm>
 using namespace std;
 
-
 // Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-class Solution {
+class Solution
+{
 public:
-    int result;
-    int nodeval;
-    int longestUnivaluePath(TreeNode* root) {
-        result=0;
-        traversal(root);
-        return result;
-    }
-    void traversal(TreeNode* root)
-    {
-        if(!root)
-        {
-            return ;
-        }
-        int temp=getsum(root);
-        if(temp>result)
-        {
-            result=temp;
-        }
-        traversal(root->left);
-        traversal(root->right);
-    }
-    int getsum(TreeNode* root)
-    {
-        nodeval=root->val;
-        return getmax(root->left)+getmax(root->right);
-    }
-    int getmax(TreeNode* root)
-    {
-        if(!root)
-        {
-            return 0;
-        }
-        if(root->val!=nodeval)
-        {
-            return 0;
-        }
-        int leftsum=getmax(root->left);
-        int rightsum=getmax(root->right);
-        if(leftsum>rightsum)
-        {
-            return leftsum+1;
-        }
-        else 
-        {
-            return rightsum+1;
-        }
-    }
+	int longestUnivaluePath(TreeNode *root)
+	{
+		int res = 0;
+		postorder(root, res);
+		return res;
+	}
+
+	pair<int, int> postorder(TreeNode *root, int &longestpath) //{value,length}
+	{
+		if (root == nullptr)
+			return {0, 0};
+		auto l = postorder(root->left, longestpath);
+		auto r = postorder(root->right, longestpath);
+		pair<int, int> res;
+		res.first = root->val;
+		res.second = 1 + max(root->val == l.first ? l.second : 0, root->val == r.first ? r.second : 0);
+		longestpath = max(longestpath, (root->val == l.first ? l.second : 0) + (root->val == r.first ? r.second : 0));
+		return res;
+	}
 };
