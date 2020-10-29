@@ -1,28 +1,31 @@
-#include<vector>
-#include<string>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> shortestToChar(string S, char C) {
-		vector<int> res(S.length(),INT_MAX);
-		for(int i=0;i<(int)S.length();i++)
+	vector<int> shortestToChar(string S, char C)
+	{
+		int N = S.length();
+		vector<int> res;
+		int pre = -1, cur = -1;
+		for (int i = 0, j = 0; i < N; ++i)
 		{
-			if(S[i]==C)
+			if (i > cur)
 			{
-				res[i]=0;
-				for(int j=i+1;j<(int)S.length();j++)
-				{
-					if(res[j]>j-i)
-						res[j]=j-i;
-				}
-				for(int j=i-1;j>=0;j--)
-				{
-					if(res[j]>i-j)
-						res[j]=i-j;
-				}
+				pre = cur;
+				while (j < N && S[j] != C)
+					++j;
+				cur = j++;
 			}
+			int d = N;
+			if (pre >= 0)
+				d = min(d, i - pre);
+			if (cur < N)
+				d = min(d, cur - i);
+			res.push_back(d);
 		}
-		return res;		
-    }
+		return res;
+	}
 };
