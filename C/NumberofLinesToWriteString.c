@@ -1,31 +1,28 @@
-#include<stdlib.h>
+#include <stdlib.h>
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* numberOfLines(int* widths, int widthsSize, char * S, int* returnSize){
-	int* res=(int*)malloc(sizeof(int)*2);
-	*returnSize=2;
-	int line=1,last=0;
-	while(*S)
+int *numberOfLines(int *widths, int widthsSize, char *S, int *returnSize)
+{
+	int *res = (int *)malloc(sizeof(int) * 2);
+	*returnSize = 2;
+	int line = 1, len = 0;
+	for (; *S; ++S)
 	{
-		last+=widths[*S-'a'];
-		if(last==100)
+		len += widths[*S - 'a'];
+		if (len == 100)
 		{
-			last=0;
-			line++;
+			len = 0;
+			++line;
 		}
-		else if(last>100)
+		else if (len > 100)
 		{
-			last=widths[*S-'a'];
-			line++;
+			len = widths[*S - 'a'];
+			++line;
 		}
-		S++;
 	}
-	res[0]=line;
-	res[1]=last;
+	res[0] = line;
+	res[1] = len;
 	return res;
 }
-
-
-
