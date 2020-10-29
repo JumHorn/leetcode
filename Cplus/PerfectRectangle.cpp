@@ -1,7 +1,7 @@
-#include <vector>
-#include <climits>
 #include <algorithm>
+#include <climits>
 #include <set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -9,44 +9,31 @@ class Solution
 public:
 	bool isRectangleCover(vector<vector<int>> &rectangles)
 	{
-		int bottom = INT_MAX, left = INT_MAX, top = INT_MIN, right = INT_MIN, area = 0, maxarea;
+		int bottom = INT_MAX, left = INT_MAX, top = INT_MIN, right = INT_MIN, area = 0;
 		set<pair<int, int>> s;
-		set<pair<int, int>>::iterator iter;
-		for (int i = 0; i < (int)rectangles.size(); i++)
+		for (auto &rect : rectangles)
 		{
-			bottom = min(rectangles[i][0], bottom);
-			left = min(rectangles[i][1], left);
-			top = max(rectangles[i][2], top);
-			right = max(rectangles[i][3], right);
-			area += (rectangles[i][2] - rectangles[i][0]) * (rectangles[i][3] - rectangles[i][1]);
+			bottom = min(rect[0], bottom);
+			left = min(rect[1], left);
+			top = max(rect[2], top);
+			right = max(rect[3], right);
+			area += (rect[2] - rect[0]) * (rect[3] - rect[1]);
 
-			iter = s.find({rectangles[i][0], rectangles[i][1]});
-			if (iter == s.end())
-				s.insert({rectangles[i][0], rectangles[i][1]});
-			else
-				s.erase(iter);
-
-			iter = s.find({rectangles[i][0], rectangles[i][3]});
-			if (iter == s.end())
-				s.insert({rectangles[i][0], rectangles[i][3]});
-			else
-				s.erase(iter);
-
-			iter = s.find({rectangles[i][2], rectangles[i][1]});
-			if (iter == s.end())
-				s.insert({rectangles[i][2], rectangles[i][1]});
-			else
-				s.erase(iter);
-
-			iter = s.find({rectangles[i][2], rectangles[i][3]});
-			if (iter == s.end())
-				s.insert({rectangles[i][2], rectangles[i][3]});
-			else
-				s.erase(iter);
+			if (!s.insert({rect[0], rect[1]}).second)
+				s.erase({rect[0], rect[1]});
+			if (!s.insert({rect[0], rect[3]}).second)
+				s.erase({rect[0], rect[3]});
+			if (!s.insert({rect[2], rect[1]}).second)
+				s.erase({rect[2], rect[1]});
+			if (!s.insert({rect[2], rect[3]}).second)
+				s.erase({rect[2], rect[3]});
 		}
-		if (s.size() != 4 || s.find({bottom, left}) == s.end() || s.find({bottom, right}) == s.end() || s.find({top, left}) == s.end() || s.find({top, right}) == s.end())
+		if (s.size() != 4 ||
+			s.find({bottom, left}) == s.end() ||
+			s.find({bottom, right}) == s.end() ||
+			s.find({top, left}) == s.end() ||
+			s.find({top, right}) == s.end())
 			return false;
-		maxarea = (top - bottom) * (right - left);
-		return maxarea == area;
+		return area == (top - bottom) * (right - left);
 	}
 };
