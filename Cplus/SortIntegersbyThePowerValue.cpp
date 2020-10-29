@@ -6,14 +6,12 @@ class Solution
 public:
 	int getKth(int lo, int hi, int k)
 	{
-		priority_queue<pair<int, int>> q;
-		for (int i = lo; i <= hi; i++)
-			q.push({-power(i), -i});
+		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+		for (int i = lo; i <= hi; ++i)
+			q.push({power(i), i});
 		while (--k > 0)
-		{
 			q.pop();
-		}
-		return -q.top().second;
+		return q.top().second;
 	}
 
 	int power(int x)
@@ -25,7 +23,7 @@ public:
 				x /= 2;
 			else
 				x = 3 * x + 1;
-			res++;
+			++res;
 		}
 		return res;
 	}
