@@ -1,3 +1,4 @@
+#include <queue>
 #include <vector>
 using namespace std;
 
@@ -6,58 +7,45 @@ class Solution
 public:
 	bool hasValidPath(vector<vector<int>> &grid)
 	{
-		int m = grid.size(), n = grid[0].size();
-		vector<vector<int>> board(3 * m, vector<int>(3 * n));
-		for (int i = 0; i < m; i++)
+		int M = grid.size(), N = grid[0].size();
+		int path[][6][2] = {
+			{{0, -1}, {0, 1}},
+			{{-1, 0}, {1, 0}},
+			{{0, -1}, {1, 0}},
+			{{0, 1}, {1, 0}},
+			{{0, -1}, {-1, 0}},
+			{{0, 1}, {-1, 0}}};
+		queue<pair<int, int>> q; //{postion,path}
+		q.push({0, grid[0][0]});
+		grid[0][0] = 0;
+		while (!q.empty())
 		{
-			for (int j = 0; j < n; j++)
+			int size = q.size();
+			while (--size >= 0)
 			{
-				int x = 3 * i + 1, y = 3 * j + 1;
-				if (grid[i][j] == 1)
+				int x = q.front().first / N, y = q.front().first % N;
+				int d = q.front().second - 1;
+				q.pop();
+				if (x == M - 1 && y == N - 1)
+					return true;
+				for (int i = 0; i < 2; ++i)
 				{
-					board[x][y - 1] = board[x][y] = board[x][y + 1] = 1;
-				}
-				else if (grid[i][j] == 2)
-				{
-					board[x - 1][y] = board[x][y] = board[x + 1][y] = 1;
-				}
-				else if (grid[i][j] == 3)
-				{
-					board[x][y - 1] = board[x][y] = board[x + 1][y] = 1;
-				}
-				else if (grid[i][j] == 4)
-				{
-					board[x][y + 1] = board[x][y] = board[x + 1][y] = 1;
-				}
-				else if (grid[i][j] == 5)
-				{
-					board[x - 1][y] = board[x][y] = board[x][y - 1] = 1;
-				}
-				else
-				{
-					board[x - 1][y] = board[x][y] = board[x][y + 1] = 1;
+					int dx = x + path[d][i][0], dy = y + path[d][i][1];
+					if (dx < 0 || dx >= M || dy < 0 || dy >= N || grid[dx][dy] == 0)
+						continue;
+					for (int i = 0; i < 2; ++i) //check back to {x,y}
+					{
+						int index = grid[dx][dy] - 1;
+						if (dx + path[index][i][0] == x && dy + path[index][i][1] == y)
+						{
+							q.push({dx * N + dy, grid[dx][dy]});
+							grid[dx][dy] = 0;
+							break;
+						}
+					}
 				}
 			}
 		}
-		return dfs(board, 1, 1);
-	}
-
-	bool dfs(vector<vector<int>> &board, int i, int j)
-	{
-		if (board[i][j] == 0)
-			return false;
-		int m = board.size(), n = board[0].size();
-		board[i][j] = 0;
-		if (i == m - 2 && j == n - 2)
-			return true;
-		if (i - 1 >= 0 && dfs(board, i - 1, j))
-			return true;
-		if (j - 1 >= 0 && dfs(board, i, j - 1))
-			return true;
-		if (i + 1 < m && dfs(board, i + 1, j))
-			return true;
-		if (j + 1 < n && dfs(board, i, j + 1))
-			return true;
 		return false;
 	}
 };
