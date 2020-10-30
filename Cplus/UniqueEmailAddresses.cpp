@@ -1,33 +1,26 @@
-#include<string>
-#include<vector>
-#include<set>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int numUniqueEmails(vector<string>& emails) {
-		set<string> s;
-		string local,domain;
-		for(int i=0;i<(int)emails.size();i++)
+	int numUniqueEmails(vector<string> &emails)
+	{
+		unordered_set<string> s;
+		for (auto &email : emails)
 		{
-			for(int j=0;j<(int)emails[i].size();j++)
+			int i = 0, j = 0;
+			for (; email[j] != '+' && email[j] != '@'; ++j)
 			{
-				if(emails[i][j]=='.')
-				{
-					emails[i].erase(emails[i].begin()+j);
-					j--;
-				}
-				else if(emails[i][j]=='+'||emails[i][j]=='@')
-				{
-					local=emails[i].substr(0,j);
-					while(emails[i][j]!='@')
-						j++;
-					domain=emails[i].substr(j+1,emails[i].size()-j-1);
-					s.insert(local+"@"+domain);
-                    break;
-				}
+				if (email[j] != '.')
+					email[i++] = email[j];
 			}
+			while (email[j] != '@')
+				++j;
+			s.insert(email.substr(0, i) + email.substr(j));
 		}
 		return s.size();
-    }
+	}
 };
