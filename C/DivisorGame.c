@@ -1,7 +1,6 @@
+#include <stdbool.h>
 
-
-
-bool divisorGame(int N){
-	return !(N&1);
+bool divisorGame(int N)
+{
+	return !(N & 1);
 }
-
