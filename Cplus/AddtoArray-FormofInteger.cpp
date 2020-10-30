@@ -1,31 +1,22 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> addToArrayForm(vector<int>& A, int K) {
-		reverse(A.begin(),A.end());        
-		int carry=0,i=0;
-		while(K!=0||carry==1)
+	vector<int> addToArrayForm(vector<int> &A, int K)
+	{
+		reverse(A.begin(), A.end());
+		for (int carry = 0, i = 0; K != 0 || carry != 0; ++i, K /= 10)
 		{
-			if(i==(int)A.size())
+			if (i >= (int)A.size())
 				A.push_back(0);
-			int tmp=A[i]+K%10+carry;
-			if(tmp>=10)
-			{
-				A[i]=tmp-10;
-				carry=1;
-			}
-			else
-			{
-				A[i]=tmp;
-				carry=0;
-			}
-			K/=10;
-			i++;
+			carry += A[i] + K % 10;
+			A[i] = carry % 10;
+			carry /= 10;
 		}
-		reverse(A.begin(),A.end());
+		reverse(A.begin(), A.end());
 		return A;
-    }
+	}
 };
