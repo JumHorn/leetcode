@@ -1,38 +1,32 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool lemonadeChange(vector<int>& bills) {
-		int five=0,ten=0;
-		for(int i=0;i<(int)bills.size();i++)
+	bool lemonadeChange(vector<int> &bills)
+	{
+		int five = 0, ten = 0, N = bills.size();
+		for (int i = 0; i < N && five >= 0 && ten >= 0; ++i)
 		{
-			if(bills[i]==5)
+			if (bills[i] == 5)
 				++five;
-			else if(bills[i]==10)
+			else if (bills[i] == 10)
 			{
-				if(five<=0)
-					return false;
 				--five;
 				++ten;
 			}
-			else
+			else //bills[i]==20
 			{
-				if(ten>0)
+				if (ten > 0)
 				{
 					--ten;
-					if(five<=0)
-						return false;
 					--five;
 				}
 				else
-				{
-					if(five<3)
-						return false;
-					five-=3;
-				}
+					five -= 3;
 			}
 		}
-		return true;
-    }
+		return five >= 0 && ten >= 0;
+	}
 };
