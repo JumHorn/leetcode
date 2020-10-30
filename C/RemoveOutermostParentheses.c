@@ -1,24 +1,21 @@
 
-
-char * removeOuterParentheses(char * S){
-	char* p1=S,*p2=S;
-	int count=0;
-	while(*p2)
+char *removeOuterParentheses(char *S)
+{
+	char *p = S;
+	int count = 0;
+	for (int i; S[i]; ++i)
 	{
-		if(*p2=='(')
+		if (S[i] == '(')
 		{
-			if(count!=0)
-				*p1++=*p2;
-			count++;
+			if (count++ != 0)
+				*p++ = S[i];
 		}
-		else if(*p2==')')
+		else if (S[i] == ')')
 		{
-			count--;
-			if(count!=0)
-				*p1++=*p2;
+			if (--count != 0)
+				*p++ = S[i];
 		}
-		p2++;
 	}
-	*p1='\0';
+	*p = '\0';
 	return S;
 }
