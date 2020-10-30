@@ -11,13 +11,11 @@ most important thing to remember is, remainder will always be positive
 
 void reverse(char *arr, int first, int last)
 {
-	while (first < last)
+	for (; first < last; ++first, --last)
 	{
 		char tmp = arr[first];
 		arr[first] = arr[last];
 		arr[last] = tmp;
-		++first;
-		--last;
 	}
 }
 

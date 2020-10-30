@@ -1,21 +1,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-void reverse(char* arr, int first, int last)
+void reverse(char *arr, int first, int last)
 {
-	while (first < last)
+	for (; first < last; ++first, --last)
 	{
 		char tmp = arr[first];
 		arr[first] = arr[last];
 		arr[last] = tmp;
-		++first;
-		--last;
 	}
 }
 
-char* convertToTitle(int n)
+char *convertToTitle(int n)
 {
-	char* res = (char*)malloc(sizeof(char) * 100);
+	char *res = (char *)malloc(sizeof(char) * 100);
 	int resSize = 0;
 	while (n != 0)
 	{

@@ -27,12 +27,8 @@ int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize
 
 void reverse(int *arr, int first, int last)
 {
-	while (first < last)
-	{
+	for (; first < last; ++first, --last)
 		swap(arr[first], arr[last]);
-		++first;
-		--last;
-	}
 }
 
 bool nextPermutation(int *nums, int numsSize)

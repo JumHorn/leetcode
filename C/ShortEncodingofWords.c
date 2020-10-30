@@ -2,21 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
-
 int cmp(const void *lhs, const void *rhs)
 {
-	return -strcmp(*(char **)lhs, *(char **)rhs);  //des
+	return -strcmp(*(char **)lhs, *(char **)rhs); //des
 }
 
-void reverse(char *s)
+void reverse(char *arr, int first, int last)
 {
-	int i = 0, j = strlen(s) - 1;
-	while (i < j)
+	for (; first < last; ++first, --last)
 	{
-		swap(s[i], s[j]);
-		++i;
-		--j;
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
 	}
 }
 
@@ -33,7 +30,7 @@ bool startsWith(char *s, char *a)
 int minimumLengthEncoding(char **words, int wordsSize)
 {
 	for (int i = 0; i < wordsSize; ++i)
-		reverse(words[i]);
+		reverse(words[i], 0, strlen(words[i]) - 1);
 	qsort(words, wordsSize, sizeof(char *), cmp);
 	int res = strlen(words[0]) + 1;
 	for (int i = 1, j = 0; i < wordsSize; ++i)

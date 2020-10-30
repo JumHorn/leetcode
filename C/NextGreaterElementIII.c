@@ -3,21 +3,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-void swap(char* lhs, char* rhs)
+void swap(char *lhs, char *rhs)
 {
 	char tmp = *lhs;
 	*lhs = *rhs;
 	*rhs = tmp;
 }
 
-void reverse(char* s, int first, int last)
+void reverse(char *arr, int first, int last)
 {
-	while (first < last)
-	{
-		swap(&s[first], &s[last]);
-		++first;
-		--last;
-	}
+	for (; first < last; ++first, --last)
+		swap(&arr[first], &arr[last]);
 }
 
 int nextGreaterElement(int n)

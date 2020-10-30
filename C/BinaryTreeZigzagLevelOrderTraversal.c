@@ -8,8 +8,6 @@ struct TreeNode
 	struct TreeNode *right;
 };
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
-
 //malloc result
 int **mallocRes(int (*data)[300], int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
 {
@@ -27,11 +25,11 @@ int **mallocRes(int (*data)[300], int dataSize, int *dataColSize, int *returnSiz
 
 void reverse(int *arr, int first, int last)
 {
-	while (first < last)
+	for (; first < last; ++first, --last)
 	{
-		swap(arr[first], arr[last]);
-		++first;
-		--last;
+		int tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
 	}
 }
 

@@ -1,19 +1,18 @@
 
-void reverse(int* nums, int first, int last)  //[first,last)
+void reverse(char *arr, int first, int last)
 {
-	int i = first - 1, j = last;
-	while (++i < --j)
+	for (; first < last; ++first, --last)
 	{
-		int tmp = nums[i];
-		nums[i] = nums[j];
-		nums[j] = tmp;
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
 	}
 }
 
-void rotate(int* nums, int numsSize, int k)
+void rotate(int *nums, int numsSize, int k)
 {
 	k %= numsSize;
-	reverse(nums, 0, numsSize);
-	reverse(nums, 0, k);
-	reverse(nums, k, numsSize);
+	reverse(nums, 0, numsSize - 1);
+	reverse(nums, 0, k - 1);
+	reverse(nums, k, numsSize - 1);
 }

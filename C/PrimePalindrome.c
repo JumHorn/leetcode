@@ -15,16 +15,13 @@ bool isPrimer(int N)
 	return true;
 }
 
-void reverse(char *s, int size)
+void reverse(char *arr, int first, int last)
 {
-	int i = 0, j = size - 1;
-	while (i < j)
+	for (; first < last; ++first, --last)
 	{
-		char tmp = s[i];
-		s[i] = s[j];
-		s[j] = tmp;
-		++i;
-		--j;
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
 	}
 }
 
@@ -51,7 +48,7 @@ int primePalindrome(int N)
 		char last[10];
 		strncpy(last, half, halfsize - odd);
 		last[halfsize - odd] = '\0';
-		reverse(last, halfsize - odd);
+		reverse(last, 0, halfsize - odd - 1);
 		sprintf(s, "%s%s", half, last);
 		int res = atoi(s);
 		if (res >= N && isPrimer(res))

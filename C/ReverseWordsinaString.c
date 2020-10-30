@@ -20,13 +20,13 @@ void trim(char *s)
 	*q = '\0';
 }
 
-void reverse(char *s, int first, int last)
+void reverse(char *arr, int first, int last)
 {
-	while (first < last)
+	for (; first < last; ++first, --last)
 	{
-		swap(s[first], s[last]);
-		++first;
-		--last;
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
 	}
 }
 

@@ -3,22 +3,20 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-void reverse(char* arr, int first, int last)
+void reverse(char *arr, int first, int last)
 {
-	while (first < last)
+	for (; first < last; ++first, --last)
 	{
 		char tmp = arr[first];
 		arr[first] = arr[last];
 		arr[last] = tmp;
-		++first;
-		--last;
 	}
 }
 
-char* addBinary(char* a, char* b)
+char *addBinary(char *a, char *b)
 {
 	int i = strlen(a), j = strlen(b), resSize = 0, carry = 0;
-	char* res = (char*)malloc(sizeof(char) * (max(i, j) + 2));
+	char *res = (char *)malloc(sizeof(char) * (max(i, j) + 2));
 	for (--i, --j; i >= 0 || j >= 0 || carry > 0;)
 	{
 		if (i >= 0)

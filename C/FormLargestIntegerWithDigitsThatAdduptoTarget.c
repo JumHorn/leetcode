@@ -1,16 +1,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-void reverse(char *str)
+void reverse(char *arr, int first, int last)
 {
-	int i = 0, j = strlen(str) - 1;
-	while (i < j)
+	for (; first < last; ++first, --last)
 	{
-		char tmp = str[i];
-		str[i] = str[j];
-		str[j] = tmp;
-		++i;
-		--j;
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
 	}
 }
 
@@ -20,12 +17,6 @@ char *largestNumber(int *cost, int costSize, int target)
 	char *arr[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 	for (int i = 0; i <= target; ++i)
 		dp[i][0] = '\0';
-	//char** dp = (char**)malloc(sizeof(int*) * (target + 1));
-	// for (int i = 0; i <= target; ++i)
-	// {
-	// 	dp[i] = (char*)malloc(sizeof(int) * (target + 1));
-	// 	memset(dp[i], 0, sizeof(int) * (target + 1));
-	// }
 	for (int i = 1; i <= target; ++i)
 	{
 		for (int j = 8; j >= 0; --j)
@@ -41,6 +32,6 @@ char *largestNumber(int *cost, int costSize, int target)
 		if (dp[i][0] == '\0')
 			strcpy(dp[i], "0");
 	}
-	reverse(dp[target]);
+	reverse(dp[target], 0, strlen(dp[target]) - 1);
 	return dp[target];
 }

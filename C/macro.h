@@ -1,17 +1,22 @@
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
+#define trimax(a, b, c) (max(max(a, b), c)) //the maximum of a,b,c
+#define trimin(a, b, c) (min(min(a, b), c)) //the minimum of a,b,c
+
 // all ready defined in stdlib.h
 #define abs(x) (((x) < 0) ? (-(x)) : (x))
 
-// linux kernel swap version
-// #define swap(a, b) \
-// 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
 #define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+// avoid the above macro same address bug using the following version
+// void swap(int *lhs, int *rhs)
+// {
+// 	int tmp = *lhs;
+// 	*lhs = *rhs;
+// 	*rhs = tmp;
+// }
 
-#define trimax(a, b, c) (max(max(a, b), c)) //the maximum of a,b,c
-#define trimin(a, b, c) (min(min(a, b), c)) //the minimum of a,b,c
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 //frequently used items
 #include <stdlib.h>

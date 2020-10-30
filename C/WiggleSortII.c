@@ -21,11 +21,11 @@ int cmp(const void *lhs, const void *rhs)
 	return *(int *)lhs - *(int *)rhs;
 }
 
-void swap(int *a, int *b)
+void swap(int *lhs, int *rhs)
 {
-	int tmp = *a;
-	*a = *b;
-	*b = tmp;
+	int tmp = *lhs;
+	*lhs = *rhs;
+	*rhs = tmp;
 }
 
 void wiggleSort(int *nums, int numsSize)
