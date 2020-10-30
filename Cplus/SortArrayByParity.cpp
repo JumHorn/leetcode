@@ -1,19 +1,22 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> sortArrayByParity(vector<int>& A) {
-		int start=0,end=A.size()-1;
-		while(start<end)
+	vector<int> sortArrayByParity(vector<int> &A)
+	{
+		int i = 0, j = (int)A.size() - 1;
+		while (i < j)
 		{
-			while(start<end&&(A[start]&1)==0)
-				start++;
-			while(start<end&&(A[end]&1)==1)
-				end--;
-			swap(A[start],A[end]);
-		}		
+			if ((A[i] & 1) == 0)
+				++i;
+			else if ((A[j] & 1) == 1)
+				--j;
+			else
+				swap(A[i++], A[j--]);
+		}
 		return A;
-    }
+	}
 };
