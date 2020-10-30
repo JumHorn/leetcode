@@ -1,42 +1,24 @@
-#include<stdlib.h>
+#include <limits.h>
+#include <stdlib.h>
 
-int largestSumAfterKNegations(int* A, int ASize, int K){
-	int dp[201]={0};
-	for(int i=0;i<ASize;i++)
-		dp[A[i]+100]++;
-	for(int i=0;i<100;i++)
-	{
-		if(dp[i]!=0)
-		{
-			if(K>=dp[i])
-			{
-				dp[-(i-100)+100]+=dp[i];
-				K-=dp[i];
-				dp[i]=0;
-			}
-			else
-			{
-				dp[-(i-100)+100]+=K;
-				dp[i]-=K;
-				K=0;
-			}
-		}
-		if(K==0)
-			break;
-	}
-	int res=0;
-	if(K!=0&&K%2!=0)
-	{
-		for(int i=100;i<201;i++)
-			if(dp[i]!=0)
-			{
-				dp[i]--;
-				res-=i-100;
-				break;
-			}
-	}
-	for(int i=0;i<=200;i++)
-		res+=dp[i]*(i-100);
-	return res;
+//cmp function don't consider overflow
+int cmp(const void *lhs, const void *rhs)
+{
+	return *(int *)lhs - *(int *)rhs;
 }
 
+int largestSumAfterKNegations(int *A, int ASize, int K)
+{
+	qsort(A, ASize, sizeof(int), cmp);
+	for (int i = 0; i < ASize && A[i] < 0 && K > 0; ++i, --K)
+		A[i] = -A[i];
+	K %= 2;
+	int res = 0, min = INT_MAX;
+	for (int i = 0; i < ASize; ++i)
+	{
+		res += A[i];
+		if (A[i] < min)
+			min = A[i];
+	}
+	return res - (K == 0 ? 0 : 2 * min);
+}
