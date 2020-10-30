@@ -1,50 +1,43 @@
-#include<stdlib.h>
-#define swap(a,b) if((a)!=(b))(a)^=(b)^=(a)^=(b)
-/**
- * Note: The returned array must be malloced, assume caller calls free().
- */
+#include <stdlib.h>
 
-int findMid(int* A,int ASize)
+void arraySquare(int *arr, int arrSize)
 {
-	int lo=0,hi=ASize-1,mi;
-	while(lo<hi)
+	for (int i = 0; i < arrSize; ++i)
+		arr[i] *= arr[i];
+}
+
+int binarySeach(int *arr, int arrSize)
+{
+	int lo = 0, hi = arrSize;
+	while (lo < hi)
 	{
-		mi=(hi-lo)/2+lo;
-		if(A[mi]<0)
-			lo=mi+1;
+		int mi = (hi - lo) / 2 + lo;
+		if (arr[mi] < 0)
+			lo = mi + 1;
 		else
-			hi=mi;
+			hi = mi;
 	}
 	return lo;
 }
 
-int* squareArray(int* A,int ASize)
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int *sortedSquares(int *A, int ASize, int *returnSize)
 {
-	for(int i=0;i<ASize;i++)
-		A[i]*=A[i];
-	return A;
-}
-
-int* sortedSquares(int* A, int ASize, int* returnSize){
-	*returnSize=ASize;
-	if(A[0]>=0)
-		return squareArray(A,ASize);
-	if(A[ASize-1]<=0)
+	*returnSize = ASize;
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	int i = binarySeach(A, ASize), j = i - 1;
+	arraySquare(A, ASize);
+	//merge
+	for (int k = 0; i < ASize || j >= 0; ++k)
 	{
-		int i=-1,j=ASize;
-		while(++i<--j)
-			swap(A[i],A[j]);
-		return squareArray(A,ASize);
+		if (i == ASize)
+			res[k] = A[j--];
+		else if (j == -1)
+			res[k] = A[i++];
+		else
+			res[k] = (A[i] > A[j]) ? A[j--] : A[i++];
 	}
-	int *res=(int*)malloc(sizeof(int)*ASize);
-	int positive=findMid(A,ASize);
-	int negative=positive-1;
-	int index=0;
-	while(negative>=0&&positive<ASize)
-		res[index++]=A[positive]-(-A[negative])<=0?A[positive++]:A[negative--];
-	while(negative>=0)
-		res[index++]=A[negative--];
-	while(positive<ASize)
-		res[index++]=A[positive++];
-	return squareArray(res,ASize);
+	return res;
 }
