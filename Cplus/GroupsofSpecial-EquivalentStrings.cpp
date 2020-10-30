@@ -1,19 +1,24 @@
-#include<vector>
-#include<string>
-#include<unordered_set>
+#include <string>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int numSpecialEquivGroups(vector<string>& A) {
-        unordered_set<string> s;
-        for(int i=0;i<(int)A.size();i++)
-        {
-            string tmp(52,'a');
-            for(int j=0;j<(int)A[i].length();j++)
-                tmp[A[i][j]-'a'+26*(j&1)]++;
-            s.insert(tmp);
-        }
-        return s.size();
-    }
+	int numSpecialEquivGroups(vector<string> &A)
+	{
+		unordered_set<string> s;
+		for (auto str : A)
+			s.insert(normaliseWord(str));
+		return s.size();
+	}
+
+	string normaliseWord(const string &word) //encode the odd/even indexed element
+	{
+		string res(52, 'a');
+		for (int i = 0; i < (int)word.size(); ++i)
+			++res[word[i] - 'a' + 26 * (i & 1)];
+		return res;
+	}
 };
