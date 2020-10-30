@@ -1,33 +1,31 @@
 
-
-int projectionArea(int** grid, int gridSize, int* gridColSize){
-	int top=0,left=0,right=0;
-	for(int i=0;i<gridSize;i++)
-		for(int j=0;j<gridColSize[i];j++)
-			if(grid[i][j]>0)
-				top+=1;
-	for(int i=0;i<gridSize;i++)
+int projectionArea(int **grid, int gridSize, int *gridColSize)
+{
+	int M = gridSize, N = *gridColSize;
+	int res = M * N; //top bottom
+	//left,right
+	for (int i = 0; i < M; ++i)
 	{
-		int max=0;
-		for(int j=0;j<gridColSize[i];j++)
-			if(grid[i][j]>max)
-				max=grid[i][j];
-		left+=max;
+		int max = 0;
+		for (int j = 0; j < N; ++j)
+		{
+			if (max < grid[i][j])
+				max = grid[i][j];
+			if (grid[i][j] == 0) //remove empty
+				res -= 1;
+		}
+		res += max;
 	}
-	int maxcol=0;
-	for(int i=0;i<gridSize;i++)
-		if(gridColSize[i]>maxcol)
-			maxcol=gridColSize[i];
-	for(int j=0;j<maxcol;j++)
+	//front back
+	for (int j = 0; j < N; ++j)
 	{
-		int max=0;
-		for(int i=0;i<gridSize;i++)
-			if(gridColSize[i]>j&&grid[i][j]>max)
-				max=grid[i][j];
-		right+=max;
+		int max = 0;
+		for (int i = 0; i < M; ++i)
+		{
+			if (max < grid[i][j])
+				max = grid[i][j];
+		}
+		res += max;
 	}
-	return top+left+right;
+	return res;
 }
-
-
-
