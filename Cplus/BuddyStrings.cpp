@@ -1,37 +1,25 @@
-#include<string>
+#include <string>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool buddyStrings(string A, string B) {
-		if(A.size()!=B.size())
+	bool buddyStrings(string A, string B)
+	{
+		if (A.size() != B.size())
 			return false;
-		char a[2],b[2];
-		int num=0;
-		for(int i=0;i<(int)A.size();i++)
+		int hash[26] = {0}, same = 1;
+		int index[3], diff = 0, N = A.size();
+		for (int i = 0; i < N && diff <= 2; ++i)
 		{
-			if(A[i]!=B[i])
-			{
-				if(num==2)
-					return false;
-				else
-				{
-					a[num]=A[i];
-					b[num]=B[i];
-					num++;
-				}
-			}
-		}	
-		if(num==0)
-		{
-			int hash[26]={0};
-			for(int i=0;i<(int)A.size();i++)
-			{
-				if(++hash[A[i]-'a']==2)
-					return true;
-			}
-			return false;
+			if (++hash[A[i] - 'a'] > same)
+				same = hash[A[i] - 'a'];
+			if (A[i] != B[i])
+				index[diff++] = i;
 		}
-		return a[0]==b[1]&&a[1]==b[0];	
-    }
+		return (diff == 0 && same > 1) ||
+			   (diff == 2 &&
+				A[index[0]] == B[index[1]] &&
+				A[index[1]] == B[index[0]]);
+	}
 };
