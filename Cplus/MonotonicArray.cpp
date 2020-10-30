@@ -1,30 +1,24 @@
-#include<vector>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool isMonotonic(vector<int>& A) {
-		if(A.size()<2)
-			return true;		
-		int i=1;
-		while(i<(int)A.size()&&A[i-1]==A[i])
-			i++;
-		if(i>=(int)A.size()-1)
+	bool isMonotonic(vector<int> &A)
+	{
+		int N = A.size(), i = 0;
+		for (i = 1; i < N; ++i)
+		{
+			if (A[i - 1] > A[i])
+				break;
+		}
+		if (i == N)
 			return true;
-		if(A[i]-A[i-1]>0)
+		for (i = 1; i < N; ++i)
 		{
-			while(i<(int)A.size()&&A[i]-A[i-1]>=0)
-				i++;
-			if(i!=(int)A.size())
-				return false;
+			if (A[i - 1] < A[i])
+				break;
 		}
-		else
-		{
-			while(i<(int)A.size()&&A[i]-A[i-1]<=0)
-				i++;
-			if(i!=(int)A.size())
-				return false;
-		}
-		return true;
-    }
+		return i == N;
+	}
 };
