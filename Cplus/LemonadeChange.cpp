@@ -7,7 +7,7 @@ public:
 	bool lemonadeChange(vector<int> &bills)
 	{
 		int five = 0, ten = 0, N = bills.size();
-		for (int i = 0; i < N && five >= 0 && ten >= 0; ++i)
+		for (int i = 0; i < N && five >= 0; ++i)
 		{
 			if (bills[i] == 5)
 				++five;
@@ -27,6 +27,6 @@ public:
 					five -= 3;
 			}
 		}
-		return five >= 0 && ten >= 0;
+		return five >= 0;
 	}
 };

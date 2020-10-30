@@ -3,7 +3,7 @@
 bool lemonadeChange(int* bills, int billsSize)
 {
 	int five = 0, ten = 0;
-	for (int i = 0; i < billsSize && five >= 0 && ten >= 0; ++i)
+	for (int i = 0; i < billsSize && five >= 0; ++i)
 	{
 		if (bills[i] == 5)
 			++five;
@@ -23,5 +23,5 @@ bool lemonadeChange(int* bills, int billsSize)
 				five -= 3;
 		}
 	}
-	return five >= 0 && ten >= 0;
+	return five >= 0;
 }
