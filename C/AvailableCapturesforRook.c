@@ -1,62 +1,30 @@
 
-
-
-int numRookCaptures(char** board, int boardSize, int* boardColSize){
-	int x,y;
-	for(int i=0;i<boardSize;i++)
-		for(int j=0;j<boardColSize[0];j++)
-			if(board[i][j]=='R')
+int numRookCaptures(char **board, int boardSize, int *boardColSize)
+{
+	int M = boardSize, N = *boardColSize;
+	int x = 0, y = 0, res = 0;
+	for (int i = 0; i < M; ++i)
+	{
+		for (int j = 0; j < N; ++j)
+		{
+			if (board[i][j] == 'R')
 			{
-				x=i;
-				y=j;
-				i=boardSize;
-				break;
+				x = i;
+				y = j;
 			}
-	int res=0,d=x;
-	while(--d>=0)
-	{
-		if(board[d][y]=='B')
-			break;
-		if(board[d][y]=='p')
-		{
-			res++;
-			break;
 		}
 	}
-	d=x;
-	while(++d<boardSize)
+	int path[][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+	for (int i = 0; i < 4; ++i)
 	{
-		if(board[d][y]=='B')
-			break;
-		if(board[d][y]=='p')
+		int dx = x + path[i][0], dy = y + path[i][1];
+		for (; dx >= 0 && dx < M && dy >= 0 && dy < N; dx += path[i][0], dy += path[i][1])
 		{
-			res++;
-			break;
+			if (board[dx][dy] == 'p')
+				++res;
+			if (board[dx][dy] != '.')
+				break;
 		}
 	}
-	d=y;
-	while(--d>=0)
-	{
-		if(board[x][d]=='B')
-			break;
-		if(board[x][d]=='p')
-		{
-			res++;
-			break;
-		}
-	}
-	d=y;
-	while(++d<boardColSize[0])
-	{
-		if(board[x][d]=='B')
-			break;
-		if(board[x][d]=='p')
-		{
-			res++;
-			break;
-		}
-	}
-
 	return res;
 }
-
