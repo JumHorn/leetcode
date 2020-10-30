@@ -1,17 +1,18 @@
-#include<stdlib.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-bool* prefixesDivBy5(int* A, int ASize, int* returnSize){
-	*returnSize=ASize;
-	bool* p=(bool*)malloc(ASize*sizeof(bool));
-	int val=0;
-	for(int i=0;i<ASize;i++)
+bool *prefixesDivBy5(int *A, int ASize, int *returnSize)
+{
+	*returnSize = ASize;
+	bool *res = (bool *)malloc(sizeof(bool) * (*returnSize));
+	int remainder = 0;
+	for (int i = 0; i < ASize; ++i)
 	{
-		val=((val<<1)|A[i]);
-		val%=5;
-		p[i]=val%5==0;
+		remainder = ((remainder << 1) | A[i]) % 5;
+		res[i] = (remainder == 0);
 	}
-	return p;
+	return res;
 }
