@@ -1,47 +1,31 @@
-#include<vector>
-#include<string>
-#include<unordered_map>
-#include<unordered_set>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<string> uncommonFromSentences(string A, string B) {
-        unordered_map<string,int> s;
-		for(int i=0;i<(int)A.size();i++)
+	vector<string> uncommonFromSentences(string A, string B)
+	{
+		unordered_map<string, int> m; //{str,count}
+		split(A, m);
+		split(B, m);
+		vector<string> res;
+		for (auto &n : m)
 		{
-			int j=i;
-			while(j<(int)A.size()&&A[j]==' ')
-				j++;
-			i=j;
-			while(j<(int)A.size()&&A[j]!=' ')
-				j++;
-			++s[A.substr(i,j-i)];
-			i=j;
+			if (n.second == 1)
+				res.push_back(n.first);
 		}
-        unordered_map<string,int> t;
-		for(int i=0;i<(int)B.size();i++)
-		{
-			int j=i;
-			while(j<(int)B.size()&&B[j]==' ')
-				j++;
-			i=j;
-			while(j<(int)B.size()&&B[j]!=' ')
-				j++;
-			++t[B.substr(i,j-i)];
-			i=j;
-		}
-		unordered_set<string> res;
-		for(unordered_map<string,int>::iterator iter=s.begin();iter!=s.end();++iter)
-		{
-			if(s[iter->first]+t[iter->first]==1)
-				res.insert(iter->first);
-		}
-		for(unordered_map<string,int>::iterator iter=t.begin();iter!=t.end();++iter)
-		{
-			if(s[iter->first]+t[iter->first]==1)
-				res.insert(iter->first);
-		}
-		return vector<string>(res.begin(),res.end());
-    }
+		return res;
+	}
+
+	void split(string &str, unordered_map<string, int> &m)
+	{
+		string word;
+		stringstream ss(str);
+		while (ss >> word)
+			++m[word];
+	}
 };
