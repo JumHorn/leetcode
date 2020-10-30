@@ -1,63 +1,26 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> powerfulIntegers(int x, int y, int bound) {
-		vector<int> res;
-		if(x>y)
-			swap(x,y);
-		int a=1,b=1;
-        if(y==1)
-        {
-            if(bound>=2)
-                res.push_back(2);
-            return res;
-        }
-        if(x==1)
-        {
-            while(b<=bound)    
-            {
-                res.push_back(b+1);
-                b*=y;
-            }
-            return res;
-        }
-		res.push_back(a+b);
-		while(true)
+	vector<int> powerfulIntegers(int x, int y, int bound)
+	{
+		unordered_set<int> res;
+		for (int i = 1; i <= bound; i *= x)
 		{
-			if(a>b)
+			for (int j = 1; j <= bound; j *= y)
 			{
-				int c=1;
-				int tmp=b*y;
-				while(true)
-				{
-					if(a+c>tmp||a+c>bound)
-						break;
-					if(a+c>res.back())
-						res.push_back(a+c);
-                    else if(a+c<res.back()&&a+c>res[res.size()-2])
-                        res.push_back(a+c);
-					c*=y;
-				}
-                if(a<tmp)
-                {
-                    a*=x;
-                    continue;
-                }
-                else
-                {
-                    a=1;
-                    b*=y;
-                }
+				if (i + j <= bound)
+					res.insert(i + j);
+				if (y == 1)
+					break;
 			}
-			if(a+b>bound)
+			if (x == 1)
 				break;
-			if(a+b!=res.back())
-				res.push_back(a+b);
-			a*=x;
 		}
-		return res;
-    }
+		return vector<int>(res.begin(), res.end());
+	}
 };
