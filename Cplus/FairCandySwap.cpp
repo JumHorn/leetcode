@@ -1,26 +1,22 @@
-#include<vector>
-#include<unordered_map>
-#include<numeric>
+#include <numeric>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> fairCandySwap(vector<int>& A, vector<int>& B) {
-		unordered_map<int,int> ma,mb;
-		int sumA=accumulate(A.begin(),A.end(),0);
-		int sumB=accumulate(B.begin(),B.end(),0);
-		int avg=(sumA+sumB)/2;
-		for(int i=0;i<(int)B.size();i++)
-			mb[B[i]]=1;
-		vector<int> res(2);
-		for(int i=0;i<(int)A.size();i++)
+	vector<int> fairCandySwap(vector<int> &A, vector<int> &B)
+	{
+		unordered_set<int> m(B.begin(), B.end());
+		int sumA = accumulate(A.begin(), A.end(), 0);
+		int sumB = accumulate(B.begin(), B.end(), 0);
+		int avg = (sumA + sumB) / 2;
+		for (auto n : A)
 		{
-			if(mb.find(avg+A[i]-sumA)!=mb.end())
-			{
-				res[0]=A[i];
-				res[1]=avg+A[i]-sumA;
-			}
+			if (m.find(avg + n - sumA) != m.end())
+				return {n, avg + n - sumA};
 		}
-	    return res;	
-    }
+		return {};
+	}
 };
