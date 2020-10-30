@@ -1,24 +1,29 @@
-#include<iostream>
-#include<vector>
-#include<map>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    bool hasGroupsSizeX(vector<int>& deck) {
-        map<int,int> statistics;
-		for(int i=0;i<(int)deck.size();i++)
-			statistics[deck[i]]++;
-		int tmp=statistics.begin()->second;
-        for(map<int,int>::iterator iter=statistics.begin();iter!=statistics.end();iter++)
-        {
-			tmp=GreatestCommonDivisor(tmp,iter->second);
-        }
-		return true;
-    }
-
-	int GreatestCommonDivisor(int x,int y)
+	bool hasGroupsSizeX(vector<int> &deck)
 	{
-		return x == 0 ? y : GreatestCommonDivisor(y%x, x);
+		unordered_map<int, int> m;
+		for (auto d : deck)
+			++m[d];
+		int count = m.begin()->second;
+		for (auto &n : m)
+		{
+			count = gcd(count, n.second);
+			if (count < 2)
+				return false;
+		}
+		return true;
+	}
+
+	int gcd(int x, int y)
+	{
+		if (x == 0)
+			return y;
+		return gcd(y % x, x);
 	}
 };
