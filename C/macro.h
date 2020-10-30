@@ -126,14 +126,16 @@ void make_heap(int *ptr, int size)
 //divide and conquer
 void merge(int *arr, int *dup, int first, int mid, int last)
 {
-	int i = first, j = mid, d = 0;
-	while (i < mid && j < last)
-		dup[d++] = arr[i] < arr[j] ? arr[i++] : arr[j++];
-	while (i < mid)
-		dup[d++] = arr[i++];
-	while (j < last)
-		dup[d++] = arr[j++];
-	memcpy(arr + first, dup, (last - first) * sizeof(int));
+	for (int i = first, j = mid, d = 0; i < mid || j < last;)
+	{
+		if (i == mid)
+			dup[d++] = arr[j++];
+		else if (j == last)
+			dup[d++] = arr[i++];
+		else
+			dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
+	}
+	memcpy(arr + first, dup, sizeof(int) * (last - first));
 }
 
 void divide(int *sum, int *dup, int first, int last)

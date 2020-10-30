@@ -65,15 +65,17 @@ private:
 //divide and conquer
 void merge(vector<int> &arr, vector<int> &dup, int first, int mid, int last)
 {
-	int l = first, r = mid, d = 0, d1 = 0;
-	while (l != mid && r != last)
-		dup[d++] = (arr[l] > arr[r]) ? arr[r++] : arr[l++];
-	while (l != mid)
-		dup[d++] = arr[l++];
-	while (r != last)
-		dup[d++] = arr[r++];
-	while (first != last)
-		arr[first++] = dup[d1++];
+	for (int i = first, j = mid, d = 0; i < mid || j < last;)
+	{
+		if (i == mid)
+			dup[d++] = arr[j++];
+		else if (j == last)
+			dup[d++] = arr[i++];
+		else
+			dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
+	}
+	for (int i = first, j = 0; i < last; ++i, ++j)
+		arr[i] = dup[j];
 }
 
 void divide(vector<int> &arr, vector<int> &dup, int first, int last)
