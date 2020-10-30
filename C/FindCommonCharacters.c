@@ -1,47 +1,44 @@
-#include<string.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+
+void charCount(char *s, int *hash)
+{
+	for (int i = 0; s[i]; ++i)
+		++hash[s[i] - 'a'];
+}
+
+void minArr(int *lhs, int *rhs, int size)
+{
+	for (int i = 0; i < size; ++i)
+		lhs[i] = min(lhs[i], rhs[i]);
+}
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-
-void getMap(char* arr,int* other)
+char **commonChars(char **A, int ASize, int *returnSize)
 {
-	for(int i=0;i<(int)strlen(arr);i++)
-		++other[arr[i]-'a'];
+	int hash[26] = {0};
+	charCount(A[0], hash);
+	for (int i = 1; i < ASize; ++i)
+	{
+		int map[26] = {0};
+		charCount(A[i], map);
+		minArr(hash, map, 26);
+	}
+	*returnSize = 0;
+	for (int i = 0; i < 26; ++i)
+		*returnSize += hash[i];
+	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
+	for (int i = 0, j = 0; i < 26; ++i)
+	{
+		while (--hash[i] >= 0)
+		{
+			res[j] = strdup("a");
+			res[j++][0] += i;
+		}
+	}
+	return res;
 }
-
-char ** commonChars(char ** A, int ASize, int* returnSize){
-	*returnSize=0;
-	if(ASize<1)
-		return NULL;
-	int res[26]={0},other[26]={0};
-	getMap(A[0],res);
-	for(int i=1;i<ASize;i++)
-	{
-		memset(other,0,sizeof(other));
-		getMap(A[i],other);
-		for(int j=0;j<26;j++)
-			res[j]=res[j]>other[j]?other[j]:res[j];
-	}
-	int count=0;
-	for(int i=0;i<26;i++)
-		count+=res[i];
-	*returnSize=count;
-	if(count==0)
-		return NULL;
-	char **p=(char**)malloc(sizeof(char*)*count);
-	for(int i=0;i<count;i++)
-	{
-		p[i]=(char*)malloc(sizeof(char)*2);
-		p[i][1]='\0';
-	}
-	count=0;
-	for(int i=0;i<26;i++)
-	{
-		for(int j=0;j<res[i];j++)
-			p[count++][0]='a'+i;
-	}
-	return p;
-}
-
