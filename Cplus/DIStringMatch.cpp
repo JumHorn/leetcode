@@ -1,20 +1,23 @@
-#include<vector>
-#include<string>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> diStringMatch(string S) {
-		vector<int> res(S.length()+1);
-		int decs=S.length(),acr=0;
-		for(int i=0;i<(int)S.length();i++)
+	vector<int> diStringMatch(string S)
+	{
+		int N = S.length();
+		vector<int> res(N + 1);
+		int decrease = N, increase = 0;
+		for (int i = 0; i < N; ++i)
 		{
-			if(S[i]=='I')
-				res[i]=acr++;
+			if (S[i] == 'I')
+				res[i] = increase++;
 			else
-				res[i]=decs--;
-		}		
-		res.back()=acr;
+				res[i] = decrease--;
+		}
+		res.back() = increase;
 		return res;
-    }
+	}
 };
