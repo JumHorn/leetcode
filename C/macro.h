@@ -17,14 +17,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+//board dfs direction
+int path[5] = {-1, 0, 1, 0, -1};
+
 //cmp function don't consider overflow
 int cmp(const void *lhs, const void *rhs)
 {
 	return *(int *)lhs - *(int *)rhs;
 }
 
-//board dfs direction
-int path[5] = {-1, 0, 1, 0, -1};
+void reverse(int *arr, int first, int last)
+{
+	for (; first < last; ++first, --last)
+	{
+		int tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
+	}
+}
 
 //circle queue for monoqueue queue
 /*
