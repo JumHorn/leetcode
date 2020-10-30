@@ -1,41 +1,37 @@
-#include<vector>
-#include<set>
-#include<algorithm>
+#include <algorithm>
+#include <set>
+#include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
-		int degree=0,x=0,y=0,res=0;        
-		int dirs[][2]={{0,1},{1,0},{0,-1},{-1,0}};
-		set<pair<int,int>> ob;
-		for(int i=0;i<(int)obstacles.size();i++)
-			ob.insert({obstacles[i][0],obstacles[i][1]});
-		for(int i=0;i<(int)commands.size();i++)
+	int robotSim(vector<int> &commands, vector<vector<int>> &obstacles)
+	{
+		int degree = 0, x = 0, y = 0, res = 0;
+		int path[][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		set<pair<int, int>> ob;
+		for (auto &obs : obstacles)
+			ob.insert({obs[0], obs[1]});
+		for (auto comm : commands)
 		{
-			if(commands[i]<0)
+			if (comm < 0)
 			{
-				if(commands[i]==-1)
-					degree+=1;
-				else
-					degree-=1;
-				degree=(degree+4)%4;
+				comm == -1 ? ++degree : --degree;
+				degree = (degree + 4) % 4;
 			}
 			else
 			{
-				for(int j=1;j<=commands[i];j++)
+				for (int j = 1; j <= comm; ++j)
 				{
-					if(ob.find({x+dirs[degree][0],y+dirs[degree][1]})==ob.end())
-					{
-						x+=dirs[degree][0];
-						y+=dirs[degree][1];
-						res=max(res,x*x+y*y);
-					}
-					else
+					if (ob.find({x + path[degree][0], y + path[degree][1]}) != ob.end())
 						break;
+					x += path[degree][0];
+					y += path[degree][1];
+					res = max(res, x * x + y * y);
 				}
 			}
 		}
 		return res;
-    }
+	}
 };
