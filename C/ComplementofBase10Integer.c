@@ -1,14 +1,15 @@
 
-int bitwiseComplement(int N){
-	if(N==0)
-		return 1;
-    unsigned int n=N,i=30,reverse=3;
-	while(--i>0)
-	{
-		if(n&(1<<i))
-			break;
-		reverse=((reverse<<1)|1);
-	}
-	n^=reverse<<(i+1);
-	return ~n;
+int getMask(int n) //flip all bit to 1
+{
+	n |= (n >> 1);
+	n |= (n >> 2);
+	n |= (n >> 4);
+	n |= (n >> 8);
+	n |= (n >> 16);
+	return n;
+}
+
+int bitwiseComplement(int N)
+{
+	return N == 0 ? 1 : (getMask(N) & ~N);
 }
