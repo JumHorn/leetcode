@@ -1,26 +1,26 @@
-#include<stdlib.h>
+
 //Definition for a binary tree node.
-struct TreeNode {
-    int val;
-    struct TreeNode *left;
-    struct TreeNode *right;
+struct TreeNode
+{
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-void inorderTraversal(struct TreeNode* root,struct TreeNode** dump)
+void inorder(struct TreeNode *root, struct TreeNode **pre)
 {
-	if(!root)
+	if (!root)
 		return;
-	inorderTraversal(root->left,dump);
-	(*dump)->right=(struct TreeNode*)calloc(1,sizeof(struct TreeNode));
-	(*dump)=(*dump)->right;
-	(*dump)->val=root->val;
-	inorderTraversal(root->right,dump);
+	inorder(root->left, pre);
+	(*pre)->right = root;
+	*pre = root;
+	(*pre)->left = 0;
+	inorder(root->right, pre);
 }
 
-struct TreeNode* increasingBST(struct TreeNode* root){
-	if(!root)
-		return NULL;
-	struct TreeNode* dump=(struct TreeNode*)calloc(1,sizeof(struct TreeNode)),*tmp=dump;
-	inorderTraversal(root,&tmp);
-	return dump->right;
+struct TreeNode *increasingBST(struct TreeNode *root)
+{
+	struct TreeNode dummy, *d = &dummy;
+	inorder(root, &d);
+	return dummy.right;
 }
