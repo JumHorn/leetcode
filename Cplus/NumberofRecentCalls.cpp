@@ -1,20 +1,24 @@
-#include<vector>
+#include <queue>
 using namespace std;
 
-class RecentCounter {
-	vector<int> v;
-	int last;
+class RecentCounter
+{
+
 public:
-    RecentCounter() {
-        last=0;
-    }
-    
-    int ping(int t) {
-        v.push_back(t);
-		while(v[last]<t-3000)
-			last++;
-		return v.size()-last;
-    }
+	RecentCounter()
+	{
+	}
+
+	int ping(int t)
+	{
+		while (!q.empty() && q.front() < t - 3000)
+			q.pop();
+		q.push(t);
+		return q.size();
+	}
+
+private:
+	queue<int> q;
 };
 
 /**
