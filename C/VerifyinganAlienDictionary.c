@@ -1,28 +1,24 @@
-#include<stdlib.h>
-#include<string.h>
+#include <stdbool.h>
 
-bool comp(char* lhs,char* rhs,int* hash)
+bool alienCmp(char *lhs, char *rhs, int *hash)
 {
-	while(*lhs&&*rhs)
+	for (; *lhs && *rhs; ++lhs, ++rhs)
 	{
-		if(*lhs!=*rhs)
-			return hash[*lhs-'a']<hash[*rhs-'a'];
-		lhs++;
-		rhs++;
+		if (*lhs != *rhs)
+			return hash[*lhs - 'a'] < hash[*rhs - 'a'];
 	}
-	if(*rhs)
-		return true;
-	return false;
+	return !*lhs;
 }
 
-bool isAlienSorted(char ** words, int wordsSize, char * order){
-	int *hash=(int*)malloc(sizeof(int)*26);
-	int i=0;
-	while(*order)
-		hash[*order++-'a']=i++;
-	for(int i=0;i<wordsSize-1;i++)
-		if(!comp(words[i],words[i+1],hash))
+bool isAlienSorted(char **words, int wordsSize, char *order)
+{
+	int hash[26] = {0};
+	for (int i = 0; order[i]; ++i)
+		hash[order[i] - 'a'] = i;
+	for (int i = 0; i < wordsSize - 1; ++i)
+	{
+		if (!alienCmp(words[i], words[i + 1], hash))
 			return false;
+	}
 	return true;
 }
-
