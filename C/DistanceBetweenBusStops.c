@@ -1,19 +1,13 @@
-int distanceBetweenBusStops(int* distance, int distanceSize, int start, int destination)
+
+int distanceBetweenBusStops(int *distance, int distanceSize, int start, int destination)
 {
-	int clock = 0, counter_clock = 0;
-	int i = start;
-	while (i != destination)
-	{
+	int clock = 0, counter_clock = 0, N = distanceSize;
+	for (int i = start; i != destination; i = (i + 1) % N)
 		clock += distance[i];
-		i = (i + 1) % distanceSize;
-	}
-	i = start;
-	while (i != destination)
+	for (int i = start; i != destination;)
 	{
-		i = ((i - 1) + distanceSize) % distanceSize;
+		i = ((i - 1) + N) % N;
 		counter_clock += distance[i];
 	}
-	if (clock < counter_clock)
-		return clock;
-	return counter_clock;
+	return clock < counter_clock ? clock : counter_clock;
 }
