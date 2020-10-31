@@ -1,28 +1,30 @@
+#include <stdbool.h>
 
-
-int comp(int* map,int* wordmap)
+bool arrLessThan(int *map, int *hash, int size)
 {
-	for(int i=0;i<26;i++)
-		if(map[i]<wordmap[i])
-			return 0;
-	return 1;
+	for (int i = 0; i < size; ++i)
+	{
+		if (map[i] < hash[i])
+			return false;
+	}
+	return true;
 }
 
-int countCharacters(char ** words, int wordsSize, char * chars){
-	int map[26]={0},res=0;
-	while(*chars)
-		map[*chars++-'a']++;
-	for(int i=0;i<wordsSize;i++)
+int countCharacters(char **words, int wordsSize, char *chars)
+{
+	int map[26] = {0}, res = 0;
+	while (*chars)
+		++map[*chars++ - 'a'];
+	for (int i = 0; i < wordsSize; ++i)
 	{
-		int wordmap[26]={0},len=0;
-		char *p=words[i];
-		while(*p)
+		int hash[26] = {0}, len = 0;
+		for (char *p = words[i]; *p; ++p)
 		{
-			len++;
-			wordmap[*p++-'a']++;
+			++len;
+			++hash[*p - 'a'];
 		}
-		if(comp(map,wordmap))
-			res+=len;
+		if (arrLessThan(map, hash, 26))
+			res += len;
 	}
 	return res;
 }
