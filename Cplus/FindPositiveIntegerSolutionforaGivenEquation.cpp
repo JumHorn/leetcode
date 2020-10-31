@@ -1,5 +1,6 @@
 #include <vector>
 using namespace std;
+
 // This is the custom function interface.
 // You should not implement it, or speculate about its implementation
 class CustomFunction
@@ -17,7 +18,7 @@ public:
 	vector<vector<int>> findSolution(CustomFunction &customfunction, int z)
 	{
 		vector<vector<int>> res;
-		for (int i = 1; i <= 1000; i++)
+		for (int i = 1; i <= 1000; ++i)
 		{
 			int lo = customfunction.f(i, 1), hi = customfunction.f(i, 1000);
 			if (lo > z)
@@ -29,13 +30,13 @@ public:
 			while (lo <= hi)
 			{
 				int mi = (hi - lo) / 2 + lo;
-				int tmp = customfunction.f(i, mi);
-				if (tmp == z)
+				int val = customfunction.f(i, mi);
+				if (val == z)
 				{
 					res.push_back({i, mi});
 					break;
 				}
-				if (tmp < z)
+				if (val < z)
 					lo = mi + 1;
 				else
 					hi = mi - 1;
