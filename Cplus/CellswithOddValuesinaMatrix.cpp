@@ -6,20 +6,18 @@ class Solution
 public:
 	int oddCells(int n, int m, vector<vector<int>> &indices)
 	{
-		vector<vector<int>> matrix(n, vector<int>(m));
-		for (int k = 0; k < (int)indices.size(); ++k)
+		vector<int> row(n), col(m);
+		for (int k = 0; k < indices.size(); ++k)
 		{
-			for (int i = 0; i < n; ++i)
-				++matrix[i][indices[k][1]];
-			for (int j = 0; j < m; ++j)
-				++matrix[indices[k][0]][j];
+			++row[indices[k][0]];
+			++col[indices[k][1]];
 		}
 		int res = 0;
 		for (int i = 0; i < n; ++i)
 		{
 			for (int j = 0; j < m; ++j)
 			{
-				if (matrix[i][j] % 2 == 1)
+				if ((row[i] + col[j]) % 2 == 1)
 					++res;
 			}
 		}
