@@ -1,61 +1,60 @@
 
-#define swap(a,b) if((a)!=(b)) (a)^=(b)^=(a)^=(b)
-
-
-void pushheap(int* stones,int hole)
+//max heap function series
+void push_heap(int *ptr, int size)
 {
-    int val=stones[hole];
-    for(;hole>0&&stones[(hole-1)/2]<val;hole=(hole-1)/2)
-        stones[hole]=stones[(hole-1)/2];
-    stones[hole]=val;
-}
-
-void popheap(int* stones,int last)
-{
-	int val=stones[0],hole=0,index=2*0+2;
-    for(;index<last;index=index*2+2)
-    {
-        if(stones[index-1]>stones[index])
-            index--;
-        stones[(index-1)/2]=stones[index];
-        hole=index;
-    }
-    if(index==last)
-    {
-        stones[(index-1)/2]=stones[index-1];
-        hole=index-1;
-    }
-    stones[hole]=stones[last];
-    stones[last]=val;
-    pushheap(stones,hole);
-}
-
-void makeheap(int* stones,int end)
-{
-	for(int i=1;i<end;i++)
-		pushheap(stones,i);
-}
-
-int lastStoneWeight(int* stones, int stonesSize){
-	makeheap(stones,stonesSize);
-	int x,y;
-	while(stonesSize>=2)
+	if (size <= 1)
+		return;
+	int val = ptr[size - 1], hole = size - 1;
+	for (int i = (hole - 1) >> 1; hole > 0 && val > ptr[i]; i = (hole - 1) >> 1)
 	{
-		stonesSize--;
-		popheap(stones,stonesSize);
-		x=stones[stonesSize];
-		stonesSize--;
-		popheap(stones,stonesSize);
-		y=stones[stonesSize];
-		x-=y;
-		if(x!=0)
+		ptr[hole] = ptr[i];
+		hole = i;
+	}
+	ptr[hole] = val;
+}
+
+void pop_heap(int *ptr, int size)
+{
+	if (size <= 0)
+		return;
+	int val = *ptr, non_leaf = (size - 1) >> 1, hole = 0, i = 0;
+	while (i < non_leaf)
+	{
+		i = 2 * i + 2;
+		if (ptr[i - 1] > ptr[i])
+			--i;
+		ptr[hole] = ptr[i];
+		hole = i;
+	}
+	if (i == non_leaf && size % 2 == 0)
+	{
+		ptr[hole] = ptr[size - 1];
+		hole = size - 1;
+	}
+	ptr[hole] = ptr[size - 1];
+	push_heap(ptr, hole + 1);
+	ptr[size - 1] = val;
+}
+
+void make_heap(int *ptr, int size)
+{
+	for (int i = 1; i < size; ++i)
+		push_heap(ptr, i + 1);
+}
+/********end of max heap********/
+
+int lastStoneWeight(int *stones, int stonesSize)
+{
+	make_heap(stones, stonesSize);
+	while (stonesSize > 1)
+	{
+		pop_heap(stones, stonesSize--);
+		pop_heap(stones, stonesSize--);
+		if (stones[stonesSize] < stones[stonesSize + 1])
 		{
-			stones[stonesSize]=x;
-			pushheap(stones,stonesSize);
-			stonesSize++;
+			stones[stonesSize] = stones[stonesSize + 1] - stones[stonesSize];
+			push_heap(stones, ++stonesSize);
 		}
 	}
-	if(stonesSize==0)
-		return 0;
-	return stones[0];
+	return stonesSize > 0 ? stones[0] : 0;
 }
