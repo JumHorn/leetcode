@@ -1,24 +1,12 @@
-#include<string.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-char * defangIPaddr(char * address){
-	int len=strlen(address);
-	int j=0;
-	char* p=(char*)malloc(sizeof(char)*(len+7));
-	for(int i=0;i<len+7;)
-	{
-		if(address[j]=='.')
-		{
-			p[i]='[';
-			p[i+1]='.';
-			p[i+2]=']';
-			i+=3;
-		}
-		else
-			p[i++]=address[j];
-		j++;
-	}
-	p[len+6]='\0';
-	return p;
+char *defangIPaddr(char *address)
+{
+	char *subaddr[4], **p = subaddr;
+	for (char *token = strtok(address, "."); token; token = strtok(NULL, "."))
+		*p++ = token;
+	char *res = (char *)malloc(sizeof(char) * 25);
+	sprintf(res, "%s[.]%s[.]%s[.]%s", subaddr[0], subaddr[1], subaddr[2], subaddr[3]);
+	return res;
 }
-
