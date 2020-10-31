@@ -26,9 +26,18 @@ public:
 
 	int smallestFrequency(string &word)
 	{
-		map<char, int> m; //{char,count}
+		int freq = 0;
+		char smallest = 'z';
 		for (auto c : word)
-			++m[c];
-		return m.begin()->second;
+		{
+			if (c < smallest)
+			{
+				smallest = c;
+				freq = 1;
+			}
+			else if (c == smallest)
+				++freq;
+		}
+		return freq;
 	}
 };
