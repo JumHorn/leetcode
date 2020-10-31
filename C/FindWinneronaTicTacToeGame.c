@@ -1,7 +1,8 @@
+#include <stdbool.h>
 
 bool win(int (*board)[3], int n)
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; ++i)
 	{
 		if (board[i][0] + board[i][1] + board[i][2] == 3 * n)
 			return true;
@@ -18,7 +19,7 @@ bool win(int (*board)[3], int n)
 char *tictactoe(int **moves, int movesSize, int *movesColSize)
 {
 	int board[3][3] = {{0}};
-	for (int i = 0; i < movesSize; i++)
+	for (int i = 0; i < movesSize; ++i)
 	{
 		if (i % 2 == 0)
 			board[moves[i][0]][moves[i][1]] = 1;
