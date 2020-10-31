@@ -4,19 +4,18 @@ using namespace std;
 class Solution
 {
 public:
-	vector<int> replaceElements(vector<int>& arr)
+	vector<int> replaceElements(vector<int> &arr)
 	{
 		if (arr.empty())
 			return arr;
-		int max = arr.back();
-		int i = arr.size() - 1;
-		arr[i] = -1;
-		for (--i; i >= 0; --i)
+		int N = arr.size(), maxsuffix = arr.back();
+		arr[N - 1] = -1;
+		for (int i = N - 2; i >= 0; --i)
 		{
 			int tmp = arr[i];
-			arr[i] = max;
-			if (tmp > max)
-				max = tmp;
+			arr[i] = maxsuffix;
+			if (tmp > maxsuffix)
+				maxsuffix = tmp;
 		}
 		return arr;
 	}
