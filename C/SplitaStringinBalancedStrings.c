@@ -1,18 +1,12 @@
 
-
-int balancedStringSplit(char* s)
+int balancedStringSplit(char *s)
 {
 	int res = 0, count = 0;
-	while (*s)
+	for (; *s; ++s)
 	{
-		if (*s == 'L')
-			count++;
-		else
-			count--;
+		*s == 'L' ? ++count : --count;
 		if (count == 0)
-			res++;
-		++s;
+			++res;
 	}
 	return res;
 }
-
