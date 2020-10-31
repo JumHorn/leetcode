@@ -1,32 +1,14 @@
-char * removeDuplicates(char * S){
-	char *p,*q;
-	p=S;
-	q=S+1;
-	while(*q)
+
+char *removeDuplicates(char *S)
+{
+	int top = -1;
+	for (int i = 0; S[i]; ++i)
 	{
-		if(*p=='0')
-		{
-			*p=*q;
-		}
+		if (top == -1 || S[top] != S[i])
+			S[++top] = S[i];
 		else
-		{
-			if(*p==*q)
-			{
-				if(p==S)
-					*p='0';
-				else
-					p--;
-			}
-			else
-			{
-				p++;
-				*p=*q;
-			}
-		}
-		q++;
+			--top;
 	}
-	if(*p!='0')
-		p++;
-	*p='\0';
+	S[top + 1] = '\0';
 	return S;
 }
