@@ -1,20 +1,23 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int comp(const void* lhs,const void* rhs)
+//cmp function don't consider overflow
+int cmp(const void *lhs, const void *rhs)
 {
-	return *(int*)lhs-*(int*)rhs;//if INT_MIN is present,this is error
+	return *(int *)lhs - *(int *)rhs;
 }
 
-int heightChecker(int* heights, int heightsSize){
-	int *p=(int*)malloc(sizeof(int)*heightsSize);
-	memcpy(p,heights,heightsSize*sizeof(int));
-	qsort(p,heightsSize,sizeof(int),comp);
-	int res=0;
-	for(int i=0;i<heightsSize;i++)
-		if(p[i]!=heights[i])
-			res++;
+int heightChecker(int *heights, int heightsSize)
+{
+	int people[heightsSize];
+	memcpy(people, heights, sizeof(people));
+	qsort(people, heightsSize, sizeof(int), cmp);
+	int res = 0;
+	for (int i = 0; i < heightsSize; ++i)
+	{
+		if (people[i] != heights[i])
+			++res;
+	}
 	return res;
 }
-
