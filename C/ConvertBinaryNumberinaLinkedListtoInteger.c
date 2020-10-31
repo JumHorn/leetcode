@@ -1,13 +1,12 @@
 
-
 //Definition for singly-linked list.
 struct ListNode
 {
 	int val;
-	struct ListNode* next;
+	struct ListNode *next;
 };
 
-int getDecimalValue(struct ListNode* head)
+int getDecimalValue(struct ListNode *head)
 {
 	int res = 0;
 	while (head)
@@ -17,4 +16,3 @@ int getDecimalValue(struct ListNode* head)
 	}
 	return res;
 }
-
