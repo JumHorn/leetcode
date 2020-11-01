@@ -5,15 +5,15 @@ using namespace std;
 class Solution
 {
 public:
-	vector<string> stringMatching(vector<string>& words)
+	vector<string> stringMatching(vector<string> &words)
 	{
 		vector<string> res;
-		int n = words.size();
-		for (int i = 0; i < n; i++)
+		int N = words.size();
+		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < N; ++j)
 			{
-				if (i != j && match(words[i], words[j]))
+				if (i != j && words[j].find(words[i]) != string::npos)
 				{
 					res.push_back(words[i]);
 					break;
@@ -21,12 +21,5 @@ public:
 			}
 		}
 		return res;
-	}
-
-	bool match(const string& lhs, const string& rhs)
-	{
-		if (lhs.length() >= rhs.length())
-			return false;
-		return rhs.find(lhs) != string::npos;
 	}
 };
