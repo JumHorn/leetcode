@@ -41,6 +41,17 @@ void reverse(int *arr, int first, int last)
 	}
 }
 
+int bitCount(int n)
+{
+	int res = 0;
+	while (n != 0)
+	{
+		++res;
+		n &= n - 1;
+	}
+	return res;
+}
+
 //circle queue for monoqueue queue
 /*
 //front stores data and rear not
