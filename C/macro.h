@@ -153,15 +153,15 @@ void merge(int *arr, int *dup, int first, int mid, int last)
 	memcpy(arr + first, dup, sizeof(int) * (last - first));
 }
 
-void divide(int *sum, int *dup, int first, int last)
+void divide(int *arr, int *dup, int first, int last)
 {
 	if (last - first < 2)
 		return;
 	int mid = (last - first) / 2 + first;
-	divide(sum, dup, first, mid);
-	divide(sum, dup, mid, last);
+	divide(arr, dup, first, mid);
+	divide(arr, dup, mid, last);
 	//to do
-	merge(sum, dup, first, mid, last);
+	merge(arr, dup, first, mid, last);
 }
 /********end of divide and conquer********/
 
