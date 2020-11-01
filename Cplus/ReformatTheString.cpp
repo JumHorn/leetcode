@@ -22,10 +22,10 @@ public:
 		return merge(alpha, number);
 	}
 
-	string merge(string& a, string& b)
+	string merge(string &a, string &b)
 	{
 		string res;
-		for (int i = 0; i < (int)b.length(); i++)
+		for (int i = 0; i < (int)b.length(); ++i)
 		{
 			res.push_back(a[i]);
 			res.push_back(b[i]);
