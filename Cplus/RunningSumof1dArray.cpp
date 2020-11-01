@@ -1,13 +1,13 @@
+#include <numeric>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	vector<int> runningSum(vector<int>& nums)
+	vector<int> runningSum(vector<int> &nums)
 	{
-		for (int i = 1; i < (int)nums.size(); i++)
-			nums[i] += nums[i - 1];
+		partial_sum(nums.begin(), nums.end(), nums.begin());
 		return nums;
 	}
 };
