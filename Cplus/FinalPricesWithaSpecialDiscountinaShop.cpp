@@ -1,26 +1,23 @@
+#include <stack>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	vector<int> finalPrices(vector<int>& prices)
+	vector<int> finalPrices(vector<int> &prices)
 	{
-		vector<int> res;
-		int n = prices.size();
-		for (int i = 0; i < n; i++)
+		int N = prices.size();
+		stack<int> s;
+		for (int i = 0; i < N; ++i)
 		{
-			int discount = 0;
-			for (int j = i + 1; j < n; j++)
+			while (!s.empty() && prices[s.top()] >= prices[i])
 			{
-				if (prices[j] <= prices[i])
-				{
-					discount = prices[j];
-					break;
-				}
+				prices[s.top()] -= prices[i];
+				s.pop();
 			}
-			res.push_back(prices[i] - discount);
+			s.push(i);
 		}
-		return res;
+		return prices;
 	}
 };
