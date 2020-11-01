@@ -1,10 +1,11 @@
+#include <algorithm>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int maxProduct(vector<int>& nums)
+	int maxProduct(vector<int> &nums)
 	{
 		make_heap(nums.begin(), nums.end());
 		pop_heap(nums.begin(), nums.end());
