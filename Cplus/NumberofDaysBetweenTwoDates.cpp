@@ -1,3 +1,5 @@
+#include <cmath>
+#include <sstream>
 #include <string>
 using namespace std;
 
@@ -6,34 +8,29 @@ class Solution
 public:
 	int daysBetweenDates(string date1, string date2)
 	{
-		int year1 = stoi(date1.substr(0, 4)), month1 = stoi(date1.substr(5, 2)), day1 = stoi(date1.substr(8, 2));
-		int year2 = stoi(date2.substr(0, 4)), month2 = stoi(date2.substr(5, 2)), day2 = stoi(date2.substr(8, 2));
-		return abs(dayDiff(1971, 1, 1, year1, month1, day1) - dayDiff(1971, 1, 1, year2, month2, day2));
+		int year1, month1, day1;
+		int year2, month2, day2;
+		char dash = ' ';
+		stringstream ss1(date1), ss2(date2);
+		ss1 >> year1 >> dash >> month1 >> dash >> day1;
+		ss2 >> year2 >> dash >> month2 >> dash >> day2;
+		return abs(dayToZero(day1, month1, year1) - dayToZero(day2, month2, year2));
 	}
 
-	int dayDiff(int year1, int month1, int day1, int year2, int month2, int day2)
+	int dayToZero(int day, int month, int year) //days to 0000-00-00 Fri
 	{
-		int res = 0;
-		for (int i = year1; i < year2; i++)
-		{
-			if (leapYear(i))
-				res += 366;
-			else
-				res += 365;
-		}
-		int month[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		for (int i = 1; i < month2; i++)
-			res += month[i];
-		res += day2;
-		if (month2 > 2 && leapYear(year2))
-			res += 1;
-		return res;
+		int mon[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		for (int i = 1; i < month; ++i)
+			day += mon[i];
+		if (isLeapYear(year) && month > 2)
+			++day;
+		for (int i = 1; i < year; ++i)
+			day += 365 + (isLeapYear(i) ? 1 : 0);
+		return day;
 	}
 
-	bool leapYear(int n)
+	bool isLeapYear(int year)
 	{
-		if (n % 100 == 0)
-			return n % 400 == 0;
-		return n % 4 == 0;
+		return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 	}
 };
