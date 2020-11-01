@@ -5,15 +5,15 @@ using namespace std;
 class Solution
 {
 public:
-	vector<string> buildArray(vector<int>& target, int n)
+	vector<string> buildArray(vector<int> &target, int n)
 	{
 		vector<string> res;
 		int last = target.back();
-		for (int i = 1, j = 0; i <= last; i++)
+		for (int i = 1, j = 0; i <= last; ++i)
 		{
 			if (i == target[j])
 			{
-				j++;
+				++j;
 				res.push_back("Push");
 			}
 			else
