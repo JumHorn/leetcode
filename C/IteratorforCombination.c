@@ -5,11 +5,8 @@
 int bitCount(int n)
 {
 	int res = 0;
-	while (n != 0)
-	{
+	for (; n != 0; n &= n - 1)
 		++res;
-		n &= n - 1;
-	}
 	return res;
 }
 
@@ -17,13 +14,13 @@ typedef struct
 {
 	int mask;
 	int len;
-	char* s;
+	char *s;
 	int slen;
 } CombinationIterator;
 
-CombinationIterator* combinationIteratorCreate(char* characters, int combinationLength)
+CombinationIterator *combinationIteratorCreate(char *characters, int combinationLength)
 {
-	CombinationIterator* iterator = (CombinationIterator*)malloc(sizeof(CombinationIterator));
+	CombinationIterator *iterator = (CombinationIterator *)malloc(sizeof(CombinationIterator));
 	iterator->s = characters;
 	iterator->len = combinationLength;
 	iterator->slen = strlen(characters);
@@ -31,17 +28,17 @@ CombinationIterator* combinationIteratorCreate(char* characters, int combination
 	return iterator;
 }
 
-bool combinationIteratorHasNext(CombinationIterator* obj)
+bool combinationIteratorHasNext(CombinationIterator *obj)
 {
 	while (obj->mask > 0 && bitCount(obj->mask) != obj->len)
 		--obj->mask;
 	return obj->mask != 0;
 }
 
-char* combinationIteratorNext(CombinationIterator* obj)
+char *combinationIteratorNext(CombinationIterator *obj)
 {
 	combinationIteratorHasNext(obj);
-	char* res = (char*)malloc(sizeof(char) * (obj->len + 1));
+	char *res = (char *)malloc(sizeof(char) * (obj->len + 1));
 	res[obj->len] = '\0';
 	for (int i = 0, j = 0; i < obj->slen; ++i)
 	{
@@ -52,7 +49,7 @@ char* combinationIteratorNext(CombinationIterator* obj)
 	return res;
 }
 
-void combinationIteratorFree(CombinationIterator* obj)
+void combinationIteratorFree(CombinationIterator *obj)
 {
 	if (obj)
 		free(obj);
@@ -62,8 +59,8 @@ void combinationIteratorFree(CombinationIterator* obj)
  * Your CombinationIterator struct will be instantiated and called as such:
  * CombinationIterator* obj = combinationIteratorCreate(characters, combinationLength);
  * char * param_1 = combinationIteratorNext(obj);
- 
+
  * bool param_2 = combinationIteratorHasNext(obj);
- 
+
  * combinationIteratorFree(obj);
 */

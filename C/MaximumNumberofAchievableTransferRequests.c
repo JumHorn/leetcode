@@ -5,15 +5,12 @@
 int bitCount(int n)
 {
 	int res = 0;
-	while (n != 0)
-	{
+	for (; n != 0; n &= n - 1)
 		++res;
-		n &= n - 1;
-	}
 	return res;
 }
 
-bool equalArr(int* lhs, int* rhs, int size)
+bool equalArr(int *lhs, int *rhs, int size)
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -23,7 +20,7 @@ bool equalArr(int* lhs, int* rhs, int size)
 	return true;
 }
 
-int maximumRequests(int n, int** requests, int requestsSize, int* requestsColSize)
+int maximumRequests(int n, int **requests, int requestsSize, int *requestsColSize)
 {
 	int res = 0;
 	for (int mask = 0; mask < 1 << requestsSize; ++mask)

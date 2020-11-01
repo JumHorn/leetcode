@@ -1,12 +1,9 @@
 
-int bitCount(int N)
+int bitCount(int n)
 {
 	int res = 0;
-	while (N != 0)
-	{
+	for (; n != 0; n &= n - 1)
 		++res;
-		N &= N - 1;
-	}
 	return res;
 }
 
