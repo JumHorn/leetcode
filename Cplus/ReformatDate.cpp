@@ -1,3 +1,5 @@
+#include <sstream>
+#include <string>
 #include <unordered_map>
 #include <vector>
 using namespace std;
@@ -7,26 +9,23 @@ class Solution
 public:
 	string reformatDate(string date)
 	{
-		vector<string> v = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+		vector<string> Month = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 		unordered_map<string, int> month;
-		for (int i = 0; i < (int)v.size(); i++)
-			month[v[i]] = i + 1;
-		int n = date.length();
-		string res = date.substr(n - 4) + "-";
-		string mon = date.substr(n - 8, 3);
+		for (int i = 0; i < (int)Month.size(); ++i)
+			month[Month[i]] = i + 1;
+
+		stringstream ss(date), res;
+		string year, mon, day;
+		ss >> day >> mon >> year;
+		res << year << '-';
 		int m = month[mon];
 		if (m < 10)
-			res += "0" + to_string(m);
+			res << '0';
+		res << m << '-';
+		if (day[1] >= '0' && day[1] <= '9')
+			res << day[0] << day[1];
 		else
-			res += to_string(m);
-		res += "-";
-		if (date[0] >= '0' && date[0] <= '9')
-		{
-			if (date[1] >= '0' && date[1] <= '9')
-				res = res + date[0] + date[1];
-			else
-				res = res + "0" + date[0];
-		}
-		return res;
+			res << '0' << day[0];
+		return res.str();
 	}
 };
