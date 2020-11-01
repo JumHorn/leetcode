@@ -1,17 +1,32 @@
+#include <algorithm>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	bool canMakeArithmeticProgression(vector<int>& arr)
+	bool canMakeArithmeticProgression(vector<int> &arr)
 	{
-		sort(arr.begin(), arr.end());
-		int gap = arr[1] - arr[0];
-		for (int i = 1; i < (int)arr.size(); i++)
+		make_heap(arr.begin(), arr.end());
+
+		pop_heap(arr.begin(), arr.end());
+		int first = arr.back();
+		arr.pop_back();
+
+		pop_heap(arr.begin(), arr.end());
+		int second = arr.back();
+		arr.pop_back();
+
+		while (!arr.empty())
 		{
-			if (gap != arr[i] - arr[i - 1])
+			pop_heap(arr.begin(), arr.end());
+			int third = arr.back();
+			arr.pop_back();
+
+			if (first - second != second - third)
 				return false;
+			first = second;
+			second = third;
 		}
 		return true;
 	}
