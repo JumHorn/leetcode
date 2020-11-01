@@ -6,47 +6,48 @@ class Solution
 public:
 	vector<int> countSmaller(vector<int> &nums)
 	{
-		vector<int> res(nums.size());
-		dup.resize(nums.size());
-		vector<pair<int, int>> pairs(nums.size());
-		for (int i = 0; i < (int)nums.size(); i++)
+		int N = nums.size();
+		vector<int> res(N);
+		vector<pair<int, int>> pairs(N), dup(N); //{value,index}
+		for (int i = 0; i < N; ++i)
 		{
 			pairs[i].first = nums[i];
 			pairs[i].second = i;
 		}
-		mergeSort(res, pairs, 0, nums.size());
+		divide(pairs, dup, 0, N, res);
 		return res;
 	}
 
-	void mergeSort(vector<int> &res, vector<pair<int, int>> &pairs, int start, int end)
+	//divide and conquer
+	void merge(vector<pair<int, int>> &arr, vector<pair<int, int>> &dup, int first, int mid, int last)
 	{
-		if (end - start <= 1)
-			return;
-		int mid = (end - start) / 2 + start;
-		mergeSort(res, pairs, start, mid);
-		mergeSort(res, pairs, mid, end);
-		for (int i = start, j = mid; i < mid; i++)
+		for (int i = first, j = mid, d = 0; i < mid || j < last;)
 		{
-			while (j != end && pairs[i].first > pairs[j].first)
+			if (i == mid)
+				dup[d++] = arr[j++];
+			else if (j == last)
+				dup[d++] = arr[i++];
+			else
+				dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
+		}
+		for (int i = first, j = 0; i < last; ++i, ++j)
+			arr[i] = dup[j];
+	}
+
+	void divide(vector<pair<int, int>> &pairs, vector<pair<int, int>> &dup, int first, int last, vector<int> &res)
+	{
+		if (last - first <= 1)
+			return;
+		int mid = first + (last - first) / 2;
+		divide(pairs, dup, first, mid, res);
+		divide(pairs, dup, mid, last, res);
+		for (int i = first, j = mid; i < mid; ++i)
+		{
+			while (j != last && pairs[i].first > pairs[j].first)
 				j++;
 			res[pairs[i].second] += j - mid;
 		}
-		merge(pairs, start, mid, end);
+		merge(pairs, dup, first, mid, last);
 	}
-
-	void merge(vector<pair<int, int>> &pairs, int start, int mid, int end)
-	{
-		int s = start, m = mid, d = 0, d1 = 0;
-		while (s != mid && m != end)
-			dup[d++] = (pairs[s].first > pairs[m].first) ? pairs[m++] : pairs[s++];
-		while (s != mid)
-			dup[d++] = pairs[s++];
-		while (m != end)
-			dup[d++] = pairs[m++];
-		while (start != end)
-			pairs[start++] = dup[d1++];
-	}
-
-private:
-	vector<pair<int, int>> dup;
+	/********end of divide and conquer********/
 };

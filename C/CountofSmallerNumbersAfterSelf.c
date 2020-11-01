@@ -1,68 +1,60 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Pair
+typedef struct pair
 {
 	int val;
 	int index;
-};
+} pair;
 
-void assign(struct Pair* lhs, struct Pair* rhs)
+//divide and conquer
+void merge(pair *arr, pair *dup, int first, int mid, int last)
 {
-	lhs->val = rhs->val;
-	lhs->index = rhs->index;
-}
-
-void merge(struct Pair* array, struct Pair* dup, int start, int mid, int end)
-{
-	int i = start, j = mid, d = 0;
-	while (i < mid && j < end)
+	for (int i = first, j = mid, d = 0; i < mid || j < last;)
 	{
-		if (array[i].val <= array[j].val)
-			assign(&dup[d++], &array[i++]);
+		if (i == mid)
+			dup[d++] = arr[j++];
+		else if (j == last)
+			dup[d++] = arr[i++];
 		else
-			assign(&dup[d++], &array[j++]);
+			dup[d++] = (arr[i].val > arr[j].val) ? arr[j++] : arr[i++];
 	}
-	while (i < mid)
-		assign(&dup[d++], &array[i++]);
-	while (j < end)
-		assign(&dup[d++], &array[j++]);
-	for (i = 0; i < d; i++)
-		assign(&array[start + i], &dup[i]);
+	memcpy(arr + first, dup, sizeof(pair) * (last - first));
 }
 
-void divide(struct Pair* array, struct Pair* dup, int start, int end, int* res)
+void divide(pair *arr, pair *dup, int first, int last, int *res)
 {
-	if (end - start <= 1)
+	if (last - first < 2)
 		return;
-	int mid = (end - start) / 2 + start;
-	divide(array, dup, start, mid, res);
-	divide(array, dup, mid, end, res);
-	for (int i = start, j = mid; i < mid; i++)
+	int mid = (last - first) / 2 + first;
+	divide(arr, dup, first, mid, res);
+	divide(arr, dup, mid, last, res);
+	for (int i = first, j = mid; i < mid; ++i)
 	{
-		while (j < end && array[i].val > array[j].val)
+		while (j < last && arr[i].val > arr[j].val)
 			++j;
-		res[array[i].index] += j - mid;
+		res[arr[i].index] += j - mid;
 	}
-	merge(array, dup, start, mid, end);
+	merge(arr, dup, first, mid, last);
 }
+/********end of divide and conquer********/
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* countSmaller(int* nums, int numsSize, int* returnSize)
+int *countSmaller(int *nums, int numsSize, int *returnSize)
 {
 	*returnSize = numsSize;
 	if (numsSize == 0)
 		return NULL;
-	int* res = (int*)malloc(sizeof(int) * numsSize);
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
 	memset(res, 0, sizeof(int) * numsSize);
-	struct Pair array[numsSize], dup[numsSize];
-	for (int i = 0; i < numsSize; i++)
+	pair arr[numsSize], dup[numsSize];
+	for (int i = 0; i < numsSize; ++i)
 	{
-		array[i].val = nums[i];
-		array[i].index = i;
+		arr[i].val = nums[i];
+		arr[i].index = i;
 	}
-	divide(array, dup, 0, numsSize, res);
+	divide(arr, dup, 0, numsSize, res);
 	return res;
 }
