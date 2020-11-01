@@ -13,13 +13,13 @@ public:
 		for (auto c : path)
 		{
 			if (c == 'N')
-				pos.second += 1;
+				++pos.second;
 			else if (c == 'S')
-				pos.second -= 1;
+				--pos.second;
 			else if (c == 'E')
-				pos.first += 1;
+				++pos.first;
 			else
-				pos.first -= 1;
+				--pos.first;
 			if (s.find(pos) != s.end())
 				return true;
 			s.insert(pos);
