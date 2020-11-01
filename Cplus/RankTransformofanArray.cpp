@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <queue>
 #include <vector>
 using namespace std;
@@ -5,22 +6,21 @@ using namespace std;
 class Solution
 {
 public:
-	vector<int> arrayRankTransform(vector<int>& arr)
+	vector<int> arrayRankTransform(vector<int> &arr)
 	{
-		priority_queue<pair<int, int>> q;
-		for (int i = 0; i < (int)arr.size(); i++)
-			q.push({-arr[i], i});
-		int rank = 0, value = INT_MIN;
-		while (!q.empty())
+		if (arr.empty())
+			return {};
+		int N = arr.size();
+		vector<pair<int, int>> v; //{value,index}
+		for (int i = 0; i < N; ++i)
+			v.push_back({arr[i], i});
+		sort(v.begin(), v.end());
+		arr[v[0].second] = 1;
+		for (int i = 1, rank = 1; i < N; ++i)
 		{
-			auto tmp = q.top();
-			q.pop();
-			if (tmp.first != value)
-			{
+			if (v[i - 1].first < v[i].first)
 				++rank;
-				value = tmp.first;
-			}
-			arr[tmp.second] = rank;
+			arr[v[i].second] = rank;
 		}
 		return arr;
 	}
