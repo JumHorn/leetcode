@@ -6,15 +6,12 @@ class Solution
 public:
 	int numberOfSteps(int num)
 	{
-		int res = 0;
+		int res = (num == 0 ? 1 : 0);
 		while (num != 0)
 		{
-			if (num % 2 == 0)
-				num /= 2;
-			else
-				num -= 1;
-			res++;
+			res += 1 + (num & 1);
+			num >>= 1;
 		}
-		return res;
+		return res - 1;
 	}
 };
