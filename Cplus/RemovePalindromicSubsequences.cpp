@@ -8,13 +8,10 @@ public:
 	{
 		if (s.empty())
 			return 0;
-		int i = 0, j = s.length() - 1;
-		while (i < j)
+		for (int i = 0, j = (int)s.length() - 1; i < j; ++i, --j)
 		{
 			if (s[i] != s[j])
 				return 2;
-			i++;
-			j--;
 		}
 		return 1;
 	}
