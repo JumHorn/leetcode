@@ -1,18 +1,18 @@
-#include <string>
-using namespace std;
 
 class Solution
 {
 public:
 	int maximum69Number(int num)
 	{
-		string str = to_string(num);
-		for (int i = 0; i <= str.length(); i++)
-			if (str[i] == '6')
-			{
-				str[i] = '9';
-				break;
-			}
-		return stoi(str);
+		int val = 0, base = 1, res = num;
+		while (num != 0)
+		{
+			if (num % 10 == 6)
+				res = (num + 3) * base + val;
+			val = val + num % 10 * base;
+			num /= 10;
+			base *= 10;
+		}
+		return res;
 	}
 };
