@@ -1,23 +1,23 @@
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	string destCity(vector<vector<string>>& paths)
+	string destCity(vector<vector<string>> &paths)
 	{
-		unordered_set<string> start, end;
-		for (auto& p : paths)
+		unordered_map<string, int> outdegree;
+		for (auto &p : paths)
 		{
-			start.insert(p[0]);
-			end.insert(p[1]);
+			outdegree.insert({p[1], 0}); // if p[1] already exist do nothing
+			++outdegree[p[0]];
 		}
-		for (auto& city : end)
+		for (auto &city : outdegree)
 		{
-			if (start.find(city) == start.end())
-				return city;
+			if (city.second == 0)
+				return city.first;
 		}
 		return "";
 	}
