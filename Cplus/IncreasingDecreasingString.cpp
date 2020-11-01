@@ -6,27 +6,27 @@ class Solution
 public:
 	string sortString(string s)
 	{
-		int arr[26] = {0};
+		int count[26] = {0};
 		for (auto c : s)
-			++arr[c - 'a'];
-		int n = s.length();
-		string res(n, ' ');
-		for (int i = 0; i < n;)
+			++count[c - 'a'];
+		int N = s.length();
+		string res(N, ' ');
+		for (int i = 0; i < N;)
 		{
-			for (int j = 0; j < 26; j++)
+			for (int j = 0; j < 26; ++j)
 			{
-				if (arr[j] > 0)
+				if (count[j] > 0)
 				{
+					--count[j];
 					res[i++] = j + 'a';
-					--arr[j];
 				}
 			}
-			for (int j = 25; j >= 0; j--)
+			for (int j = 25; j >= 0; --j)
 			{
-				if (arr[j] > 0)
+				if (count[j] > 0)
 				{
+					--count[j];
 					res[i++] = j + 'a';
-					--arr[j];
 				}
 			}
 		}
