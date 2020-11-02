@@ -1,36 +1,20 @@
-class MergeSortedArray(object):
-    def merge(self,nums1,m,nums2,n):
-        '''
-        :type nums1:list[int]
-        :type m:int
-        :type nums2:list[int]
-        :type n:int 
-        :rtype:void Do not return anything modify nums1 in-place instead
-        '''
-        if n<=0:
-            return 
-        if m<=0:
-            nums1[:n]=nums2[:n]
-            return
-        i=0
-        for item in nums2:
-            while i<m:
-                if nums1[i]>item:
-                    nums1.insert(i,item)
-                    nums1.pop()
-                    m=m+1
-                    break
-                elif i==m-1:
-                    nums1.insert(i+1,item)
-                    nums1.pop()
-                    m=m+1
-                    break
-                i=i+1
+from typing import List
 
 
-
-nums1=[1,0]
-nums2=[2]
-M=MergeSortedArray()
-M.merge(nums1,1,nums2,1)
-print nums1
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        index = len(nums1)
+        m -= 1
+        n -= 1
+        index -= 1
+        while n >= 0:
+            if m >= 0 and nums1[m] > nums2[n]:
+                nums1[index] = nums1[m]
+                m -= 1
+            else:
+                nums1[index] = nums2[n]
+                n -= 1
+            index -= 1
