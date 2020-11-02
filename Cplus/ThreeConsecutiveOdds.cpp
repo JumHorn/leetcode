@@ -4,11 +4,15 @@ using namespace std;
 class Solution
 {
 public:
-	bool threeConsecutiveOdds(vector<int>& arr)
+	bool threeConsecutiveOdds(vector<int> &arr)
 	{
-		for (int i = 0; i < (int)arr.size() - 2; ++i)
+		int window = 0, N = arr.size();
+		for (int i = 0; i < N; ++i)
 		{
-			if (arr[i] % 2 == 1 && arr[i + 1] % 2 == 1 && arr[i + 2] % 2 == 1)
+			window += arr[i] % 2;
+			if (i >= 3)
+				window -= arr[i - 3] % 2;
+			if (window == 3)
 				return true;
 		}
 		return false;
