@@ -1,21 +1,10 @@
-class IsomorphicStrings(object):
-    def isIsomorphic(self,s,t):
-        '''
-        :type s:str
-        :type t:str
-        :rtypr: bool
-        '''
-        dic={}
-        if len(s)!=len(t):
-            return False
-        i=0
-        while i<len(s):
-            if dic.has_key(s[i]):
-                if dic[s[i]]!=t[i]:
-                    return False
-            else:
-                if t[i] in dic.values():
-                    return False
-                dic[s[i]]=t[i]
-            i+=1
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        d, seen = {}, set()
+        for i in range(len(s)):
+            if s[i] not in d and t[i] not in seen:
+                d[s[i]] = t[i]
+                seen.add(t[i])
+            if d.get(s[i]) != t[i]:
+                return False
         return True
