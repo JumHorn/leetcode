@@ -7,7 +7,7 @@
 // all ready defined in stdlib.h
 #define abs(x) (((x) < 0) ? (-(x)) : (x))
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 // avoid the above macro same address bug using the following version
 // void swap(int *lhs, int *rhs)
 // {
