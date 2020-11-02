@@ -4,17 +4,20 @@ using namespace std;
 class Solution
 {
 public:
-	int findKthPositive(vector<int>& arr, int k)
+	int findKthPositive(vector<int> &arr, int k)
 	{
-		int N = arr.size(), res = 0;
-		for (int i = 0; i < N && k > 0;)
+		int N = arr.size();
+		int lo = 0, hi = N;
+		while (lo < hi)
 		{
-			++res;
-			if (res == arr[i])
-				++i;
+			int mi = (hi - lo) / 2 + lo;
+			if (arr[mi] - mi - 1 < k)
+				lo = mi + 1;
 			else
-				--k;
+				hi = mi;
 		}
-		return res + k;
+		if (--lo < 0)
+			return k;
+		return arr[lo] + k - (arr[lo] - lo - 1);
 	}
 };
