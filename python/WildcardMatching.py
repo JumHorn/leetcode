@@ -1,34 +1,20 @@
-class WildcardMatch(object):
-    def isMatch(self,s,p):
-        i=0
-        j=0
-        m=0
-        n=0
-        if len(s)<len(p)-p.count('*'):
-            return False
-        while i!=len(s):
-            if j<len(p) and (p[j]=='?' or p[j]==s[i]):
-                i+=1
-                j+=1
-                continue
-            if j<len(p) and p[j]=='*':
-                n=j
-                j+=1
-                m=i
-                continue
-            if n<len(p) and p[n]=='*':
-                j=n+1
-                i=m+1
-                m+=1
-                continue
-            return False
-        while j<len(p) and p[j]=='*':
-            j+=1
-        return j==len(p)
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        transfer = {}
+        state = 0
 
-s="aa"
-p="*"
-# s="abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb"
-# p="**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb"
-W=WildcardMatch()
-print W.isMatch(s,p)
+        for char in p:
+            if char == '*':
+                transfer[state, char] = state
+            else:
+                transfer[state, char] = state + 1
+                state += 1
+
+        accept = state
+        states = {0}
+
+        for char in s:
+            states = {transfer.get(
+                (at, token)) for at in states if at is not None for token in (char, '*', '?')}
+
+        return accept in states
