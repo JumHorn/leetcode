@@ -1,27 +1,21 @@
 #coding=utf8
-#这道题一开始默认数组是等差数列，所以计算的是数组中等差数列的个数
 class ArithmeticSlicesIISubsequence(object):
     def numberOfArithmeticSlices(self,A):
-        n=len(A)
-        if n<=2:
-            return 0
-        else:
-            if A[1]-A[0]==0:
-                return pow(2,n)-(n+1+n*(n-1)/2)
-            else:
-                if n==3:
-                    return 1
-                else:
-                    k=3
-                    sum=0
-                    while k<=n//2+1:
-                        i=1
-                        while i<=(n-k)//(k-1):
-                            sum+=n+1-(k-1)*i-k
-                            i+=1
-                        k+=1
-                    return (n-1)*(n-2)/2+sum
+        '''这里使用动态规划的思路dp
+           将每个数与前面所有的数的diff生成字典
+           每有新diff相同，就是一个等差数列
+        '''
+        sum=0
+        dic=[{} for _ in A] #生成A长度的list内容是字典
+        for i in xrange(len(A)):
+            for j in xrange(i):
+                diff=A[i]-A[j]
+                dic[i][diff]=dic[i].get(diff,0)+1
+                if diff in dic[j]:
+                    sum+=dic[j][diff]
+                    dic[i][diff]+=dic[j][diff]
+        return sum
 
-A=[1,2,3,4,5,6,7]
+A=[2,2,3,4,5]
 Ar=ArithmeticSlicesIISubsequence()
 print Ar.numberOfArithmeticSlices(A)

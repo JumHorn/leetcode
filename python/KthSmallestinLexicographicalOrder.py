@@ -1,5 +1,4 @@
 #coding=utf8
-import string
 class KthSmallestinLexicographicalOrder(object):
     def findKthNumber(self,n,k):
         """
@@ -7,22 +6,27 @@ class KthSmallestinLexicographicalOrder(object):
         :type k:int
         :rtype:int
         """
-        i=0
-        j=0
-        l=range(1,n+1)
-        while i<k-1:
-            j=n-1
-            while j>i:
-                if cmp(str(l[j]),str(l[j-1]))==-1:
-                    temp=l[j]
-                    l[j]=l[j-1]
-                    l[j-1]=temp
-                # print l
-                j-=1
-            i+=1
-        return l[i]
+        #十叉树的先序遍历，判断1和2之间有多少个数，再对下一位做判断
+        k-=1
+        left=1
+        while k>0:
+            num=self.numBetween(n,left)
+            if num<=k:
+                k-=num
+                left+=1
+            else:
+                left*=10
+                k-=1
+        return left
+    def numBetween(self,n,left):
+        num=0
+        right=left+1
+        while left<=n:
+            num+=min(n+1,right)-left
+            left*=10
+            right*=10
+        return num
 
-#这个例子要跑十几秒！！！
 n=10000
 k=9999
 K=KthSmallestinLexicographicalOrder()
