@@ -1,24 +1,15 @@
-class NumArray(object):
-    def __init__(self, nums):
-        """
-        initialize your data structure here.
-        :type nums: List[int]
-        """
-        self.l=list(nums)
-        
+from typing import List
 
-    def sumRange(self, i, j):
-        """
-        sum of elements nums[i..j], inclusive.
-        :type i: int
-        :type j: int
-        :rtype: int
-        """
-        return sum(self.l[i:j+1])
-        
 
+class NumArray:
+    def __init__(self, nums: List[int]):
+        self.arr = [0]
+        for n in nums:
+            self.arr.append(self.arr[-1] + n)
+
+    def sumRange(self, i: int, j: int) -> int:
+        return self.arr[j + 1] - self.arr[i]
 
 # Your NumArray object will be instantiated and called as such:
-# numArray = NumArray(nums)
-# numArray.sumRange(0, 1)
-# numArray.sumRange(1, 2)
+# obj = NumArray(nums)
+# param_1 = obj.sumRange(i,j)
