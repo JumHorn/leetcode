@@ -4,27 +4,26 @@ using namespace std;
 class Solution
 {
 public:
-	int numSpecial(vector<vector<int>>& mat)
+	int numSpecial(vector<vector<int>> &mat)
 	{
 		int res = 0, M = mat.size(), N = mat[0].size();
+		vector<int> row(M), col(N);
 		for (int i = 0; i < M; ++i)
 		{
-			int index = -1, j = 0;
-			for (j = 0; j < N; ++j)
+			for (int j = 0; j < N; ++j)
 			{
 				if (mat[i][j] == 1)
 				{
-					if (index != -1)
-						break;
-					index = j;
+					++row[i];
+					++col[j];
 				}
 			}
-			if (j == N && index != -1)
+		}
+		for (int i = 0; i < M; ++i)
+		{
+			for (int j = 0; j < N; ++j)
 			{
-				int count = 0;
-				for (int i = 0; i < M; ++i)
-					count += mat[i][index];
-				if (count == 1)
+				if (mat[i][j] == 1 && row[i] == 1 && col[j] == 1)
 					++res;
 			}
 		}
