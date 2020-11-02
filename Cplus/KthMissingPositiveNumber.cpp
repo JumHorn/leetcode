@@ -16,8 +16,6 @@ public:
 			else
 				hi = mi;
 		}
-		if (--lo < 0)
-			return k;
-		return arr[lo] + k - (arr[lo] - lo - 1);
+		return lo + k;
 	}
 };

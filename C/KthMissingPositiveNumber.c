@@ -1,5 +1,5 @@
 
-int findKthPositive(int* arr, int arrSize, int k)
+int findKthPositive(int *arr, int arrSize, int k)
 {
 	int lo = 0, hi = arrSize;
 	while (lo < hi)
@@ -10,7 +10,5 @@ int findKthPositive(int* arr, int arrSize, int k)
 		else
 			hi = mi;
 	}
-	if (--lo < 0)
-		return k;
-	return arr[lo] + k - (arr[lo] - lo - 1);
+	return lo + k;
 }
