@@ -1,24 +1,16 @@
-import sys
-class ThirdMaximumNumber(object):
-    def thirdMax(self,nums):
-        l=[-2147483649,-2147483649,-2147483649]
+from typing import List
+
+
+class Solution:
+    def thirdMax(self, nums: List[int]) -> int:
+        a = b = c = float("-inf")
         for n in nums:
-            if n==l[0] or n==l[1] or n==l[2]:
+            if n in (a, b, c):
                 continue
-            if n>l[2]:
-                l[0]=l[1]
-                l[1]=l[2]
-                l[2]=n
-            elif n>l[1]:
-                l[0]=l[1]
-                l[1]=n
-            elif n>l[0]:
-                l[0]=n
-        if l[0]==l[1] or l[1]==l[2]:
-            return l[2]
-        elif l[0]==-2147483649:
-            return l[2]
-        else:
-            return l[0]
-
-
+            if n > a:
+                n, a = a, n
+            if n > b:
+                n, b = b, n
+            if n > c:
+                n, c = c, n
+        return a if c == float("-inf") else c
