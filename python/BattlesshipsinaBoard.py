@@ -1,25 +1,13 @@
-class BattlesshipsinaBoard(object):
-    def countBattleships(self,board):
-        """
-        :type board: List[List[str]]
-        :rtype: int
-        """
-        n=0
-        i=0
-        while i<len(board):
-            j=0
-            while j<len(board[0]):
-                if board[i][j]=='X':
-                    if j+1<len(board[0]) and board[i][j+1]=='X':
-                        j+=1
-                        while j+1<len(board[0]) and board[i][j+1]=='X':
-                            j+=1
-                        n+=1
-                    else:
-                        if i==0:
-                            n+=1
-                        if i-1>=0 and board[i-1][j]!='X':
-                            n+=1
-                j+=1
-            i+=1
-        return n
+from typing import List
+
+
+class Solution:
+    def countBattleships(self, board: List[List[str]]) -> int:
+        M, N, res = len(board), len(board[0]), 0
+        for i in range(M):
+            for j in range(N):
+                if (board[i][j] == 'X'
+                    and (i == 0 or board[i - 1][j] == '.')
+                        and (j == 0 or board[i][j - 1] == '.')):
+                    res += 1
+        return res
