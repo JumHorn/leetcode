@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 using namespace std;
 
@@ -6,9 +7,9 @@ class Solution
 public:
 	string thousandSeparator(int n)
 	{
-		string res;
 		if (n == 0)
 			return "0";
+		string res;
 		int count = 0;
 		while (n != 0)
 		{
