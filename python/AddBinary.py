@@ -1,10 +1,5 @@
-class Solution(object):
-    def addBinary(self, a, b):
-        """
-        :type a: str
-        :type b: str
-        :rtype: str
-        """
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
         res = ""
         i, j, carry = len(a) - 1, len(b) - 1, 0
         while i >= 0 or j >= 0 or carry > 0:
