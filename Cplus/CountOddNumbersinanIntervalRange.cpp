@@ -4,6 +4,7 @@ class Solution
 public:
 	int countOdds(int low, int high)
 	{
-		return ((high - low) + (low % 2 == 0 ? 1 : 0)) / 2 + low % 2;
+		int n = high - low + 1;
+		return n / 2 + (n % 2 == 0 ? 0 : low % 2);
 	}
 };
