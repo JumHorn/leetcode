@@ -1,13 +1,9 @@
-class Solution(object):
-    def numberOfArithmeticSlices(self, A):
-        """
-        :type A: List[int]
-        :rtype: int
-        """
+class Solution:
+    def numberOfArithmeticSlices(self, A: List[int]) -> int:
         sum = 0
         dp = [{} for _ in A]  # 生成A长度的list内容是字典
-        for i in xrange(len(A)):
-            for j in xrange(i):
+        for i in range(len(A)):
+            for j in range(i):
                 diff = A[i]-A[j]
                 dp[i][diff] = dp[i].get(diff, 0)+1
                 if diff in dp[j]:
