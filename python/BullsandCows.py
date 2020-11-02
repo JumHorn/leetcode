@@ -1,30 +1,15 @@
-class bullandCows(object):
-    def getHint(self, secret, guess):
-        """
-        :type secret: str
-        :type guess: str
-        :rtype: str
-        """
-        i=0
-        j=0
-        secret=list(secret)
-        guess=list(guess)
-        while i<len(secret):
-            if secret[i]==guess[i]:
-                j+=1
-                del secret[i]
-                del guess[i]
+class Solution:
+    def getHint(self, secret: str, guess: str) -> str:
+        bulls, cows, d = 0, 0, {}
+        for i in range(len(secret)):
+            if secret[i] == guess[i]:
+                bulls += 1
             else:
-                i+=1
-        A="%dA"%j
-        i=0
-        j=0
-        while i<len(secret):
-            if secret[i] in guess:
-                j+=1
-                guess.remove(secret[i])
-                del secret[i]
-            else:
-                i+=1
-        B="%dB"%j
-        return A+B
+                if d.get(secret[i], 0) < 0:
+                    cows += 1
+                d[secret[i]] = d.get(secret[i], 0) + 1
+                if d.get(guess[i], 0) > 0:
+                    cows += 1
+                d[guess[i]] = d.get(guess[i], 0) - 1
+        res = "%dA%dB" % (bulls, cows)
+        return res
