@@ -1,10 +1,5 @@
-class Solution(object):
-    def arrangeCoins(self, n):
-        """
-        :type n: int
-        :rtype: int
-        """
-
+class Solution:
+    def arrangeCoins(self, n: int) -> int:
         lo, hi = 0, n + 1
         while lo < hi:
             mi = (hi - lo) // 2 + lo
