@@ -1,17 +1,13 @@
-class RemoveDuplicatefromSortedArray(object):
-    def removeDuplicatefromSortedArray(self,nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        if len(nums)==0:
+from typing import List
+
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if not nums:
             return 0
-        if len(nums)==1:
-            return 1
-        i=1
-        while i<len(nums):
-            if nums[i]==nums[i-1]:
-                del nums[i]
-                continue
-            i+=1
-        return len(nums)
+        top = 0
+        for n in nums:
+            if n != nums[top]:
+                top += 1
+                nums[top] = n
+        return top + 1
