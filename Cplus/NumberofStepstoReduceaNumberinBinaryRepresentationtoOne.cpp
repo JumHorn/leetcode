@@ -6,23 +6,16 @@ class Solution
 public:
 	int numSteps(string s)
 	{
-		int i = s.length() - 1, res = 0;
-		while (i > 0)
+		int res = 0, carry = 0;
+		for (int i = (int)s.length() - 1; i > 0; --i)
 		{
-			if (s[i] == '0')
-				--i;
-			else
-			{
-				while (i >= 0 && s[i] == '1')
-				{
-					--i;
-					++res;
-				}
-				if (i > 0)
-					s[i] = '1';
-			}
 			++res;
+			if (s[i] - '0' + carry == 1)
+			{
+				carry = 1;
+				++res;
+			}
 		}
-		return res;
+		return res + carry;
 	}
 };
