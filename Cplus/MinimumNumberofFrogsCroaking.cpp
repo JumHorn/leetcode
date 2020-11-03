@@ -8,37 +8,21 @@ class Solution
 public:
 	int minNumberOfFrogs(string croakOfFrogs)
 	{
-		unordered_map<char, int> m;
-		m['c'] = 0;
-		m['r'] = 1;
-		m['o'] = 2;
-		m['a'] = 3;
-		m['k'] = 4;
-		int state[4] = {0}, frog = 0, res = 0;
+		unordered_map<char, int> index = //{char,index}
+			{{'c', 0}, {'r', 1}, {'o', 2}, {'a', 3}, {'k', 4}};
+		vector<int> state(5);
+		int frog = 0, res = 0;
 		for (auto c : croakOfFrogs)
 		{
-			if (m[c] == 0)
-			{
-				++state[0];
-				if (++frog > res)
-					res = frog;
-			}
-			else if (m[c] == 4)
-			{
-				if (--state[3] < 0)
-					return -1;
-				--frog;
-			}
-			else
-			{
-				if (--state[m[c] - 1] < 0)
-					return -1;
-				++state[m[c]];
-			}
-		}
-		for (int i = 0; i < 4; i++)
-			if (state[i] != 0)
+			if (c != 'c' && --state[index[c] - 1] < 0)
 				return -1;
-		return res;
+			++state[index[c]];
+			if (c == 'c')
+				++frog;
+			else if (c == 'k')
+				--frog;
+			res = max(res, frog);
+		}
+		return frog == 0 ? res : -1;
 	}
 };
