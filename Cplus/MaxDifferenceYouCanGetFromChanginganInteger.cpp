@@ -7,38 +7,32 @@ class Solution
 public:
 	int maxDiff(int num)
 	{
-		int a = INT_MIN, b = INT_MAX;
-		for (int i = 0; i <= 9; i++)
+		int maxval = INT_MIN, minval = INT_MAX;
+		for (int i = 0; i <= 9; ++i)
 		{
-			for (int j = 0; j <= 9; j++)
+			for (int j = 0; j <= 9; ++j)
 			{
-				int res = replace(num, i, j);
+				int res = replaceDigits(num, i, j);
 				if (res > 0)
 				{
-					a = max(a, res);
-					b = min(b, res);
+					maxval = max(maxval, res);
+					minval = min(minval, res);
 				}
 			}
 		}
-		return a - b;
+		return maxval - minval;
 	}
 
-	int replace(int num, int x, int y)
+	int replaceDigits(int num, int x, int y) //replace x with y
 	{
-		int res = 0, base = 1;
-		bool flag = false;
-		while (num != 0)
+		int res = 0, digit = 0;
+		for (int base = 1; num != 0; num /= 10, base *= 10)
 		{
-			int tmp = num % 10;
-			num /= 10;
-			if (tmp == x)
-				tmp = y;
-			res += tmp * base;
-			base *= 10;
-			flag = (tmp == 0);
+			digit = num % 10;
+			if (digit == x)
+				digit = y;
+			res += digit * base;
 		}
-		if (flag)
-			return -1;
-		return res;
+		return digit == 0 ? -1 : res;
 	}
 };
