@@ -7,41 +7,18 @@ class Solution
 public:
 	vector<int> findDiagonalOrder(vector<vector<int>> &nums)
 	{
-		vector<int> res;
-		int n = nums.size();
-		map<int, int> m;
-		for (int i = 0; i < n; i++)
+		map<int, vector<int>> m; //{row+col,{val}}
+		for (int i = 0; i < (int)nums.size(); ++i)
 		{
-			m[i] = 0;
-			auto iter = m.end();
-			do
-			{
-				--iter;
-				if (iter->second < (int)nums[iter->first].size())
-				{
-					res.push_back(nums[iter->first][iter->second]);
-					if (iter->second + 1 < (int)nums[iter->first].size())
-						m[iter->first] = iter->second + 1;
-					else
-						iter = m.erase(iter);
-				}
-			} while (iter != m.begin());
+			for (int j = 0; j < (int)nums[i].size(); ++j)
+				m[i + j].push_back(nums[i][j]);
 		}
-		while (!m.empty())
+		vector<int> res;
+		for (auto &n : m)
 		{
-			auto iter = m.end();
-			do
-			{
-				--iter;
-				if (iter->second < (int)nums[iter->first].size())
-				{
-					res.push_back(nums[iter->first][iter->second]);
-					if (iter->second + 1 < (int)nums[iter->first].size())
-						m[iter->first] = iter->second + 1;
-					else
-						iter = m.erase(iter);
-				}
-			} while (iter != m.begin());
+			auto &v = n.second;
+			for (int i = (int)v.size() - 1; i >= 0; --i)
+				res.push_back(v[i]);
 		}
 		return res;
 	}
