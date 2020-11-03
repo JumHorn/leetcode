@@ -1,5 +1,5 @@
-#include <string>
 #include <cmath>
+#include <string>
 using namespace std;
 
 class Solution
@@ -13,7 +13,7 @@ public:
 		{
 			int k = pow(S, 1.0 / m);
 			unsigned long long sum = 1, prod = 1;
-			for (int i = 0; i < m; i++)
+			for (int i = 0; i < m; ++i)
 				sum += (prod *= k);
 			if (sum == S)
 				return to_string(k);

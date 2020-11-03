@@ -69,7 +69,7 @@ public:
 
 	bool isValid(const string &s, int index, int count)
 	{
-		for (int i = index; i < (int)s.length(); i++)
+		for (int i = index; i < (int)s.length(); ++i)
 		{
 			if (s[i] == '(')
 				++count;

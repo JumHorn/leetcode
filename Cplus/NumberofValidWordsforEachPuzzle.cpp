@@ -11,14 +11,14 @@ public:
 		int n = puzzles.size();
 		vector<int> res(n);
 		unordered_map<int, int> m;
-		for (int i = 0; i < (int)words.size(); i++)
+		for (int i = 0; i < (int)words.size(); ++i)
 		{
 			int mask = 0;
 			for (int j = 0; j < (int)words[i].length(); j++)
 				mask |= (1 << (words[i][j] - 'a'));
 			++m[mask];
 		}
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			int mask = 0;
 			for (int j = 0; j < (int)puzzles[i].length(); j++)

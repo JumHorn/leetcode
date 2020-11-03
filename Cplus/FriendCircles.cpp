@@ -6,7 +6,7 @@ class DSU
 public:
 	DSU(int s) : parent(s)
 	{
-		for (int i = 0; i < s; i++)
+		for (int i = 0; i < s; ++i)
 			parent[i] = i;
 		size = s;
 	}

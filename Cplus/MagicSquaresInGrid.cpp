@@ -7,7 +7,7 @@ public:
 	int numMagicSquaresInside(vector<vector<int>> &grid)
 	{
 		int M = grid.size(), N = grid[0].size(), res = 0;
-		for (int i = 1; i < M - 1; i++)
+		for (int i = 1; i < M - 1; ++i)
 		{
 			for (int j = 1; j < N - 1; j++)
 			{

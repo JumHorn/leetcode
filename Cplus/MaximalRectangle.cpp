@@ -1,6 +1,6 @@
-#include <vector>
 #include <algorithm>
 #include <stack>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -12,7 +12,7 @@ public:
 			return 0;
 		vector<int> H(matrix[0].size());
 		int res = 0;
-		for (int i = 0; i < (int)matrix.size(); i++)
+		for (int i = 0; i < (int)matrix.size(); ++i)
 		{
 			for (int j = 0; j < (int)matrix[0].size(); j++)
 				matrix[i][j] == '1' ? ++H[j] : (H[j] = 0);

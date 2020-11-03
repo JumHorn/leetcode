@@ -10,7 +10,7 @@ public:
 	int maxPerformance(int n, vector<int> &speed, vector<int> &efficiency, int k)
 	{
 		vector<vector<int>> v;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			v.push_back({efficiency[i], speed[i]});
 		sort(v.begin(), v.end(), greater<vector<int>>());
 		long long res = 0, sum = 0;

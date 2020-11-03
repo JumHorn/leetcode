@@ -10,7 +10,7 @@ public:
 	{
 		int n = favoriteCompanies.size();
 		vector<int> v(n);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			v[i] = i;
 		sort(v.begin(), v.end(), [&](int lhs, int rhs) { return favoriteCompanies[lhs].size() < favoriteCompanies[rhs].size(); });
 		vector<int> res;

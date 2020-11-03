@@ -9,7 +9,7 @@ int *smallestRange(int **nums, int numsSize, int *numsColSize, int *returnSize)
 	*returnSize = 2;
 	int *res = (int *)malloc(sizeof(int) * 2);
 	memset(index, 0, sizeof(index));
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 	{
 		if (nums[i][0] < nums[minindex][0])
 			minindex = i;
@@ -26,7 +26,7 @@ int *smallestRange(int **nums, int numsSize, int *numsColSize, int *returnSize)
 		if (nums[maxindex][index[maxindex]] < nums[minindex][index[minindex]])
 			maxindex = minindex;
 		minindex = 0;
-		for (int i = 0; i < numsSize; i++)
+		for (int i = 0; i < numsSize; ++i)
 		{
 			if (nums[i][index[i]] < nums[minindex][index[minindex]])
 				minindex = i;

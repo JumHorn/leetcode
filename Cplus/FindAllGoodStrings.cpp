@@ -9,7 +9,7 @@ public:
 	{
 		vector<int> kmp(evil.size());
 		int dp[501][51][2][2] = {0};
-		for (int i = 1, j = 0; i < (int)evil.size(); i++)
+		for (int i = 1, j = 0; i < (int)evil.size(); ++i)
 		{
 			while (j > 0 && evil[j] != evil[i])
 				j = kmp[j - 1];

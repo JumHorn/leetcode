@@ -14,7 +14,7 @@ class Trie
 		}
 		// ~TreeNode()
 		// {
-		// 	for (int i = 0; i < 26; i++)
+		// 	for (int i = 0; i < 26; ++i)
 		// 	{
 		// 		if (nodes[i] != nullptr)
 		// 			delete nodes[i];

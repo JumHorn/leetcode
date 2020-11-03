@@ -1,5 +1,5 @@
-#include <vector>
 #include <cstring>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -10,7 +10,7 @@ public:
 		int N = group.size(), res = 0;
 		vector<vector<int>> dp(G + 1, vector<int>(P + 1));
 		dp[0][0] = 1;
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			for (int k = G - group[i]; k >= 0; k--)
 			{
@@ -19,7 +19,7 @@ public:
 			}
 		}
 
-		for (int i = 0; i <= G; i++)
+		for (int i = 0; i <= G; ++i)
 			res = (res + dp[i][P]) % MOD;
 		return res;
 	}

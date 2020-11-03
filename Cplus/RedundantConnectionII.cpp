@@ -9,7 +9,7 @@ public:
 		int nodeindegree2 = -1, n = edges.size();
 		vector<vector<int>> graph(n + 1);
 		vector<int> res, seen(n + 1);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			if (seen[edges[i][0]] == 1 && seen[edges[i][1]] == 1)
 				res = edges[i];

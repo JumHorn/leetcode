@@ -1,6 +1,6 @@
-#include <vector>
 #include <algorithm>
 #include <numeric>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -10,7 +10,7 @@ public:
 	{
 		int n = ratings.size();
 		vector<int> res(n, 1);
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 			if (ratings[i - 1] < ratings[i])
 				res[i] += res[i - 1];
 

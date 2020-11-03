@@ -1,6 +1,6 @@
-#include <vector>
-#include <map>
 #include <algorithm>
+#include <map>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -15,7 +15,7 @@ public:
 		map<pair<int, int>, int> areamap;
 		res[0] = positions[0][1];
 		areamap[{positions[0][0], positions[0][0] + positions[0][1]}] = positions[0][1];
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			int maxheight = 0;
 			auto iter = areamap.lower_bound({positions[i][0], positions[i][0] + positions[i][1]});

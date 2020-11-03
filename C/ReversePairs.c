@@ -19,7 +19,7 @@ int divide(int *nums, int *dup, int start, int end)
 	int res = 0, mid = (end - start) / 2 + start;
 	res += divide(nums, dup, start, mid);
 	res += divide(nums, dup, mid, end);
-	for (int i = start, j = mid; i < mid; i++)
+	for (int i = start, j = mid; i < mid; ++i)
 	{
 		while (j < end && (long)nums[i] > 2 * (long)nums[j])
 			j++;

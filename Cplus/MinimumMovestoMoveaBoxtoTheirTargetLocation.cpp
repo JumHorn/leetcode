@@ -13,7 +13,7 @@ public:
 		set<pair<int, int>> seen;
 		queue<pair<int, int>> q;
 		// get the position of box player and target
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; ++i)
 		{
 			for (int j = 0; j < n; j++)
 			{

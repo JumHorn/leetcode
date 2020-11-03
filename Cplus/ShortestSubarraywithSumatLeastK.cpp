@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <vector>
-#include <deque>
 #include <climits>
+#include <deque>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -12,10 +12,10 @@ public:
 		int res = INT_MAX, N = A.size();
 		vector<int> sums(N + 1);
 		deque<int> monoqueue;
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 			sums[i + 1] = sums[i] + A[i];
 		monoqueue.push_back(0);
-		for (int i = 1; i <= N; i++)
+		for (int i = 1; i <= N; ++i)
 		{
 			while (!monoqueue.empty() && sums[i] - sums[monoqueue.front()] >= K)
 			{

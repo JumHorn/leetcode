@@ -16,7 +16,7 @@ public:
 	{
 		vector<vector<long>> dp(L + 1, vector<long>(N + 1));
 		dp[0][0] = 1;
-		for (int i = 0; i < L; i++)
+		for (int i = 0; i < L; ++i)
 		{
 			for (int j = 0; j < N; j++)
 			{

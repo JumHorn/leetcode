@@ -5,7 +5,7 @@ using namespace std;
 class Solution
 {
 public:
-	vector<int> getStrongest(vector<int>& arr, int k)
+	vector<int> getStrongest(vector<int> &arr, int k)
 	{
 		int n = arr.size();
 		sort(arr.begin(), arr.end());
@@ -17,7 +17,7 @@ public:
 		};
 		make_heap(arr.begin(), arr.end(), f);
 		vector<int> res;
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k; ++i)
 		{
 			pop_heap(arr.begin(), arr.begin() + n, f);
 			res.push_back(arr[--n]);

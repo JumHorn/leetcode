@@ -13,7 +13,7 @@ public:
 		for (auto &word : words)
 		{
 			vector<int> dp(word.length());
-			for (int i = 1; i < (int)word.length(); i++)
+			for (int i = 1; i < (int)word.length(); ++i)
 			{
 				if (s.find(word.substr(0, i)) != s.end() && backTracking(s, word, i, dp))
 				{
@@ -32,7 +32,7 @@ public:
 			return true;
 		if (dp[index] != 0)
 			return dp[index] == 1;
-		for (int i = index; i < n; i++)
+		for (int i = index; i < n; ++i)
 		{
 			if (s.find(word.substr(index, i - index + 1)) != s.end())
 			{

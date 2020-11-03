@@ -29,7 +29,7 @@ public:
 		}
 		else
 		{
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < n; ++i)
 			{
 				if (index == 0 || i + 1 != precolor)
 					res = min(res, memdp(houses, cost, m, n, i + 1, index + 1, target - 1, dp) + cost[index][i]);

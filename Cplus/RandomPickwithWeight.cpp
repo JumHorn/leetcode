@@ -7,7 +7,7 @@ class Solution
 public:
 	Solution(vector<int> &w) : prefixsum(w.size() + 1)
 	{
-		for (int i = 0; i < (int)w.size(); i++)
+		for (int i = 0; i < (int)w.size(); ++i)
 			prefixsum[i + 1] = prefixsum[i] + w[i];
 		count = prefixsum.back();
 		prefixsum.push_back(INT_MAX);

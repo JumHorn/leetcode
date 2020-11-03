@@ -10,7 +10,7 @@ public:
 	double mincostToHireWorkers(vector<int> &quality, vector<int> &wage, int K)
 	{
 		vector<vector<double>> expect(wage.size());
-		for (int i = 0; i < (int)wage.size(); i++)
+		for (int i = 0; i < (int)wage.size(); ++i)
 		{
 			expect[i].push_back(wage[i] * 1.0 / quality[i]);
 			expect[i].push_back(quality[i]);
@@ -18,7 +18,7 @@ public:
 		sort(expect.begin(), expect.end());
 		priority_queue<int> workers;
 		double res = INT_MAX, qualitysum = 0.0;
-		for (int i = 0; i < (int)expect.size(); i++)
+		for (int i = 0; i < (int)expect.size(); ++i)
 		{
 			qualitysum += expect[i][1];
 			workers.push(expect[i][1]);

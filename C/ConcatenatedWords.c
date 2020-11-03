@@ -56,14 +56,14 @@ char **findAllConcatenatedWordsInADict(char **words, int wordsSize, int *returnS
 {
 	//create Trie
 	Trie *root = createNode(-1);
-	for (int i = 0; i < wordsSize; i++)
+	for (int i = 0; i < wordsSize; ++i)
 	{
 		if (*words[i])
 			insert(root, words[i], i);
 	}
 	*returnSize = 0;
 	char **res = NULL;
-	for (int i = 0; i < wordsSize; i++)
+	for (int i = 0; i < wordsSize; ++i)
 	{
 		if (backTracking(root, root, words[i], i, 0))
 			res = addString(res, ++*returnSize, words[i]);

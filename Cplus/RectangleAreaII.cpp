@@ -20,7 +20,7 @@ public:
 		{
 			bool flag = false;
 			unsigned long long x = 0, xlen = 0, ystep = INT_MAX;
-			for (int i = 0; i < (int)rectangles.size(); i++)
+			for (int i = 0; i < (int)rectangles.size(); ++i)
 			{
 				if (rectangles[i][1] > (int)y)
 					ystep = min((int)ystep, rectangles[i][1]);

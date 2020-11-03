@@ -1,6 +1,6 @@
+#include <queue>
 #include <set>
 #include <vector>
-#include <queue>
 using namespace std;
 
 class Solution
@@ -13,7 +13,7 @@ public:
 			prerequisite[dep[1] - 1] |= 1 << (dep[0] - 1);
 		vector<int> dp(1 << n, n);
 		dp[0] = 0;
-		for (int i = 0; i < 1 << n; i++)
+		for (int i = 0; i < 1 << n; ++i)
 		{
 			int canTakeCourse = 0;
 			for (int j = 0; j < n; j++)

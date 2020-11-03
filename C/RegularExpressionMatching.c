@@ -1,7 +1,7 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 /*
 1. create dp[s.size+1][p.size+1] array and dp[i][j] standard for s[0~i] is match p[0-j]
 2. p[j]=='.' dp[i+1][j+1] dp[i+1][j+1]=dp[i][j]
@@ -36,7 +36,7 @@ bool isMatch(char *s, char *p)
 	for (int j = 0; j < len2; j++)
 		dp[0][j + 1] = (p[j] == '*' && dp[0][j - 1]);
 
-	for (int i = 0; i < len1; i++)
+	for (int i = 0; i < len1; ++i)
 	{
 		for (int j = 0; j < len2; j++)
 		{

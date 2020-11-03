@@ -3,7 +3,7 @@
 
 int firstMissingPositive(int *nums, int numsSize)
 {
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 	{
 		while (i + 1 != nums[i] && nums[i] > 0)
 		{
@@ -13,7 +13,7 @@ int firstMissingPositive(int *nums, int numsSize)
 			swap(nums[i], nums[j]);
 		}
 	}
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 		if (nums[i] != i + 1)
 			return i + 1;
 	return numsSize + 1;

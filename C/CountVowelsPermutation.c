@@ -3,10 +3,10 @@
 int countVowelPermutation(int n)
 {
 	static const int MOD = 1e9 + 7;
-	long dp[5];	 // a e i o u
+	long dp[5]; // a e i o u
 	for (int i = 0; i < 5; ++i)
 		dp[i] = 1;
-	for (int i = 1; i < n; i++)
+	for (int i = 1; i < n; ++i)
 	{
 		long dp1[5];
 		memcpy(dp1, dp, sizeof(dp));
@@ -22,7 +22,7 @@ int countVowelPermutation(int n)
 		dp[4] = (dp1[2] + dp1[3]) % MOD;
 	}
 	int res = 0;
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 5; ++i)
 		res = (res + dp[i]) % MOD;
 	return res;
 }

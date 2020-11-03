@@ -8,7 +8,7 @@ public:
 	int countVowelPermutation(int n)
 	{
 		vector<long> dp(5, 1); // a e i o u
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			vector<long> tmp(dp);
 			//a
@@ -23,7 +23,7 @@ public:
 			dp[4] = (tmp[2] + tmp[3]) % MOD;
 		}
 		int res = 0;
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 5; ++i)
 			res = (res + dp[i]) % MOD;
 		return res;
 	}

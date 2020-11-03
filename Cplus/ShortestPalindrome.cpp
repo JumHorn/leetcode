@@ -1,5 +1,5 @@
-#include <string>
 #include <algorithm>
+#include <string>
 #include <vector>
 using namespace std;
 
@@ -15,7 +15,7 @@ public:
 		string pattern = s + "#" + dump;
 		int n = pattern.length();
 		vector<int> next(n);
-		for (int i = 1, j = 0; i < n; i++)
+		for (int i = 1, j = 0; i < n; ++i)
 		{
 			while (j > 0 && pattern[i] != pattern[j])
 				j = next[j - 1];

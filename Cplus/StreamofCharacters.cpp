@@ -49,7 +49,7 @@ public:
 	StreamChecker(vector<string> &words)
 	{
 		root = new TreeNode();
-		for (int i = 0; i < (int)words.size(); i++)
+		for (int i = 0; i < (int)words.size(); ++i)
 			insert(words[i]);
 	}
 

@@ -29,7 +29,7 @@ public:
 		vector<vector<int>> dp(len, vector<int>(len));
 		vector<int> left = leftNext(S);
 		vector<int> right = rightNext(S);
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < len; ++i)
 			dp[i][i] = 1;
 		for (int n = 1; n < len; n++)
 		{
@@ -66,7 +66,7 @@ public:
 	{
 		int n = s.length();
 		vector<int> v(26, -1), res(n);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			res[i] = v[s[i] - 'a'];
 			v[s[i] - 'a'] = i;

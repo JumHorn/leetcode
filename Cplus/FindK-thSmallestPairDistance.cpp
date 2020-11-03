@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -14,7 +14,7 @@ public:
 			int mi = (hi - lo) / 2 + lo;
 
 			int count = 0;
-			for (int i = 0, j = 0; i < (int)nums.size(); i++)
+			for (int i = 0, j = 0; i < (int)nums.size(); ++i)
 			{
 				while (nums[i] - nums[j] > mi)
 					j++;

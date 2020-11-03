@@ -36,7 +36,7 @@ char *makeLargestSpecial(char *S)
 	qsort(strs, size, sizeof(strs[0]), cmp);
 	static char res[51];
 	res[0] = '\0'; //如果没有初始化且下面的for循环没有进入,很可能在下次strcpy时overflow
-	for (int i = 0, j = 0; i < size; i++)
+	for (int i = 0, j = 0; i < size; ++i)
 	{
 		int n = strlen(strs[i]);
 		strcpy(&res[j], strs[i]);

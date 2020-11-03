@@ -62,7 +62,7 @@ int findMaximizedCapital(int k, int W, int *Profits, int ProfitsSize, int *Capit
 	//[0] profit [1] capital
 	int psize = 0, csize = 0;
 	PAIR ipo[ProfitsSize], nonipo[ProfitsSize];
-	for (int i = 0; i < ProfitsSize; i++)
+	for (int i = 0; i < ProfitsSize; ++i)
 	{
 		if (Capital[i] <= W)
 		{
@@ -77,7 +77,7 @@ int findMaximizedCapital(int k, int W, int *Profits, int ProfitsSize, int *Capit
 			push_heap(nonipo, ++csize);
 		}
 	}
-	for (int i = 0; i < k && psize != 0; i++)
+	for (int i = 0; i < k && psize != 0; ++i)
 	{
 		W += ipo[0].first;
 		pop_heap(ipo, psize--);

@@ -22,7 +22,7 @@ public:
 	int powMod(int a, int b) //pow(a,b) with MOD
 	{
 		int res = 1;
-		for (int i = 0; i < b; i++)
+		for (int i = 0; i < b; ++i)
 			res = (res * a) % MOD;
 		return res;
 	}

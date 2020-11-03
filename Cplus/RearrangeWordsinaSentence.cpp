@@ -13,13 +13,13 @@ public:
 		sort(word.begin(), word.end(), *this);
 		string res;
 		res += word[0].first;
-		for (int i = 1; i < (int)word.size(); i++)
+		for (int i = 1; i < (int)word.size(); ++i)
 			res += " " + word[i].first;
 		res[0] = toupper(res[0]);
 		return res;
 	}
 
-	vector<pair<string, int>> split(string& text)
+	vector<pair<string, int>> split(string &text)
 	{
 		int i = 0, j = 0, n = text.length(), index = 0;
 		vector<pair<string, int>> res;
@@ -33,7 +33,7 @@ public:
 		return res;
 	}
 
-	bool operator()(const pair<string, int>& lhs, const pair<string, int>& rhs)
+	bool operator()(const pair<string, int> &lhs, const pair<string, int> &rhs)
 	{
 		if (lhs.first.length() != rhs.first.length())
 			return lhs.first.length() < rhs.first.length();

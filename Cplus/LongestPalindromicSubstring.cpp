@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <string>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 class Solution
@@ -11,7 +11,7 @@ public:
 		int len = s.length();
 		vector<vector<int>> dp(len, vector<int>(len, -1));
 		int m = 0, n = 0;
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < len; ++i)
 		{
 			for (int j = i; j < len; j++)
 			{

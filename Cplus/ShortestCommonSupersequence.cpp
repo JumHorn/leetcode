@@ -9,7 +9,7 @@ public:
 	{
 		int M = str1.length(), N = str2.length();
 		vector<vector<int>> dp(M + 1, vector<int>(N + 1));
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; j++)
 			{

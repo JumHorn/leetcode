@@ -9,7 +9,7 @@ public:
 	{
 		auto f = [=](pair<int, int> &lhs, pair<int, int> &rhs) { return lhs.first + lhs.second < rhs.first + rhs.second; };
 		priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(f)> q(f);
-		for (int i = 0; i < (int)nums1.size(); i++)
+		for (int i = 0; i < (int)nums1.size(); ++i)
 		{
 			for (int j = 0; j < (int)nums2.size(); j++)
 			{
@@ -26,7 +26,7 @@ public:
 		}
 		k = k > (int)q.size() ? q.size() : k;
 		vector<vector<int>> res(k);
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k; ++i)
 		{
 			res[k - i - 1] = {q.top().first, q.top().second};
 			q.pop();

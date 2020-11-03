@@ -11,7 +11,7 @@ public:
 	SegmentTree(vector<int> &v) : data(2 * v.size())
 	{
 		int n = v.size();
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			data[i + n] = v[i];
 		for (int i = n - 1; i > 0; i--)
 			data[i] = data[i << 1] + data[i << 1 | 1];

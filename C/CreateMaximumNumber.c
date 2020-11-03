@@ -7,7 +7,7 @@ void maxKNumber(int *nums, int size, int k, int *res)
 	if (k == 0)
 		return;
 	int top = -1;
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size; ++i)
 	{
 		while (top != -1 && top + 1 + size - i > k && res[top] < nums[i])
 			--top;
@@ -49,7 +49,7 @@ int *maxNumber(int *nums1, int nums1Size, int *nums2, int nums2Size, int k, int 
 	int *res = (int *)malloc(sizeof(int) * k);
 	memset(res, 0, sizeof(int) * k);
 	int left[k], right[k], tmp[k];
-	for (int i = 0; i <= k && i <= nums1Size; i++)
+	for (int i = 0; i <= k && i <= nums1Size; ++i)
 	{
 		if (k - i > nums2Size)
 			continue;

@@ -51,7 +51,7 @@ public:
 			return radix[num];
 		string res;
 		int base = 1000000000;
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; ++i)
 		{
 			int tmp = num / base;
 			if (tmp != 0)

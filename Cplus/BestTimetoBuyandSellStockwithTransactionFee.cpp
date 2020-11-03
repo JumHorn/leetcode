@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 /*
@@ -18,7 +18,7 @@ public:
 	int maxProfit(vector<int> &prices, int fee)
 	{
 		int buy = -prices.front(), sell = 0;
-		for (int i = 1; i < (int)prices.size(); i++)
+		for (int i = 1; i < (int)prices.size(); ++i)
 		{
 			sell = max(sell, buy + prices[i] - fee);
 			buy = max(buy, sell - prices[i]);

@@ -4,26 +4,26 @@
 typedef struct Trie
 {
 	int count;
-	struct Trie* node[26];
+	struct Trie *node[26];
 } Trie;
 
-Trie* createNode()
+Trie *createNode()
 {
-	Trie* node = (Trie*)malloc(sizeof(Trie));
+	Trie *node = (Trie *)malloc(sizeof(Trie));
 	memset(node, 0, sizeof(Trie));
 	return node;
 }
 
-char** addString(char** res, int* size, char* word)
+char **addString(char **res, int *size, char *word)
 {
-	res = (char**)realloc(res, *size * sizeof(char*));
+	res = (char **)realloc(res, *size * sizeof(char *));
 	int len = strlen(word);
-	res[*size - 1] = (char*)malloc((len + 1) * sizeof(char));
+	res[*size - 1] = (char *)malloc((len + 1) * sizeof(char));
 	strcpy(res[*size - 1], word);
 	return res;
 }
 
-void insert(Trie* root, char* word, int index)
+void insert(Trie *root, char *word, int index)
 {
 	while (*word)
 	{
@@ -36,7 +36,7 @@ void insert(Trie* root, char* word, int index)
 	root->count = index + 1;
 }
 
-void dfs(char** board, int m, int n, int i, int j, Trie* root, char** words, char*** res, int* size)
+void dfs(char **board, int m, int n, int i, int j, Trie *root, char **words, char ***res, int *size)
 {
 	if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] == ' ')
 		return;
@@ -44,7 +44,7 @@ void dfs(char** board, int m, int n, int i, int j, Trie* root, char** words, cha
 	if (!root)
 		return;
 	if (root->count != 0)
-	{  //add result
+	{ //add result
 		++(*size);
 		*res = addString(*res, size, words[root->count - 1]);
 		root->count = 0;
@@ -63,14 +63,14 @@ void dfs(char** board, int m, int n, int i, int j, Trie* root, char** words, cha
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-char** findWords(char** board, int boardSize, int* boardColSize, char** words, int wordsSize, int* returnSize)
+char **findWords(char **board, int boardSize, int *boardColSize, char **words, int wordsSize, int *returnSize)
 {
-	Trie* root = createNode();
-	for (int i = 0; i < wordsSize; i++)
+	Trie *root = createNode();
+	for (int i = 0; i < wordsSize; ++i)
 		insert(root, words[i], i);
-	char** res = NULL;
+	char **res = NULL;
 	*returnSize = 0;
-	for (int i = 0; i < boardSize; i++)
+	for (int i = 0; i < boardSize; ++i)
 	{
 		for (int j = 0; j < *boardColSize; j++)
 			dfs(board, boardSize, *boardColSize, i, j, root, words, &res, returnSize);

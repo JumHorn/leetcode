@@ -15,7 +15,7 @@ public:
 	void dfs(vector<int> &nums, int index, vector<int> &instance, vector<vector<int>> &res)
 	{
 		res.push_back(instance);
-		for (int i = index; i < (int)nums.size(); i++)
+		for (int i = index; i < (int)nums.size(); ++i)
 		{
 			instance.push_back(nums[i]);
 			dfs(nums, i + 1, instance, res);

@@ -12,7 +12,7 @@ public:
 		sum = 0;
 		string res;
 		int n = digits.size();
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			++v[digits[i]];
 			sum += digits[i];

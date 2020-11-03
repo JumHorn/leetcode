@@ -1,5 +1,5 @@
-#include <vector>
 #include <unordered_map>
+#include <vector>
 using namespace std;
 
 class DSU
@@ -7,7 +7,7 @@ class DSU
 public:
 	DSU(int size) : parent(size), rank(size, 1)
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; ++i)
 			parent[i] = i;
 	}
 
@@ -31,7 +31,7 @@ public:
 	int getMaxCluster()
 	{
 		int res = 1;
-		for (int i = 0; i < (int)rank.size(); i++)
+		for (int i = 0; i < (int)rank.size(); ++i)
 		{
 			if (parent[i] == i && rank[i] > res)
 				res = rank[i];
@@ -51,7 +51,7 @@ public:
 	{
 		DSU dsu(A.size());
 		unordered_map<int, int> factor;
-		for (int i = 0; i < (int)A.size(); i++)
+		for (int i = 0; i < (int)A.size(); ++i)
 		{
 			for (int j = 2; j * j <= A[i]; j++)
 			{

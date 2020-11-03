@@ -10,7 +10,7 @@ public:
 	{
 		int n = A.size(), res = 0;
 		vector<vector<int>> dp(n, vector<int>(20001));
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			for (int j = 0; j < i; j++)
 			{

@@ -1,6 +1,6 @@
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 using namespace std;
 /**
  * // This is the Master's API interface.
@@ -44,7 +44,7 @@ public:
 	int strdiff(const string &lhs, const string &rhs)
 	{
 		int res = 0;
-		for (int i = 0; i < (int)lhs.length(); i++)
+		for (int i = 0; i < (int)lhs.length(); ++i)
 		{
 			if (lhs[i] == rhs[i])
 				res++;

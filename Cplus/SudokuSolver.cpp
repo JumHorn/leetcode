@@ -7,7 +7,7 @@ struct Grid
 	char possiblenum[9]; //the possible number
 	Grid() : rightnum('0')
 	{
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			possiblenum[i] = "123456789"[i];
 		}
@@ -20,22 +20,22 @@ private:
 	Grid grid[9][9];
 	void initzero(int row, int column, int number)
 	{
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			grid[row][i].possiblenum[number - 1] = '0';
 		}
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			grid[i][column].possiblenum[number - 1] = '0';
 		}
-		for (int i = row / 3 * 3; i < 3 + row / 3 * 3; i++)
+		for (int i = row / 3 * 3; i < 3 + row / 3 * 3; ++i)
 		{
 			for (int j = column / 3 * 3; j < 3 + column / 3 * 3; j++)
 			{
 				grid[i][j].possiblenum[number - 1] = '0';
 			}
 		}
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			grid[row][column].possiblenum[i] = '0';
 		}
@@ -45,7 +45,7 @@ private:
 	{
 		int result = 0;
 		//for zero initialization
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			for (int j = 0; j < 9; j++)
 			{
@@ -67,7 +67,7 @@ private:
 	{
 		//check self
 		int index = 0, flag = 0;
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			if (grid[row][column].possiblenum[i] != '0')
 			{
@@ -88,7 +88,7 @@ private:
 		}
 
 		//check others
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			if (grid[row][column].possiblenum[i] != '0')
 			{
@@ -118,7 +118,7 @@ private:
 			}
 		}
 
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			if (grid[row][column].possiblenum[i] != '0')
 			{
@@ -153,7 +153,7 @@ private:
 			if (grid[row][column].possiblenum[l] != '0')
 			{
 				int i;
-				for (i = row / 3 * 3; i < 3 + row / 3 * 3; i++)
+				for (i = row / 3 * 3; i < 3 + row / 3 * 3; ++i)
 				{
 					int j;
 					for (j = column / 3 * 3; j < 3 + column / 3 * 3; j++)
@@ -195,7 +195,7 @@ public:
 		int result = 0;
 
 		//for choosing
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			for (int j = 0; j < 9; j++)
 			{
@@ -252,7 +252,7 @@ public:
 	void solveSudoku(vector<vector<char>> &board)
 	{
 
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			for (int j = 0; j < 9; j++)
 			{
@@ -282,7 +282,7 @@ public:
 			guess();
 		}
 
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; ++i)
 		{
 			for (int j = 0; j < 9; j++)
 			{

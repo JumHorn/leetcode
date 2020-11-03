@@ -11,7 +11,7 @@ public:
 		dp[1] = true;
 		if (n <= 1)
 			return dp[n];
-		for (int i = 2; i <= n; i++)
+		for (int i = 2; i <= n; ++i)
 		{
 			for (int j = 1; j * j <= i; j++)
 			{

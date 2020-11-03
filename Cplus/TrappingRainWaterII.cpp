@@ -1,5 +1,5 @@
-#include <vector>
 #include <queue>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -12,7 +12,7 @@ public:
 			return 0;
 		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
 		vector<vector<int>> seen(m, vector<int>(n));
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; ++i)
 		{
 			q.push({heightMap[i][0], i * n + 0});
 			q.push({heightMap[i][n - 1], i * n + n - 1});
@@ -31,7 +31,7 @@ public:
 			auto top = q.top();
 			q.pop();
 			maxheight = max(maxheight, top.first);
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 4; ++i)
 			{
 				int x = top.second / n + path[i][0], y = top.second % n + path[i][1];
 				if (x < 0 || x >= m || y < 0 || y >= n || seen[x][y] == 1)

@@ -10,7 +10,7 @@ public:
 			return 0;
 		int res = 0;
 		vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(k + 1, vector<int>(m + 1, -1)));
-		for (int i = 1; i <= m; i++)
+		for (int i = 1; i <= m; ++i)
 			res = (res + memdp(n - 1, m, k - 1, i, dp)) % MOD;
 		return res;
 	}
@@ -24,7 +24,7 @@ public:
 		int res = ((long)memdp(n - 1, m, k, val, dp) * (long)val) % MOD;
 		if (k == 0)
 			return res;
-		for (int i = val + 1; i <= m; i++)
+		for (int i = val + 1; i <= m; ++i)
 			res = (res + memdp(n - 1, m, k - 1, i, dp)) % MOD;
 		dp[n][k][val] = res;
 		return res;

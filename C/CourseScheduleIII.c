@@ -64,7 +64,7 @@ int scheduleCourse(int **courses, int coursesSize, int *coursesColSize)
 	qsort(courses, coursesSize, sizeof(int *), cmp);
 	int size = 1, priorityqueue[coursesSize];
 	int time = priorityqueue[0] = courses[0][0];
-	for (int i = 1; i < coursesSize; i++)
+	for (int i = 1; i < coursesSize; ++i)
 	{
 		if (time + courses[i][0] <= courses[i][1])
 		{

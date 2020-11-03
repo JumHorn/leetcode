@@ -8,7 +8,7 @@ public:
 	{
 		//get initial state
 		vector<vector<int>> init;
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 3; ++i)
 		{
 			for (int j = 0; j < 3; j++)
 				for (int k = 0; k < 3; k++)
@@ -20,7 +20,7 @@ public:
 			return size;
 		//get state transition
 		vector<vector<int>> state(size);
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; ++i)
 		{
 			for (int j = 0; j < size; j++)
 			{
@@ -30,7 +30,7 @@ public:
 		}
 		//dp
 		vector<int> dp(size, 1);
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			vector<int> tmp(size);
 			for (int j = 0; j < size; j++)
@@ -47,9 +47,9 @@ public:
 	}
 
 private:
-	bool transState(vector<int>& a, vector<int>& b)
+	bool transState(vector<int> &a, vector<int> &b)
 	{
-		for (int i = 0; i < (int)a.size(); i++)
+		for (int i = 0; i < (int)a.size(); ++i)
 			if (a[i] == b[i])
 				return false;
 		return true;

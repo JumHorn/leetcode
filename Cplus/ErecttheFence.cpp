@@ -14,7 +14,7 @@ public:
 		stack<int> s;
 		// left to right
 		int top = 0;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			while (!s.empty() && crossProduct(points[top], points[i], points[s.top()]) < 0)
 			{

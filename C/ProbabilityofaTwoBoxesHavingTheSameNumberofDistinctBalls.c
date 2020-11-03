@@ -33,7 +33,7 @@ double getProbability(int *balls, int ballsSize)
 		sum += b;
 		double ndp[2 * m + 1][S / 2 + 1];
 		memset(ndp, 0, sizeof(ndp));
-		for (int i = 0; i <= b; i++)
+		for (int i = 0; i <= b; ++i)
 		{
 			for (int j = 0; j < 2 * m + 1; j++)
 			{

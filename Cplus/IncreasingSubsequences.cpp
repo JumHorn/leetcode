@@ -19,7 +19,7 @@ public:
 		if (instance.size() > 1)
 			res.push_back(instance);
 		unordered_set<int> s;
-		for (int i = index; i < nums.size(); i++)
+		for (int i = index; i < nums.size(); ++i)
 		{
 			if ((instance.empty() || nums[i] >= instance.back()) && s.find(nums[i]) == s.end())
 			{

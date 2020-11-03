@@ -15,7 +15,7 @@ public:
 		vector<int> dp(N + 1);
 		dp[0] = 1;
 		dp[1] = s[0] == '0' ? 0 : 1;
-		for (int i = 1; i < N; i++)
+		for (int i = 1; i < N; ++i)
 		{
 			if (dp[i] != 0 && s[i] != '0')
 				dp[i + 1] += dp[i];

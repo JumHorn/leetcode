@@ -10,7 +10,7 @@ public:
 		int M = s.length(), N = t.length();
 		vector<long> dp(N + 1);
 		dp[0] = 1;
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			int pre = dp[0];
 			for (int j = 0; j < N; j++)

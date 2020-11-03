@@ -12,12 +12,12 @@ public:
 		int N = s.length();
 		vector<int> left(N), right(N);
 		int map[26] = {0};
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			left[i] = i - map[s[i] - 'A'] + 1;
 			map[s[i] - 'A'] = i + 1;
 		}
-		for (int i = 0; i < 26; i++)
+		for (int i = 0; i < 26; ++i)
 			map[i] = N - 1;
 		for (int i = N - 1; i >= 0; --i)
 		{
@@ -25,7 +25,7 @@ public:
 			map[s[i] - 'A'] = i - 1;
 		}
 		int res = 0;
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 			res = (res + left[i] * right[i]) % MOD;
 		return res;
 	}

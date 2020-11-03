@@ -16,7 +16,7 @@ public:
 		vector<int> res(n);
 		res[0] = 1;
 		int i2 = 0, i3 = 0, i5 = 0;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			res[i] = min({res[i2] * 2, res[i3] * 3, res[i5] * 5});
 			if (res[i] == res[i2] * 2)

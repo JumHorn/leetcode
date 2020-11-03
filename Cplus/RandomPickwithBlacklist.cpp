@@ -1,7 +1,7 @@
-#include <vector>
 #include <cstdlib>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -12,7 +12,7 @@ public:
 		unordered_set<int> tmp(blacklist.begin(), blacklist.end());
 		n = N - blacklist.size();
 		--N;
-		for (int i = 0; i < (int)blacklist.size(); i++)
+		for (int i = 0; i < (int)blacklist.size(); ++i)
 		{
 			if (blacklist[i] < n)
 			{

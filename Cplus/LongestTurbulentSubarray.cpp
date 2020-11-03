@@ -4,11 +4,11 @@ using namespace std;
 class Solution
 {
 public:
-	int maxTurbulenceSize(vector<int>& A)
+	int maxTurbulenceSize(vector<int> &A)
 	{
 		int n = A.size();
 		int inc = 1, dec = 1, res = 1;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			if (A[i] > A[i - 1])
 			{

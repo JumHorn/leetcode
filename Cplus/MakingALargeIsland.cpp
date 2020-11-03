@@ -1,5 +1,5 @@
-#include <vector>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -11,7 +11,7 @@ public:
 		int res = 0, color = 2;
 		vector<int> colorArr(2); //2 reserved for 0 and 1
 		//color the grid
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; j++)
 			{
@@ -24,7 +24,7 @@ public:
 			}
 		}
 
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; j++)
 			{

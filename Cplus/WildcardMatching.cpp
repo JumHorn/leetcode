@@ -14,7 +14,7 @@ public:
 		dp[0][0] = true;
 		for (int j = 0; j < plen && p[j] == '*'; j++)
 			dp[0][j + 1] = true;
-		for (int i = 0; i < slen; i++)
+		for (int i = 0; i < slen; ++i)
 		{
 			for (int j = 0; j < plen; j++)
 			{

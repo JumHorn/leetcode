@@ -15,7 +15,7 @@ int mergeStones(int *stones, int stonesSize, int K)
 		return -1;
 	int sum[stonesSize + 1];
 	sum[0] = 0;
-	for (int i = 0; i < stonesSize; i++)
+	for (int i = 0; i < stonesSize; ++i)
 		sum[i + 1] = sum[i] + stones[i];
 	int dp[stonesSize][stonesSize];
 	memset(dp, 0, sizeof(dp));

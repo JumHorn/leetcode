@@ -10,7 +10,7 @@ typedef struct pair
 int compress(int **board, int M, int N)
 {
 	int res = 0;
-	for (int i = 0; i < M; i++)
+	for (int i = 0; i < M; ++i)
 	{
 		for (int j = 0; j < N; j++)
 			res = res * 10 + board[i][j];
@@ -34,7 +34,7 @@ pair findZero(int **board, int M, int N)
 {
 	pair zero;
 	zero.first = zero.second = 0;
-	for (int i = 0; i < M; i++)
+	for (int i = 0; i < M; ++i)
 	{
 		for (int j = 0; j < N; j++)
 		{

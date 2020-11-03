@@ -8,7 +8,7 @@ public:
 	{
 		int n1 = nums1.size(), n2 = nums2.size();
 		vector<int> res(k);
-		for (int i = 0; i <= k && i <= n1; i++)
+		for (int i = 0; i <= k && i <= n1; ++i)
 		{
 			if (k - i > n2)
 				continue;
@@ -56,7 +56,7 @@ public:
 			return {};
 		vector<int> res;
 		int n = num.size();
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			while (!res.empty() && res.size() + n - i > k && res.back() < num[i])
 				res.pop_back();

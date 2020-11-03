@@ -3,7 +3,7 @@
 int shipWithinDays(int *weights, int weightsSize, int D)
 {
 	int lo = 0, hi = 0;
-	for (int i = 0; i < weightsSize; i++)
+	for (int i = 0; i < weightsSize; ++i)
 	{
 		lo = max(lo, weights[i]);
 		hi += weights[i];
@@ -11,7 +11,7 @@ int shipWithinDays(int *weights, int weightsSize, int D)
 	while (lo < hi)
 	{
 		int mi = (hi - lo) / 2 + lo, cap = 0, day = 1;
-		for (int i = 0; i < weightsSize && day <= D; i++)
+		for (int i = 0; i < weightsSize && day <= D; ++i)
 		{
 			if (cap + weights[i] > mi)
 			{

@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <string>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 /*
@@ -21,7 +21,7 @@ public:
 			return 0;
 		int len = s.length(), res = 0;
 		vector<int> dp(len + 1);
-		for (int i = 1; i < len; i++)
+		for (int i = 1; i < len; ++i)
 		{
 			if (s[i] == ')')
 			{

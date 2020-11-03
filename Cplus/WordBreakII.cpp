@@ -15,7 +15,7 @@ public:
 			return {};
 		vector<vector<string>> dp(N + 1);
 		dp[0] = {""};
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			for (int j = i; j >= 0; --j)
 			{

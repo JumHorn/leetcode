@@ -9,7 +9,7 @@ public:
 	{
 		vector<vector<int>> res;
 		int i = 0, n = intervals.size();
-		for (i = 0; i < n; i++)
+		for (i = 0; i < n; ++i)
 		{
 			if (newInterval[1] < intervals[i][0])
 			{

@@ -17,7 +17,7 @@ public:
 
 		vector<string> res(1);
 		int last_right = n;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			if (i == left[s[i] - 'a'])
 			{

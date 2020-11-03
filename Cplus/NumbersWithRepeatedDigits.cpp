@@ -10,12 +10,12 @@ public:
 	{
 		string num = to_string(N + 1);
 		int len = num.length(), res = 0;
-		for (int i = 1; i < len; i++)
+		for (int i = 1; i < len; ++i)
 			res += 9 * A(i - 1, 9);
 		unordered_set<char> s;
 		s.insert(num[0]);
 		res += (num[0] - '1') * A(len - 1, 9);
-		for (int i = 1; i < len; i++)
+		for (int i = 1; i < len; ++i)
 		{
 			for (char c = '0'; c < num[i]; c++)
 				if (s.find(c) == s.end())

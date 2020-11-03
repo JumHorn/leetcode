@@ -75,7 +75,7 @@ void dfs(Trie *root, char *suffix, char **words, int *res)
 		if (ends_with(words[root->val], suffix))
 			*res = root->val;
 	}
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i < 26; ++i)
 		dfs(root->node[i], suffix, words, res);
 }
 
@@ -85,7 +85,7 @@ WordFilter *wordFilterCreate(char **words, int wordsSize)
 	obj->words = words;
 	obj->wordsSize = wordsSize;
 	obj->root = createNode(-1);
-	for (int i = 0; i < wordsSize; i++)
+	for (int i = 0; i < wordsSize; ++i)
 		insert(obj->root, words[i], i);
 	return obj;
 }

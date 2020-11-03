@@ -1,5 +1,5 @@
-#include <vector>
 #include <string>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -14,7 +14,7 @@ class Solution
 		}
 		~TreeNode()
 		{
-			for (int i = 0; i < 26; i++)
+			for (int i = 0; i < 26; ++i)
 				if (node[i] != NULL)
 					delete node[i];
 		}
@@ -29,9 +29,9 @@ public:
 		if (words.empty())
 			return res;
 		root = new TreeNode();
-		for (int i = 0; i < (int)words.size(); i++)
+		for (int i = 0; i < (int)words.size(); ++i)
 			insert(words[i]);
-		for (int i = 0; i < (int)board.size(); i++)
+		for (int i = 0; i < (int)board.size(); ++i)
 			for (int j = 0; j < (int)board[0].size(); j++)
 				findWords(board, root, i, j);
 		dfs(res, "", root);
@@ -65,7 +65,7 @@ public:
 			return;
 		if (root->count == 2)
 			res.push_back(s);
-		for (int i = 0; i < 26; i++)
+		for (int i = 0; i < 26; ++i)
 		{
 			string tmp = s;
 			if (root->node[i] != NULL)
@@ -79,7 +79,7 @@ public:
 	void insert(const string &word)
 	{
 		TreeNode *tmp = root;
-		for (int i = 0; i < (int)word.length(); i++)
+		for (int i = 0; i < (int)word.length(); ++i)
 		{
 			int index = word[i] - 'a';
 			if (tmp->node[index] == NULL)

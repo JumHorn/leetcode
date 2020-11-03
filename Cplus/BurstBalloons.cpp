@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -13,7 +13,7 @@ public:
 		vector<vector<int>> dp(n, vector<int>(n));
 		for (int len = 2; len < n; len++)
 		{
-			for (int i = 0; i < n - len; i++)
+			for (int i = 0; i < n - len; ++i)
 			{
 				int j = i + len;
 				for (int k = i + 1; k < j; k++)

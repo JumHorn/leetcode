@@ -1,15 +1,15 @@
 #include <stdbool.h>
 #include <string.h>
 
-char* longestPalindrome(char* s)
+char *longestPalindrome(char *s)
 {
 	int n = strlen(s);
 	if (n == 0)
 		return "";
 	bool dp[n][n];
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; ++i)
 		dp[i][i] = true;
-	for (int i = 0; i < n - 1; i++)
+	for (int i = 0; i < n - 1; ++i)
 		dp[i][i + 1] = (s[i] == s[i + 1]);
 	for (int len = 2; len < n; len++)
 	{
@@ -17,9 +17,9 @@ char* longestPalindrome(char* s)
 			dp[i][j] = (s[i] == s[j] && dp[i + 1][j - 1]);
 	}
 
-	char* res = NULL;
+	char *res = NULL;
 	int len = 0;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; ++i)
 	{
 		for (int j = i; j < n; j++)
 		{

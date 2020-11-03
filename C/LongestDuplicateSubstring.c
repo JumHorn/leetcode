@@ -32,7 +32,7 @@ char *longestDupSubstring(char *S)
 	int N = strlen(S);
 	SuffixArray sa[N];
 	//init
-	for (int i = 0; i < N - 1; i++)
+	for (int i = 0; i < N - 1; ++i)
 	{
 		sa[i].index = i;
 		sa[i].currank = S[i] - 'a';
@@ -51,7 +51,7 @@ char *longestDupSubstring(char *S)
 		sa[0].currank = rank_count;
 		rank[sa[0].index] = 0;
 		//update rank
-		for (int i = 1; i < N; i++)
+		for (int i = 1; i < N; ++i)
 		{
 			if (sa[i].currank == pre_rank && sa[i].nextrank == sa[i - 1].nextrank)
 				sa[i].currank = rank_count;
@@ -62,7 +62,7 @@ char *longestDupSubstring(char *S)
 			}
 			rank[sa[i].index] = i;
 		}
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			int nextindex = sa[i].index + k / 2;
 			sa[i].nextrank = (nextindex < N) ? sa[rank[nextindex]].currank : -1;
@@ -72,9 +72,9 @@ char *longestDupSubstring(char *S)
 
 	//calc lcp array
 	int lcp[N];
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < N; ++i)
 		rank[sa[i].index] = i;
-	for (int i = 0, k = 0; i < N; i++)
+	for (int i = 0, k = 0; i < N; ++i)
 	{
 		if (rank[i] == N - 1)
 		{
@@ -90,7 +90,7 @@ char *longestDupSubstring(char *S)
 	}
 	//calc result
 	int len = lcp[0], index = 0;
-	for (int i = 1; i < N; i++)
+	for (int i = 1; i < N; ++i)
 	{
 		if (lcp[i] > len)
 		{

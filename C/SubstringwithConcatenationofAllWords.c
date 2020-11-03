@@ -4,7 +4,7 @@
 //definition of Trie
 struct Trie
 {
-	int index;	//index of words,default to -1
+	int index; //index of words,default to -1
 	struct Trie *node[26];
 };
 
@@ -68,14 +68,14 @@ int *findSubstring(char *s, char **words, int wordsSize, int *returnSize)
 
 	struct Trie *trie = createNode(-1);
 	//build trie
-	int seen[wordsSize];  //0 not found 1 found
+	int seen[wordsSize]; //0 not found 1 found
 	memset(seen, 0, sizeof(seen));
-	for (int i = 0; i < wordsSize; i++)
+	for (int i = 0; i < wordsSize; ++i)
 		insert(trie, words[i], i, seen);
 	//malloc for the result
-	int size = strlen(words[0]) * wordsSize;  //sum of all words size
-	int slen = strlen(s);					  //length of string s
-	for (int i = 0; i <= slen - size; i++)
+	int size = strlen(words[0]) * wordsSize; //sum of all words size
+	int slen = strlen(s);					 //length of string s
+	for (int i = 0; i <= slen - size; ++i)
 	{
 		int tmp[wordsSize];
 		memcpy(tmp, seen, sizeof(tmp));

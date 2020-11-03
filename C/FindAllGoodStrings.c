@@ -1,6 +1,6 @@
 #include <string.h>
 
-int memdp(char* s1, char* s2, char* evil, int n, int k, int i, int j, int up, int low, int* kmp, int (*dp)[51][2][2])
+int memdp(char *s1, char *s2, char *evil, int n, int k, int i, int j, int up, int low, int *kmp, int (*dp)[51][2][2])
 {
 	static const int MOD = 1e9 + 7;
 	if (dp[i][j][up][low] != -1)
@@ -24,12 +24,12 @@ int memdp(char* s1, char* s2, char* evil, int n, int k, int i, int j, int up, in
 	return dp[i][j][up][low] = res;
 }
 
-int findGoodStrings(int n, char* s1, char* s2, char* evil)
+int findGoodStrings(int n, char *s1, char *s2, char *evil)
 {
 	int k = strlen(evil);
 	int kmp[k];
 	kmp[0] = 0;
-	for (int i = 1, j = 0; i < k; i++)
+	for (int i = 1, j = 0; i < k; ++i)
 	{
 		while (j > 0 && evil[i] != evil[j])
 			j = kmp[j - 1];

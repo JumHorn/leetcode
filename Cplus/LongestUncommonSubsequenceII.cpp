@@ -12,7 +12,7 @@ public:
 		vector<unordered_set<string>> v(11);
 		vector<int> count(11);
 		unordered_set<string> repeat;
-		for (int i = 0; i < (int)strs.size(); i++)
+		for (int i = 0; i < (int)strs.size(); ++i)
 		{
 			int len = strs[i].length();
 			count[len]++;

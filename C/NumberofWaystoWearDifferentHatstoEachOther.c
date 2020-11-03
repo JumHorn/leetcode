@@ -10,7 +10,7 @@ int memdp(int (*map)[10], int hat, int mask, int allmask, int (*dp)[1 << 10])
 	if (dp[hat][mask] != -1)
 		return dp[hat][mask];
 	int res = memdp(map, hat + 1, mask, allmask, dp);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; ++i)
 	{
 		if (map[hat][i] == 0 || (mask & (1 << i)))
 			continue;
@@ -20,12 +20,12 @@ int memdp(int (*map)[10], int hat, int mask, int allmask, int (*dp)[1 << 10])
 	return res;
 }
 
-int numberWays(int** hats, int hatsSize, int* hatsColSize)
+int numberWays(int **hats, int hatsSize, int *hatsColSize)
 {
 	int map[41][10] /*hats to people*/, dp[41][1 << 10];
 	memset(map, 0, sizeof(map));
 	memset(dp, -1, sizeof(dp));
-	for (int i = 0; i < hatsSize; i++)
+	for (int i = 0; i < hatsSize; ++i)
 	{
 		for (int j = 0; j < hatsColSize[i]; j++)
 			map[hats[i][j]][i] = 1;

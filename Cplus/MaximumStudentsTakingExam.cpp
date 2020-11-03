@@ -10,7 +10,7 @@ public:
 	{
 		int m = seats.size(), n = seats[0].size();
 		vector<int> mask(m);
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; ++i)
 		{
 			for (int j = 0; j < n; j++)
 			{

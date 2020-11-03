@@ -9,14 +9,14 @@ public:
 	{
 		unordered_set<char> vow = {'a', 'e', 'i', 'o', 'u'};
 		int res = 0, n = s.length(), count = 0;
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k; ++i)
 		{
 			if (vow.find(s[i]) != vow.end())
 				++count;
 		}
 		if (count > res)
 			res = count;
-		for (int i = k; i < n; i++)
+		for (int i = k; i < n; ++i)
 		{
 			if (vow.find(s[i]) != vow.end())
 				++count;

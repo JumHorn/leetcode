@@ -11,7 +11,7 @@ public:
 		for (auto c : s)
 			++right[c - 'a'];
 		int res = 0, leftcount = 0, rightcount = 0;
-		for (int i = 0; i < 26; i++)
+		for (int i = 0; i < 26; ++i)
 			rightcount += right[i] > 0 ? 1 : 0;
 		for (auto c : s)
 		{

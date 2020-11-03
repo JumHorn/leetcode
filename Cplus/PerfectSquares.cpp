@@ -28,7 +28,7 @@ public:
 
 		// Check whether 2 is the result.
 		int sqrt_n = (int)(sqrt(n));
-		for (int i = 1; i <= sqrt_n; i++)
+		for (int i = 1; i <= sqrt_n; ++i)
 		{
 			if (isSquare(n - i * i))
 				return 2;

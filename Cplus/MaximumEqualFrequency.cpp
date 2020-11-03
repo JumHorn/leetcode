@@ -9,7 +9,7 @@ public:
 	{
 		int res = 0;
 		unordered_map<int, int> freq, freqfreq;
-		for (int i = 0; i < (int)nums.size(); i++)
+		for (int i = 0; i < (int)nums.size(); ++i)
 		{
 			if (freq.find(nums[i]) != freq.end())
 			{

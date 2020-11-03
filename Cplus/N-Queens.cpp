@@ -50,7 +50,7 @@ public:
 
 	bool queenCheck(vector<int> &queen, int row, int column)
 	{
-		for (int i = 0; i < row; i++)
+		for (int i = 0; i < row; ++i)
 			if (column == queen[i] || (abs(row - i) == abs(column - queen[i])))
 				return false;
 		return true;

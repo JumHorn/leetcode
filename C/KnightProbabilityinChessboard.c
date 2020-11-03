@@ -11,7 +11,7 @@ double memdp(int N, int K, int r, int c, double (*dp)[N][N])
 	int dr[] = {2, 2, 1, 1, -1, -1, -2, -2};
 	int dc[] = {1, -1, 2, -2, 2, -2, 1, -1};
 	double res = 0;
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; ++i)
 		res += memdp(N, K - 1, r + dr[i], c + dc[i], dp) / 8.0;
 	return dp[K][r][c] = res;
 }

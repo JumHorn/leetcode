@@ -2,7 +2,7 @@
 int numMagicSquaresInside(int **grid, int gridSize, int *gridColSize)
 {
 	int colSize = gridColSize[0], res = 0;
-	for (int i = 1; i < gridSize - 1; i++)
+	for (int i = 1; i < gridSize - 1; ++i)
 	{
 		for (int j = 1; j < colSize - 1; j++)
 		{

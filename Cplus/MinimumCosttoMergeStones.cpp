@@ -17,7 +17,7 @@ public:
 		if ((N - 1) % (K - 1) != 0)
 			return -1;
 		vector<int> sum(N + 1);
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 			sum[i + 1] = sum[i] + stones[i];
 		vector<vector<int>> dp(N, vector<int>(N));
 		for (int n = K; n <= N; ++n)

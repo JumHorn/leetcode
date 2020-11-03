@@ -9,7 +9,7 @@ public:
 	{
 		sort(intervals.begin(), intervals.end(), *this);
 		int a = intervals[0][1] - 1, b = a + 1, res = 2;
-		for (int i = 1; i < (int)intervals.size(); i++)
+		for (int i = 1; i < (int)intervals.size(); ++i)
 		{
 			if (intervals[i][0] > a)
 			{

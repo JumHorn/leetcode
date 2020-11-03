@@ -16,7 +16,7 @@ public:
 		auto iter = s.begin();
 		if (*iter < arr1[0])
 			dp[0][*iter] = 1;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			for (auto iter : dp[i - 1])
 			{

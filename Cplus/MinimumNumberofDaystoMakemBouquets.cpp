@@ -4,7 +4,7 @@ using namespace std;
 class Solution
 {
 public:
-	int minDays(vector<int>& bloomDay, int m, int k)
+	int minDays(vector<int> &bloomDay, int m, int k)
 	{
 		int n = bloomDay.size();
 		vector<int> dup(n);
@@ -14,7 +14,7 @@ public:
 		while (lo < hi)
 		{
 			int mi = (hi - lo) / 2 + lo;
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < n; ++i)
 				dup[i] = ((bloomDay[i] <= mi) ? 1 : 0);
 			if (count(dup, k) < m)
 				lo = mi + 1;
@@ -24,10 +24,10 @@ public:
 		return lo;
 	}
 
-	int count(vector<int>& bloom, int k)
+	int count(vector<int> &bloom, int k)
 	{
 		int res = 0;
-		for (int i = 0, j = 0; i < (int)bloom.size(); i++)
+		for (int i = 0, j = 0; i < (int)bloom.size(); ++i)
 		{
 			if (bloom[i] == 0)
 				j = 0;

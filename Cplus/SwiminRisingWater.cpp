@@ -32,7 +32,7 @@ public:
 		int N = grid.size();
 		//board dfs direction
 		int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; ++i)
 		{
 			int x = row + path[i][0], y = column + path[i][1];
 			if (x < 0 || x >= N || y < 0 || y >= N || grid[x][y] == -1)

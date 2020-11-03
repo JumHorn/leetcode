@@ -4,7 +4,7 @@ using namespace std;
 class Solution
 {
 public:
-	bool canArrange(vector<int>& arr, int k)
+	bool canArrange(vector<int> &arr, int k)
 	{
 		vector<int> v(k);
 		for (auto n : arr)
@@ -16,7 +16,7 @@ public:
 		}
 		if (k % 2 == 1)
 		{
-			for (int i = 1; i <= k / 2; i++)
+			for (int i = 1; i <= k / 2; ++i)
 			{
 				if ((v[i] + v[k - i]) % 2 != 0)
 					return false;
@@ -24,7 +24,7 @@ public:
 		}
 		else
 		{
-			for (int i = 1; i < k / 2 - 1; i++)
+			for (int i = 1; i < k / 2 - 1; ++i)
 			{
 				if ((v[i] + v[k - i]) % 2 != 0)
 					return false;

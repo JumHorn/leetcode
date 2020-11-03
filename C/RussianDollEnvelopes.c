@@ -12,7 +12,7 @@ int maxEnvelopes(int **envelopes, int envelopesSize, int *envelopesColSize)
 {
 	qsort(envelopes, envelopesSize, sizeof(int *), cmp);
 	int size = 0;
-	for (int i = 0; i < envelopesSize; i++)
+	for (int i = 0; i < envelopesSize; ++i)
 	{
 		int lo = 0, hi = size;
 		while (lo < hi)

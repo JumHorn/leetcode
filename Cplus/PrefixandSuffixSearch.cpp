@@ -1,7 +1,7 @@
-#include <vector>
-#include <string>
 #include <map>
 #include <set>
+#include <string>
+#include <vector>
 using namespace std;
 
 class WordFilter
@@ -10,7 +10,7 @@ public:
 	WordFilter(vector<string> &words)
 	{
 		int n = words.size();
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			m_prefix[words[i]] = i;
 	}
 

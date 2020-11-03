@@ -1,12 +1,12 @@
 
 
-int constrainedSubsetSum(int* nums, int numsSize, int k)
+int constrainedSubsetSum(int *nums, int numsSize, int k)
 {
 	int size = k + 1;
 	int deque[size], front = 0, rear = 0, dp[numsSize], res;
 	res = dp[0] = nums[0];
 	deque[++front] = 0;
-	for (int i = 1; i < numsSize; i++)
+	for (int i = 1; i < numsSize; ++i)
 	{
 		while (i - deque[front] > k)
 			front = (front + size - 1) % size;

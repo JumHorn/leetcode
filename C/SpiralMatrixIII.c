@@ -10,7 +10,7 @@ int **spiralMatrixIII(int R, int C, int r0, int c0, int *returnSize, int **retur
 	*returnSize = R * C;
 	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	for (int i = 0; i < *returnSize; i++)
+	for (int i = 0; i < *returnSize; ++i)
 	{
 		(*returnColumnSizes)[i] = 2;
 		res[i] = (int *)malloc(sizeof(int) * 2);

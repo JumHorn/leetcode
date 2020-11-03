@@ -19,7 +19,7 @@ int divide(long *sum, long *dup, int start, int end, int lower, int upper)
 	int res = 0, mid = (end - start) / 2 + start;
 	res += divide(sum, dup, start, mid, lower, upper);
 	res += divide(sum, dup, mid, end, lower, upper);
-	for (int i = start, j = mid, k = mid; i < mid; i++)
+	for (int i = start, j = mid, k = mid; i < mid; ++i)
 	{
 		while (j < end && sum[j] - sum[i] < lower)
 			j++;
@@ -35,7 +35,7 @@ int countRangeSum(int *nums, int numsSize, int lower, int upper)
 {
 	long sum[numsSize + 1], dup[numsSize + 1];
 	sum[0] = 0;
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 		sum[i + 1] = sum[i] + nums[i];
 	return divide(sum, dup, 0, numsSize + 1, lower, upper);
 }

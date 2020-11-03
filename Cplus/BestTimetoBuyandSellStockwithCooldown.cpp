@@ -21,7 +21,7 @@ public:
 			return 0;
 		int sell = max(0, prices[1] - prices[0]), sell_pre0 = 0, sell_pre1 = 0;
 		int buy = max(-prices[0], -prices[1]);
-		for (int i = 2; i < n; i++)
+		for (int i = 2; i < n; ++i)
 		{
 			sell_pre1 = sell_pre0;
 			sell_pre0 = sell;

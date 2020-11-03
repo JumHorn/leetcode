@@ -6,7 +6,7 @@ using namespace std;
 class Solution
 {
 public:
-	Solution(vector<int>& nums) : origin(nums)
+	Solution(vector<int> &nums) : origin(nums)
 	{
 	}
 
@@ -21,7 +21,7 @@ public:
 	{
 		vector<int> copy(origin);
 		int n = copy.size();
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			int tmp = rand() % (n - i) + i;
 			swap(copy[i], copy[tmp]);

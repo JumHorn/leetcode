@@ -97,7 +97,7 @@ char **wordBreak(char *s, char **wordDict, int wordDictSize, int *returnSize)
 		return NULL;
 	//create Trie
 	Trie *root = createNode(0);
-	for (int i = 0; i < wordDictSize; i++)
+	for (int i = 0; i < wordDictSize; ++i)
 		insert(root, wordDict[i]);
 	char buff[1000];
 	char **res = 0;

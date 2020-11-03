@@ -10,7 +10,7 @@ public:
 	{
 		int N = nums.size();
 		vector<string> v(nums.size());
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 			v[i] = to_string(nums[i]);
 		sort(v.begin(), v.end(), *this);
 		string res;

@@ -19,7 +19,7 @@ char *largestMultipleOfThree(int *digits, int digitsSize)
 	memset(v, 0, sizeof(v));
 	sum = 0;
 	size = digitsSize;
-	for (int i = 0; i < digitsSize; i++)
+	for (int i = 0; i < digitsSize; ++i)
 	{
 		++v[digits[i]];
 		sum += digits[i];

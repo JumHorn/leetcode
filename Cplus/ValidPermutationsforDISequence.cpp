@@ -10,7 +10,7 @@ public:
 		int n = S.length();
 		vector<vector<int>> dp(n + 1, vector<int>(n + 1));
 		dp[0][0] = 1;
-		for (int i = 1; i <= n; i++)
+		for (int i = 1; i <= n; ++i)
 		{
 			for (int j = 0; j <= i; j++)
 			{
@@ -27,7 +27,7 @@ public:
 			}
 		}
 		int res = 0;
-		for (int i = 0; i <= n; i++)
+		for (int i = 0; i <= n; ++i)
 			res = (res + dp[n][i]) % MOD;
 		return res;
 	}

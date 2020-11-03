@@ -8,12 +8,12 @@ public:
 	int numSubmatrixSumTarget(vector<vector<int>> &matrix, int target)
 	{
 		int res = 0, M = matrix.size(), N = matrix[0].size();
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 1; j < N; j++)
 				matrix[i][j] += matrix[i][j - 1];
 		}
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			for (int j = i; j < N; j++)
 			{

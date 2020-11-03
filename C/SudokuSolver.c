@@ -1,6 +1,6 @@
 #include <stdbool.h>
 
-bool checkBoard(char** board, int i, int j)
+bool checkBoard(char **board, int i, int j)
 {
 	for (int l = 0; l < 9; l++)
 	{
@@ -14,9 +14,9 @@ bool checkBoard(char** board, int i, int j)
 	return true;
 }
 
-bool backTracking(char** board, int n)
+bool backTracking(char **board, int n)
 {
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; ++i)
 	{
 		for (int j = 0; j < n; j++)
 		{
@@ -36,7 +36,7 @@ bool backTracking(char** board, int n)
 	return true;
 }
 
-void solveSudoku(char** board, int boardSize, int* boardColSize)
+void solveSudoku(char **board, int boardSize, int *boardColSize)
 {
 	backTracking(board, boardSize);
 }

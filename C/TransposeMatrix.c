@@ -13,7 +13,7 @@ int **transpose(int **A, int ASize, int *AColSize, int *returnSize, int **return
 	for (int i = 0; i < N; ++i)
 		(*returnColumnSizes)[i] = M;
 	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < N; ++i)
 		res[i] = (int *)malloc(sizeof(int) * (*returnColumnSizes)[i]);
 
 	for (int i = 0; i < M; ++i)

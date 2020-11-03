@@ -12,7 +12,7 @@ public:
 		int n = s.length();
 		vector<int> dp(n + 1, INT_MAX);
 		dp[0] = 0;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			for (int j = 0; j <= i; j++)
 				if (isPalindrome(s, j, i))

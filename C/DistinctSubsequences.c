@@ -1,13 +1,13 @@
 #include <string.h>
 
-int numDistinct(char* s, char* t)
+int numDistinct(char *s, char *t)
 {
 	int len1 = strlen(s), len2 = strlen(t);
 	long dp[len1 + 1][len2 + 1];
 	memset(dp, 0, sizeof(dp));
-	for (int i = 0; i < len1; i++)
+	for (int i = 0; i < len1; ++i)
 		dp[i][0] = 1;
-	for (int i = 0; i < len1; i++)
+	for (int i = 0; i < len1; ++i)
 	{
 		for (int j = 0; j < len2; j++)
 		{

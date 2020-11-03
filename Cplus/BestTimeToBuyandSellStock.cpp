@@ -6,10 +6,10 @@ using namespace std;
 class Solution
 {
 public:
-	int maxProfit(vector<int>& prices)
+	int maxProfit(vector<int> &prices)
 	{
 		int res = 0, maxval = 0;
-		for (int i = 1; i < (int)prices.size(); i++)
+		for (int i = 1; i < (int)prices.size(); ++i)
 		{
 			maxval += prices[i] - prices[i - 1];
 			if (maxval < 0)

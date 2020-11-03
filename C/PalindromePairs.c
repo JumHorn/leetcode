@@ -60,7 +60,7 @@ void search(struct Trie *root, int index, char **words, int *len, int ***res, in
 		return;
 	if (root->index >= 0 && len[index] != len[root->index] && isPalindrome(words[root->index], len[index], len[root->index]))
 		*res = addPair(*res, size, root->index, index);
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i < 26; ++i)
 		search(root->node[i], index, words, len, res, size);
 }
 
@@ -72,14 +72,14 @@ void search(struct Trie *root, int index, char **words, int *len, int ***res, in
 int **palindromePairs(char **words, int wordsSize, int *returnSize, int **returnColumnSizes)
 {
 	struct Trie *root = creataNode(-1);
-	for (int i = 0; i < wordsSize; i++)
+	for (int i = 0; i < wordsSize; ++i)
 		insert(root, words[i], i);
 	int len[wordsSize];
-	for (int i = 0; i < wordsSize; i++)
+	for (int i = 0; i < wordsSize; ++i)
 		len[i] = strlen(words[i]);
 	*returnSize = 0;
 	int **res = NULL;
-	for (int i = 0; i < wordsSize; i++)
+	for (int i = 0; i < wordsSize; ++i)
 	{
 		//exist empty string
 		if (root->index >= 0 && root->index != i && isPalindrome(words[i], 0, len[i]))
@@ -96,7 +96,7 @@ int **palindromePairs(char **words, int wordsSize, int *returnSize, int **return
 		search(tmp, i, words, len, &res, returnSize);
 	}
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	for (int i = 0; i < *returnSize; i++)
+	for (int i = 0; i < *returnSize; ++i)
 		(*returnColumnSizes)[i] = 2;
 	return res;
 }

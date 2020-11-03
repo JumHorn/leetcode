@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -11,7 +11,7 @@ public:
 		if (matrix.empty())
 			return res;
 		vector<vector<int>> dp(matrix.size(), vector<int>(matrix[0].size()));
-		for (int i = 0; i < (int)matrix.size(); i++)
+		for (int i = 0; i < (int)matrix.size(); ++i)
 			for (int j = 0; j < (int)matrix[0].size(); j++)
 				res = max(res, longestIncreasingPath(matrix, dp, i, j));
 		return res + 1;

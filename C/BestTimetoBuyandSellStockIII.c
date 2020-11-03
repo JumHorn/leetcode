@@ -20,7 +20,7 @@ int maxProfit(int *prices, int pricesSize)
 		return 0;
 	int dp[3][pricesSize];
 	memset(dp, 0, sizeof(dp));
-	for (int i = 1; i <= 2; i++)
+	for (int i = 1; i <= 2; ++i)
 	{
 		int buy = -prices[0];
 		for (int j = 1; j < pricesSize; j++)

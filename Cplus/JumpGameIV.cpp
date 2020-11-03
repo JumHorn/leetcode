@@ -12,7 +12,7 @@ public:
 		if (n <= 1)
 			return res;
 		unordered_map<int, vector<int>> m;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			m[arr[i]].push_back(i);
 		vector<int> seen(n);
 		queue<int> q;

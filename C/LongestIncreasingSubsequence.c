@@ -1,9 +1,9 @@
 
 
-int lengthOfLIS(int* nums, int numsSize)
+int lengthOfLIS(int *nums, int numsSize)
 {
 	int size = 0;
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 	{
 		int lo = 0, hi = size;
 		while (lo < hi)

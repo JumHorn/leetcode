@@ -8,7 +8,7 @@ int *maxSlidingWindow(int *nums, int numsSize, int k, int *returnSize)
 	*returnSize = numsSize - k + 1;
 	int *res = (int *)malloc(*returnSize * sizeof(int));
 	int deque[k], front = 0, rear = 0;
-	for (int i = 0, j = 0; i < numsSize; i++)
+	for (int i = 0, j = 0; i < numsSize; ++i)
 	{
 		while (front != rear && nums[deque[(rear + 1) % k]] <= nums[i])
 			rear = (rear + 1) % k;

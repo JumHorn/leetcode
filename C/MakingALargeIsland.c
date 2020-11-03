@@ -1,7 +1,7 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int colorNode(int** grid, int M, int N, int row, int col, int color)
+int colorNode(int **grid, int M, int N, int row, int col, int color)
 {
 	if (row < 0 || row >= M || col < 0 || col >= N || grid[row][col] != 1)
 		return 0;
@@ -14,11 +14,11 @@ int colorNode(int** grid, int M, int N, int row, int col, int color)
 	return res;
 }
 
-int largestIsland(int** grid, int gridSize, int* gridColSize)
+int largestIsland(int **grid, int gridSize, int *gridColSize)
 {
 	int color = 2, colorArr[2000], res = 0;
 	//color the grid
-	for (int i = 0; i < gridSize; i++)
+	for (int i = 0; i < gridSize; ++i)
 	{
 		for (int j = 0; j < *gridColSize; j++)
 		{
@@ -31,7 +31,7 @@ int largestIsland(int** grid, int gridSize, int* gridColSize)
 		}
 	}
 
-	for (int i = 0; i < gridSize; i++)
+	for (int i = 0; i < gridSize; ++i)
 	{
 		for (int j = 0; j < *gridColSize; j++)
 		{
@@ -48,13 +48,13 @@ int largestIsland(int** grid, int gridSize, int* gridColSize)
 				int c = grid[dx][dy], l = 0;
 				while (l < n && colorset[l] != c)
 					++l;
-				if (l == n)	 //this color not count yet
+				if (l == n) //this color not count yet
 				{
 					area += colorArr[c];
 					colorset[n++] = c;
 				}
 			}
-			res = max(res, area + 1);  //1 for self
+			res = max(res, area + 1); //1 for self
 		}
 	}
 	return res;

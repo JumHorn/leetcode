@@ -1,6 +1,6 @@
 #include <stdbool.h>
 
-bool dfs(char** board, int m, int n, int i, int j, char* word)
+bool dfs(char **board, int m, int n, int i, int j, char *word)
 {
 	if (!*word)
 		return true;
@@ -21,10 +21,10 @@ bool dfs(char** board, int m, int n, int i, int j, char* word)
 	return false;
 }
 
-bool exist(char** board, int boardSize, int* boardColSize, char* word)
+bool exist(char **board, int boardSize, int *boardColSize, char *word)
 {
 	int m = boardSize, n = *boardColSize;
-	for (int i = 0; i < m; i++)
+	for (int i = 0; i < m; ++i)
 	{
 		for (int j = 0; j < n; j++)
 			if (dfs(board, boardSize, *boardColSize, i, j, word))

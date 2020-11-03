@@ -14,7 +14,7 @@ int getMaxRepetitions(char *s1, int n1, char *s2, int n2)
 		map[*p1 - 'a'] = 0;
 		++p1;
 	}
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i < 26; ++i)
 	{
 		if (map[i] != 0)
 			return 0;
@@ -25,7 +25,7 @@ int getMaxRepetitions(char *s1, int n1, char *s2, int n2)
 	memset(seen, -1, sizeof(seen));
 
 	p2 = s2;
-	for (int i = 0; i < n1; i++)
+	for (int i = 0; i < n1; ++i)
 	{
 		p1 = s1;
 		while (*p1)

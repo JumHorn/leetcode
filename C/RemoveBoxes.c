@@ -6,7 +6,7 @@ int removeBoxes(int *boxes, int boxesSize)
 {
 	int dp[boxesSize][boxesSize][boxesSize];
 	memset(dp, 0, sizeof(dp));
-	for (int i = 0; i < boxesSize; i++)
+	for (int i = 0; i < boxesSize; ++i)
 	{
 		for (int k = 0; k <= i; k++)
 			dp[i][i][k] = (k + 1) * (k + 1);

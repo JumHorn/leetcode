@@ -32,7 +32,7 @@ char *lastSubstring(char *s)
 	int N = strlen(s);
 	SuffixArray sa[N];
 	//init
-	for (int i = 0; i < N - 1; i++)
+	for (int i = 0; i < N - 1; ++i)
 	{
 		sa[i].index = i;
 		sa[i].currank = s[i] - 'a';
@@ -51,7 +51,7 @@ char *lastSubstring(char *s)
 		sa[0].currank = rank_count;
 		rank[sa[0].index] = 0;
 		//update rank
-		for (int i = 1; i < N; i++)
+		for (int i = 1; i < N; ++i)
 		{
 			if (sa[i].currank == pre_rank && sa[i].nextrank == sa[i - 1].nextrank)
 				sa[i].currank = rank_count;
@@ -62,7 +62,7 @@ char *lastSubstring(char *s)
 			}
 			rank[sa[i].index] = i;
 		}
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			int nextindex = sa[i].index + k / 2;
 			sa[i].nextrank = (nextindex < N) ? sa[rank[nextindex]].currank : -1;

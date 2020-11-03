@@ -9,7 +9,7 @@ public:
 	{
 		int m = board.size(), n = board[0].size();
 		vector<int> v(m);
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; ++i)
 		{
 			for (int j = 0; j < n; j++)
 				v[i] |= board[i][j] << j;
@@ -52,7 +52,7 @@ public:
 	{
 		int n = v.size();
 		vector<int> res(n);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			for (int j = 0; j < n; j++)
 				res[i] |= ((v[j] >> i) & 1) << j;
 		return res;
@@ -64,7 +64,7 @@ public:
 		int m = board.size();
 		stack<int> s;
 		int res = 0;
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; ++i)
 		{
 			int tmp = (board[i] & 1);
 			if (tmp != flag)

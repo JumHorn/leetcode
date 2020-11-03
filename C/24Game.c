@@ -1,11 +1,11 @@
-#include <stdbool.h>
 #include <math.h>
+#include <stdbool.h>
 
 bool backTracking(double *nums, int n)
 {
 	if (n == 1 && fabs(nums[0] - 24) < 0.000001)
 		return true;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; ++i)
 	{
 		for (int j = 0; j < n; j++)
 		{
@@ -42,7 +42,7 @@ bool backTracking(double *nums, int n)
 bool judgePoint24(int *nums, int numsSize)
 {
 	double dup[numsSize];
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 		dup[i] = nums[i];
 	return backTracking(dup, numsSize);
 }

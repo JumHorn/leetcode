@@ -28,7 +28,7 @@ public:
 		int res = 0, i = m, j = n;
 		while (i < row && !existApple(count, i, n, i + 1, col))
 			++i;
-		for (; i < row; i++)
+		for (; i < row; ++i)
 			res = (res + memdp(count, i + 1, n, k - 1, dp)) % MOD;
 		while (j < col && !existApple(count, m, j, row, j + 1))
 			++j;

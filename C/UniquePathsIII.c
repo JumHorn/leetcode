@@ -20,7 +20,7 @@ int dfs(int **grid, int gridSize, int *gridColSize, int allzero, int row, int co
 int uniquePathsIII(int **grid, int gridSize, int *gridColSize)
 {
 	int allzero = 0, m, n;
-	for (int i = 0; i < gridSize; i++)
+	for (int i = 0; i < gridSize; ++i)
 	{
 		for (int j = 0; j < *gridColSize; j++)
 		{

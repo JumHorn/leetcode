@@ -18,7 +18,7 @@ public:
 			return 1;
 		int res = 0;
 		unordered_set<int> seen;
-		for (int i = index; i < N; i++)
+		for (int i = index; i < N; ++i)
 		{
 			if (index == 0 || isSquare(A[index - 1] + A[i]))
 			{

@@ -1,5 +1,5 @@
-#include <vector>
 #include <queue>
+#include <vector>
 using namespace std;
 
 //Definition for singly-linked list.
@@ -17,7 +17,7 @@ public:
 	{
 		ListNode *dummy = new ListNode(0), *res = dummy;
 		priority_queue<pair<int, ListNode *>> q;
-		for (int i = 0; i < (int)lists.size(); i++)
+		for (int i = 0; i < (int)lists.size(); ++i)
 			if (lists[i] != NULL)
 				q.push({-lists[i]->val, lists[i]});
 		while (!q.empty())

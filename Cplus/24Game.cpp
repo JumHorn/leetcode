@@ -1,5 +1,5 @@
-#include <vector>
 #include <cmath>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -16,7 +16,7 @@ public:
 		int n = nums.size();
 		if (n == 1 && abs(nums[0] - 24) < 0.000001)
 			return true;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			for (int j = 0; j < n; j++)
 			{

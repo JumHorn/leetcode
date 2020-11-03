@@ -12,7 +12,7 @@ public:
 			int mid = (hi - lo) / 2 + lo;
 
 			int count = 0;
-			for (int i = 1; i <= m; i++)
+			for (int i = 1; i <= m; ++i)
 				count += min(mid / i, n);
 
 			if (count < k)

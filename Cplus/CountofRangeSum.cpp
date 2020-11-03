@@ -11,7 +11,7 @@ public:
 		up = upper;
 		vector<long> sums(n + 1);
 		dup.resize(n + 1);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			sums[i + 1] = sums[i] + nums[i];
 		return divide(sums, 0, n + 1);
 	}
@@ -23,7 +23,7 @@ public:
 			return 0;
 		int mid = start + (end - start) / 2;
 		res = divide(sums, start, mid) + divide(sums, mid, end);
-		for (int i = start, j = mid, k = mid; i < mid; i++)
+		for (int i = start, j = mid, k = mid; i < mid; ++i)
 		{
 			while (j < end && sums[j] - sums[i] < low)
 				j++;

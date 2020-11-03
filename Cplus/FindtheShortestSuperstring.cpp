@@ -1,7 +1,7 @@
-#include <vector>
-#include <string>
 #include <climits>
 #include <stack>
+#include <string>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -11,7 +11,7 @@ public:
 	{
 		const int N = A.size();
 		vector<vector<int>> graph(N, vector<int>(N));
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			for (int j = 0; j < N; j++)
 				graph[i][j] = overlap(A[i], A[j]);
@@ -20,7 +20,7 @@ public:
 		//TSP DP build shortest path
 		vector<vector<int>> dp(1 << N, vector<int>(N, 1e9));
 		vector<vector<int>> path(1 << N, vector<int>(N));
-		for (int i = 1; i < (1 << N); i++)
+		for (int i = 1; i < (1 << N); ++i)
 		{
 			for (int j = 0; j < N; j++)
 			{
@@ -45,7 +45,7 @@ public:
 
 		// build path
 		int last, minlen = INT_MAX;
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			if (dp[(1 << N) - 1][i] < minlen)
 			{

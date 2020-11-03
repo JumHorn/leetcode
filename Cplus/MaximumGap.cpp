@@ -42,7 +42,7 @@ public:
 			}
 		}
 		int tmp = buckets[0][1];
-		for (int i = 1; i < bucketnum; i++)
+		for (int i = 1; i < bucketnum; ++i)
 		{
 			if (buckets[i][0] == -1)
 				continue;

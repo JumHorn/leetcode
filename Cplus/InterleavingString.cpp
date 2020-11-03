@@ -18,7 +18,7 @@ public:
 		dp[0] = true;
 		for (int j = 0; j < N && s2[j] == s3[j]; j++)
 			dp[j + 1] = true;
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			dp[0] = (dp[0] && s1[i] == s3[i]);
 			for (int j = 0; j < N; j++)

@@ -31,7 +31,7 @@ int **outerTrees(int **points, int pointsSize, int *pointsColSize, int *returnSi
 	*returnSize = 0;
 	memset(seen, 0, sizeof(seen));
 	// left to right
-	for (int i = 0; i < pointsSize; i++)
+	for (int i = 0; i < pointsSize; ++i)
 	{
 		while (top >= 1 && crossProduct(points[stack[top]], points[i], points[stack[top - 1]]) < 0)
 			--top;
@@ -63,7 +63,7 @@ int **outerTrees(int **points, int pointsSize, int *pointsColSize, int *returnSi
 		--top;
 	}
 	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
-	for (int i = 0; i < pointsSize; i++)
+	for (int i = 0; i < pointsSize; ++i)
 	{
 		if (seen[i] == 1)
 		{
@@ -72,7 +72,7 @@ int **outerTrees(int **points, int pointsSize, int *pointsColSize, int *returnSi
 		}
 	}
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	for (int i = 0; i < *returnSize; i++)
+	for (int i = 0; i < *returnSize; ++i)
 		(*returnColumnSizes)[i] = 2;
 	return res;
 }

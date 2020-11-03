@@ -46,10 +46,10 @@ public:
 				return res;
 			}
 		}
-		for (int i = 0; i < m[q]; i++)
+		for (int i = 0; i < m[q]; ++i)
 			res += to_string(decimal[i]);
 		res += '(';
-		for (int i = m[q]; i < (int)decimal.size(); i++)
+		for (int i = m[q]; i < (int)decimal.size(); ++i)
 			res += to_string(decimal[i]);
 		res += ')';
 		return res;

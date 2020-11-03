@@ -15,11 +15,11 @@ bool noZero(int n)
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* getNoZeroIntegers(int n, int* returnSize)
+int *getNoZeroIntegers(int n, int *returnSize)
 {
 	*returnSize = 2;
-	int* res = (int*)malloc(sizeof(int) * (*returnSize));
-	for (int i = 1; i <= n / 2; i++)
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	for (int i = 1; i <= n / 2; ++i)
 	{
 		if (noZero(i) && noZero(n - i))
 		{

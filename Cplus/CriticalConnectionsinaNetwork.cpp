@@ -16,7 +16,7 @@ public:
 		vector<int> dsc(n), low(n);
 		vector<vector<int>> res;
 		int time = 0;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			if (dsc[i] == 0)
 				dfs(graph, dsc, low, i, time);

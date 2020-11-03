@@ -1,5 +1,5 @@
-#include <vector>
 #include <string>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -9,7 +9,7 @@ public:
 	{
 		vector<string> res;
 		string sub;
-		for (int i = 0; i < (int)num.length(); i++)
+		for (int i = 0; i < (int)num.length(); ++i)
 		{
 			sub.push_back(num[i]);
 			long n = stol(sub);
@@ -29,7 +29,7 @@ public:
 			return;
 		}
 		string sub;
-		for (int i = index; i < (int)num.length(); i++)
+		for (int i = index; i < (int)num.length(); ++i)
 		{
 			sub.push_back(num[i]);
 			int n = stol(sub);

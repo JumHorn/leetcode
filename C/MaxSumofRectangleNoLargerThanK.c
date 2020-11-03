@@ -23,7 +23,7 @@ int divide(int *arr, int *dump, int first, int last, int k)
 	int left = divide(arr, dump, first, mi, k);
 	int right = divide(arr, dump, mi, last, k);
 	int low = max(left, right);
-	for (int i = first, j = mi; i < mi && j < last; i++)
+	for (int i = first, j = mi; i < mi && j < last; ++i)
 	{
 		while (j < last && arr[j] - arr[i] <= k)
 		{
@@ -44,10 +44,10 @@ int maxSumSubmatrix(int **matrix, int matrixSize, int *matrixColSize, int k)
 		memset(sum, 0, sizeof(sum));
 		for (int j = col; j < n; j++)
 		{
-			for (int i = 0; i < m; i++)
+			for (int i = 0; i < m; ++i)
 				sum[i + 1] += matrix[i][j];
 			memcpy(arr, sum, sizeof(arr));
-			for (int i = 1; i <= m; i++)
+			for (int i = 1; i <= m; ++i)
 				arr[i] += arr[i - 1];
 			int tmp = divide(arr, dump, 0, m + 1, k);
 			res = max(res, tmp);

@@ -1,6 +1,6 @@
-#include <vector>
 #include <climits>
 #include <set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -14,11 +14,11 @@ public:
 			vector<int> sums(m);
 			for (int j = col; j < n; j++)
 			{
-				for (int i = 0; i < m; i++)
+				for (int i = 0; i < m; ++i)
 					sums[i] += matrix[i][j];
 				set<int> s({0});
 				int currsum = 0;
-				for (int i = 0; i < m; i++)
+				for (int i = 0; i < m; ++i)
 				{
 					currsum += sums[i];
 					auto iter = s.lower_bound(currsum - k);

@@ -19,7 +19,7 @@ public:
 	int maxProduct(vector<int> &nums)
 	{
 		int N = nums.size(), res = nums[0], prefixproduct = 0, suffixproduct = 0;
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			prefixproduct = (prefixproduct != 0 ? prefixproduct : 1) * nums[i];
 			suffixproduct = (suffixproduct != 0 ? suffixproduct : 1) * nums[N - 1 - i];

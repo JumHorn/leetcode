@@ -15,7 +15,7 @@ public:
 	{
 		int M = A.size(), N = A[0].size();
 		vector<int> dp(N, 1);
-		for (int i = 1; i < N; i++)
+		for (int i = 1; i < N; ++i)
 		{
 			for (int k = 0; k < i; k++)
 			{

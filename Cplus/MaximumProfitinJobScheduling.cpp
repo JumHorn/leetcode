@@ -19,7 +19,7 @@ public:
 	{
 		int n = profit.size();
 		vector<Job> v(n);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			v[i].start = startTime[i];
 			v[i].end = endTime[i];
@@ -28,7 +28,7 @@ public:
 		sort(v.begin(), v.end(), *this);
 		map<int, int> dp; //{endTime,profit}
 		dp[0] = 0;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			auto iter = dp.upper_bound(v[i].start);
 			if (iter == dp.begin())

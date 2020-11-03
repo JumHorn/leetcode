@@ -11,13 +11,13 @@ int maxCoins(int *nums, int numsSize)
 {
 	int n = numsSize + 2;
 	int dp[n][n], dup[n];
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 		dup[i + 1] = nums[i];
 	dup[0] = dup[n - 1] = 1;
 	memset(dp, 0, sizeof(dp));
 	for (int len = 2; len < n; len++)
 	{
-		for (int i = 0; i < n - len; i++)
+		for (int i = 0; i < n - len; ++i)
 		{
 			int j = i + len;
 			for (int k = i + 1; k < j; k++)

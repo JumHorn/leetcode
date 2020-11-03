@@ -1,9 +1,9 @@
-#include <vector>
-#include <string>
-#include <map>
-#include <unordered_map>
 #include <algorithm>
 #include <cctype>
+#include <map>
+#include <string>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -24,7 +24,7 @@ public:
 	vector<string> basicCalculatorIV(string expression, vector<string> &evalvars, vector<int> &evalints)
 	{
 		unordered_map<string, int> evalmap;
-		for (int i = 0; i < (int)evalvars.size(); i++)
+		for (int i = 0; i < (int)evalvars.size(); ++i)
 			evalmap[evalvars[i]] = evalints[i];
 		map<string, int, comp> current;
 		map<string, int, comp> pre;
@@ -202,7 +202,7 @@ public:
 		string res;
 		for (auto &n : valmap)
 		{
-			for (int i = 0; i < n.second; i++)
+			for (int i = 0; i < n.second; ++i)
 				res += "*" + n.first;
 		}
 		return res.substr(1);

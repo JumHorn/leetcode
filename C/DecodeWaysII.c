@@ -12,7 +12,7 @@ int numDecodings(char *s)
 	memset(dp, 0, sizeof(dp));
 	dp[0] = 1;
 	dp[1] = *s == '*' ? 9 : (*s == '0' ? 0 : 1);
-	for (int i = 1; i < len; i++)
+	for (int i = 1; i < len; ++i)
 	{
 		dp[i + 1] = (dp[i + 1] + dp[i] * (s[i] == '*' ? 9 : (s[i] == '0' ? 0 : 1))) % MOD;
 		int k = 0;

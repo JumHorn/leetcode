@@ -20,7 +20,7 @@ public:
 	bool backTracking(vector<string> &words, string &result, vector<int> &digit, vector<int> &used, int index, int carry)
 	{
 		int len = result.size();
-		for (int i = index; i <= 7; i++)
+		for (int i = index; i <= 7; ++i)
 		{
 			int tmp = 0;
 			bool flag = false;

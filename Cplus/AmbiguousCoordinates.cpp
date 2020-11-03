@@ -9,7 +9,7 @@ public:
 	{
 		vector<string> res;
 		int n = S.length();
-		for (int i = 1; i < n - 2; i++)
+		for (int i = 1; i < n - 2; ++i)
 		{
 			vector<string> x = possibleNumber(S.substr(1, i));
 			vector<string> y = possibleNumber(S.substr(i + 1, n - 2 - i));
@@ -37,7 +37,7 @@ public:
 			return {s};
 		vector<string> res;
 		res.push_back(s);
-		for (int i = 0; i < (int)s.length() - 1; i++)
+		for (int i = 0; i < (int)s.length() - 1; ++i)
 			res.push_back(s.substr(0, i + 1) + "." + s.substr(i + 1));
 		return res;
 	}

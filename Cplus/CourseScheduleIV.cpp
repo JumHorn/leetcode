@@ -21,7 +21,7 @@ public:
 			return true;
 		if (graph[from][to] != 0)
 			return graph[from][to] == 1;
-		for (int i = 0; i < (int)graph[from].size(); i++)
+		for (int i = 0; i < (int)graph[from].size(); ++i)
 		{
 			if (graph[from][i] == 1 && dfs(graph, i, to))
 			{

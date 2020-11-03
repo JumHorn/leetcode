@@ -10,7 +10,7 @@ public:
 	{
 		unordered_set<int> seen;
 		int m = mat.size(), n = mat[0].size(), matrix = 0;
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; ++i)
 		{
 			for (int j = 0; j < n; j++)
 			{
@@ -32,7 +32,7 @@ public:
 			{
 				int top = q.front();
 				q.pop();
-				for (int i = 0; i < m; i++)
+				for (int i = 0; i < m; ++i)
 				{
 					for (int j = 0; j < n; j++)
 					{

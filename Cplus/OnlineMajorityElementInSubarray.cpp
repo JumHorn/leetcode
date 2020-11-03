@@ -9,13 +9,13 @@ class MajorityChecker
 public:
 	MajorityChecker(vector<int> &arr) : v(arr)
 	{
-		for (int i = 0; i < (int)arr.size(); i++)
+		for (int i = 0; i < (int)arr.size(); ++i)
 			hashmap[arr[i]].push_back(i);
 	}
 
 	int query(int left, int right, int threshold)
 	{
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 7; ++i)
 		{
 			int val = v[left + rand() % (right - left + 1)];
 			if (hashmap[val].size() >= threshold)

@@ -10,7 +10,7 @@ public:
 	{
 		stack<int> s;
 		int first, second;
-		for (int i = 0; i < (int)tokens.size(); i++)
+		for (int i = 0; i < (int)tokens.size(); ++i)
 		{
 			if (tokens[i] == "+")
 			{

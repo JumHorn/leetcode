@@ -9,7 +9,7 @@ so the base means the minimum tag in this turn
 bool circularArrayLoop(int *nums, int numsSize)
 {
 	int tag = 1000;
-	for (int i = 0; i < numsSize; i++)
+	for (int i = 0; i < numsSize; ++i)
 	{
 		if (nums[i] <= 1000)
 		{

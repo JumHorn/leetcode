@@ -20,7 +20,7 @@ struct ListNode *rotateRight(struct ListNode *head, int k)
 	}
 	rear->next = head;
 	size = size - k % size - 1;
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size; ++i)
 		runner = runner->next;
 	head = runner->next;
 	runner->next = NULL;

@@ -13,7 +13,7 @@ public:
 			return 0;
 		unordered_map<int, vector<int>> station; //{BusStop,{all bus route}}
 		int N = routes.size();
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			for (int j = 0; j < (int)routes[i].size(); j++)
 				station[routes[i][j]].push_back(i);

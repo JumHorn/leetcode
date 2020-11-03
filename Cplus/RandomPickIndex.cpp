@@ -6,9 +6,9 @@ using namespace std;
 class Solution
 {
 public:
-	Solution(vector<int>& nums)
+	Solution(vector<int> &nums)
 	{
-		for (int i = 0; i < (int)nums.size(); i++)
+		for (int i = 0; i < (int)nums.size(); ++i)
 			val_to_index[nums[i]].push_back(i);
 	}
 

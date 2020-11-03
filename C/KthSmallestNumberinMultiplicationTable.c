@@ -4,7 +4,7 @@
 int count(int m, int n, int x)
 {
 	int res = 0;
-	for (int i = 1; i <= m; i++)
+	for (int i = 1; i <= m; ++i)
 		res += min(x / i, n);
 	return res;
 }

@@ -5,19 +5,19 @@ using namespace std;
 class Cashier
 {
 public:
-	Cashier(int n, int discount, vector<int>& products, vector<int>& prices)
+	Cashier(int n, int discount, vector<int> &products, vector<int> &prices)
 	{
 		m_count = 0;
 		m_n = n;
 		m_discount = discount;
-		for (int i = 0; i < (int)products.size(); i++)
+		for (int i = 0; i < (int)products.size(); ++i)
 			productprices[products[i]] = prices[i];
 	}
 
 	double getBill(vector<int> product, vector<int> amount)
 	{
 		double res = 0.0;
-		for (int i = 0; i < (int)product.size(); i++)
+		for (int i = 0; i < (int)product.size(); ++i)
 			res += productprices[product[i]] * amount[i];
 		if (++m_count == m_n)
 		{

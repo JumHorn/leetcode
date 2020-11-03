@@ -9,7 +9,7 @@ public:
 	{
 		int n = A.size(), res = 0;
 		vector<unordered_map<long, int>> dp(n);
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			for (int j = 0; j < i; j++)
 			{

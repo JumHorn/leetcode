@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-int shortestPathLength(int** graph, int graphSize, int* graphColSize)
+int shortestPathLength(int **graph, int graphSize, int *graphColSize)
 {
 	int dp[1 << graphSize][graphSize];
 	memset(dp, (1 << 7) - 1, sizeof(dp));
-	for (int i = 0; i < graphSize; i++)
+	for (int i = 0; i < graphSize; ++i)
 		dp[1 << i][i] = 0;
 	for (int cover = 0; cover < 1 << graphSize; ++cover)
 	{
@@ -32,7 +32,7 @@ int shortestPathLength(int** graph, int graphSize, int* graphColSize)
 	}
 
 	int res = graphSize * graphSize;
-	for (int i = 0; i < graphSize; i++)
+	for (int i = 0; i < graphSize; ++i)
 	{
 		if (dp[(1 << graphSize) - 1][i] < res)
 			res = dp[(1 << graphSize) - 1][i];

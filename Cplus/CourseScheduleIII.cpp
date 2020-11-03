@@ -1,6 +1,6 @@
-#include <vector>
-#include <queue>
 #include <algorithm>
+#include <queue>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -14,7 +14,7 @@ public:
 		priority_queue<int> q;
 		int time = courses[0][0];
 		q.push(time);
-		for (int i = 1; i < (int)courses.size(); i++)
+		for (int i = 1; i < (int)courses.size(); ++i)
 		{
 			if (time + courses[i][0] <= courses[i][1])
 			{

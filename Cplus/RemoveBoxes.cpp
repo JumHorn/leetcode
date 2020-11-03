@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -21,7 +21,7 @@ public:
 		for (; l < r && boxes[l] == boxes[l + 1]; l++)
 			++k;
 		int res = (k + 1) * (k + 1) + memdp(boxes, l + 1, r, 0, dp);
-		for (int i = l + 1; i <= r; i++)
+		for (int i = l + 1; i <= r; ++i)
 		{
 			if (boxes[l] == boxes[i])
 				res = max(res, memdp(boxes, l + 1, i - 1, 0, dp) + memdp(boxes, i, r, k + 1, dp));

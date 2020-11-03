@@ -15,7 +15,7 @@ public:
 			++indegree[pre[0]];
 			graph[pre[1]].push_back(pre[0]);
 		}
-		for (int i = 0; i < numCourses; i++)
+		for (int i = 0; i < numCourses; ++i)
 		{
 			if (indegree[i] == 0)
 				q.push(i);

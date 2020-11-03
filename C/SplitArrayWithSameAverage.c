@@ -2,12 +2,12 @@
 #include <stdlib.h>
 
 //cmp function don't consider overflow
-int cmp(const void* lhs, const void* rhs)
+int cmp(const void *lhs, const void *rhs)
 {
-	return *(int*)lhs - *(int*)rhs;
+	return *(int *)lhs - *(int *)rhs;
 }
 
-bool backTracking(int* A, int ASize, int index, int count, int subsum, int sum)
+bool backTracking(int *A, int ASize, int index, int count, int subsum, int sum)
 {
 	if (index >= ASize)
 		return false;
@@ -24,7 +24,7 @@ bool backTracking(int* A, int ASize, int index, int count, int subsum, int sum)
 
 bool isPossible(int ASize, int sum)
 {
-	for (int i = 1; i <= ASize / 2; i++)
+	for (int i = 1; i <= ASize / 2; ++i)
 	{
 		if (sum * i % ASize == 0)
 			return true;
@@ -32,11 +32,11 @@ bool isPossible(int ASize, int sum)
 	return false;
 }
 
-bool splitArraySameAverage(int* A, int ASize)
+bool splitArraySameAverage(int *A, int ASize)
 {
 	qsort(A, ASize, sizeof(int), cmp);
 	int sum = 0;
-	for (int i = 0; i < ASize; i++)
+	for (int i = 0; i < ASize; ++i)
 		sum += A[i];
 	// early pruning
 	if (!isPossible(ASize, sum))

@@ -52,7 +52,7 @@ public:
 	{
 		int M = board.size(), N = board[0].size();
 		int res = 0;
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; j++)
 				res = res * 10 + board[i][j];
@@ -76,7 +76,7 @@ public:
 	pair<int, int> findZero(vector<vector<int>> &board)
 	{
 		int M = board.size(), N = board[0].size();
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; j++)
 			{

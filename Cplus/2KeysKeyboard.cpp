@@ -17,7 +17,7 @@ public:
 		if (dp.find(n) != dp.end())
 			return dp[n];
 		int res = n;
-		for (int i = 2; i * i <= n; i++)
+		for (int i = 2; i * i <= n; ++i)
 		{
 			if (n % i == 0)
 			{

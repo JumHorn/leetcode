@@ -16,7 +16,7 @@ int maxProfit(int *prices, int pricesSize, int fee)
 	int dp[pricesSize];
 	dp[0] = 0;
 	int buy = -prices[0];
-	for (int i = 1; i < pricesSize; i++)
+	for (int i = 1; i < pricesSize; ++i)
 	{
 		dp[i] = max(dp[i - 1], prices[i] - fee + buy);
 		buy = max(buy, dp[i - 1] - prices[i]);

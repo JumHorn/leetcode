@@ -9,12 +9,12 @@ public:
 	{
 		int n = nums.size();
 		vector<long> prefix(n + 1);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			prefix[i + 1] += prefix[i] + nums[i];
 		vector<vector<long>> dp(m + 1, vector<long>(n + 1));
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			dp[1][i + 1] = prefix[i + 1];
-		for (int i = 2; i <= m; i++)
+		for (int i = 2; i <= m; ++i)
 		{
 			for (int j = i - 1; j <= n; j++)
 			{

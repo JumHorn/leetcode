@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <string>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 class Solution
@@ -12,7 +12,7 @@ public:
 		vector<int> dp(N + 1);
 		for (int j = 0; j < N; j++)
 			dp[j + 1] = dp[j] + 1;
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			int pre = dp[0];
 			dp[0] = i + 1;

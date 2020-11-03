@@ -5,12 +5,12 @@ using namespace std;
 class Solution
 {
 public:
-	int shortestPathLength(vector<vector<int>>& graph)
+	int shortestPathLength(vector<vector<int>> &graph)
 	{
 		int N = graph.size(), res = 0;
 		vector<vector<int>> dp(1 << N, vector<int>(N, N * N));
 		queue<pair<int, int>> q;
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			q.push({1 << i, i});
 			dp[1 << i][i] = 0;

@@ -10,7 +10,7 @@ public:
 		int n = min(steps, arrLen);
 		vector<int> dp(n + 2);
 		dp[1] = dp[2] = 1;
-		for (int i = 1; i < steps; i++)
+		for (int i = 1; i < steps; ++i)
 		{
 			vector<int> tmp(dp);
 			for (int j = 1; j <= min(i + 1, n); j++)

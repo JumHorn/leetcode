@@ -1,5 +1,5 @@
-#include <vector>
 #include <set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -9,10 +9,10 @@ public:
 	{
 		multiset<int> s;
 		vector<double> res;
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k; ++i)
 			s.insert(nums[i]);
 		multiset<int>::iterator mid = next(s.begin(), k / 2);
-		for (int i = k;; i++)
+		for (int i = k;; ++i)
 		{
 			res.push_back(((double)*mid + *prev(mid, 1 - k % 2)) / 2.0);
 			if (i == (int)nums.size())

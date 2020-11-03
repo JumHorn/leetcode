@@ -13,7 +13,7 @@ public:
 		deque<int> q;
 		dp[0] = nums.front();
 		q.push_back(0);
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i < n; ++i)
 		{
 			while (i - q.front() > k)
 				q.pop_front();

@@ -1,6 +1,6 @@
-#include <vector>
 #include <algorithm>
 #include <map>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -12,13 +12,13 @@ public:
 		if (n < 2)
 			return n;
 		int res = 0;
-		for (int i = 0; i < n - 1; i++)
+		for (int i = 0; i < n - 1; ++i)
 		{
 			map<pair<int, int>, int> data;
 			int vertical = 0; //该点与x轴垂直的直线上有多少个点
-			int slope = 0;	  //同斜率的直线点的个数
-			int maxp = 0;	  //最多点数
-			int samep = 1;	  //相同点,包含自身
+			int slope = 0;	//同斜率的直线点的个数
+			int maxp = 0;	 //最多点数
+			int samep = 1;	//相同点,包含自身
 			for (int j = i + 1; j < n; j++)
 			{
 				if (points[i] == points[j]) //测试用例的点有重复

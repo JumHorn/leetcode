@@ -8,7 +8,7 @@ int largestRectangleArea(int *heights, int heightsSize)
 {
 	int stack[heightsSize + 1], top = 0, res = 0;
 	stack[0] = -1;
-	for (int i = 0; i < heightsSize; i++)
+	for (int i = 0; i < heightsSize; ++i)
 	{
 		while (top != 0 && heights[i] <= heights[stack[top]])
 		{

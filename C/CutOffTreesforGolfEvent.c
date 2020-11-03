@@ -50,7 +50,7 @@ int cutOffTree(int **forest, int forestSize, int *forestColSize)
 {
 	int M = forestSize, N = *forestColSize;
 	int height[M * N][2], heightsize = 0;
-	for (int i = 0; i < M; i++)
+	for (int i = 0; i < M; ++i)
 	{
 		for (int j = 0; j < N; j++)
 		{
@@ -64,7 +64,7 @@ int cutOffTree(int **forest, int forestSize, int *forestColSize)
 	}
 	qsort(height, heightsize, sizeof(int) * 2, cmp);
 	int cut = 0, res = 0;
-	for (int i = 0; i < heightsize; i++)
+	for (int i = 0; i < heightsize; ++i)
 	{
 		int distance = minDistance(forest, M, N, cut, height[i][1]);
 		if (distance == -1)

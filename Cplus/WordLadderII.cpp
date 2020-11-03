@@ -1,8 +1,8 @@
-#include <vector>
-#include <string>
-#include <unordered_set>
-#include <unordered_map>
 #include <queue>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -29,7 +29,7 @@ public:
 			while (--size >= 0)
 			{
 				string tmp = q.front();
-				for (int i = 0; i < (int)tmp.length(); i++)
+				for (int i = 0; i < (int)tmp.length(); ++i)
 				{
 					for (char c = 'a'; c <= 'z'; c++)
 					{

@@ -21,7 +21,7 @@ public:
 		if (d == 1)
 			return *max_element(job.begin() + index, job.end());
 		int res = INT_MAX, maxval = job[index], n = job.size();
-		for (int i = index; i <= n - d; i++)
+		for (int i = index; i <= n - d; ++i)
 		{
 			maxval = max(maxval, job[i]);
 			res = min(res, maxval + memdp(job, i + 1, d - 1, dp));

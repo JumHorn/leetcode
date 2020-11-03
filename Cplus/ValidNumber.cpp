@@ -42,8 +42,8 @@ public:
 			{8, 8, 8, 3},
 			{8, 8, 8, 8}};
 		s = trimmed(s);
-		int n = 0;	//for state 0
-		for (int i = 0; i < (int)s.length(); i++)
+		int n = 0; //for state 0
+		for (int i = 0; i < (int)s.length(); ++i)
 		{
 			if (s[i] == '-' || s[i] == '+')
 				n = state[n][0];

@@ -5,12 +5,12 @@ using namespace std;
 class Solution
 {
 public:
-	int longestSubarray(vector<int>& nums, int limit)
+	int longestSubarray(vector<int> &nums, int limit)
 	{
 		int res = 1, maxval = nums[0], minval = nums[0];
 		if (nums.empty())
 			return 0;
-		for (int i = 1; i < (int)nums.size(); i++)
+		for (int i = 1; i < (int)nums.size(); ++i)
 		{
 			if (nums[i] > maxval)
 				maxval = nums[i];

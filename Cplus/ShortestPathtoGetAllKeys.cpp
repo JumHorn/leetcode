@@ -1,7 +1,7 @@
-#include <vector>
-#include <string>
 #include <queue>
+#include <string>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -29,7 +29,7 @@ public:
 				int x = state.second / N, y = state.second % N;
 				//board dfs direction
 				int path[5] = {-1, 0, 1, 0, -1};
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < 4; ++i)
 				{
 					int dx = x + path[i], dy = y + path[i + 1];
 					if (dx < 0 || dx >= M || dy < 0 || dy >= N || grid[dx][dy] == '#')
@@ -52,7 +52,7 @@ public:
 	pair<int, int> findStart(vector<string> &grid, string &target)
 	{
 		pair<int, int> res = {0, 0};
-		for (int i = 0; i < (int)grid.size(); i++)
+		for (int i = 0; i < (int)grid.size(); ++i)
 		{
 			for (int j = 0; j < (int)grid[i].length(); j++)
 			{

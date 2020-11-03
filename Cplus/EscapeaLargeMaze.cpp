@@ -9,7 +9,7 @@ public:
 	bool isEscapePossible(vector<vector<int>> &blocked, vector<int> &source, vector<int> &target)
 	{
 		set<pair<int, int>> block;
-		for (int i = 0; i < (int)blocked.size(); i++)
+		for (int i = 0; i < (int)blocked.size(); ++i)
 			block.insert({blocked[i][0], blocked[i][1]});
 		return bfs(block, source, target) && bfs(block, target, source);
 	}
@@ -28,7 +28,7 @@ public:
 			{
 				int x = q.front().first, y = q.front().second;
 				q.pop();
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < 4; ++i)
 				{
 					int dx = x + path[i], dy = y + path[i + 1];
 					if (target[0] == dx && target[1] == dy)

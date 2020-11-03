@@ -6,13 +6,13 @@ using namespace std;
 class Solution
 {
 public:
-	vector<int> avoidFlood(vector<int>& rains)
+	vector<int> avoidFlood(vector<int> &rains)
 	{
 		int n = rains.size();
 		vector<int> res;
 		unordered_map<int, int> m;
 		set<int> dry;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			if (rains[i] > 0)
 			{

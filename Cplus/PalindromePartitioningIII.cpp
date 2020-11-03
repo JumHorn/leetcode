@@ -32,7 +32,7 @@ public:
 		if (cache[index][k] != -1)
 			return cache[index][k];
 		int res = INT_MAX;
-		for (int i = index; i <= n - k; i++)
+		for (int i = index; i <= n - k; ++i)
 			res = min(res, dp[index][i] + memdp(dp, i + 1, k - 1, cache));
 		cache[index][k] = res;
 		return res;

@@ -10,10 +10,10 @@ public:
 	{
 		map<string, int> m;
 		int n = words.size();
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 			m[words[i]] = i;
 		vector<vector<int>> res;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			for (int j = 0; j <= (int)words[i].length(); j++)
 			{

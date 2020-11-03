@@ -29,7 +29,7 @@ public:
 		priority_queue<Element, vector<Element>, Comp> q;
 		int n = nums.size();
 		int maxval = INT_MIN;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			maxval = max(maxval, nums[i][0]);
 			q.push({nums[i][0], i, 0});

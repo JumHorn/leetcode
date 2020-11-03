@@ -8,7 +8,7 @@ public:
 	{
 		int n = nums.size();
 		int res = nums[0];
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			res = gcd(nums[i], res);
 			if (res == 1)

@@ -11,7 +11,7 @@ public:
 		vector<int> res(queries.size());
 		set<pair<int, int>> s;
 		unordered_map<int, int> xmap, ymap, d0map, d1map;
-		for (int i = 0; i < (int)lamps.size(); i++)
+		for (int i = 0; i < (int)lamps.size(); ++i)
 		{
 			++xmap[lamps[i][0]];
 			++ymap[lamps[i][1]];
@@ -19,7 +19,7 @@ public:
 			++d1map[lamps[i][0] - lamps[i][1]];
 			s.insert({lamps[i][0], lamps[i][1]});
 		}
-		for (int i = 0; i < (int)queries.size(); i++)
+		for (int i = 0; i < (int)queries.size(); ++i)
 		{
 			int x = queries[i][0], y = queries[i][1];
 			if (xmap[x] != 0 || ymap[y] != 0 || d0map[x + y] != 0 || d1map[x - y] != 0)

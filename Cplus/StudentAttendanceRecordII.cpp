@@ -8,12 +8,12 @@ public:
 	{
 		int MOD = 1e9 + 7;
 		int dp[2][3];
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; ++i)
 		{
 			for (int j = 0; j < 3; j++)
 				dp[i][j] = 1;
 		}
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			int dp1[2][3] = {0};
 			for (int j = 0; j < 2; j++)

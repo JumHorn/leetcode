@@ -58,7 +58,7 @@ int numSquarefulPerms(int *A, int ASize)
 		res += dp[mask][i];
 
 	/* Divide out permutations of equal elements. */
-	for (int i = 0; i < ASize; i++)
+	for (int i = 0; i < ASize; ++i)
 	{
 		int k = 1;
 		for (int j = i + 1; j < ASize; j++)

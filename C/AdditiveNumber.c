@@ -1,6 +1,6 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 bool checkValid(char *num, long first, long second)
 {
@@ -10,7 +10,7 @@ bool checkValid(char *num, long first, long second)
 	long third = first + second;
 	sprintf(str, "%ld", third);
 	int i;
-	for (i = 0; str[i]; i++)
+	for (i = 0; str[i]; ++i)
 	{
 		if (str[i] != num[i])
 			break;
@@ -30,7 +30,7 @@ bool isAdditiveNumber(char *num)
 	if (len < 3)
 		return false;
 	long first = 0, second = 0;
-	for (int i = 0; i < len / 2; i++)
+	for (int i = 0; i < len / 2; ++i)
 	{
 		char tmp = num[i + 1];
 		num[i + 1] = '\0';

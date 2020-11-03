@@ -24,7 +24,7 @@ int countPalindromicSubsequences(char *S)
 	int len = strlen(S);
 	int dp[len][len];
 	memset(dp, 0, sizeof(dp));
-	for (int i = 0; i < len; i++)
+	for (int i = 0; i < len; ++i)
 		dp[i][i] = 1;
 	for (int n = 1; n < len; n++)
 	{

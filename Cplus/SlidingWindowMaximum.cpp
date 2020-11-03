@@ -1,6 +1,6 @@
-#include <vector>
-#include <deque>
 #include <algorithm>
+#include <deque>
+#include <vector>
 using namespace std;
 
 /*
@@ -14,7 +14,7 @@ public:
 	{
 		vector<int> res(nums.size() - k + 1);
 		deque<int> q;
-		for (int i = 0, j = 0; i < (int)nums.size(); i++)
+		for (int i = 0, j = 0; i < (int)nums.size(); ++i)
 		{
 			while (!q.empty() && nums[q.back()] < nums[i])
 				q.pop_back();

@@ -1,6 +1,6 @@
 #include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -16,7 +16,7 @@ public:
 
 	void dfs(string &node, int k, unordered_set<string> &seen, string &res)
 	{
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k; ++i)
 		{
 			node.push_back('0' + i);
 			if (seen.find(node) == seen.end())

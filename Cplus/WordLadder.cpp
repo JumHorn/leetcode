@@ -24,7 +24,7 @@ public:
 			unordered_set<string> newset;
 			for (auto str : beginset)
 			{
-				for (int i = 0; i < (int)str.length(); i++)
+				for (int i = 0; i < (int)str.length(); ++i)
 				{
 					char oldchar = str[i];
 					for (char c = 'a'; c <= 'z'; c++)

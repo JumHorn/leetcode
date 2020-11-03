@@ -1,6 +1,6 @@
-#include <string>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <string>
 using namespace std;
 
 class Solution
@@ -10,7 +10,7 @@ public:
 	{
 		long l = stoll(L), r = stoll(R);
 		int res = 0, magic = 1e5;
-		for (long i = 1; i < magic; i++)
+		for (long i = 1; i < magic; ++i)
 		{
 			int len = to_string(i).length();
 			long val = i * pow(10, len) + reverse(i);
@@ -20,7 +20,7 @@ public:
 			if (val >= l && isPalindrome(val))
 				++res;
 		}
-		for (long i = 1; i < magic; i++)
+		for (long i = 1; i < magic; ++i)
 		{
 			int len = to_string(i).length();
 			long val = i * pow(10, len - 1) + reverse(i) % (long)pow(10, len - 1);

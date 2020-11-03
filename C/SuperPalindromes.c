@@ -30,7 +30,7 @@ int superpalindromesInRange(char *L, char *R)
 	long long l = atoll(L), r = atoll(R);
 	int res = 0, magic = 1e5;
 
-	for (long long i = 1; i < magic; i++)
+	for (long long i = 1; i < magic; ++i)
 	{
 		char str[40] = {0}, reverse_str[20] = {0};
 		sprintf(str, "%lld", i);
@@ -43,7 +43,7 @@ int superpalindromesInRange(char *L, char *R)
 		if (val >= l && isPalindrome(val))
 			++res;
 	}
-	for (long long i = 1; i < magic; i++)
+	for (long long i = 1; i < magic; ++i)
 	{
 		char str[40] = {0}, reverse_str[20] = {0};
 		sprintf(str, "%lld", i);

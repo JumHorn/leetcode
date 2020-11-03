@@ -1,6 +1,6 @@
 #include <string.h>
 
-int minStickers(char** stickers, int stickersSize, char* target)
+int minStickers(char **stickers, int stickersSize, char *target)
 {
 	int N = strlen(target);
 	int dp[1 << N];
@@ -10,7 +10,7 @@ int minStickers(char** stickers, int stickersSize, char* target)
 	{
 		if (dp[state] == -1)
 			continue;
-		for (int i = 0; i < stickersSize; i++)
+		for (int i = 0; i < stickersSize; ++i)
 		{
 			int now = state;
 			for (int j = 0; stickers[i][j]; j++)

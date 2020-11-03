@@ -7,7 +7,7 @@ int maxPoints(int **points, int pointsSize, int *pointsColSize)
 	if (pointsSize <= 2)
 		return pointsSize;
 	int res = 2;
-	for (int i = 0; i < pointsSize - 1; i++)
+	for (int i = 0; i < pointsSize - 1; ++i)
 	{
 		int duplicate = 1;
 		for (int j = i + 1; j < pointsSize; j++)

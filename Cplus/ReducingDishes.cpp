@@ -10,7 +10,7 @@ public:
 		sort(satisfaction.begin(), satisfaction.end());
 		int index = binarySearch(satisfaction), n = satisfaction.size();
 		int sum = 0, res = 0;
-		for (int i = index; i < n; i++)
+		for (int i = index; i < n; ++i)
 		{
 			res += satisfaction[i] * (i - index + 1);
 			sum += satisfaction[i];

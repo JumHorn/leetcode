@@ -12,7 +12,7 @@ public:
 		int sum = accumulate(A.begin(), A.end(), 0);
 		// early pruning
 		bool isPossible = false;
-		for (int i = 1; i <= m && !isPossible; i++)
+		for (int i = 1; i <= m && !isPossible; ++i)
 		{
 			if (sum * i % N == 0)
 				isPossible = true;
@@ -29,7 +29,7 @@ public:
 					dp[i].insert(iter + n);
 			}
 		}
-		for (int i = 1; i <= m; i++)
+		for (int i = 1; i <= m; ++i)
 		{
 			if (sum * i % N == 0 && dp[i].find(sum * i / N) != dp[i].end())
 				return true;

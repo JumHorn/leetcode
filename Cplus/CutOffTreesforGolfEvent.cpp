@@ -1,7 +1,7 @@
-#include <vector>
 #include <algorithm>
 #include <queue>
 #include <unordered_set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -11,7 +11,7 @@ public:
 	{
 		int M = forest.size(), N = forest[0].size();
 		priority_queue<pair<int, int>> height;
-		for (int i = 0; i < M; i++)
+		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; j++)
 			{

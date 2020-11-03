@@ -23,7 +23,7 @@ class Solution
 public:
 	Solution() : quard(7, vector<int>(7))
 	{
-		for (int i = 0; i < 40; i++)
+		for (int i = 0; i < 40; ++i)
 			quard[i / 7][i % 7] = i % 10 + 1;
 	}
 

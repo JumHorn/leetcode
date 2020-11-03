@@ -16,7 +16,7 @@ public:
 			return 0;
 		int mid = start + (end - start) / 2;
 		res = divide(nums, start, mid) + divide(nums, mid, end);
-		for (int i = start, j = mid; i < mid; i++)
+		for (int i = start, j = mid; i < mid; ++i)
 		{
 			while (j < end && (long)nums[i] - (long)nums[j] > (long)nums[j])
 				j++;

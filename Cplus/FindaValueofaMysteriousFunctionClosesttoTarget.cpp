@@ -7,11 +7,11 @@ using namespace std;
 class Solution
 {
 public:
-	int closestToTarget(vector<int>& arr, int target)
+	int closestToTarget(vector<int> &arr, int target)
 	{
 		set<int> s;
 		int res = target + 1e9, N = arr.size();
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < N; ++i)
 		{
 			set<int> s1;
 			s1.insert(arr[i]);

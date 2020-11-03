@@ -20,7 +20,7 @@ int memdp(int target, int *dp)
 	else
 	{
 		res = memdp(position - target, dp) + count + 1; //R
-		for (int i = 0; i < count - 1; i++)
+		for (int i = 0; i < count - 1; ++i)
 		{
 			int right = memdp(target - (position - speed / 2) + ((1 << i) - 1), dp) + i + count - 1 + 2; //RR
 			res = min(res, right);

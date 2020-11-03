@@ -5,13 +5,13 @@ using namespace std;
 class Solution
 {
 public:
-	bool find132pattern(vector<int>& nums)
+	bool find132pattern(vector<int> &nums)
 	{
 		if (nums.empty())
 			return false;
 		stack<pair<int, int>> s;
 		int lo = nums[0];
-		for (int i = 1; i < (int)nums.size(); i++)
+		for (int i = 1; i < (int)nums.size(); ++i)
 		{
 			if (nums[i] <= lo)
 				lo = nums[i];

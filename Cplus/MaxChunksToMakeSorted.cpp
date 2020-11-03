@@ -15,7 +15,7 @@ public:
 		for (int i = N - 1; i >= 0; --i)
 			m[dup[i]] = i;
 		int res = 0;
-		for (int i = 0, j = 0; i < N; i++)
+		for (int i = 0, j = 0; i < N; ++i)
 		{
 			j = max(j, m[arr[i]]);
 			if (i == j)

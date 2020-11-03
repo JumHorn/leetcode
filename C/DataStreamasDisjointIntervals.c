@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <limits.h>
+#include <stdlib.h>
 
 //Definition for an interval.
 struct Interval
@@ -92,7 +92,7 @@ int **summaryRangesGetIntervals(SummaryRanges *obj, int *retSize, int **retColSi
 	if (size == 0)
 		return NULL;
 	*retColSize = (int *)malloc(sizeof(int) * size);
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size; ++i)
 		(*retColSize)[i] = 2;
 	int **res = (int **)malloc(sizeof(int *) * size);
 	Interval *root = obj->data->next;

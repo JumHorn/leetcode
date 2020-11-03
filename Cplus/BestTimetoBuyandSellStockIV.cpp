@@ -1,6 +1,6 @@
-#include <vector>
 #include <algorithm>
 #include <cstring>
+#include <vector>
 using namespace std;
 
 /*
@@ -25,15 +25,15 @@ public:
 		if (k > (int)prices.size() / 2)
 		{
 			int res = 0;
-			for (int i = 1; i < (int)prices.size(); i++)
+			for (int i = 1; i < (int)prices.size(); ++i)
 				res += max(prices[i] - prices[i - 1], 0);
 			return res;
 		}
 		int hold[k], sold[k];
 		memset(sold, 0, sizeof(sold));
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k; ++i)
 			hold[i] = -prices[0];
-		for (int i = 0; i < (int)prices.size(); i++)
+		for (int i = 0; i < (int)prices.size(); ++i)
 		{
 			hold[0] = max(-prices[i], hold[0]);
 			sold[0] = max(hold[0] + prices[i], sold[0]);

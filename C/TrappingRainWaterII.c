@@ -68,7 +68,7 @@ int trapRainWater(int **heightMap, int heightMapSize, int *heightMapColSize)
 	int size = m * n, priorityqueue[size][2], top = -1;
 	int seen[m][n];
 	memset(seen, 0, sizeof(seen));
-	for (int i = 0; i < m; i++)
+	for (int i = 0; i < m; ++i)
 	{
 		priorityqueue[++top][0] = heightMap[i][0];
 		priorityqueue[top][1] = i * n + 0;
@@ -101,7 +101,7 @@ int trapRainWater(int **heightMap, int heightMapSize, int *heightMapColSize)
 		int position = priorityqueue[top][1];
 		--top;
 		maxheight = max(maxheight, height);
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; ++i)
 		{
 			int x = position / n + path[i][0], y = position % n + path[i][1];
 			if (x < 0 || x >= m || y < 0 || y >= n || seen[x][y] == 1)

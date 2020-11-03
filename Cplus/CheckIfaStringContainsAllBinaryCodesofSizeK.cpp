@@ -9,14 +9,14 @@ public:
 	{
 		unsigned int num = 0, n = s.length();
 		unordered_set<int> code;
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k; ++i)
 		{
 			num <<= 1;
 			if (s[i] == '1')
 				num |= 1;
 		}
 		code.insert(num);
-		for (int i = k; i < n; i++)
+		for (int i = k; i < n; ++i)
 		{
 			num <<= 1;
 			if (s[i] == '1')

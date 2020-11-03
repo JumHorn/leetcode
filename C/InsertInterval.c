@@ -9,27 +9,27 @@
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int* createInterval(int* interval)
+int *createInterval(int *interval)
 {
-	int* res = (int*)malloc(sizeof(int) * 2);
+	int *res = (int *)malloc(sizeof(int) * 2);
 	res[0] = interval[0];
 	res[1] = interval[1];
 	return res;
 }
 
-int* createReturnColumn(int size)
+int *createReturnColumn(int size)
 {
-	int* res = (int*)malloc(sizeof(int) * size);
-	for (int i = 0; i < size; i++)
+	int *res = (int *)malloc(sizeof(int) * size);
+	for (int i = 0; i < size; ++i)
 		res[i] = 2;
 	return res;
 }
 
-int** insert(int** intervals, int intervalsSize, int* intervalsColSize, int* newInterval, int newIntervalSize, int* returnSize, int** returnColumnSizes)
+int **insert(int **intervals, int intervalsSize, int *intervalsColSize, int *newInterval, int newIntervalSize, int *returnSize, int **returnColumnSizes)
 {
 	int size = 0, i;
-	int** res = (int**)malloc(sizeof(int*) * (intervalsSize + 1));
-	for (i = 0; i < intervalsSize; i++)
+	int **res = (int **)malloc(sizeof(int *) * (intervalsSize + 1));
+	for (i = 0; i < intervalsSize; ++i)
 	{
 		if (newInterval[1] < intervals[i][0])
 		{

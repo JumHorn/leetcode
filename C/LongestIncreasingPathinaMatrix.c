@@ -40,7 +40,7 @@ int longestIncreasingPath(int **matrix, int matrixSize, int *matrixColSize)
 	int dp[m][n];
 	memset(dp, -1, sizeof(dp));
 	int res = 0;
-	for (int i = 0; i < m; i++)
+	for (int i = 0; i < m; ++i)
 	{
 		for (int j = 0; j < n; j++)
 		{

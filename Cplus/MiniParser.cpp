@@ -37,7 +37,7 @@ public:
 	NestedInteger deserialize(string s)
 	{
 		stack<NestedInteger> stk;
-		for (int i = 0, j = 0; i < (int)s.length(); i++)
+		for (int i = 0, j = 0; i < (int)s.length(); ++i)
 		{
 			if (s[i] == '[')
 			{

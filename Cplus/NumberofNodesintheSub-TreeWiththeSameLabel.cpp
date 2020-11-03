@@ -25,7 +25,7 @@ public:
 		{
 			graph[n].erase(at);
 			vector<int> tmp = dfs(graph, n, c, labels, nodeCount);
-			for (int i = 0; i < 26; i++)
+			for (int i = 0; i < 26; ++i)
 				res[i] += tmp[i];
 		}
 		nodeCount[at] = ++res[labels[at] - 'a'];

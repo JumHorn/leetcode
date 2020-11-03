@@ -6,7 +6,7 @@ bool backTracking(int **grid, int N, int row, int col, int elevation, int (*seen
 	seen[row][col] = 1;
 	//board dfs direction
 	int path[5] = {-1, 0, 1, 0, -1};
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		int x = row + path[i], y = col + path[i + 1];
 		if (x < 0 || x >= N || y < 0 || y >= N || seen[x][y] != 0 || grid[x][y] > elevation)

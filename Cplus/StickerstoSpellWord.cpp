@@ -8,14 +8,14 @@ using namespace std;
 class Solution
 {
 public:
-	int minStickers(vector<string>& stickers, string target)
+	int minStickers(vector<string> &stickers, string target)
 	{
 		int n = stickers.size(), res = 0;
 		map<char, int> targetmap;
 		vector<map<char, int>> words(n);
 		for (auto c : target)
 			++targetmap[c];
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; ++i)
 		{
 			for (auto c : stickers[i])
 				if (targetmap.find(c) != targetmap.end())
@@ -31,7 +31,7 @@ public:
 			int size = q.size();
 			while (--size >= 0)
 			{
-				for (int i = 0; i < n; i++)
+				for (int i = 0; i < n; ++i)
 				{
 					targetmap = q.front();
 					for (auto c : words[i])

@@ -3,7 +3,7 @@
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int cherryPickup(int** grid, int gridSize, int* gridColSize)
+int cherryPickup(int **grid, int gridSize, int *gridColSize)
 {
 	int M = gridSize, N = *gridColSize;
 	int dp[M][N][N];
@@ -15,7 +15,7 @@ int cherryPickup(int** grid, int gridSize, int* gridColSize)
 		{
 			for (int bot1 = bot0; bot1 < N; ++bot1)
 			{
-				for (int i = max(bot0 - 1, 0); i <= min(bot0 + 1, N - 1); i++)
+				for (int i = max(bot0 - 1, 0); i <= min(bot0 + 1, N - 1); ++i)
 				{
 					for (int j = max(bot1 - 1, 0); j <= min(bot1 + 1, N - 1); j++)
 					{

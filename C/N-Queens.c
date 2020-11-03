@@ -12,7 +12,7 @@ char ***addQueen(char ***queens, int size, char **newqueen)
 char **createQueen(int n, int *queen)
 {
 	char **res = (char **)malloc(sizeof(char *) * n);
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; ++i)
 	{
 		res[i] = (char *)malloc(sizeof(char) * (n + 1));
 		for (int j = 0; j < n; j++)
@@ -25,7 +25,7 @@ char **createQueen(int n, int *queen)
 
 bool queenCheck(int *queen, int row)
 {
-	for (int i = 0; i < row; i++)
+	for (int i = 0; i < row; ++i)
 	{
 		if (queen[i] == queen[row] || abs(i - row) == abs(queen[i] - queen[row]))
 			return false;
@@ -66,7 +66,7 @@ char ***solveNQueens(int n, int *returnSize, int **returnColumnSizes)
 	char ***res = NULL;
 	backTracking(n, queen, 0, &res, returnSize);
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	for (int i = 0; i < *returnSize; i++)
+	for (int i = 0; i < *returnSize; ++i)
 		(*returnColumnSizes)[i] = n;
 	return res;
 }

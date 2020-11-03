@@ -17,7 +17,7 @@ dp[i][k]=max{prices[i]+dp1[j]}
 int maxProfitUnlimits(int *prices, int pricesSize)
 {
 	int res = 0;
-	for (int i = 1; i < pricesSize; i++)
+	for (int i = 1; i < pricesSize; ++i)
 	{
 		if (prices[i] > prices[i - 1])
 			res += prices[i] - prices[i - 1];
@@ -33,7 +33,7 @@ int maxProfit(int k, int *prices, int pricesSize)
 		return maxProfitUnlimits(prices, pricesSize);
 	int dp[k + 1][pricesSize];
 	memset(dp, 0, sizeof(dp));
-	for (int i = 1; i <= k; i++)
+	for (int i = 1; i <= k; ++i)
 	{
 		int buy = -prices[0];
 		for (int j = 1; j < pricesSize; j++)

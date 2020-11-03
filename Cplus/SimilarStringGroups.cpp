@@ -1,5 +1,5 @@
-#include <vector>
 #include <string>
+#include <vector>
 using namespace std;
 
 class DSU
@@ -7,7 +7,7 @@ class DSU
 public:
 	DSU(int s) : parent(s)
 	{
-		for (int i = 0; i < s; i++)
+		for (int i = 0; i < s; ++i)
 			parent[i] = i;
 		size = s;
 	}
@@ -45,7 +45,7 @@ public:
 	int numSimilarGroups(vector<string> &A)
 	{
 		DSU dsu(A.size());
-		for (int i = 0; i < (int)A.size(); i++)
+		for (int i = 0; i < (int)A.size(); ++i)
 		{
 			for (int j = i + 1; j < (int)A.size(); j++)
 			{
@@ -59,7 +59,7 @@ public:
 	bool strDiff(const string &lhs, const string &rhs)
 	{
 		int res = 0;
-		for (int i = 0; i < (int)lhs.length(); i++)
+		for (int i = 0; i < (int)lhs.length(); ++i)
 		{
 			if (lhs[i] != rhs[i])
 				res++;
