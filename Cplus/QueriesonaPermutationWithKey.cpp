@@ -1,8 +1,8 @@
-#include <vector>
 #include <unordered_map>
+#include <vector>
 using namespace std;
 
-//Fenwick tree
+//Fenwick tree(BIT)
 class Fenwick
 {
 public:
@@ -34,6 +34,7 @@ public:
 private:
 	vector<int> tree;
 };
+/********end of Fenwick tree(BIT)********/
 
 class Solution
 {
@@ -44,7 +45,7 @@ public:
 		Fenwick bit(size + m); //binary index tree
 		vector<int> res;
 		unordered_map<int, int> indexmap; //{val,index}
-		for (int i = 0; i < m; i++)
+		for (int i = 0; i < m; ++i)
 		{
 			indexmap[i + 1] = i + size;
 			bit.update(i + size, 1);

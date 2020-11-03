@@ -5,6 +5,7 @@
 Fenwick tree based solution
 */
 
+//Fenwick tree(BIT)
 int sum(int *tree, int size, int index)
 {
 	int res = 0;
@@ -24,6 +25,7 @@ void update(int *tree, int size, int index, int delta)
 		index += index & -index;
 	}
 }
+/********end of Fenwick tree(BIT)********/
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
@@ -31,7 +33,7 @@ void update(int *tree, int size, int index, int delta)
 int *processQueries(int *queries, int queriesSize, int m, int *returnSize)
 {
 	int map[m + 1];
-	for (int i = 1; i <= m; i++)
+	for (int i = 1; i <= m; ++i)
 		map[i] = i + queriesSize;
 	int treesize = queriesSize + m + 1, tree[treesize];
 	memset(tree, 0, sizeof(tree));
@@ -40,7 +42,7 @@ int *processQueries(int *queries, int queriesSize, int m, int *returnSize)
 
 	*returnSize = queriesSize;
 	int *res = (int *)malloc(sizeof(int) * queriesSize);
-	for (int i = 0; i < queriesSize; i++)
+	for (int i = 0; i < queriesSize; ++i)
 	{
 		res[i] = sum(tree, treesize, map[queries[i]]) - 1;
 		update(tree, treesize, map[queries[i]], -1);
