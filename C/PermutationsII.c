@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
 //cmp function don't consider overflow
 int cmp(const void *lhs, const void *rhs)

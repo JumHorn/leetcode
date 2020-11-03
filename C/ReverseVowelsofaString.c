@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
 bool isVowel(char c)
 {

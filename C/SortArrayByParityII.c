@@ -1,10 +1,10 @@
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* sortArrayByParityII(int* A, int ASize, int* returnSize)
+int *sortArrayByParityII(int *A, int ASize, int *returnSize)
 {
 	*returnSize = ASize;
 	for (int odd = 1, even = 0; odd < ASize && even < ASize;)

@@ -1,5 +1,5 @@
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
 void reverse(int *arr, int first, int last)
 {

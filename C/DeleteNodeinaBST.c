@@ -3,13 +3,13 @@
 struct TreeNode
 {
 	int val;
-	struct TreeNode* left;
-	struct TreeNode* right;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
-struct TreeNode* deleteNode(struct TreeNode* root, int key)
+struct TreeNode *deleteNode(struct TreeNode *root, int key)
 {
 	if (!root)
 		return root;
@@ -19,7 +19,7 @@ struct TreeNode* deleteNode(struct TreeNode* root, int key)
 			root = root->left;
 		else
 		{
-			struct TreeNode* node = root->right;
+			struct TreeNode *node = root->right;
 			while (node->left)
 				node = node->left;
 			swap(root->val, node->val);

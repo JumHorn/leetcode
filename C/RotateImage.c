@@ -1,7 +1,7 @@
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
-void rotate(int** matrix, int matrixSize, int* matrixColSize)
+void rotate(int **matrix, int matrixSize, int *matrixColSize)
 {
 	//vertival flip
 	for (int i = 0; i < matrixSize / 2; ++i)

@@ -1,9 +1,9 @@
 #include <ctype.h>
 #include <string.h>
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
-char* reverseOnlyLetters(char* S)
+char *reverseOnlyLetters(char *S)
 {
 	int i = 0, j = strlen(S) - 1;
 	while (i < j)

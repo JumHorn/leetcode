@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#define swap(a, b) ((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
 int minSwapsCouples(int *row, int rowSize)
 {

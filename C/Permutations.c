@@ -1,8 +1,6 @@
 #include <stdlib.h>
 
-#define swap(a, b)  \
-	if ((a) != (b)) \
-	((a) ^= (b) ^= (a) ^= (b))
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
 //malloc result
 int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize, int **returnColumnSizes)
