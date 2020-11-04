@@ -1,5 +1,7 @@
 #include <algorithm>
+#include <bitset>
 #include <string>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -8,40 +10,43 @@ class Solution
 public:
 	vector<int> peopleIndexes(vector<vector<string>> &favoriteCompanies)
 	{
-		int n = favoriteCompanies.size();
-		vector<int> v(n);
-		for (int i = 0; i < n; ++i)
-			v[i] = i;
-		sort(v.begin(), v.end(), [&](int lhs, int rhs) { return favoriteCompanies[lhs].size() < favoriteCompanies[rhs].size(); });
-		vector<int> res;
-		for (int i = n - 1; i >= 0; --i)
+		unordered_map<string, int> m;
+		int id = 0, N = favoriteCompanies.size();
+		for (auto &fc : favoriteCompanies)
 		{
-			for (int j = n - 1; j > i; --j)
+			for (auto &c : fc)
 			{
-				if (v[j] == -1)
-					continue;
-				if (favoriteCompanies[v[j]].size() <= favoriteCompanies[v[i]].size())
-					break;
-				if (contains(favoriteCompanies[v[j]], favoriteCompanies[v[i]]))
-				{
-					v[i] = -1;
-					break;
-				}
+				if (m.find(c) == m.end())
+					m[c] = id++;
 			}
-			if (v[i] != -1)
-				res.push_back(v[i]);
 		}
-		sort(res.begin(), res.end());
+
+		vector<bitset<BIT_SIZE>> v;
+		for (auto &fc : favoriteCompanies)
+		{
+			bitset<BIT_SIZE> bit;
+			for (auto &c : fc)
+				bit[m[c]] = 1;
+			v.push_back(bit);
+		}
+
+		vector<int> res;
+		for (int i = 0; i < N; ++i)
+		{
+			bool flag = true;
+			for (int j = 0; j < N && flag; ++j)
+			{
+				if (i == j)
+					continue;
+				if ((v[i] & v[j]) == v[i])
+					flag = false;
+			}
+			if (flag)
+				res.push_back(i);
+		}
 		return res;
 	}
 
-	bool contains(vector<string> &lhs, vector<string> &rhs)
-	{
-		for (auto &s : rhs)
-		{
-			if (find(lhs.begin(), lhs.end(), s) == lhs.end())
-				return false;
-		}
-		return true;
-	}
+private:
+	static const int BIT_SIZE = 50000;
 };
