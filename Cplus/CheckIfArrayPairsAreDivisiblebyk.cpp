@@ -1,3 +1,4 @@
+#include <cmath>
 #include <vector>
 using namespace std;
 
@@ -12,26 +13,15 @@ public:
 			int index = n % k;
 			if (index < 0)
 				index += k;
-			v[index] = 1 - v[index];
+			++v[index];
 		}
-		if (k % 2 == 1)
+		for (int i = 1; i < k / 2 + 1; ++i)
 		{
-			for (int i = 1; i <= k / 2; ++i)
-			{
-				if ((v[i] + v[k - i]) % 2 != 0)
-					return false;
-			}
-		}
-		else
-		{
-			for (int i = 1; i < k / 2 - 1; ++i)
-			{
-				if ((v[i] + v[k - i]) % 2 != 0)
-					return false;
-			}
-			if (v[k / 2] % 2 != 0)
+			if (v[i] != v[k - i])
 				return false;
 		}
+		if (k % 2 == 0 && v[k / 2] % 2 != 0)
+			return false;
 		return true;
 	}
 };
