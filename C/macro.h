@@ -382,11 +382,11 @@ GraphNode *createNode(int val)
 	return node;
 }
 
-void createGraph(int N, int **edges, int edgeSize)
+void createGraph(int N, int **edges, int edgesSize)
 {
 	GraphNode *graph[N];
 	memset(graph, 0, sizeof(graph));
-	for (int i = 0; i < edgeSize; ++i)
+	for (int i = 0; i < edgesSize; ++i)
 	{
 		GraphNode *node = createNode(edges[i][1]);
 		node->next = graph[edges[i][0]];
