@@ -11,7 +11,7 @@ public:
 		int m = key.length(), n = ring.length();
 		vector<vector<int>> dp(m + 1, vector<int>(n));
 
-		for (int i = m - 1; i >= 0; i--)
+		for (int i = m - 1; i >= 0; --i)
 		{
 			for (int j = 0; j < n; j++)
 			{

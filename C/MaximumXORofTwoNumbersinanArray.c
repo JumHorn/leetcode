@@ -30,7 +30,7 @@ void insert(Trie *root, int num)
 int search(Trie *root, int num)
 {
 	int res = 0;
-	for (int i = 31; i >= 0; i--)
+	for (int i = 31; i >= 0; --i)
 	{
 		int index = ((num >> i) & 1);
 		if (root->nodes[index ^ 1])

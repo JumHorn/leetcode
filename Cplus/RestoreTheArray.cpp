@@ -14,7 +14,7 @@ public:
 		dp[0] = 1;
 		for (int i = 0; i < n; ++i)
 		{
-			for (int j = i; j >= 0; j--)
+			for (int j = i; j >= 0; --j)
 			{
 				if (s[j] == '0')
 					continue;
@@ -31,7 +31,7 @@ public:
 
 	bool checkValid(vector<int> &dp, int index)
 	{
-		for (int i = index; i >= max(0, index - 9); i--)
+		for (int i = index; i >= max(0, index - 9); --i)
 			if (dp[i] != 0)
 				return true;
 		return false;

@@ -23,7 +23,7 @@ public:
 		dp[0].insert(0);
 		for (auto n : A)
 		{
-			for (int i = m; i > 0; i--)
+			for (int i = m; i > 0; --i)
 			{
 				for (auto iter : dp[i - 1])
 					dp[i].insert(iter + n);

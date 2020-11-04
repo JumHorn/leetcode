@@ -14,9 +14,9 @@ public:
 			v[i] = i;
 		sort(v.begin(), v.end(), [&](int lhs, int rhs) { return favoriteCompanies[lhs].size() < favoriteCompanies[rhs].size(); });
 		vector<int> res;
-		for (int i = n - 1; i >= 0; i--)
+		for (int i = n - 1; i >= 0; --i)
 		{
-			for (int j = n - 1; j > i; j--)
+			for (int j = n - 1; j > i; --j)
 			{
 				if (v[j] == -1)
 					continue;

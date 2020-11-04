@@ -31,7 +31,7 @@ public:
 
 		// right to left
 		top = n - 1;
-		for (int i = n - 2; i >= 0; i--)
+		for (int i = n - 2; i >= 0; --i)
 		{
 			while (!s.empty() && crossProduct(points[top], points[i], points[s.top()]) < 0)
 			{

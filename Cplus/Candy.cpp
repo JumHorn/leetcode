@@ -14,7 +14,7 @@ public:
 			if (ratings[i - 1] < ratings[i])
 				res[i] += res[i - 1];
 
-		for (int i = n - 2; i >= 0; i--)
+		for (int i = n - 2; i >= 0; --i)
 			if (ratings[i] > ratings[i + 1])
 				res[i] = max(res[i], res[i + 1] + 1);
 

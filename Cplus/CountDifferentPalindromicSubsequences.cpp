@@ -54,7 +54,7 @@ public:
 	{
 		int n = s.length();
 		vector<int> v(26, n), res(n);
-		for (int i = n - 1; i >= 0; i--)
+		for (int i = n - 1; i >= 0; --i)
 		{
 			res[i] = v[s[i] - 'a'];
 			v[s[i] - 'a'] = i;

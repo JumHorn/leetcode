@@ -13,7 +13,7 @@ public:
 		int n = v.size();
 		for (int i = 0; i < n; ++i)
 			data[i + n] = v[i];
-		for (int i = n - 1; i > 0; i--)
+		for (int i = n - 1; i > 0; --i)
 			data[i] = data[i << 1] + data[i << 1 | 1];
 	}
 

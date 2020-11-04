@@ -22,7 +22,7 @@ int maximumGap(int *nums, int numsSize)
 		for (int i = 1; i < 10; ++i)
 			count[i] += count[i - 1];
 		int aux[numsSize];
-		for (int i = numsSize - 1; i >= 0; i--)
+		for (int i = numsSize - 1; i >= 0; --i)
 			aux[--count[nums[i] / base % 10]] = nums[i];
 		memcpy(nums, aux, sizeof(aux));
 		base *= 10;

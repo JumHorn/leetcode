@@ -22,7 +22,7 @@ private:
 	void insert(const string &str)
 	{
 		TreeNode *tmp = root;
-		for (int i = str.length() - 1; i >= 0; i--)
+		for (int i = str.length() - 1; i >= 0; --i)
 		{
 			if (tmp->node[str[i] - 'a'] == NULL)
 				tmp->node[str[i] - 'a'] = new TreeNode();
@@ -34,7 +34,7 @@ private:
 	bool search()
 	{
 		TreeNode *tmp = root;
-		for (int i = letters.size() - 1; i >= 0; i--)
+		for (int i = letters.size() - 1; i >= 0; --i)
 		{
 			tmp = tmp->node[letters[i] - 'a'];
 			if (tmp == NULL)

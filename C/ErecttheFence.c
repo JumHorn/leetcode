@@ -47,7 +47,7 @@ int **outerTrees(int **points, int pointsSize, int *pointsColSize, int *returnSi
 		--top;
 	}
 	// right to left
-	for (int i = pointsSize - 1; i >= 0; i--)
+	for (int i = pointsSize - 1; i >= 0; --i)
 	{
 		while (top >= 1 && crossProduct(points[stack[top]], points[i], points[stack[top - 1]]) < 0)
 			--top;

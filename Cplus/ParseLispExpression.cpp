@@ -121,7 +121,7 @@ public:
 			res = stoi(expression);
 		else
 		{
-			for (int i = variables.size() - 1; i >= 0; i--)
+			for (int i = variables.size() - 1; i >= 0; --i)
 			{
 				if (variables[i].find(expression) != variables[i].end())
 				{

@@ -50,7 +50,7 @@ bool containsDuplicate(int *nums, int numsSize)
 		return false;
 	push_heap(nums, numsSize);
 	pop_heap(nums, numsSize - 1);
-	for (int i = numsSize - 2; i >= 0; i--)
+	for (int i = numsSize - 2; i >= 0; --i)
 	{
 		pop_heap(nums, i);
 		if (nums[i] == nums[i + 1])
