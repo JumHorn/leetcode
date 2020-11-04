@@ -1,4 +1,4 @@
-#include <set>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -6,26 +6,18 @@ class Solution
 public:
 	int kthFactor(int n, int k)
 	{
-		set<int> factor;
-		for (int i = 1; i * i <= n; ++i)
+		vector<int> factor;
+		for (int i = 1; i * i <= n && (int)factor.size() < k; ++i)
 		{
 			if (n % i == 0)
-			{
-				factor.insert(i);
-				factor.insert(n / i);
-			}
+				factor.push_back(i);
 		}
-		if (k > (int)factor.size())
+		int N = factor.size();
+		if (k <= N)
+			return factor.back();
+		bool square = (factor.back() * factor.back() == n);
+		if (k > N * 2 - (square ? 1 : 0))
 			return -1;
-		int res = 0;
-		for (auto f : factor)
-		{
-			if (--k == 0)
-			{
-				res = f;
-				break;
-			}
-		}
-		return res;
+		return n / factor[N - (k - N)];
 	}
 };
