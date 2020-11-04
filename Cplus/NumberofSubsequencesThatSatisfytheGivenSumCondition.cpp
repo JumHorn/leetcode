@@ -14,17 +14,14 @@ public:
 		pow2[0] = 1;
 		for (int i = 0; i < N; ++i)
 			pow2[i + 1] = pow2[i] * 2 % MOD;
-		for (int i = 0, j = -1; i < N && nums[0] + nums[i] <= target; ++i)
+		for (int i = 0, j = N - 1; i <= j;)
 		{
-			if (2 * nums[i] <= target)
-				res = (res + 1) % MOD;
-			if (j < i - 1)
-				++j;
-			for (; j >= 0 && nums[j] + nums[i] > target;)
+			if (nums[i] + nums[j] > target)
 				--j;
-			res = res + ((pow2[j + 1] - 1) % MOD) * (pow2[max(0, i - j - 1)] % MOD) % MOD;
+			else
+				res = (res + pow2[j - i++]) % MOD;
 		}
-		return (res + MOD) % MOD;
+		return res;
 	}
 
 private:
