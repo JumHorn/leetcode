@@ -1,57 +1,51 @@
-#include <unordered_map>
+#include <vector>
 using namespace std;
 
 //Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
-	TreeNode* left;
-	TreeNode* right;
+	TreeNode *left;
+	TreeNode *right;
 	TreeNode() : val(0), left(nullptr), right(nullptr) {}
 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-	TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
 {
 public:
-	int countPairs(TreeNode* root, int distance)
+	int countPairs(TreeNode *root, int distance)
 	{
-		int res = 0;
-		postorder(root, distance, res);
-		return res;
+		int count = 0;
+		postorder(root, distance, count);
+		return count;
 	}
 
-	unordered_map<TreeNode*, int> postorder(TreeNode* root, int distance, int& res)  //return type {leaf node,distance}
+	//return type {distance of node count}
+	const vector<int> postorder(TreeNode *root, int distance, int &count)
 	{
-		if (root == NULL)
-			return {};
-		auto left = postorder(root->left, distance, res);
-		auto right = postorder(root->right, distance, res);
-		if (left.empty() && right.empty())
-			return {{root, 0}};
-		incMap(left);
-		incMap(right);
-		if (left.empty())
-			return right;
-		if (right.empty())
-			return left;
-		for (auto& n : left)
+		if (root == nullptr)
+			return vector<int>(distance + 1);
+		if (root->left == nullptr && root->right == nullptr)
 		{
-			for (auto& m : right)
+			vector<int> res(distance + 1);
+			res[1] = 1;
+			return res;
+		}
+		auto &l = postorder(root->left, distance, count);
+		auto &r = postorder(root->right, distance, count);
+		for (int i = 1; i <= distance; ++i)
+		{
+			for (int j = 1; j <= distance; ++j)
 			{
-				if (n.second + m.second <= distance)
-					++res;
+				if (i + j <= distance)
+					count += l[i] * r[j];
 			}
 		}
-		for (auto& n : right)
-			left[n.first] = n.second;
-		return left;
-	}
-
-	void incMap(unordered_map<TreeNode*, int>& m)
-	{
-		for (auto& n : m)
-			++n.second;
+		vector<int> res(distance + 1);
+		for (int i = 1; i < distance; ++i)
+			res[i + 1] = l[i] + r[i];
+		return res;
 	}
 };
