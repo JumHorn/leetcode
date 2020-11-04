@@ -8,41 +8,39 @@ public:
 	BrowserHistory(string homepage)
 	{
 		history.push_back(homepage);
-		cur = 0;
+		top = 0;
+		size = 1;
 	}
 
 	void visit(string url)
 	{
-		++cur;
-		int size = history.size();
-		while (size > cur)
-		{
-			history.pop_back();
-			size = history.size();
-		}
-		history.push_back(url);
+		size = ++top + 1;
+		if (top >= (int)history.size())
+			history.push_back(url);
+		else
+			history[top] = url;
 	}
 
 	string back(int steps)
 	{
-		cur -= steps;
-		if (cur < 0)
-			cur = 0;
-		return history[cur];
+		top -= steps;
+		if (top < 0)
+			top = 0;
+		return history[top];
 	}
 
 	string forward(int steps)
 	{
-		int size = history.size();
-		cur += steps;
-		if (cur >= size)
-			cur = size - 1;
-		return history[cur];
+		top += steps;
+		if (top >= size)
+			top = size - 1;
+		return history[top];
 	}
 
 private:
 	vector<string> history;
-	int cur;
+	int size;
+	int top;
 };
 
 /**
