@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 using namespace std;
 
@@ -6,17 +7,14 @@ class Solution
 public:
 	int minDays(vector<int> &bloomDay, int m, int k)
 	{
-		int n = bloomDay.size();
-		vector<int> dup(n);
-		if (m * k > n)
+		int N = bloomDay.size();
+		if (m * k > N)
 			return -1;
-		int lo = 1, hi = 1e9 + 1;
+		int lo = 1, hi = *max_element(bloomDay.begin(), bloomDay.end());
 		while (lo < hi)
 		{
 			int mi = (hi - lo) / 2 + lo;
-			for (int i = 0; i < n; ++i)
-				dup[i] = ((bloomDay[i] <= mi) ? 1 : 0);
-			if (count(dup, k) < m)
+			if (count(bloomDay, k, mi) < m)
 				lo = mi + 1;
 			else
 				hi = mi;
@@ -24,21 +22,21 @@ public:
 		return lo;
 	}
 
-	int count(vector<int> &bloom, int k)
+	int count(vector<int> &bloom, int k, int day)
 	{
-		int res = 0;
-		for (int i = 0, j = 0; i < (int)bloom.size(); ++i)
+		int res = 0, flowers = 0;
+		for (auto n : bloom)
 		{
-			if (bloom[i] == 0)
-				j = 0;
-			else
+			if (n <= day)
 			{
-				if (++j == k)
+				if (++flowers == k)
 				{
-					j = 0;
 					++res;
+					flowers = 0;
 				}
 			}
+			else
+				flowers = 0;
 		}
 		return res;
 	}
