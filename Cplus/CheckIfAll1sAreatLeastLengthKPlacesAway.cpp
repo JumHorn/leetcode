@@ -4,18 +4,16 @@ using namespace std;
 class Solution
 {
 public:
-	bool kLengthApart(vector<int>& nums, int k)
+	bool kLengthApart(vector<int> &nums, int k)
 	{
-		int dis = k;
-		for (auto n : nums)
+		int pre = -k - 1;
+		for (int i = 0; i < (int)nums.size(); ++i)
 		{
-			if (n == 0)
-				dis++;
-			else
+			if (nums[i] == 1)
 			{
-				if (dis < k)
+				if (i - pre - 1 < k)
 					return false;
-				dis = 0;
+				pre = i;
 			}
 		}
 		return true;
