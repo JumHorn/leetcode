@@ -6,30 +6,20 @@ class Solution
 public:
 	vector<bool> checkIfPrerequisite(int n, vector<vector<int>> &prerequisites, vector<vector<int>> &queries)
 	{
-		vector<vector<int>> graph(n, vector<int>(n));
+		vector<vector<bool>> graph(n, vector<bool>(n));
 		for (auto &v : prerequisites)
-			graph[v[0]][v[1]] = 1;
-		vector<bool> res;
-		for (auto &q : queries)
-			res.push_back(dfs(graph, q[0], q[1]));
-		return res;
-	}
-
-	bool dfs(vector<vector<int>> &graph, int from, int to)
-	{
-		if (from == to)
-			return true;
-		if (graph[from][to] != 0)
-			return graph[from][to] == 1;
-		for (int i = 0; i < (int)graph[from].size(); ++i)
+			graph[v[0]][v[1]] = true;
+		for (int k = 0; k < n; ++k)
 		{
-			if (graph[from][i] == 1 && dfs(graph, i, to))
+			for (int i = 0; i < n; ++i)
 			{
-				graph[from][to] = 1;
-				return true;
+				for (int j = 0; j < n; ++j)
+					graph[i][j] = graph[i][j] || (graph[i][k] && graph[k][j]);
 			}
 		}
-		graph[from][to] = -1;
-		return false;
+		vector<bool> res;
+		for (auto &q : queries)
+			res.push_back(graph[q[0]][q[1]]);
+		return res;
 	}
 };
