@@ -9,31 +9,24 @@ public:
 	{
 		sort(nums.begin(), nums.end());
 		long res = 0;
-		int i = 0, n = nums.size();
-		while (i < n && nums[i] * 2 <= target)
-			++i;
-		res = powCache(i) - 1;
-		for (; i < n; ++i)
+		int N = nums.size();
+		vector<long> pow2(N + 1);
+		pow2[0] = 1;
+		for (int i = 0; i < N; ++i)
+			pow2[i + 1] = pow2[i] * 2 % MOD;
+		for (int i = 0, j = -1; i < N && nums[0] + nums[i] <= target; ++i)
 		{
-			auto iter = upper_bound(nums.begin(), nums.begin() + i, target - nums[i]);
-			int count = iter - nums.begin();
-			res = (res + (powCache(count) - 1) * powCache(i - count)) % MOD;
+			if (2 * nums[i] <= target)
+				res = (res + 1) % MOD;
+			if (j < i - 1)
+				++j;
+			for (; j >= 0 && nums[j] + nums[i] > target;)
+				--j;
+			res = res + ((pow2[j + 1] - 1) % MOD) * (pow2[max(0, i - j - 1)] % MOD) % MOD;
 		}
-		return res;
-	}
-
-	long powCache(int n)
-	{
-		if (cache.empty())
-			cache.push_back(1);
-		if (n < (int)cache.size())
-			return cache[n];
-		while (n >= (int)cache.size())
-			cache.push_back(cache.back() * 2 % MOD);
-		return cache.back();
+		return (res + MOD) % MOD;
 	}
 
 private:
-	vector<int> cache;
 	static const int MOD = 1e9 + 7;
 };
