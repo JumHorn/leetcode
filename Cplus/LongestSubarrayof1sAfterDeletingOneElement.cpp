@@ -6,23 +6,20 @@ class Solution
 public:
 	int longestSubarray(vector<int> &nums)
 	{
-		int n = nums.size();
-		vector<int> prefixsum(n + 1);
-		for (int i = 0; i < n; ++i)
-			prefixsum[i + 1] = prefixsum[i] + nums[i];
-		int res = 0;
-		for (int i = 0, j = 2; j <= n;)
+		int d0 = 0, d1 = -1, res = 0;
+		for (auto n : nums)
 		{
-			if (prefixsum[j] - prefixsum[i] >= j - i - 1)
+			if (n == 0)
 			{
-				res = max(res, j - i - 1);
-				++j;
+				d1 = d0;
+				d0 = 0;
 			}
 			else
 			{
-				++i;
-				++j;
+				d1 = max(d1 + 1, d0);
+				d0 = d0 + 1;
 			}
+			res = max(res, d1);
 		}
 		return res;
 	}
