@@ -1,5 +1,5 @@
+#include <algorithm>
 #include <deque>
-#include <numeric>
 #include <vector>
 using namespace std;
 
@@ -8,12 +8,12 @@ class Solution
 public:
 	int constrainedSubsetSum(vector<int> &nums, int k)
 	{
-		int n = nums.size();
-		vector<int> dp(n);
+		int N = nums.size();
+		vector<int> dp(N);
 		deque<int> q;
 		dp[0] = nums.front();
 		q.push_back(0);
-		for (int i = 1; i < n; ++i)
+		for (int i = 1; i < N; ++i)
 		{
 			while (i - q.front() > k)
 				q.pop_front();
