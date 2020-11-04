@@ -1,5 +1,4 @@
-#include <numeric>
-#include <set>
+#include <deque>
 #include <vector>
 using namespace std;
 
@@ -8,14 +7,24 @@ class Solution
 public:
 	int longestSubarray(vector<int> &nums, int limit)
 	{
-		int res = 0, N = nums.size(), i = 0, j = 0;
-		multiset<int> s;
-		for (; i < N; ++i)
+		deque<int> maxdeque, mindeque;
+		int i = 0, j = 0;
+		for (; i < (int)nums.size(); ++i)
 		{
-			s.insert(nums[i]);
-			int maxval = *s.rbegin(), minval = *s.begin();
-			if (maxval - minval > limit)
-				s.erase(s.find(nums[j++]));
+			while (!maxdeque.empty() && nums[i] > maxdeque.back())
+				maxdeque.pop_back();
+			while (!mindeque.empty() && nums[i] < mindeque.back())
+				mindeque.pop_back();
+			maxdeque.push_back(nums[i]);
+			mindeque.push_back(nums[i]);
+			if (maxdeque.front() - mindeque.front() > limit)
+			{
+				if (maxdeque.front() == nums[j])
+					maxdeque.pop_front();
+				if (mindeque.front() == nums[j])
+					mindeque.pop_front();
+				++j;
+			}
 		}
 		return i - j;
 	}
