@@ -8,18 +8,23 @@ public:
 	int countTriplets(vector<int> &arr)
 	{
 		int N = arr.size(), res = 0;
-		vector<unordered_map<int, int>> dp(N + 1);
-		for (int i = 0; i < N - 1; ++i)
+		vector<int> prefix(N + 1);
+		for (int i = 0; i < N; ++i)
+			prefix[i + 1] = prefix[i] ^ arr[i];
+		// the following O(N^2) can be optimized with map
+		// for (int i = 0; i <= N; ++i)
+		// {
+		// 	for (int j = i + 1; j <= N; ++j)
+		// 	{
+		// 		if (prefix[i] == prefix[j])
+		// 			res += j - i - 1;
+		// 	}
+		// }
+		unordered_map<int, int> count, total;
+		for (int i = 0; i <= N; ++i)
 		{
-			dp[i + 1][arr[i]] += 1;
-			for (auto &n : dp[i])
-				dp[i + 1][n.first ^ arr[i]] += dp[i][n.first];
-			int XOR = 0;
-			for (int j = i + 1; j < N; ++j)
-			{
-				XOR ^= arr[j];
-				res += dp[i + 1][XOR];
-			}
+			res += count[prefix[i]]++ * (i - 1) - total[prefix[i]];
+			total[prefix[i]] += i;
 		}
 		return res;
 	}
