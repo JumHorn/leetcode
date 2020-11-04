@@ -1,10 +1,11 @@
+#include <algorithm>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int getLastMoment(int n, vector<int>& left, vector<int>& right)
+	int getLastMoment(int n, vector<int> &left, vector<int> &right)
 	{
 		int res = 0, l = 0, r = 0;
 		if (!left.empty())
