@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 /*
@@ -19,7 +19,7 @@ public:
 		{
 			++res;
 			int right = maxright;
-			for (int j = i + 1; j <= maxright; j++)
+			for (int j = i + 1; j <= maxright; ++j)
 				if (right < nums[j] + j)
 					right = nums[j] + j;
 			i = maxright;

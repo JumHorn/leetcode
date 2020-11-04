@@ -10,7 +10,7 @@ public:
 		vector<vector<int>> init;
 		for (int i = 0; i < 3; ++i)
 		{
-			for (int j = 0; j < 3; j++)
+			for (int j = 0; j < 3; ++j)
 				for (int k = 0; k < 3; k++)
 					if (i != j && j != k)
 						init.push_back({i, j, k});
@@ -22,7 +22,7 @@ public:
 		vector<vector<int>> state(size);
 		for (int i = 0; i < size; ++i)
 		{
-			for (int j = 0; j < size; j++)
+			for (int j = 0; j < size; ++j)
 			{
 				if (transState(init[i], init[j]))
 					state[i].push_back(j);
@@ -33,7 +33,7 @@ public:
 		for (int i = 1; i < n; ++i)
 		{
 			vector<int> tmp(size);
-			for (int j = 0; j < size; j++)
+			for (int j = 0; j < size; ++j)
 			{
 				for (int k = 0; k < (int)state[j].size(); k++)
 					tmp[state[j][k]] = (tmp[state[j][k]] + dp[j]) % MOD;

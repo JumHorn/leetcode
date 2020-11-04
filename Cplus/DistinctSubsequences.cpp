@@ -13,7 +13,7 @@ public:
 		for (int i = 0; i < M; ++i)
 		{
 			int pre = dp[0];
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				int tmp = dp[j + 1];
 				if (s[i] == t[j])

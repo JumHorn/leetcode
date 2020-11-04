@@ -9,7 +9,7 @@ int numDistinct(char *s, char *t)
 		dp[i][0] = 1;
 	for (int i = 0; i < len1; ++i)
 	{
-		for (int j = 0; j < len2; j++)
+		for (int j = 0; j < len2; ++j)
 		{
 			if (s[i] == t[j])
 				dp[i + 1][j + 1] = dp[i][j] + dp[i][j + 1];

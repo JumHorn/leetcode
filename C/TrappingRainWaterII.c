@@ -80,7 +80,7 @@ int trapRainWater(int **heightMap, int heightMapSize, int *heightMapColSize)
 
 		seen[i][0] = seen[i][n - 1] = 1;
 	}
-	for (int j = 1; j < n - 1; j++)
+	for (int j = 1; j < n - 1; ++j)
 	{
 		priorityqueue[++top][0] = heightMap[0][j];
 		priorityqueue[top][1] = 0 * n + j;

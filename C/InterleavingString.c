@@ -15,11 +15,11 @@ bool isInterleave(char *s1, char *s2, char *s3)
 	dp[0][0] = true;
 	for (int i = 0; i < len1 && s1[i] == s3[i]; ++i)
 		dp[i + 1][0] = true;
-	for (int j = 0; j < len2 && s2[j] == s3[j]; j++)
+	for (int j = 0; j < len2 && s2[j] == s3[j]; ++j)
 		dp[0][j + 1] = true;
 	for (int i = 0; i < len1; ++i)
 	{
-		for (int j = 0; j < len2; j++)
+		for (int j = 0; j < len2; ++j)
 			dp[i + 1][j + 1] = (s1[i] == s3[i + j + 1] && dp[i][j + 1]) || (s2[j] == s3[i + j + 1] && dp[i + 1][j]);
 	}
 	return dp[len1][len2];

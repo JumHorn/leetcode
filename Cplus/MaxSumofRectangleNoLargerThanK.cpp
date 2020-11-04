@@ -12,7 +12,7 @@ public:
 		for (int col = 0; col < n; col++)
 		{
 			vector<int> sums(m);
-			for (int j = col; j < n; j++)
+			for (int j = col; j < n; ++j)
 			{
 				for (int i = 0; i < m; ++i)
 					sums[i] += matrix[i][j];

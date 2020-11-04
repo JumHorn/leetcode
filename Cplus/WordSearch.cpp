@@ -9,7 +9,7 @@ public:
 	{
 		for (int i = 0; i < (int)board.size(); ++i)
 		{
-			for (int j = 0; j < (int)board[0].size(); j++)
+			for (int j = 0; j < (int)board[0].size(); ++j)
 				if (dfs(board, word, 0, i, j))
 					return true;
 		}

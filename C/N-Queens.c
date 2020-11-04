@@ -15,7 +15,7 @@ char **createQueen(int n, int *queen)
 	for (int i = 0; i < n; ++i)
 	{
 		res[i] = (char *)malloc(sizeof(char) * (n + 1));
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < n; ++j)
 			res[i][j] = '.';
 		res[i][queen[i]] = 'Q';
 		res[i][n] = '\0';
@@ -37,7 +37,7 @@ bool backTracking(int n, int *queen, int i, char ****queens, int *size)
 {
 	if (i >= n)
 		return true;
-	for (int j = queen[i]; j < n; j++)
+	for (int j = queen[i]; j < n; ++j)
 	{
 		queen[i] = j;
 		if (queenCheck(queen, i))

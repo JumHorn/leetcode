@@ -54,7 +54,7 @@ public:
 		pair<int, int> res = {0, 0};
 		for (int i = 0; i < (int)grid.size(); ++i)
 		{
-			for (int j = 0; j < (int)grid[i].length(); j++)
+			for (int j = 0; j < (int)grid[i].length(); ++j)
 			{
 				if (grid[i][j] == '@')
 					res = {i, j};

@@ -10,12 +10,12 @@ public:
 		int res = 0, M = matrix.size(), N = matrix[0].size();
 		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 1; j < N; j++)
+			for (int j = 1; j < N; ++j)
 				matrix[i][j] += matrix[i][j - 1];
 		}
 		for (int i = 0; i < N; ++i)
 		{
-			for (int j = i; j < N; j++)
+			for (int j = i; j < N; ++j)
 			{
 				unordered_map<int, int> m;
 				m[0] = 1;

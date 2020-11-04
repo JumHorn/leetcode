@@ -1,5 +1,5 @@
-#include <string>
 #include <algorithm>
+#include <string>
 using namespace std;
 
 class Solution
@@ -16,7 +16,7 @@ public:
 
 		auto iter = min_element(S.begin(), S.end());
 		int d = distance(S.begin(), iter);
-		for (int j = 0; j < N; j++)
+		for (int j = 0; j < N; ++j)
 		{
 			if (j != d && S[j] == S[d])
 			{

@@ -13,7 +13,7 @@ public:
 		priority_queue<pair<int, int>> height;
 		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				if (forest[i][j] > 1)
 					height.push({-forest[i][j], i * N + j});

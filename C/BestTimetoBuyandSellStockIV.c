@@ -36,7 +36,7 @@ int maxProfit(int k, int *prices, int pricesSize)
 	for (int i = 1; i <= k; ++i)
 	{
 		int buy = -prices[0];
-		for (int j = 1; j < pricesSize; j++)
+		for (int j = 1; j < pricesSize; ++j)
 		{
 			dp[i][j] = max(dp[i][j - 1], prices[j] + buy);
 			buy = max(buy, dp[i - 1][j - 1] - prices[j]);

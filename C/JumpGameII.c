@@ -8,7 +8,7 @@ int jump(int *nums, int numsSize)
 	{
 		++res;
 		int right = maxright;
-		for (int j = i + 1; j <= maxright; j++)
+		for (int j = i + 1; j <= maxright; ++j)
 			if (right < nums[j] + j)
 				right = nums[j] + j;
 		i = maxright;

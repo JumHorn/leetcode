@@ -15,7 +15,7 @@ public:
 		vector<vector<int>> res;
 		for (int i = 0; i < n; ++i)
 		{
-			for (int j = 0; j <= (int)words[i].length(); j++)
+			for (int j = 0; j <= (int)words[i].length(); ++j)
 			{
 				string head = words[i].substr(0, j);
 				string tail = words[i].substr(j);

@@ -26,7 +26,7 @@ bool exist(char **board, int boardSize, int *boardColSize, char *word)
 	int m = boardSize, n = *boardColSize;
 	for (int i = 0; i < m; ++i)
 	{
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < n; ++j)
 			if (dfs(board, boardSize, *boardColSize, i, j, word))
 				return true;
 	}

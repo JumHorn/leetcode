@@ -14,7 +14,7 @@ public:
 		int res = 0;
 		for (int i = 0; i < (int)matrix.size(); ++i)
 		{
-			for (int j = 0; j < (int)matrix[0].size(); j++)
+			for (int j = 0; j < (int)matrix[0].size(); ++j)
 				matrix[i][j] == '1' ? ++H[j] : (H[j] = 0);
 			res = max(res, solveHistogram(H));
 		}

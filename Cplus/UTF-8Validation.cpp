@@ -21,7 +21,7 @@ public:
 				return false;
 			if (len + i > N)
 				return false;
-			for (int j = i + 1; j < len + i; j++)
+			for (int j = i + 1; j < len + i; ++j)
 			{
 				if ((data[j] & HEAD1) != HEAD0)
 					return false;

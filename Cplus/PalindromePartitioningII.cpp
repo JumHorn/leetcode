@@ -14,7 +14,7 @@ public:
 		dp[0] = 0;
 		for (int i = 0; i < n; ++i)
 		{
-			for (int j = 0; j <= i; j++)
+			for (int j = 0; j <= i; ++j)
 				if (isPalindrome(s, j, i))
 					dp[i + 1] = min(dp[i + 1], dp[j] + 1);
 		}

@@ -18,7 +18,7 @@ public:
 			q.push({heightMap[i][n - 1], i * n + n - 1});
 			seen[i][0] = seen[i][n - 1] = 1;
 		}
-		for (int j = 1; j < n - 1; j++)
+		for (int j = 1; j < n - 1; ++j)
 		{
 			q.push({heightMap[0][j], 0 * n + j});
 			q.push({heightMap[m - 1][j], (m - 1) * n + j});

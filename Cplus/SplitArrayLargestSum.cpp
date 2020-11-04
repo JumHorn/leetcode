@@ -16,7 +16,7 @@ public:
 			dp[1][i + 1] = prefix[i + 1];
 		for (int i = 2; i <= m; ++i)
 		{
-			for (int j = i - 1; j <= n; j++)
+			for (int j = i - 1; j <= n; ++j)
 			{
 				dp[i][j] = INT_MAX;
 				for (int k = j - 1; k >= i - 2; k--)

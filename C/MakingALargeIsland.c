@@ -20,7 +20,7 @@ int largestIsland(int **grid, int gridSize, int *gridColSize)
 	//color the grid
 	for (int i = 0; i < gridSize; ++i)
 	{
-		for (int j = 0; j < *gridColSize; j++)
+		for (int j = 0; j < *gridColSize; ++j)
 		{
 			if (grid[i][j] == 1)
 			{
@@ -33,7 +33,7 @@ int largestIsland(int **grid, int gridSize, int *gridColSize)
 
 	for (int i = 0; i < gridSize; ++i)
 	{
-		for (int j = 0; j < *gridColSize; j++)
+		for (int j = 0; j < *gridColSize; ++j)
 		{
 			if (grid[i][j] != 0)
 				continue;

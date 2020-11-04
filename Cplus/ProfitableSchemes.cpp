@@ -14,7 +14,7 @@ public:
 		{
 			for (int k = G - group[i]; k >= 0; k--)
 			{
-				for (int j = 0; j <= P; j++)
+				for (int j = 0; j <= P; ++j)
 					dp[k + group[i]][min(j + profit[i], P)] = (dp[k + group[i]][min(j + profit[i], P)] + dp[k][j]) % MOD;
 			}
 		}

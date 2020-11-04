@@ -11,7 +11,7 @@ public:
 		vector<unordered_map<long, int>> dp(n);
 		for (int i = 1; i < n; ++i)
 		{
-			for (int j = 0; j < i; j++)
+			for (int j = 0; j < i; ++j)
 			{
 				long diff = (long)A[i] - A[j];
 				if (dp[j].find(diff) == dp[j].end())

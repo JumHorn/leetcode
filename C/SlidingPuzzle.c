@@ -12,7 +12,7 @@ int compress(int **board, int M, int N)
 	int res = 0;
 	for (int i = 0; i < M; ++i)
 	{
-		for (int j = 0; j < N; j++)
+		for (int j = 0; j < N; ++j)
 			res = res * 10 + board[i][j];
 	}
 	return res;
@@ -36,7 +36,7 @@ pair findZero(int **board, int M, int N)
 	zero.first = zero.second = 0;
 	for (int i = 0; i < M; ++i)
 	{
-		for (int j = 0; j < N; j++)
+		for (int j = 0; j < N; ++j)
 		{
 			if (board[i][j] == 0)
 			{

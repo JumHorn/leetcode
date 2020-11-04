@@ -37,7 +37,7 @@ public:
 		{
 			hold[0] = max(-prices[i], hold[0]);
 			sold[0] = max(hold[0] + prices[i], sold[0]);
-			for (int j = 1; j < k; j++)
+			for (int j = 1; j < k; ++j)
 			{
 				hold[j] = max(sold[j - 1] - prices[i], hold[j]);
 				sold[j] = max(hold[j] + prices[i], sold[j]);

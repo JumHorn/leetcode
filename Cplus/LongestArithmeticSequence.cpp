@@ -12,7 +12,7 @@ public:
 		vector<vector<int>> dp(n, vector<int>(20001));
 		for (int i = 1; i < n; ++i)
 		{
-			for (int j = 0; j < i; j++)
+			for (int j = 0; j < i; ++j)
 			{
 				int diff = A[i] - A[j] + 10000;
 				dp[i][diff] = max(dp[i][diff], dp[j][diff] + 1);

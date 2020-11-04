@@ -23,7 +23,7 @@ bool validUtf8(int *data, int dataSize)
 			return false;
 		if (len + i > dataSize)
 			return false;
-		for (int j = i + 1; j < len + i; j++)
+		for (int j = i + 1; j < len + i; ++j)
 			if ((data[j] & HEAD1) != HEAD0)
 				return false;
 		i += len;

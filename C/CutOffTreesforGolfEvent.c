@@ -52,7 +52,7 @@ int cutOffTree(int **forest, int forestSize, int *forestColSize)
 	int height[M * N][2], heightsize = 0;
 	for (int i = 0; i < M; ++i)
 	{
-		for (int j = 0; j < N; j++)
+		for (int j = 0; j < N; ++j)
 		{
 			if (forest[i][j] > 1)
 			{

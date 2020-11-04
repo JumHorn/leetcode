@@ -13,7 +13,7 @@ public:
 		int m = 0, n = 0;
 		for (int i = 0; i < len; ++i)
 		{
-			for (int j = i; j < len; j++)
+			for (int j = i; j < len; ++j)
 			{
 				if (dp[i][j] == -1)
 					memdp(s, i, j, dp);

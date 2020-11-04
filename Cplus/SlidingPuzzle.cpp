@@ -54,7 +54,7 @@ public:
 		int res = 0;
 		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 				res = res * 10 + board[i][j];
 		}
 		return res;
@@ -78,7 +78,7 @@ public:
 		int M = board.size(), N = board[0].size();
 		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				if (board[i][j] == 0)
 					return {i, j};

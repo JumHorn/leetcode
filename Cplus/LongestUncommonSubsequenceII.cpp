@@ -32,7 +32,7 @@ public:
 				if (repeat.find(n) == repeat.end())
 				{
 					int j;
-					for (j = n.length() + 1; j <= 10; j++)
+					for (j = n.length() + 1; j <= 10; ++j)
 					{
 						if (isAnySubsequence(n, v[j]))
 							break;

@@ -11,7 +11,7 @@ char *makeLargestSpecial(char *S)
 {
 	char strs[25][51];
 	int len = strlen(S), count = 0, size = 0;
-	for (int i = 0, j = 0; j < len; j++)
+	for (int i = 0, j = 0; j < len; ++j)
 	{
 		if (S[j] == '1')
 			++count;

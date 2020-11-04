@@ -17,7 +17,7 @@ int cherryPickup(int **grid, int gridSize, int *gridColSize)
 			{
 				for (int i = max(bot0 - 1, 0); i <= min(bot0 + 1, N - 1); ++i)
 				{
-					for (int j = max(bot1 - 1, 0); j <= min(bot1 + 1, N - 1); j++)
+					for (int j = max(bot1 - 1, 0); j <= min(bot1 + 1, N - 1); ++j)
 					{
 						if (dp[m - 1][i][j] < 0)
 							continue;

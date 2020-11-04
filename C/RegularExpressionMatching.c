@@ -33,12 +33,12 @@ bool isMatch(char *s, char *p)
 	bool dp[len1 + 1][len2 + 1];
 	memset(dp, 0, sizeof(dp));
 	dp[0][0] = true;
-	for (int j = 0; j < len2; j++)
+	for (int j = 0; j < len2; ++j)
 		dp[0][j + 1] = (p[j] == '*' && dp[0][j - 1]);
 
 	for (int i = 0; i < len1; ++i)
 	{
-		for (int j = 0; j < len2; j++)
+		for (int j = 0; j < len2; ++j)
 		{
 			if (p[j] == '.' || p[j] == s[i])
 				dp[i + 1][j + 1] = dp[i][j];

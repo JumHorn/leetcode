@@ -47,7 +47,7 @@ public:
 		DSU dsu(A.size());
 		for (int i = 0; i < (int)A.size(); ++i)
 		{
-			for (int j = i + 1; j < (int)A.size(); j++)
+			for (int j = i + 1; j < (int)A.size(); ++j)
 			{
 				if (strDiff(A[i], A[j]))
 					dsu.Union(i, j);

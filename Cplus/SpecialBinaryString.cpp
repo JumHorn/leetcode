@@ -12,7 +12,7 @@ public:
 			return S;
 		vector<string> special;
 		int count = 0;
-		for (int i = 0, j = 0; j < (int)S.length(); j++)
+		for (int i = 0, j = 0; j < (int)S.length(); ++j)
 		{
 			if (S[j] == '1')
 				++count;

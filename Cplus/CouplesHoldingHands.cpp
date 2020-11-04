@@ -13,7 +13,7 @@ public:
 			if (row[i + 1] != match)
 			{
 				res++;
-				for (int j = i + 2; j < n; j++)
+				for (int j = i + 2; j < n; ++j)
 				{
 					if (match == row[j])
 						row[j] = row[i + 1];

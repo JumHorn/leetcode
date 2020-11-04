@@ -12,7 +12,7 @@ public:
 	{
 		for (int i = row1; i <= row2; ++i)
 		{
-			for (int j = col1; j <= col2; j++)
+			for (int j = col1; j <= col2; ++j)
 				rect[i][j] = newValue;
 		}
 	}

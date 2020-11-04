@@ -13,7 +13,7 @@ public:
 		//color the grid
 		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				if (grid[i][j] == 1)
 				{
@@ -26,7 +26,7 @@ public:
 
 		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				if (grid[i][j] != 0)
 					continue;

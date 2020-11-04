@@ -25,7 +25,7 @@ public:
 			if (xmap[x] != 0 || ymap[y] != 0 || d0map[x + y] != 0 || d1map[x - y] != 0)
 			{
 				res[i] = 1;
-				for (int j = x - 1; j <= x + 1; j++)
+				for (int j = x - 1; j <= x + 1; ++j)
 				{
 					for (int k = y - 1; k <= y + 1; k++)
 					{

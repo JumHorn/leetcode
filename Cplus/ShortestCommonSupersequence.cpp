@@ -11,7 +11,7 @@ public:
 		vector<vector<int>> dp(M + 1, vector<int>(N + 1));
 		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				if (str1[i] == str2[j])
 					dp[i + 1][j + 1] = dp[i][j] + 1;

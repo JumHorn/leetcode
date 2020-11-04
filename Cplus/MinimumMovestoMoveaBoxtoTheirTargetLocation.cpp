@@ -15,7 +15,7 @@ public:
 		// get the position of box player and target
 		for (int i = 0; i < m; ++i)
 		{
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < n; ++j)
 			{
 				if (grid[i][j] == 'T')
 				{

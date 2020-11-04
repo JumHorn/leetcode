@@ -10,7 +10,7 @@ int maxPoints(int **points, int pointsSize, int *pointsColSize)
 	for (int i = 0; i < pointsSize - 1; ++i)
 	{
 		int duplicate = 1;
-		for (int j = i + 1; j < pointsSize; j++)
+		for (int j = i + 1; j < pointsSize; ++j)
 		{
 			if (points[i][0] == points[j][0] && points[i][1] == points[j][1])
 			{

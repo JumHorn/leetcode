@@ -27,7 +27,7 @@ int numberWays(int **hats, int hatsSize, int *hatsColSize)
 	memset(dp, -1, sizeof(dp));
 	for (int i = 0; i < hatsSize; ++i)
 	{
-		for (int j = 0; j < hatsColSize[i]; j++)
+		for (int j = 0; j < hatsColSize[i]; ++j)
 			map[hats[i][j]][i] = 1;
 	}
 	return memdp(map, 1, 0, (1 << hatsSize) - 1, dp);

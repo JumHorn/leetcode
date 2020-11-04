@@ -11,7 +11,7 @@ public:
 		vector<int> v(m);
 		for (int i = 0; i < m; ++i)
 		{
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < n; ++j)
 				v[i] |= board[i][j] << j;
 		}
 		vector<int> board0 = v, board1 = v;
@@ -53,7 +53,7 @@ public:
 		int n = v.size();
 		vector<int> res(n);
 		for (int i = 0; i < n; ++i)
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < n; ++j)
 				res[i] |= ((v[j] >> i) & 1) << j;
 		return res;
 	}

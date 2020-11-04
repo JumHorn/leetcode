@@ -8,13 +8,13 @@ bool isScramble(char *s1, char *s2)
 	bool dp[size][size][size + 1];
 	for (int i = 0; i < size; ++i)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size; ++j)
 			dp[i][j][1] = (s1[i] == s2[j]);
 	}
 	for (int len = 2; len <= size; len++)
 	{
 		for (int i = 0; i <= size - len; ++i)
-			for (int j = 0; j <= size - len; j++)
+			for (int j = 0; j <= size - len; ++j)
 			{
 				dp[i][j][len] = false;
 				for (int k = 1; k < len && !dp[i][j][len]; k++)

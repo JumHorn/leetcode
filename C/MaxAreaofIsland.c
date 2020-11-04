@@ -18,7 +18,7 @@ int maxAreaOfIsland(int **grid, int gridSize, int *gridColSize)
 	int res = 0;
 	for (int i = 0; i < gridSize; ++i)
 	{
-		for (int j = 0; j < *gridColSize; j++)
+		for (int j = 0; j < *gridColSize; ++j)
 		{
 			int val = dfs(grid, gridSize, *gridColSize, i, j);
 			if (res < val)

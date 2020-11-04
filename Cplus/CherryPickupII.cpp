@@ -26,7 +26,7 @@ public:
 		int res = 0;
 		for (int i = max(bot1 - 1, 0); i <= min(bot1 + 1, n - 1); ++i)
 		{
-			for (int j = max(bot2 - 1, 0); j <= min(bot2 + 1, n - 1); j++)
+			for (int j = max(bot2 - 1, 0); j <= min(bot2 + 1, n - 1); ++j)
 			{
 				res = max(res, memdp(grid, row + 1, i, j, dp));
 			}

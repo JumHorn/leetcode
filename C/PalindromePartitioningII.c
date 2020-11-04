@@ -25,7 +25,7 @@ int minCut(char *s)
 	for (int i = 0; i < n; ++i)
 	{
 		cut[i + 1] = n;
-		for (int j = 0; j <= i; j++)
+		for (int j = 0; j <= i; ++j)
 		{
 			if (dp[j][i] == 1)
 				cut[i + 1] = min(cut[i + 1], cut[j] + 1);

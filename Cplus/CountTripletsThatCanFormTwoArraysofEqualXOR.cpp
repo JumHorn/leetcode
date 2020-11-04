@@ -10,7 +10,7 @@ public:
 		for (int i = 0; i < n - 1; ++i)
 		{
 			int a = 0;
-			for (int j = i + 1; j < n; j++)
+			for (int j = i + 1; j < n; ++j)
 			{
 				a ^= arr[j - 1];
 				int b = 0;

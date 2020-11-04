@@ -14,7 +14,7 @@ public:
 		vector<long> dp(s.length() + 1);
 		dp[0] = 1;
 		dp[1] = (s[0] == '*' ? 9 : 1);
-		for (int j = 1; j < (int)s.length(); j++)
+		for (int j = 1; j < (int)s.length(); ++j)
 		{
 			int i = j + 1;
 			if (s[j] == '*')

@@ -9,7 +9,7 @@ public:
 		int allzero = 0, m, n;
 		for (int i = 0; i < (int)grid.size(); ++i)
 		{
-			for (int j = 0; j < (int)grid[0].size(); j++)
+			for (int j = 0; j < (int)grid[0].size(); ++j)
 			{
 				if (grid[i][j] == 1)
 				{

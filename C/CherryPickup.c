@@ -15,7 +15,7 @@ int cherryPickup(int **grid, int gridSize, int *gridColSize)
 		memset(dp1, 1u << 7, sizeof(dp1));
 		for (int i = max(0, k - (n - 1)); i <= min(n - 1, k); ++i)
 		{
-			for (int j = max(0, k - (n - 1)); j <= min(n - 1, k); j++)
+			for (int j = max(0, k - (n - 1)); j <= min(n - 1, k); ++j)
 			{
 				if (grid[i][k - i] == -1 || grid[j][k - j] == -1)
 					continue;

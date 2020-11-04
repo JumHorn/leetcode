@@ -15,7 +15,7 @@ int *fallingSquares(int **positions, int positionsSize, int *positionsColSize, i
 		int size = positions[i][1];
 		int right = left + size;
 		query[i] += size;
-		for (int j = i + 1; j < positionsSize; j++)
+		for (int j = i + 1; j < positionsSize; ++j)
 		{
 			int left2 = positions[j][0];
 			int size2 = positions[j][1];

@@ -11,7 +11,7 @@ public:
 		while (dp[m][K] < N)
 		{
 			++m;
-			for (int j = 1; j <= K; j++)
+			for (int j = 1; j <= K; ++j)
 				dp[m][j] = dp[m - 1][j - 1] + dp[m - 1][j] + 1;
 		}
 		return m;

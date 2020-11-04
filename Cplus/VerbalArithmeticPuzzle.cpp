@@ -31,7 +31,7 @@ public:
 					continue;
 				if (digit[word[n - i - 1] - 'A'] == -1)
 				{
-					for (int j = 0; j < 10; j++)
+					for (int j = 0; j < 10; ++j)
 					{
 						if (used[j] == -1)
 						{

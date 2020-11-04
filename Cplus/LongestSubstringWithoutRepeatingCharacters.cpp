@@ -10,7 +10,7 @@ public:
 	{
 		unordered_map<char, int> m;
 		int res = 0;
-		for (int i = 0, j = 0; j < (int)s.length(); j++)
+		for (int i = 0, j = 0; j < (int)s.length(); ++j)
 		{
 			i = max(i, m[s[j]]);
 			m[s[j]] = j + 1;

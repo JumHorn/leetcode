@@ -53,7 +53,7 @@ public:
 		unordered_map<int, int> factor;
 		for (int i = 0; i < (int)A.size(); ++i)
 		{
-			for (int j = 2; j * j <= A[i]; j++)
+			for (int j = 2; j * j <= A[i]; ++j)
 			{
 				if (A[i] % j == 0)
 				{

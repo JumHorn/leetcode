@@ -19,7 +19,7 @@ public:
 			int slope = 0;	//同斜率的直线点的个数
 			int maxp = 0;	 //最多点数
 			int samep = 1;	//相同点,包含自身
-			for (int j = i + 1; j < n; j++)
+			for (int j = i + 1; j < n; ++j)
 			{
 				if (points[i] == points[j]) //测试用例的点有重复
 					samep++;

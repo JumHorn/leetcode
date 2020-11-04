@@ -14,14 +14,14 @@ public:
 		for (int i = 0; i < (int)words.size(); ++i)
 		{
 			int mask = 0;
-			for (int j = 0; j < (int)words[i].length(); j++)
+			for (int j = 0; j < (int)words[i].length(); ++j)
 				mask |= (1 << (words[i][j] - 'a'));
 			++m[mask];
 		}
 		for (int i = 0; i < n; ++i)
 		{
 			int mask = 0;
-			for (int j = 0; j < (int)puzzles[i].length(); j++)
+			for (int j = 0; j < (int)puzzles[i].length(); ++j)
 				mask |= (1 << (puzzles[i][j] - 'a'));
 			for (int submask = mask; submask != 0; submask = ((submask - 1) & mask)) //loop for all submask
 			{

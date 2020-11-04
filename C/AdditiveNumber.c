@@ -37,7 +37,7 @@ bool isAdditiveNumber(char *num)
 		first = atol(num);
 		num[i + 1] = tmp;
 
-		for (int j = i + 1; j <= (len - i - 1) / 2 + i; j++)
+		for (int j = i + 1; j <= (len - i - 1) / 2 + i; ++j)
 		{
 			tmp = num[j + 1];
 			num[j + 1] = '\0';

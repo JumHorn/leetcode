@@ -25,7 +25,7 @@ int dfs(int n, int (*queen)[n], int i)
 	if (i >= n)
 		return 1;
 	int res = 0;
-	for (int j = 0; j < n; j++)
+	for (int j = 0; j < n; ++j)
 	{
 		queen[i][j] = 1;
 		if (queenCheck(n, queen, i, j))

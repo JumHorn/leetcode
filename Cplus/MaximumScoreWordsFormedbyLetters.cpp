@@ -14,7 +14,7 @@ public:
 		vector<int> wordsscore(n);
 		for (int i = 0; i < n; ++i)
 		{
-			for (int j = 0; j < (int)words[i].length(); j++)
+			for (int j = 0; j < (int)words[i].length(); ++j)
 				wordsscore[i] += score[words[i][j] - 'a'];
 		}
 		vector<int> letter(26);
@@ -29,7 +29,7 @@ public:
 				vector<int> v = iter.first;
 				dp[i][iter.first] = iter.second;
 				int j = 0;
-				for (; j < (int)words[i - 1].length(); j++)
+				for (; j < (int)words[i - 1].length(); ++j)
 				{
 					int index = words[i - 1][j] - 'a';
 					++v[index];

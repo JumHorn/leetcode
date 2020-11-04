@@ -20,7 +20,7 @@ public:
 			for (int k = 0; k < i; k++)
 			{
 				int j;
-				for (j = 0; j < M; j++)
+				for (j = 0; j < M; ++j)
 				{
 					if (A[j][i] < A[j][k])
 						break;

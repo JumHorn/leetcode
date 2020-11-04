@@ -9,7 +9,7 @@ public:
 		int res = 0;
 		for (int i = 0; i < (int)grid.size(); ++i)
 		{
-			for (int j = 0; j < (int)grid[0].size(); j++)
+			for (int j = 0; j < (int)grid[0].size(); ++j)
 				res += dfs(grid, i, j);
 		}
 		return res;

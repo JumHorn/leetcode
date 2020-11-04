@@ -21,7 +21,7 @@ int minFallingPathSum(int **arr, int arrSize, int *arrColSize)
 			arr[i][j] += j == index ? second : first;
 	}
 	int res = INT_MAX;
-	for (int j = 0; j < n; j++)
+	for (int j = 0; j < n; ++j)
 		if (arr[m - 1][j] < res)
 			res = arr[m - 1][j];
 	return res;

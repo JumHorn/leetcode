@@ -42,7 +42,7 @@ int maxSumSubmatrix(int **matrix, int matrixSize, int *matrixColSize, int k)
 	for (int col = 0; col < n; col++)
 	{
 		memset(sum, 0, sizeof(sum));
-		for (int j = col; j < n; j++)
+		for (int j = col; j < n; ++j)
 		{
 			for (int i = 0; i < m; ++i)
 				sum[i + 1] += matrix[i][j];

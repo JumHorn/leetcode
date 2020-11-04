@@ -17,7 +17,7 @@ public:
 		vector<int> res;
 		for (int i = num; i < 10 && sequence[i] <= high; ++i)
 		{
-			for (int j = 0; j < 10 - i; j++)
+			for (int j = 0; j < 10 - i; ++j)
 			{
 				tmp = sequence[i] + increase[i] * j;
 				if (tmp > high)

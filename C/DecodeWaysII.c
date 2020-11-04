@@ -28,7 +28,7 @@ int numDecodings(char *s)
 		{
 			if (s[i - 1] != '0')
 			{
-				for (int j = 1; j < 10 && (s[i - 1] - '0') * 10 + j <= 26; j++)
+				for (int j = 1; j < 10 && (s[i - 1] - '0') * 10 + j <= 26; ++j)
 					k++;
 			}
 		}

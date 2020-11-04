@@ -11,7 +11,7 @@ public:
 		vector<int> count(M + 1), seen(M, -1);
 		for (int i = 0; i < n1; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 			{
 				if (s1[j] == s2[index])
 					++index;

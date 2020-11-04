@@ -12,7 +12,7 @@ public:
 		int m = mat.size(), n = mat[0].size(), matrix = 0;
 		for (int i = 0; i < m; ++i)
 		{
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < n; ++j)
 			{
 				if (mat[i][j] == 1)
 					matrix = bitFlip(matrix, i * n + j);
@@ -34,7 +34,7 @@ public:
 				q.pop();
 				for (int i = 0; i < m; ++i)
 				{
-					for (int j = 0; j < n; j++)
+					for (int j = 0; j < n; ++j)
 					{
 						int state = encodeFlip(top, m, n, i, j);
 						if (state == 0)

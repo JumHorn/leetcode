@@ -17,7 +17,7 @@ public:
 		vector<vector<int>> dp(4, vector<int>(v.size() + k));
 		for (int i = 1; i < (int)dp.size(); ++i)
 		{
-			for (int j = k; j < (int)dp[0].size(); j++)
+			for (int j = k; j < (int)dp[0].size(); ++j)
 				dp[i][j] = max(dp[i - 1][j - k] + v[j - k], dp[i][j - 1]);
 		}
 

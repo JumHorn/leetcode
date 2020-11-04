@@ -16,7 +16,7 @@ public:
 		for (int i = 0; i < 1 << n; ++i)
 		{
 			int canTakeCourse = 0;
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < n; ++j)
 			{
 				if ((prerequisite[j] & i) == prerequisite[j])
 					canTakeCourse |= 1 << j;

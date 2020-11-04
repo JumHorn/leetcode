@@ -11,7 +11,7 @@ public:
 		unordered_map<int, int> m;
 		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < N; ++j)
 				++m[A[i] & A[j]];
 		}
 		int res = 0;

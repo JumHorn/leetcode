@@ -32,7 +32,7 @@ public:
 			res = (res + memdp(count, i + 1, n, k - 1, dp)) % MOD;
 		while (j < col && !existApple(count, m, j, row, j + 1))
 			++j;
-		for (; j < col; j++)
+		for (; j < col; ++j)
 			res = (res + memdp(count, m, j + 1, k - 1, dp)) % MOD;
 		return dp[m][n][k] = res;
 	}

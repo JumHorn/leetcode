@@ -13,7 +13,7 @@ int minStickers(char **stickers, int stickersSize, char *target)
 		for (int i = 0; i < stickersSize; ++i)
 		{
 			int now = state;
-			for (int j = 0; stickers[i][j]; j++)
+			for (int j = 0; stickers[i][j]; ++j)
 			{
 				for (int k = 0; k < N; k++)
 				{

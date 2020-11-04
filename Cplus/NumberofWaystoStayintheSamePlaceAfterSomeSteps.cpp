@@ -13,7 +13,7 @@ public:
 		for (int i = 1; i < steps; ++i)
 		{
 			vector<int> tmp(dp);
-			for (int j = 1; j <= min(i + 1, n); j++)
+			for (int j = 1; j <= min(i + 1, n); ++j)
 			{
 				dp[j - 1] = (dp[j - 1] + tmp[j]) % MOD;
 				dp[j + 1] = (dp[j + 1] + tmp[j]) % MOD;

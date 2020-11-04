@@ -72,7 +72,7 @@ char **findWords(char **board, int boardSize, int *boardColSize, char **words, i
 	*returnSize = 0;
 	for (int i = 0; i < boardSize; ++i)
 	{
-		for (int j = 0; j < *boardColSize; j++)
+		for (int j = 0; j < *boardColSize; ++j)
 			dfs(board, boardSize, *boardColSize, i, j, root, words, &res, returnSize);
 	}
 	return res;

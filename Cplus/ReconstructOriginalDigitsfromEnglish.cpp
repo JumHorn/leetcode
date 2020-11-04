@@ -18,13 +18,13 @@ public:
 		for (int i = 0; i < 5; ++i)
 		{
 			v[2 * i] = m[even[i]];
-			for (int j = 0; j < (int)number[2 * i].length(); j++)
+			for (int j = 0; j < (int)number[2 * i].length(); ++j)
 				m[number[2 * i][j]] -= v[2 * i];
 		}
 		for (int i = 0; i < 4; ++i)
 		{
 			v[2 * i + 1] = m[odd[i]];
-			for (int j = 0; j < (int)number[2 * i + 1].length(); j++)
+			for (int j = 0; j < (int)number[2 * i + 1].length(); ++j)
 				m[number[2 * i + 1][j]] -= v[2 * i + 1];
 		}
 		v[9] = m['i'];

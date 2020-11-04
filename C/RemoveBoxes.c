@@ -13,7 +13,7 @@ int removeBoxes(int *boxes, int boxesSize)
 	}
 	for (int l = 1; l < boxesSize; l++)
 	{
-		for (int j = l; j < boxesSize; j++)
+		for (int j = l; j < boxesSize; ++j)
 		{
 			int i = j - l;
 			for (int k = 0; k <= i; k++)

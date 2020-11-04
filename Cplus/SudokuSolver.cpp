@@ -30,7 +30,7 @@ private:
 		}
 		for (int i = row / 3 * 3; i < 3 + row / 3 * 3; ++i)
 		{
-			for (int j = column / 3 * 3; j < 3 + column / 3 * 3; j++)
+			for (int j = column / 3 * 3; j < 3 + column / 3 * 3; ++j)
 			{
 				grid[i][j].possiblenum[number - 1] = '0';
 			}
@@ -47,7 +47,7 @@ private:
 		//for zero initialization
 		for (int i = 0; i < 9; ++i)
 		{
-			for (int j = 0; j < 9; j++)
+			for (int j = 0; j < 9; ++j)
 			{
 				if (grid[i][j].rightnum == '0')
 				{
@@ -93,7 +93,7 @@ private:
 			if (grid[row][column].possiblenum[i] != '0')
 			{
 				int j;
-				for (j = 0; j < 9; j++)
+				for (j = 0; j < 9; ++j)
 				{
 					int k;
 					for (k = 0; k < 9; k++)
@@ -123,7 +123,7 @@ private:
 			if (grid[row][column].possiblenum[i] != '0')
 			{
 				int j;
-				for (j = 0; j < 9; j++)
+				for (j = 0; j < 9; ++j)
 				{
 					int k;
 					for (k = 0; k < 9; k++)
@@ -156,7 +156,7 @@ private:
 				for (i = row / 3 * 3; i < 3 + row / 3 * 3; ++i)
 				{
 					int j;
-					for (j = column / 3 * 3; j < 3 + column / 3 * 3; j++)
+					for (j = column / 3 * 3; j < 3 + column / 3 * 3; ++j)
 					{
 						int k;
 						for (k = 0; k < 9; k++)
@@ -197,7 +197,7 @@ public:
 		//for choosing
 		for (int i = 0; i < 9; ++i)
 		{
-			for (int j = 0; j < 9; j++)
+			for (int j = 0; j < 9; ++j)
 			{
 				if (grid[i][j].rightnum == '0')
 				{
@@ -254,7 +254,7 @@ public:
 
 		for (int i = 0; i < 9; ++i)
 		{
-			for (int j = 0; j < 9; j++)
+			for (int j = 0; j < 9; ++j)
 			{
 				if (board[i][j] == '.')
 				{
@@ -284,7 +284,7 @@ public:
 
 		for (int i = 0; i < 9; ++i)
 		{
-			for (int j = 0; j < 9; j++)
+			for (int j = 0; j < 9; ++j)
 			{
 				board[i][j] = grid[i][j].rightnum;
 			}

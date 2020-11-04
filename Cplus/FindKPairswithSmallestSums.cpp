@@ -11,7 +11,7 @@ public:
 		priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(f)> q(f);
 		for (int i = 0; i < (int)nums1.size(); ++i)
 		{
-			for (int j = 0; j < (int)nums2.size(); j++)
+			for (int j = 0; j < (int)nums2.size(); ++j)
 			{
 				if ((int)q.size() < k)
 					q.push({nums1[i], nums2[j]});

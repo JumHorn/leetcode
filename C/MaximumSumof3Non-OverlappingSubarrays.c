@@ -16,7 +16,7 @@ int *maxSumOfThreeSubarrays(int *nums, int numsSize, int k, int *returnSize)
 		prefixsum[i + 1] = prefixsum[i] + nums[i];
 	for (int i = 0; i < 3; ++i)
 	{
-		for (int j = k; j <= numsSize; j++)
+		for (int j = k; j <= numsSize; ++j)
 			dp[j][i + 1] = max(dp[j - 1][i + 1], dp[j - k][i] + prefixsum[j] - prefixsum[j - k]);
 	}
 	*returnSize = 3;

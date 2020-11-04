@@ -14,7 +14,7 @@ public:
 		{
 			vector<int> newneeds(needs);
 			int j;
-			for (j = 0; j < N; j++)
+			for (j = 0; j < N; ++j)
 			{
 				newneeds[j] -= sp[j];
 				if (newneeds[j] < 0)
