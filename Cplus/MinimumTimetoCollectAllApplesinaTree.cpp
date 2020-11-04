@@ -1,37 +1,35 @@
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple)
+	int minTime(int n, vector<vector<int>> &edges, vector<bool> &hasApple)
 	{
-		vector<unordered_map<int, int>> graph(n);
-		for (auto& edge : edges)
+		vector<vector<int>> graph(n);
+		for (auto &edge : edges)
 		{
-			graph[edge[0]][edge[1]] = 1;
-			graph[edge[1]][edge[0]] = 1;
+			graph[edge[0]].push_back(edge[1]);
+			graph[edge[1]].push_back(edge[0]);
 		}
-		int res = postorder(graph, 0, hasApple);
+		vector<bool> seen(n);
+		int res = postorder(graph, 0, seen, hasApple);
 		return res >= 0 ? res : 0;
 	}
 
-	int postorder(vector<unordered_map<int, int>>& graph, int index, vector<bool>& hasApple)
+	// no apple return -1,hash apple return time needed
+	int postorder(vector<vector<int>> &graph, int at, vector<bool> &seen, vector<bool> &hasApple)
 	{
 		int res = 0;
-		for (auto& node : graph[index])
+		seen[at] = true;
+		for (auto &to : graph[at])
 		{
-			if (node.second == 1)
-			{
-				graph[node.first][index] = 0;
-				int tmp = postorder(graph, node.first, hasApple);
-				if (tmp >= 0)
-					res += tmp + 2;
-			}
+			if (seen[to])
+				continue;
+			int time = postorder(graph, to, seen, hasApple);
+			if (time >= 0)
+				res += time + 2;
 		}
-		if (!hasApple[index] && res == 0)
-			return -1;
-		return res;
+		return (!hasApple[at] && res == 0) ? -1 : res;
 	}
 };
