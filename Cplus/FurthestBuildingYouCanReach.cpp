@@ -29,6 +29,7 @@ public:
 						int b = q.top();
 						q.pop();
 						bricks += b - h;
+						q.push(h);
 					}
 				}
 			}
