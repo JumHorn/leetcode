@@ -8,25 +8,28 @@ public:
 	vector<int> countSubTrees(int n, vector<vector<int>> &edges, string labels)
 	{
 		vector<int> res(n);
-		vector<unordered_set<int>> graph(n);
+		vector<vector<int>> graph(n);
 		for (auto &edge : edges)
 		{
-			graph[edge[0]].insert(edge[1]);
-			graph[edge[1]].insert(edge[0]);
+			graph[edge[0]].push_back(edge[1]);
+			graph[edge[1]].push_back(edge[0]);
 		}
-		dfs(graph, 0, labels[0], labels, res);
+		vector<bool> seen(n);
+		postorder(graph, 0, labels, seen, res);
 		return res;
 	}
 
-	vector<int> dfs(vector<unordered_set<int>> &graph, int at, char c, string &labels, vector<int> &nodeCount)
+	const vector<int> postorder(vector<vector<int>> &graph, int at, string &labels, vector<bool> &seen, vector<int> &nodeCount)
 	{
 		vector<int> res(26);
+		seen[at] = true;
 		for (auto n : graph[at])
 		{
-			graph[n].erase(at);
-			vector<int> tmp = dfs(graph, n, c, labels, nodeCount);
+			if (seen[n])
+				continue;
+			auto &count = postorder(graph, n, labels, seen, nodeCount);
 			for (int i = 0; i < 26; ++i)
-				res[i] += tmp[i];
+				res[i] += count[i];
 		}
 		nodeCount[at] = ++res[labels[at] - 'a'];
 		return res;
