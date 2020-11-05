@@ -25,38 +25,18 @@ public:
 	{
 		if (root == nullptr)
 			return true;
+		if (layer % 2 == root->val % 2)
+			return false;
 		if (layer >= (int)height.size())
-		{
-			if (layer % 2 == 0)
-			{
-				if (root->val % 2 == 0)
-					return false;
-			}
-			else
-			{
-				if (root->val % 2 != 0)
-					return false;
-			}
 			height.push_back(root->val);
-		}
 		else
 		{
-			if (layer % 2 == 0)
-			{
-				if (root->val <= height[layer] || root->val % 2 == 0)
-					return false;
-			}
-			else
-			{
-				if (root->val >= height[layer] || root->val % 2 != 0)
-					return false;
-			}
+			if ((layer % 2 == 0 && root->val <= height[layer]) ||
+				(layer % 2 != 0 && root->val >= height[layer]))
+				return false;
 			height[layer] = root->val;
 		}
-		if (!preorder(root->left, layer + 1, height))
-			return false;
-		if (!preorder(root->right, layer + 1, height))
-			return false;
-		return true;
+		return preorder(root->left, layer + 1, height) &&
+			   preorder(root->right, layer + 1, height);
 	}
 };
