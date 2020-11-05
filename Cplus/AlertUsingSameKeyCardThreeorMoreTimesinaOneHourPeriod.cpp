@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <map>
 #include <string>
 #include <vector>
@@ -16,14 +17,13 @@ public:
 		{
 			auto &v = n.second;
 			sort(v.begin(), v.end());
-			for (int i = 2, j = 0; i < v.size(); ++i)
+			for (int i = 2, j = 0; i < v.size(); ++i, ++j)
 			{
 				if (timeDiff(v[j], v[i]))
 				{
 					res.push_back(n.first);
 					break;
 				}
-				++j;
 			}
 		}
 		return res;
