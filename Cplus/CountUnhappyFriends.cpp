@@ -8,52 +8,34 @@ class Solution
 public:
 	int unhappyFriends(int n, vector<vector<int>> &preferences, vector<vector<int>> &pairs)
 	{
-		vector<unordered_map<int, int>> prefer(n);
+		vector<unordered_map<int, int>> m(n);
+		vector<int> dist(n);
 		for (int i = 0; i < n; ++i)
 		{
-			for (int j = 0; j < n - 1; ++j)
-				prefer[i][preferences[i][j]] = j;
+			for (int j = 0; j < preferences[i].size(); ++j)
+				m[i][preferences[i][j]] = j;
 		}
-		vector<int> seen(n);
-		for (int i = 0; i < n / 2; ++i)
+		for (auto &p : pairs)
 		{
-			for (int j = 0; j < n / 2; ++j)
+			dist[p[0]] = m[p[0]][p[1]];
+			dist[p[1]] = m[p[1]][p[0]];
+		}
+		int res = 0;
+		for (int i = 0; i < n; ++i)
+		{
+			for (int d = 0; d < dist[i]; ++d)
 			{
-				if (i == j)
-					continue;
-
-				int x = pairs[i][0], y = pairs[i][1], u = pairs[j][0], v = pairs[j][1];
-
-				if (!seen[x])
+				int j = preferences[i][d];
+				for (int d1 = 0; d1 < dist[j]; ++d1)
 				{
-					if (getPrefer(prefer, x, y, u, v) || getPrefer(prefer, x, y, v, u))
-						seen[x] = 1;
-				}
-
-				if (!seen[y])
-				{
-					if (getPrefer(prefer, y, x, u, v) || getPrefer(prefer, y, x, v, u))
-						seen[y] = 1;
-				}
-
-				if (!seen[u])
-				{
-					if (getPrefer(prefer, u, v, x, y) || getPrefer(prefer, u, v, y, x))
-						seen[u] = 1;
-				}
-
-				if (!seen[v])
-				{
-					if (getPrefer(prefer, v, u, x, y) || getPrefer(prefer, v, u, y, x))
-						seen[v] = 1;
+					if (i == preferences[j][d1])
+					{
+						++res;
+						d = d1 = n;
+					}
 				}
 			}
 		}
-		return accumulate(seen.begin(), seen.end(), 0);
-	}
-
-	bool getPrefer(vector<unordered_map<int, int>> &prefer, int x, int y, int u, int v)
-	{
-		return prefer[x][u] < prefer[x][y] && prefer[u][x] < prefer[u][v];
+		return res;
 	}
 };
