@@ -8,11 +8,11 @@ class Solution
 public:
 	double maxProbability(int n, vector<vector<int>> &edges, vector<double> &succProb, int start, int end)
 	{
-		vector<unordered_map<int, double>> graph(n);
+		vector<vector<pair<int, double>>> graph(n);
 		for (int i = 0; i < (int)edges.size(); ++i)
 		{
-			graph[edges[i][0]][edges[i][1]] = succProb[i];
-			graph[edges[i][1]][edges[i][0]] = succProb[i];
+			graph[edges[i][0]].push_back({edges[i][1], succProb[i]});
+			graph[edges[i][1]].push_back({edges[i][0], succProb[i]});
 		}
 		//bfs
 		priority_queue<pair<double, int>> q;
