@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 using namespace std;
 
@@ -6,34 +7,26 @@ class Solution
 public:
 	int findLengthOfShortestSubarray(vector<int> &arr)
 	{
-		int n = arr.size(), top = n, bottom = -1;
-		if (n == 1)
+		int N = arr.size(), left = 0, right = N - 1;
+		while (left + 1 < N && arr[left] <= arr[left + 1])
+			++left;
+		if (left == N - 1)
 			return 0;
-		bool increasing = true, decreasing = true;
-		for (int i = 1; i < n; ++i)
+
+		while (right > left && arr[right - 1] <= arr[right])
+			--right;
+		//merge left,and right
+		int res = min(N - left - 1, right);
+		for (int i = 0, j = right; i <= left && j < N;)
 		{
-			if (arr[i] < arr[i - 1])
+			if (arr[j] >= arr[i])
 			{
-				increasing = false;
-				top = min(top, i - 1);
-				bottom = max(bottom, i);
+				res = min(res, j - i - 1);
+				++i;
 			}
 			else
-				decreasing = false;
+				++j;
 		}
-		if (increasing) //increasing array
-			return 0;
-		if (decreasing) //decreasing arrary
-			return n - 1;
-		int res = bottom - top - 1;
-		int i = bottom;
-		while (i < n && arr[i] < arr[top])
-			++i;
-		int val = i - bottom;
-		i = top;
-		while (i >= 0 && arr[i] > arr[bottom])
-			--i;
-		val = min(val, top - i);
-		return res + val;
+		return res;
 	}
 };
