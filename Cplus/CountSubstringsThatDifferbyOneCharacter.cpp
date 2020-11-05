@@ -12,9 +12,9 @@ public:
 			for (int j = 0; j < N2; ++j)
 			{
 				int diff = 0;
-				for (int l = 0; i + l < N1 && j + l < N2 && diff < 2; ++l)
+				for (int k = 0; i + k < N1 && j + k < N2 && diff < 2; ++k)
 				{
-					if (s[i + l] != t[j + l])
+					if (s[i + k] != t[j + k])
 						++diff;
 					if (diff == 1)
 						++res;
