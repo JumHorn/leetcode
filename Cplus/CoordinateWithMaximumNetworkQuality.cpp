@@ -8,7 +8,7 @@ public:
 	vector<int> bestCoordinate(vector<vector<int>> &towers, int radius)
 	{
 		vector<int> res;
-		int maxquality = 0;
+		int maxquality = -1;
 		for (int i = 0; i <= 50; ++i)
 		{
 			for (int j = 0; j <= 50; ++j)
@@ -31,9 +31,7 @@ public:
 		{
 			double d = sqrt((p[0] - x) * (p[0] - x) + (p[1] - y) * (p[1] - y));
 			if (d <= radius)
-			{
 				res += p[2] / (1 + d);
-			}
 		}
 		return res;
 	}
