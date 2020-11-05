@@ -5,7 +5,7 @@ using namespace std;
 class Solution
 {
 public:
-	int maxNonOverlapping(vector<int>& nums, int target)
+	int maxNonOverlapping(vector<int> &nums, int target)
 	{
 		unordered_set<int> m;
 		int N = nums.size(), prefixsum = 0, res = 0;
