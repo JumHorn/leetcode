@@ -23,7 +23,7 @@ int postorder(GraphNode **graph, int at, int *seen, bool *hasApple)
 {
 	int res = 0;
 	seen[at] = 1;
-	for (GraphNode *to = graph[at]; to; to->next)
+	for (GraphNode *to = graph[at]; to; to = to->next)
 	{
 		if (seen[to->node] == 1)
 			continue;
