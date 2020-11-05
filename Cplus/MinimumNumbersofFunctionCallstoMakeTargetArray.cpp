@@ -4,23 +4,20 @@ using namespace std;
 class Solution
 {
 public:
-	int minOperations(vector<int>& nums)
+	int minOperations(vector<int> &nums)
 	{
-		int res = 0;
-		bool flag = true;
-		while (flag)
+		int res = 0, maxbit = 1;
+		for (auto &n : nums)
 		{
-			flag = false;
-			for (auto& n : nums)
+			int bits = 0;
+			while (n > 0)
 			{
-				if (n % 2 == 1)
-					++res;
-				n /= 2;
-				if (n != 0)
-					flag = true;
+				res += n & 1;
+				++bits;
+				n >>= 1;
 			}
-			++res;
+			maxbit = max(maxbit, bits);
 		}
-		return res - 1;
+		return res + maxbit - 1;
 	}
 };
