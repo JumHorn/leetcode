@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <functional>
 #include <vector>
 using namespace std;
 
@@ -7,21 +8,22 @@ class Solution
 public:
 	int bestTeamScore(vector<int> &scores, vector<int> &ages)
 	{
-		int N = scores.size();
+		int N = scores.size(), res = 0;
 		vector<pair<int, int>> v;
 		for (int i = 0; i < N; ++i)
 			v.push_back({ages[i], scores[i]});
-		sort(v.begin(), v.end());
-		vector<int> dp(N + 1);
+		sort(v.begin(), v.end(), greater<int>());
+		vector<int> dp(N);
 		for (int i = 0; i < N; ++i)
 		{
-			dp[i + 1] = v[i].second;
+			dp[i] = v[i].second;
 			for (int j = 0; j < i; ++j)
 			{
-				if ((v[i].first == v[j].first) || (v[i].second > v[j].second))
-					dp[i + 1] = max(dp[i + 1], dp[j + 1] + v[i].second);
+				if (v[i].second <= v[j].second)
+					dp[i] = max(dp[i], dp[j] + v[i].second);
 			}
+			res = max(res, dp[i]);
 		}
-		return *max_element(dp.begin(), dp.end());
+		return res;
 	}
 };
