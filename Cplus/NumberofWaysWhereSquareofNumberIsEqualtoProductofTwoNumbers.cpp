@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -14,29 +15,17 @@ public:
 
 	int count(vector<int> &nums1, vector<int> &nums2)
 	{
-		int N = nums2.size(), res = 0;
-		for (auto n : nums1)
+		int res = 0;
+		unordered_map<int, int> m; //{value,count}
+		for (auto n1 : nums1)
 		{
-			for (int i = 0, j = N - 1; i < j;)
+			m.clear();
+			long n = (long)n1 * n1;
+			for (auto n2 : nums2)
 			{
-				if ((long)nums2[i] * nums2[j] == (long)n * n)
-				{
-					int l = i + 1, r = j - 1;
-					while (l <= r && nums2[l] == nums2[i])
-						++l;
-					while (l <= r && nums2[r] == nums2[j])
-						--r;
-					if (nums2[i] != nums2[j] || l <= r)
-						res += (l - i) * (j - r);
-					else
-						res += (j - i + 1) * (j - i) / 2;
-					i = l;
-					j = r;
-				}
-				else if ((long)nums2[i] * nums2[j] < (long)n * n)
-					++i;
-				else
-					--j;
+				if (n % n2 == 0)
+					res += m[n / n2];
+				++m[n2];
 			}
 		}
 		return res;
