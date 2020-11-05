@@ -8,31 +8,29 @@ class Solution
 public:
 	vector<int> avoidFlood(vector<int> &rains)
 	{
-		int n = rains.size();
-		vector<int> res;
-		unordered_map<int, int> m;
-		set<int> dry;
-		for (int i = 0; i < n; ++i)
+		int N = rains.size();
+		vector<int> res(N);
+		set<int> s;						  //index
+		unordered_map<int, int> fulllake; //{lake,index}
+		for (int i = 0; i < N; ++i)
 		{
-			if (rains[i] > 0)
+			if (rains[i] == 0)
 			{
-				res.push_back(-1);
-				if (m.find(rains[i]) != m.end())
-				{
-					if (dry.empty())
-						return {};
-					auto iter = dry.upper_bound(m[rains[i]]);
-					if (iter == dry.end())
-						return {};
-					res[*iter] = rains[i];
-					dry.erase(iter);
-				}
-				m[rains[i]] = i;
+				res[i] = 1;
+				s.insert(i);
 			}
 			else
 			{
-				res.push_back(1);
-				dry.insert(i);
+				res[i] = -1;
+				if (fulllake.find(rains[i]) != fulllake.end())
+				{
+					auto iter = s.lower_bound(fulllake[rains[i]]);
+					if (iter == s.end())
+						return {};
+					res[*iter] = rains[i];
+					s.erase(iter);
+				}
+				fulllake[rains[i]] = i;
 			}
 		}
 		return res;
