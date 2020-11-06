@@ -1,31 +1,30 @@
 #include <stdbool.h>
 
-bool checkBoard(char **board, int i, int j)
+bool checkBoard(char **board, int row, int col)
 {
-	for (int l = 0; l < 9; l++)
+	for (int i = 0; i < 9; ++i)
 	{
-		if (l != i && board[l][j] == board[i][j])
-			return false;
-		if (l != j && board[i][l] == board[i][j])
-			return false;
-		if ((i / 3 * 3 + l / 3 != i || j / 3 * 3 + l % 3 != j) && board[i / 3 * 3 + l / 3][j / 3 * 3 + l % 3] == board[i][j])
+		if ((i != row && board[i][col] == board[row][col]) ||
+			(i != col && board[row][i] == board[row][col]) ||
+			((row / 3 * 3 + i / 3 != row || col / 3 * 3 + i % 3 != col) &&
+			 board[row / 3 * 3 + i / 3][col / 3 * 3 + i % 3] == board[row][col]))
 			return false;
 	}
 	return true;
 }
 
-bool backTracking(char **board, int n)
+bool backTracking(char **board, int boardSize)
 {
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < boardSize; ++i)
 	{
-		for (int j = 0; j < n; ++j)
+		for (int j = 0; j < boardSize; ++j)
 		{
 			if (board[i][j] == '.')
 			{
-				for (char c = '1'; c <= '9'; c++)
+				for (char c = '1'; c <= '9'; ++c)
 				{
 					board[i][j] = c;
-					if (checkBoard(board, i, j) && backTracking(board, n))
+					if (checkBoard(board, i, j) && backTracking(board, boardSize))
 						return true;
 					board[i][j] = '.';
 				}
