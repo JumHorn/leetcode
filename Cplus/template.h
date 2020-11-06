@@ -191,32 +191,32 @@ private:
 class SegmentTree
 {
 public:
-	SegmentTree(int n) : data(2 * n)
+	SegmentTree(int size) : data(2 * size)
 	{
 	}
 
 	SegmentTree(vector<int> &v) : data(2 * v.size())
 	{
-		int n = v.size();
-		for (int i = 0; i < n; ++i)
-			data[i + n] = v[i];
-		for (int i = n - 1; i > 0; --i)
+		int N = v.size();
+		for (int i = 0; i < N; ++i)
+			data[i + N] = v[i];
+		for (int i = N - 1; i > 0; --i)
 			data[i] = data[i << 1] + data[i << 1 | 1];
 	}
 
 	//update index with value val
 	void update(int index, int val)
 	{
-		int n = data.size() / 2, delta = val - data[index + n];
-		for (index += n; index > 0; index >>= 1)
+		int N = data.size() >> 1, delta = val - data[index + N];
+		for (index += N; index > 0; index >>= 1)
 			data[index] += delta;
 	}
 
-	//[first,end) query range first included and end not included
-	int queryRange(int first, int end)
+	//[first,last) query range first included and last not included
+	int queryRange(int first, int last)
 	{
-		int n = data.size() / 2, res = 0;
-		for (int l = first + n, r = end + n; l < r; l >>= 1, r >>= 1)
+		int N = data.size() / 2, res = 0;
+		for (int l = first + N, r = last + N; l < r; l >>= 1, r >>= 1)
 		{
 			if (l & 1)
 				res += data[l++];
