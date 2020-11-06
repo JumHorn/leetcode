@@ -1,6 +1,5 @@
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -9,22 +8,27 @@ class Solution
 public:
 	vector<int> findSubstring(string s, vector<string> &words)
 	{
-		vector<int> res;
 		int wordsSize = words.size();
 		int N = s.length(), w = words[0].length(), len = w * wordsSize;
-		unordered_multiset<string> umset(words.begin(), words.end()); //{word}
-		for (int i = 0; i <= N - len; ++i)
+		unordered_map<string, int> m; //{word,index}
+		vector<int> res, count(wordsSize);
+		for (int i = 0; i < wordsSize; ++i)
 		{
-			auto wordSetCopy = umset;
-			for (int j = i; j < i + len; j += w)
+			m.insert({words[i], i});
+			++count[m[words[i]]];
+		}
+		for (int i = 0, j = 0; i <= N - len; ++i)
+		{
+			auto wordCountCopy = count;
+			for (j = i; j < i + len; j += w)
 			{
 				string sub = s.substr(j, w);
-				auto iter = wordSetCopy.find(sub);
-				if (iter == wordSetCopy.end())
+				if (m.find(sub) == m.end())
 					break;
-				wordSetCopy.erase(iter);
+				if (--wordCountCopy[m[sub]] < 0)
+					break;
 			}
-			if (wordSetCopy.empty())
+			if (j == i + len)
 				res.push_back(i);
 		}
 		return res;
