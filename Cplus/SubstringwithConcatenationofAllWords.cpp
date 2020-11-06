@@ -1,5 +1,6 @@
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -9,38 +10,22 @@ public:
 	vector<int> findSubstring(string s, vector<string> &words)
 	{
 		vector<int> res;
-		unordered_map<string, int> m; //{word,index}
-		int size = words.size(), oldsize = size;
-		vector<int> seen(size);
-		if (words.empty())
-			return {};
-		int n = s.length(), w = words[0].length(), len = w * words.size();
-		//initialize map and seen array
-		for (int i = 0; i < size; ++i)
+		int wordsSize = words.size();
+		int N = s.length(), w = words[0].length(), len = w * wordsSize;
+		unordered_multiset<string> umset(words.begin(), words.end()); //{word}
+		for (int i = 0; i <= N - len; ++i)
 		{
-			if (m.find(words[i]) == m.end())
-				m[words[i]] = i;
-			++seen[m[words[i]]];
-		}
-		for (int i = 0; i <= n - len; ++i)
-		{
-			vector<int> tmp(seen);
-			int j = i;
-			size = oldsize;
-			while (j <= n - w)
+			auto wordSetCopy = umset;
+			for (int j = i; j < i + len; j += w)
 			{
 				string sub = s.substr(j, w);
-				if (m.find(sub) == m.end())
+				auto iter = wordSetCopy.find(sub);
+				if (iter == wordSetCopy.end())
 					break;
-				if (--tmp[m[sub]] < 0)
-					break;
-				if (--size == 0)
-				{
-					res.push_back(i);
-					break;
-				}
-				j += w;
+				wordSetCopy.erase(iter);
 			}
+			if (wordSetCopy.empty())
+				res.push_back(i);
 		}
 		return res;
 	}
