@@ -1,42 +1,37 @@
 #include <string.h>
 
 /*
-using stack to track every )'s index
-
-dp[i] ith index has length dp[i]
-if i+1 ) has matched ( dp[i+1]=dp[i]+2+dp[stack.top()]
-dp[i+1]=0
+dp[i] means ith index has matched length dp[i]
+s[i] == '(' dp[i] = 0
+s[i] == ')'
+	1. s[i-1] == '(' dp[i]=2+dp[i-2]
+	2. s[i-1] == ')'
+		s[i-1-dp[i-1]] == '(' ? dp[i]=2+dp[i-1]+dp[i-1-dp[i-1]-1]
 
 initialization
 dp[0]=0
 */
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
-#define LEN 20001
 
 int longestValidParentheses(char *s)
 {
-	int dp[LEN] = {0}, size = 0, res = 0, top = -1, stack[LEN] = {0};
-	char *p = s;
-	while (*p)
+	int N = strlen(s), dp[N + 1], res = 0;
+	dp[0] = 0;
+	for (int i = 1; i < N; ++i)
 	{
-		if (*p == '(')
+		if (s[i] == ')')
 		{
-			stack[++top] = size;
-			dp[++size] = 0;
+			if (s[i - 1] == '(')
+				dp[i] = 2 + (i >= 2 ? dp[i - 2] : 0);
+			else if (i > dp[i - 1] && s[i - 1 - dp[i - 1]] == '(')
+				dp[i] = 2 + dp[i - 1] + (i - 2 >= dp[i - 1] ? dp[i - 2 - dp[i - 1]] : 0);
+			else
+				dp[i] = 0;
 		}
 		else
-		{
-			if (top != -1)
-			{
-				dp[size + 1] = dp[stack[top--]] + dp[size] + 2;
-				res = max(res, dp[size + 1]);
-			}
-			else
-				dp[size + 1] = 0;
-			++size;
-		}
-		++p;
+			dp[i] = 0;
+		res = max(res, dp[i]);
 	}
 	return res;
 }
