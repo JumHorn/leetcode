@@ -1,7 +1,7 @@
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 /*
 1. create dp[s.size+1][p.size+1] array and dp[i][j] standard for s[0~i] is match p[0-j]
 2. p[j]=='.' dp[i+1][j+1] dp[i+1][j+1]=dp[i][j]
@@ -29,16 +29,16 @@ if p[j]=='*' we will choose the previous two dp in the same row and the above on
 
 bool isMatch(char *s, char *p)
 {
-	int len1 = strlen(s), len2 = strlen(p);
-	bool dp[len1 + 1][len2 + 1];
+	int slen = strlen(s), plen = strlen(p);
+	bool dp[slen + 1][plen + 1];
 	memset(dp, 0, sizeof(dp));
 	dp[0][0] = true;
-	for (int j = 0; j < len2; ++j)
+	for (int j = 0; j < plen; ++j)
 		dp[0][j + 1] = (p[j] == '*' && dp[0][j - 1]);
 
-	for (int i = 0; i < len1; ++i)
+	for (int i = 0; i < slen; ++i)
 	{
-		for (int j = 0; j < len2; ++j)
+		for (int j = 0; j < plen; ++j)
 		{
 			if (p[j] == '.' || p[j] == s[i])
 				dp[i + 1][j + 1] = dp[i][j];
@@ -51,5 +51,5 @@ bool isMatch(char *s, char *p)
 			}
 		}
 	}
-	return dp[len1][len2];
+	return dp[slen][plen];
 }

@@ -1,32 +1,31 @@
 #include <stdlib.h>
 #include <string.h>
 
-//definition of Trie
-struct Trie
+//prefix tree
+typedef struct Trie
 {
 	int index; //index of words,default to -1
 	struct Trie *node[26];
-};
+} Trie;
 
 //create a new node
-struct Trie *createNode(int index)
+Trie *createNode(int index)
 {
-	struct Trie *root = (struct Trie *)malloc(sizeof(struct Trie));
-	memset((void *)root, 0, sizeof(struct Trie));
+	Trie *root = (Trie *)malloc(sizeof(Trie));
+	memset((void *)root, 0, sizeof(Trie));
 	root->index = index;
 	return root;
 }
 
 //insert word to the trie and find the same word at the same time
-void insert(struct Trie *root, char *word, int index, int *seen)
+void insert(Trie *root, char *word, int index, int *seen)
 {
 	while (*word)
 	{
-		int tmp = *word - 'a';
-		if (!root->node[tmp])
-			root->node[tmp] = createNode(-1);
-		root = root->node[tmp];
-		++word;
+		int index = *word++ - 'a';
+		if (!root->node[index])
+			root->node[index] = createNode(-1);
+		root = root->node[index];
 	}
 	if (root->index == -1)
 		root->index = index;
@@ -34,15 +33,15 @@ void insert(struct Trie *root, char *word, int index, int *seen)
 }
 
 //result 0 success -1 failure
-int search(struct Trie *root, char *s, int *seen, int size)
+int search(Trie *root, char *s, int *seen, int size)
 {
-	struct Trie *head = root;
+	Trie *head = root;
 	while (*s)
 	{
-		int tmp = *s - 'a';
-		if (!head->node[tmp])
+		int index = *s++ - 'a';
+		if (!head->node[index])
 			return -1;
-		head = head->node[tmp];
+		head = head->node[index];
 		if (head->index >= 0)
 		{
 			if (--seen[head->index] < 0)
@@ -51,10 +50,10 @@ int search(struct Trie *root, char *s, int *seen, int size)
 				return 0;
 			head = root;
 		}
-		++s;
 	}
 	return -1;
 }
+/********end of prefix tree********/
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
@@ -63,23 +62,19 @@ int *findSubstring(char *s, char **words, int wordsSize, int *returnSize)
 {
 	*returnSize = 0;
 	int *res = (int *)malloc(sizeof(int) * 100);
-	if (wordsSize == 0)
-		return res;
-
-	struct Trie *trie = createNode(-1);
+	Trie *trie = createNode(-1);
 	//build trie
-	int seen[wordsSize]; //0 not found 1 found
-	memset(seen, 0, sizeof(seen));
+	int count[wordsSize];
+	memset(count, 0, sizeof(count));
 	for (int i = 0; i < wordsSize; ++i)
-		insert(trie, words[i], i, seen);
-	//malloc for the result
+		insert(trie, words[i], i, count);
 	int size = strlen(words[0]) * wordsSize; //sum of all words size
 	int slen = strlen(s);					 //length of string s
 	for (int i = 0; i <= slen - size; ++i)
 	{
-		int tmp[wordsSize];
-		memcpy(tmp, seen, sizeof(tmp));
-		if (search(trie, s + i, tmp, wordsSize) == 0)
+		int wordCountCopy[wordsSize];
+		memcpy(wordCountCopy, count, sizeof(count));
+		if (search(trie, s + i, wordCountCopy, wordsSize) == 0)
 			res[(*returnSize)++] = i;
 	}
 	return res;

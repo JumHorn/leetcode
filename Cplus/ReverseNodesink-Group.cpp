@@ -1,11 +1,10 @@
-#include <algorithm> //for NULL define
 
 //Definition for singly-linked list.
 struct ListNode
 {
 	int val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode(int x) : val(x), next(nullptr) {}
 };
 
 class Solution
@@ -15,12 +14,12 @@ public:
 	{
 		ListNode *tail = head, *res = head;
 		int count = 0;
-		while (tail != NULL && ++count != k)
+		while (tail != nullptr && ++count != k)
 			tail = tail->next;
 		if (count == k)
 		{
 			ListNode *tmp = reverseKGroup(tail->next, k);
-			tail->next = NULL;
+			tail->next = nullptr;
 			res = reverseList(head);
 			head->next = tmp;
 		}
@@ -29,11 +28,11 @@ public:
 
 	ListNode *reverseList(ListNode *head)
 	{
-		if (head == NULL || head->next == NULL)
+		if (head == nullptr || head->next == nullptr)
 			return head;
 		ListNode *res = reverseList(head->next);
 		head->next->next = head;
-		head->next = NULL;
+		head->next = nullptr;
 		return res;
 	}
 };

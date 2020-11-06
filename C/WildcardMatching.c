@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <string.h>
 
 /*
@@ -6,13 +7,13 @@ greedy solution to only expand the last * we met
 
 bool isMatch(char *s, char *p)
 {
-	int i = 0, j = 0, m = 0, n = 0;	 //n is the last * position
+	int i = 0, j = 0, m = 0, n = 0; //n is the last * position
 	while (s[i])
 	{
 		if (p[j] == '?' || p[j] == s[i])
 		{
-			i++;
-			j++;
+			++i;
+			++j;
 		}
 		else if (p[j] == '*')
 		{
@@ -27,7 +28,7 @@ bool isMatch(char *s, char *p)
 		else
 			return false;
 	}
-	while (p[j] && p[j] == '*')
-		j++;
+	while (p[j] == '*')
+		++j;
 	return !p[j];
 }

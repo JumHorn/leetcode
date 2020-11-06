@@ -1,6 +1,7 @@
 
 //using stack to store the index of the height
 //keep the stack decreasing
+
 int trap(int *height, int heightSize)
 {
 	if (heightSize == 0)

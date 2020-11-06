@@ -2,12 +2,14 @@
 #include <vector>
 using namespace std;
 
-//Definition for singly-linked list.
+// Definition for singly-linked list.
 struct ListNode
 {
 	int val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
 class Solution
@@ -15,19 +17,21 @@ class Solution
 public:
 	ListNode *mergeKLists(vector<ListNode *> &lists)
 	{
-		ListNode *dummy = new ListNode(0), *res = dummy;
+		ListNode dummy, *d = &dummy;
 		priority_queue<pair<int, ListNode *>> q;
-		for (int i = 0; i < (int)lists.size(); ++i)
-			if (lists[i] != NULL)
-				q.push({-lists[i]->val, lists[i]});
+		for (auto node : lists)
+		{
+			if (node != nullptr)
+				q.push({-node->val, node});
+		}
 		while (!q.empty())
 		{
-			dummy->next = q.top().second;
-			dummy = dummy->next;
+			d->next = q.top().second;
+			d = d->next;
 			q.pop();
-			if (dummy->next != NULL)
-				q.push({-dummy->next->val, dummy->next});
+			if (d->next != nullptr)
+				q.push({-d->next->val, d->next});
 		}
-		return res->next;
+		return dummy.next;
 	}
 };
