@@ -18,12 +18,12 @@ public:
 			dp[0] = i + 1;
 			for (int j = 0; j < N; ++j)
 			{
-				int tmp = dp[j + 1];
+				int next = dp[j + 1];
 				if (word1[i] == word2[j])
 					dp[j + 1] = pre;
 				else
 					dp[j + 1] = min({pre, dp[j], dp[j + 1]}) + 1;
-				pre = tmp;
+				pre = next;
 			}
 		}
 		return dp[N];
