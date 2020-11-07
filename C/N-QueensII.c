@@ -1,45 +1,34 @@
+#include <math.h>
 #include <stdbool.h>
-#include <string.h>
 
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-
-bool queenCheck(int n, int (*queen)[n], int i, int j)
+bool queenCheck(int *queen, int row, int column)
 {
-	int drc[][2] = {{-1, 0}, {-1, -1}, {-1, 1}};
-	for (int l = 1; l < n; l++)
+	for (int i = 0; i < row; ++i)
 	{
-		for (int m = 0; m < ARRAY_SIZE(drc); m++)
-		{
-			int x = i + drc[m][0] * l, y = j + drc[m][1] * l;
-			if (x < 0 || x >= n || y < 0 || y >= n)
-				continue;
-			if (queen[x][y] == 1)
-				return false;
-		}
+		if (column == queen[i] || (abs(row - i) == abs(column - queen[i])))
+			return false;
 	}
 	return true;
 }
 
-int dfs(int n, int (*queen)[n], int i)
+int dfs(int *queen, int queenSize, int row)
 {
-	if (i >= n)
+	if (row >= queenSize)
 		return 1;
 	int res = 0;
-	for (int j = 0; j < n; ++j)
+	for (int j = 0; j < queenSize; ++j)
 	{
-		queen[i][j] = 1;
-		if (queenCheck(n, queen, i, j))
-			res += dfs(n, queen, i + 1);
-		queen[i][j] = 0;
+		if (queenCheck(queen, row, j))
+		{
+			queen[row] = j;
+			res += dfs(queen, queenSize, row + 1);
+		}
 	}
 	return res;
 }
 
 int totalNQueens(int n)
 {
-	if (n <= 0)
-		return 0;
-	int queen[n][n];
-	memset(queen, 0, sizeof(queen));
-	return dfs(n, queen, 0);
+	int queen[n]; //record queens in each row
+	return dfs(queen, n, 0);
 }

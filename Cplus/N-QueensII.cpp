@@ -8,25 +8,22 @@ class Solution
 public:
 	int totalNQueens(int n)
 	{
-		if (n < 2)
-			return 1;
 		vector<int> queen(n); //record queens in each row
-		return doTotalNQueens(queen, 0);
+		return dfs(queen, 0);
 	}
 
-	int doTotalNQueens(vector<int> &queen, int row)
+	int dfs(vector<int> &queen, int row)
 	{
-		int n = queen.size();
-		if (row >= n)
+		int N = queen.size();
+		if (row >= N)
 			return 1;
 		int res = 0;
-		for (int j = 0; j < n; ++j)
+		for (int j = 0; j < N; ++j)
 		{
 			if (queenCheck(queen, row, j))
 			{
 				queen[row] = j;
-				res += doTotalNQueens(queen, row + 1);
-				queen[row] = 0;
+				res += dfs(queen, row + 1);
 			}
 		}
 		return res;
@@ -35,8 +32,10 @@ public:
 	bool queenCheck(vector<int> &queen, int row, int column)
 	{
 		for (int i = 0; i < row; ++i)
+		{
 			if (column == queen[i] || (abs(row - i) == abs(column - queen[i])))
 				return false;
+		}
 		return true;
 	}
 };
