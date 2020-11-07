@@ -3,7 +3,7 @@
 using namespace std;
 
 /*
-O(n) only need to check the range between max right jump and next max right jump
+O(N) only need to check the range between max right jump and next max right jump
 */
 
 class Solution
@@ -11,20 +11,18 @@ class Solution
 public:
 	int jump(vector<int> &nums)
 	{
-		int n = nums.size();
-		if (n <= 1)
+		int res = 0, curEnd = 0, curFarthest = 0, N = nums.size();
+		if (N < 2)
 			return 0;
-		int res = 1, maxright = nums[0], i = 0;
-		while (maxright < n - 1)
+		for (int i = 0; i + nums[i] < N - 1; ++i)
 		{
-			++res;
-			int right = maxright;
-			for (int j = i + 1; j <= maxright; ++j)
-				if (right < nums[j] + j)
-					right = nums[j] + j;
-			i = maxright;
-			maxright = right;
+			curFarthest = max(curFarthest, i + nums[i]);
+			if (i == curEnd)
+			{
+				++res;
+				curEnd = curFarthest;
+			}
 		}
-		return res;
+		return res + 1;
 	}
 };

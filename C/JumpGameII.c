@@ -1,18 +1,17 @@
 
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
 int jump(int *nums, int numsSize)
 {
-	if (numsSize <= 1)
-		return 0;
-	int res = 1, maxright = nums[0], i = 0;
-	while (maxright < numsSize - 1)
+	int res = 0, curEnd = 0, curFarthest = 0;
+	for (int i = 0; i < numsSize - 1; ++i)
 	{
-		++res;
-		int right = maxright;
-		for (int j = i + 1; j <= maxright; ++j)
-			if (right < nums[j] + j)
-				right = nums[j] + j;
-		i = maxright;
-		maxright = right;
+		curFarthest = max(curFarthest, i + nums[i]);
+		if (i == curEnd)
+		{
+			++res;
+			curEnd = curFarthest;
+		}
 	}
 	return res;
 }
