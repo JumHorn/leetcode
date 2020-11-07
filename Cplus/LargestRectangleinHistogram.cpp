@@ -1,5 +1,6 @@
-#include <vector>
 #include <algorithm>
+#include <stack>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -7,23 +8,26 @@ class Solution
 public:
 	int largestRectangleArea(vector<int> &heights)
 	{
-		return divide(heights, 0, heights.size() - 1);
-	}
-
-	int divide(vector<int> &heights, int i, int j)
-	{
-		if (i > j)
-			return 0;
-		int m = i, tmp = INT_MAX, res = 0;
-		for (int k = i; k <= j; k++) //find the minimum index
+		stack<int> s;
+		s.push(-1);
+		int res = 0, N = heights.size();
+		for (int i = 0; i < N; ++i)
 		{
-			if (tmp > heights[k])
+			while (s.size() > 1u && heights[i] <= heights[s.top()])
 			{
-				tmp = heights[k];
-				m = k;
+				int pre = s.top();
+				s.pop();
+				res = max(res, heights[pre] * (i - s.top() - 1));
 			}
+			s.push(i);
 		}
-		res = heights[m] * (j - i + 1);
-		return max({res, divide(heights, i, m - 1), divide(heights, m + 1, j)});
+
+		for (int right = s.top() + 1; s.size() > 1u;)
+		{
+			int pre = s.top();
+			s.pop();
+			res = max(res, heights[pre] * (right - s.top() - 1));
+		}
+		return res;
 	}
 };
