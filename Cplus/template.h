@@ -162,24 +162,16 @@ public:
 	int sum(int index) const
 	{
 		int res = 0;
-		++index;
-		while (index > 0)
-		{
+		for (++index; index > 0; index -= index & -index)
 			res += tree[index];
-			index -= index & -index;
-		}
 		return res;
 	}
 
 	void update(int index, int delta)
 	{
-		++index;
-		int size = tree.size();
-		while (index < size)
-		{
+		int N = tree.size();
+		for (++index; index < N; index += index & -index)
 			tree[index] += delta;
-			index += index & -index;
-		}
 	}
 
 private:
@@ -191,43 +183,43 @@ private:
 class SegmentTree
 {
 public:
-	SegmentTree(int size) : data(2 * size)
+	SegmentTree(int size) : tree(2 * size)
 	{
 	}
 
-	SegmentTree(vector<int> &v) : data(2 * v.size())
+	SegmentTree(vector<int> &data) : tree(2 * data.size())
 	{
-		int N = v.size();
+		int N = data.size();
 		for (int i = 0; i < N; ++i)
-			data[i + N] = v[i];
+			tree[i + N] = data[i];
 		for (int i = N - 1; i > 0; --i)
-			data[i] = data[i << 1] + data[i << 1 | 1];
+			tree[i] = tree[i << 1] + tree[i << 1 | 1];
 	}
 
 	//update index with value val
 	void update(int index, int val)
 	{
-		int N = data.size() >> 1, delta = val - data[index + N];
+		int N = tree.size() >> 1, delta = val - tree[index + N];
 		for (index += N; index > 0; index >>= 1)
-			data[index] += delta;
+			tree[index] += delta;
 	}
 
 	//[first,last) query range first included and last not included
 	int queryRange(int first, int last)
 	{
-		int N = data.size() / 2, res = 0;
+		int N = tree.size() / 2, res = 0;
 		for (int l = first + N, r = last + N; l < r; l >>= 1, r >>= 1)
 		{
 			if (l & 1)
-				res += data[l++];
+				res += tree[l++];
 			if (r & 1)
-				res += data[--r];
+				res += tree[--r];
 		}
 		return res;
 	}
 
 private:
-	vector<int> data; //tree data with 0 index reserved
+	vector<int> tree; //tree data with 0 index reserved
 };
 /********end of Segment Tree********/
 
