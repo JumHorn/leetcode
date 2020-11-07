@@ -9,50 +9,36 @@ public:
 	{
 		vector<vector<string>> res;
 		vector<int> queen(n); //record queens in each row
-		doSolveNQueens(queen, 0, 0, res);
+		dfs(queen, 0, res);
 		return res;
 	}
-	//using loop to solve N queens
-	void doSolveNQueens(vector<int> &queen, int i, int j, vector<vector<string>> &res)
+
+	void dfs(vector<int> &queen, int row, vector<vector<string>> &res)
 	{
-		int n = queen.size();
-		while (i != 0 || j != n)
+		int N = queen.size();
+		if (row >= N) //create queen
 		{
-			queen[i] = j;
-			if (j == n) //out of column
+			res.emplace_back(vector<string>(N, string(N, '.')));
+			for (int i = 0; i < N; ++i)
+				res.back()[i][queen[i]] = 'Q';
+		}
+		for (int j = 0; j < N; ++j)
+		{
+			if (queenCheck(queen, row, j))
 			{
-				j = queen[--i] + 1;
-				continue;
+				queen[row] = j;
+				dfs(queen, row + 1, res);
 			}
-			//queen check
-			if (!queenCheck(queen, i, j))
-			{
-				++j;
-				continue;
-			}
-			//success or not
-			if (i == n - 1)
-			{
-				//create queen
-				vector<string> tmp(n, string(n, '.'));
-				for (int k = 0; k < n; k++)
-					tmp[k][queen[k]] = 'Q';
-				res.push_back(tmp);
-			}
-			else
-			{
-				++i;
-				j = -1;
-			}
-			++j;
 		}
 	}
 
 	bool queenCheck(vector<int> &queen, int row, int column)
 	{
 		for (int i = 0; i < row; ++i)
+		{
 			if (column == queen[i] || (abs(row - i) == abs(column - queen[i])))
 				return false;
+		}
 		return true;
 	}
 };

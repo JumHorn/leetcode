@@ -2,55 +2,41 @@
 #include <stdlib.h>
 #include <string.h>
 
-char ***addQueen(char ***queens, int size, char **newqueen)
+char **createQueen(int *queen, int queenSize)
 {
-	queens = (char ***)realloc(queens, size * sizeof(char **));
-	queens[size - 1] = newqueen;
-	return queens;
-}
-
-char **createQueen(int n, int *queen)
-{
-	char **res = (char **)malloc(sizeof(char *) * n);
-	for (int i = 0; i < n; ++i)
+	char **res = (char **)malloc(sizeof(char *) * queenSize);
+	for (int i = 0; i < queenSize; ++i)
 	{
-		res[i] = (char *)malloc(sizeof(char) * (n + 1));
-		for (int j = 0; j < n; ++j)
-			res[i][j] = '.';
+		res[i] = (char *)malloc(sizeof(char) * (queenSize + 1));
+		memset(res[i], '.', sizeof(char) * queenSize);
 		res[i][queen[i]] = 'Q';
-		res[i][n] = '\0';
+		res[i][queenSize] = '\0';
 	}
 	return res;
 }
 
-bool queenCheck(int *queen, int row)
+bool queenCheck(int *queen, int row, int column)
 {
 	for (int i = 0; i < row; ++i)
 	{
-		if (queen[i] == queen[row] || abs(i - row) == abs(queen[i] - queen[row]))
+		if (column == queen[i] || (abs(row - i) == abs(column - queen[i])))
 			return false;
 	}
 	return true;
 }
 
-bool backTracking(int n, int *queen, int i, char ****queens, int *size)
+void dfs(int *queen, int queenSize, int row, char ***res, int *resSize)
 {
-	if (i >= n)
-		return true;
-	for (int j = queen[i]; j < n; ++j)
+	if (row >= queenSize) //create queen
+		res[(*resSize)++] = createQueen(queen, queenSize);
+	for (int j = 0; j < queenSize; ++j)
 	{
-		queen[i] = j;
-		if (queenCheck(queen, i))
+		if (queenCheck(queen, row, j))
 		{
-			if (backTracking(n, queen, i + 1, queens, size) && i == n - 1)
-			{
-				char **newqueen = (char **)createQueen(n, queen);
-				*queens = addQueen(*queens, ++(*size), newqueen);
-			}
+			queen[row] = j;
+			dfs(queen, queenSize, row + 1, res, resSize);
 		}
-		queen[i] = 0;
 	}
-	return false;
 }
 
 /**
@@ -61,10 +47,9 @@ bool backTracking(int n, int *queen, int i, char ****queens, int *size)
 char ***solveNQueens(int n, int *returnSize, int **returnColumnSizes)
 {
 	int queen[n];
-	memset(queen, 0, sizeof(queen));
 	*returnSize = 0;
-	char ***res = NULL;
-	backTracking(n, queen, 0, &res, returnSize);
+	char ***res = (char ***)malloc(sizeof(char **) * 1000);
+	dfs(queen, n, 0, res, returnSize);
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
 		(*returnColumnSizes)[i] = n;
