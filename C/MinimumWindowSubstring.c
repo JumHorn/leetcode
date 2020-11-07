@@ -1,33 +1,29 @@
 #include <limits.h>
+#include <string.h>
 
 char *minWindow(char *s, char *t)
 {
-	int map[256] = {0}, count = 0, window = INT_MAX;
-	char *end = t, *begin, *res;
-	while (*end)
+	int map['z' - 'A' + 1] = {0};
+	for (int i = 0; t[i]; ++i)
+		++map[t[i] - 'A'];
+	int count = strlen(t), start = -1, window = INT_MAX;
+	for (int i = 0, j = 0; s[i]; ++i)
 	{
-		++map[(int)*end];
-		++count;
-		++end;
-	}
-	begin = end = s;
-	while (*end)
-	{
-		if (--map[(int)*end++] >= 0)
+		if (--map[s[i] - 'A'] >= 0)
 			--count;
-		if (end - begin >= window && ++map[(int)*begin++] > 0)
-			++count;
-		if (count == 0)
+		while (count == 0)
 		{
-			while (begin < end && ++map[(int)*begin] <= 0)
-				++begin;
-			++count;
-			window = end - begin;
-			res = begin++;
+			if (i - j + 1 < window)
+			{
+				start = j;
+				window = i - j + 1;
+			}
+			if (++map[s[j++] - 'A'] > 0)
+				++count;
 		}
 	}
-	if (window == INT_MAX)
+	if (start < 0)
 		return "";
-	*(res + window) = '\0';
-	return res;
+	s[start + window] = '\0';
+	return &s[start];
 }

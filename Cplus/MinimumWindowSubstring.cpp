@@ -1,6 +1,5 @@
 #include <string>
-#include <climits>
-#include <unordered_map>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -8,27 +7,26 @@ class Solution
 public:
 	string minWindow(string s, string t)
 	{
-		unordered_map<char, int> charmap;
-		int i = 0, j = -1, window = INT_MAX, start = 0, n = t.length();
-		for (int k = 0; k < n; k++)
-			++charmap[t[k]];
-		while (++j < (int)s.length())
+		vector<int> count('z' - 'A' + 1);
+		for (auto c : t)
+			++count[c - 'A'];
+		int N = s.length(), n = t.length();
+		int start = -1, window = N + 1;
+		for (int i = 0, j = 0; i < N; ++i)
 		{
-			if (--charmap[s[j]] >= 0)
+			if (--count[s[i] - 'A'] >= 0)
 				--n;
-			if (window <= j - i + 1 && ++charmap[s[i++]] > 0)
-				++n;
-			if (n == 0)
+			while (n == 0)
 			{
-				while (i <= j && ++charmap[s[i]] <= 0)
-					++i;
-				++n;
-				window = j - i + 1;
-				start = i++;
+				if (i - j + 1 < window)
+				{
+					start = j;
+					window = i - j + 1;
+				}
+				if (++count[s[j++] - 'A'] > 0)
+					++n;
 			}
 		}
-		if (window == INT_MAX)
-			return "";
-		return s.substr(start, window);
+		return start >= 0 ? s.substr(start, window) : "";
 	}
 };
