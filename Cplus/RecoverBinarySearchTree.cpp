@@ -2,13 +2,15 @@
 #include <climits>
 using namespace std;
 
-//Definition for a binary tree node.
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
@@ -25,7 +27,7 @@ public:
 
 	void inorder(TreeNode *root, TreeNode **node, int &count, TreeNode *&pre)
 	{
-		if (root == NULL || count >= 2)
+		if (root == nullptr || count >= 2)
 			return;
 		inorder(root->left, node, count, pre);
 		if (pre->val > root->val)
@@ -36,9 +38,7 @@ public:
 				node[1] = root;
 			}
 			else if (count == 1)
-			{
 				node[1] = root;
-			}
 			++count;
 		}
 		pre = root;

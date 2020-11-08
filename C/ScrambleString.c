@@ -1,28 +1,33 @@
+#include <stdbool.h>
 #include <string.h>
+
+/*
+dp[i][j][N] whether [i,i+N) and [j,j+N) is scramble
+*/
 
 bool isScramble(char *s1, char *s2)
 {
-	int size = strlen(s1);
-	if (size == 0)
+	int N = strlen(s1);
+	if (N == 0)
 		return true;
-	bool dp[size][size][size + 1];
-	for (int i = 0; i < size; ++i)
+	bool dp[N][N][N + 1];
+	for (int i = 0; i < N; ++i)
 	{
-		for (int j = 0; j < size; ++j)
+		for (int j = 0; j < N; ++j)
 			dp[i][j][1] = (s1[i] == s2[j]);
 	}
-	for (int len = 2; len <= size; len++)
+	for (int l = 2; l <= N; ++l)
 	{
-		for (int i = 0; i <= size - len; ++i)
-			for (int j = 0; j <= size - len; ++j)
+		for (int i = 0; i <= N - l; ++i)
+		{
+			for (int j = 0; j <= N - l; ++j)
 			{
-				dp[i][j][len] = false;
-				for (int k = 1; k < len && !dp[i][j][len]; k++)
-				{
-					dp[i][j][len] = dp[i][j][len] || (dp[i][j][k] && dp[i + k][j + k][len - k]);
-					dp[i][j][len] = dp[i][j][len] || (dp[i + len - k][j][k] && dp[i][j + k][len - k]);
-				}
+				dp[i][j][l] = false;
+				for (int k = 1; k < l && !dp[i][j][l]; ++k)
+					dp[i][j][l] = ((dp[i][j][k] && dp[i + k][j + k][l - k]) ||
+								   (dp[i + l - k][j][k] && dp[i][j + k][l - k]));
 			}
+		}
 	}
-	return dp[0][0][size];
+	return dp[0][0][N];
 }
