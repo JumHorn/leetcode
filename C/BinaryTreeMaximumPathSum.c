@@ -1,4 +1,5 @@
 #include <limits.h>
+
 //Definition for a binary tree node.
 struct TreeNode
 {
@@ -12,16 +13,13 @@ struct TreeNode
 int postorder(struct TreeNode *root, int *res)
 {
 	if (!root)
-		return INT_MIN / 5;	 //a minimal val less than all the node val
+		return INT_MIN / 5; //a minimal val less than all the node val
 	int left = postorder(root->left, res);
+	left = max(left, 0);
 	int right = postorder(root->right, res);
-	int sum = INT_MIN;
-	sum = max(sum, root->val);
-	sum = max(sum, root->val + left);
-	sum = max(sum, root->val + right);
+	right = max(right, 0);
 	*res = max(*res, root->val + left + right);
-	*res = max(*res, sum);
-	return sum;
+	return root->val + max(left, right);
 }
 
 int maxPathSum(struct TreeNode *root)
