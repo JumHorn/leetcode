@@ -11,11 +11,9 @@ public:
 	vector<vector<string>> findLadders(string beginWord, string endWord, vector<string> &wordList)
 	{
 		unordered_map<string, unordered_set<string>> graph;
-		unordered_set<string> seen;
-		unordered_set<string> words(wordList.begin(), wordList.end());
+		unordered_set<string> seen, words(wordList.begin(), wordList.end());
 		//BSF
 		queue<string> q;
-		int depth = 0;
 		q.push(beginWord);
 		seen.insert(beginWord);
 		bool flag = true;
@@ -25,28 +23,28 @@ public:
 				words.erase(str);
 			seen.clear();
 			int size = q.size();
-			++depth;
 			while (--size >= 0)
 			{
-				string tmp = q.front();
-				for (int i = 0; i < (int)tmp.length(); ++i)
+				string w = q.front();
+				for (int i = 0; i < (int)w.length(); ++i)
 				{
-					for (char c = 'a'; c <= 'z'; c++)
+					char old = w[i];
+					for (char c = 'a'; c <= 'z'; ++c)
 					{
-						tmp[i] = c;
-						if (words.find(tmp) != words.end())
+						w[i] = c;
+						if (words.find(w) != words.end())
 						{
-							graph[q.front()].insert(tmp);
-							q.push(tmp);
-							seen.insert(tmp);
-							if (tmp == endWord)
+							graph[q.front()].insert(w);
+							q.push(w);
+							seen.insert(w);
+							if (w == endWord)
 							{
 								flag = false;
 								break;
 							}
 						}
 					}
-					tmp = q.front();
+					w[i] = old;
 				}
 				q.pop();
 			}
@@ -57,22 +55,22 @@ public:
 		//DFS
 		vector<vector<string>> res;
 		vector<string> onepath = {beginWord};
-		dfs(graph, res, onepath, endWord);
+		dfs(graph, endWord, onepath, res);
 		return res;
 	}
 
-	void dfs(unordered_map<string, unordered_set<string>> &graph, vector<vector<string>> &res, vector<string> &tmp, const string &dst)
+	void dfs(unordered_map<string, unordered_set<string>> &graph, const string &dst, vector<string> &instance, vector<vector<string>> &res)
 	{
-		if (tmp.back() == dst)
+		if (instance.back() == dst)
 		{
-			res.push_back(tmp);
+			res.push_back(instance);
 			return;
 		}
-		for (auto &str : graph[tmp.back()])
+		for (auto &str : graph[instance.back()])
 		{
-			tmp.push_back(str);
-			dfs(graph, res, tmp, dst);
-			tmp.pop_back();
+			instance.push_back(str);
+			dfs(graph, dst, instance, res);
+			instance.pop_back();
 		}
 	}
 };
