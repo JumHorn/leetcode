@@ -1,35 +1,27 @@
+#include <stdbool.h>
 #include <string.h>
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
 int minCut(char *s)
 {
-	int n = strlen(s);
-	int dp[n][n], cut[n + 1];
+	int N = strlen(s), cut[N + 1];
+	bool dp[N][N];
 	memset(dp, 0, sizeof(dp));
-	for (int i = 0; i < n; ++i)
-		dp[i][i] = 1;
-	for (int i = 0; i < n - 1; ++i)
-		if (s[i] == s[i + 1])
-			dp[i][i + 1] = 1;
-	for (int len = 2; len < n; len++)
+	for (int i = N - 1; i >= 0; --i)
 	{
-		for (int i = 0; i < n - len; ++i)
-		{
-			int j = i + len;
-			if (s[i] == s[j])
-				dp[i][j] = dp[i + 1][j - 1];
-		}
+		for (int j = i; j < N; ++j)
+			dp[i][j] = (i == j || (s[i] == s[j] && (i + 1 == j || dp[i + 1][j - 1])));
 	}
 	cut[0] = -1;
-	for (int i = 0; i < n; ++i)
+	for (int j = 0; j < N; ++j)
 	{
-		cut[i + 1] = n;
-		for (int j = 0; j <= i; ++j)
+		cut[j + 1] = N;
+		for (int i = 0; i <= j; ++i)
 		{
-			if (dp[j][i] == 1)
-				cut[i + 1] = min(cut[i + 1], cut[j] + 1);
+			if (dp[i][j])
+				cut[j + 1] = min(cut[j + 1], cut[i] + 1);
 		}
 	}
-	return cut[n];
+	return cut[N];
 }
