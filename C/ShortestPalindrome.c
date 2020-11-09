@@ -1,35 +1,35 @@
 #include <stdlib.h>
 #include <string.h>
 
-int checkPalindrome(char *s, int index)
+void reverse(char *arr, int first, int last)
 {
-	for (int start = 0; start < index; ++start, --index)
+	for (; first < last; ++first, --last)
 	{
-		if (s[start] != s[index])
-			return 0;
+		char tmp = arr[first];
+		arr[first] = arr[last];
+		arr[last] = tmp;
 	}
-	return 1;
 }
 
 char *shortestPalindrome(char *s)
 {
-	if (!*s)
-		return "";
-	int n = strlen(s);
-	int index = 1;
-	for (int i = n - 1; i > 0; --i)
+	int N = strlen(s);
+	char pattern[2 * N + 2];
+	strcpy(pattern, s);
+	pattern[N] = '#';
+	strcpy(&pattern[N + 1], s);
+	reverse(pattern, N + 1, 2 * N);
+	int next[2 * N + 1];
+	next[0] = 0;
+	for (int i = 1, j = 0; i <= 2 * N; ++i)
 	{
-		if (checkPalindrome(s, i) == 1)
-		{
-			index = i + 1;
-			break;
-		}
+		while (j > 0 && pattern[i] != pattern[j])
+			j = next[j - 1];
+		if (pattern[i] == pattern[j])
+			++j;
+		next[i] = j;
 	}
-	if (index == n)
-		return s;
-	char *res = (char *)malloc(sizeof(char) * (n + n - index + 1));
-	for (int i = n - 1, j = 0; i >= index; i--, j++)
-		res[j] = s[i];
-	strcpy(&res[n - index], s);
-	return res;
+	strncpy(pattern, &pattern[N + 1], N - next[2 * N]);
+	strcpy(&pattern[N - next[2 * N]], s);
+	return strdup(pattern);
 }
