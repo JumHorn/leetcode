@@ -8,34 +8,32 @@ public:
 	vector<string> addOperators(string num, int target)
 	{
 		vector<string> res;
-		string sub;
-		for (int i = 0; i < (int)num.length(); ++i)
-		{
-			sub.push_back(num[i]);
-			long n = stol(sub);
-			dfs(res, sub, num, i + 1, n, n, target);
-			if (num[0] == '0')
-				break;
-		}
+		dfs(num, 0, target, 0, 0, "", res);
 		return res;
 	}
 
-	void dfs(vector<string> &res, string exp, string &num, int index, long cur, long pre, long target)
+	void dfs(string &num, int index, int target, long cur, long pre, string instance, vector<string> &res)
 	{
-		if (index >= (int)num.length())
+		int N = num.length();
+		if (index >= N)
 		{
 			if (cur == target)
-				res.push_back(exp);
+				res.push_back(instance);
 			return;
 		}
 		string sub;
-		for (int i = index; i < (int)num.length(); ++i)
+		for (int i = index; i < N; ++i)
 		{
 			sub.push_back(num[i]);
-			int n = stol(sub);
-			dfs(res, exp + "+" + sub, num, i + 1, cur + n, n, target);
-			dfs(res, exp + "-" + sub, num, i + 1, cur - n, -n, target);
-			dfs(res, exp + "*" + sub, num, i + 1, cur - pre + n * pre, n * pre, target);
+			long n = stol(sub);
+			if (index == 0)
+				dfs(num, i + 1, target, n, n, sub, res);
+			else
+			{
+				dfs(num, i + 1, target, cur + n, n, instance + "+" + sub, res);
+				dfs(num, i + 1, target, cur - n, -n, instance + "-" + sub, res);
+				dfs(num, i + 1, target, cur - pre + n * pre, n * pre, instance + "*" + sub, res);
+			}
 			if (num[index] == '0')
 				break;
 		}
