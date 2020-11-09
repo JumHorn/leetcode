@@ -4,6 +4,13 @@
 #include <vector>
 using namespace std;
 
+//frequently used functions
+
+int gcd(int x, int y)
+{
+	return x == 0 ? y : gcd(y % x, x);
+}
+
 //DSU minimum version
 class DSU
 {

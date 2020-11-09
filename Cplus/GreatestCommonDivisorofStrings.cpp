@@ -17,11 +17,9 @@ public:
 		return "";
 	}
 
-	int gcd(int x, int y) const
+	int gcd(int x, int y)
 	{
-		if (x == 0)
-			return y;
-		return gcd(y % x, x);
+		return x == 0 ? y : gcd(y % x, x);
 	}
 
 	bool divide(const string &p, const string &q) //p/q

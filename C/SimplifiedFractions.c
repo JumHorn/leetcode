@@ -4,17 +4,15 @@
 
 int gcd(int x, int y)
 {
-	if (x == 0)
-		return y;
-	return gcd(y % x, x);
+	return x == 0 ? y : gcd(y % x, x);
 }
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-char** simplifiedFractions(int n, int* returnSize)
+char **simplifiedFractions(int n, int *returnSize)
 {
-	char** res = (char**)malloc(sizeof(char*) * n * 50);
+	char **res = (char **)malloc(sizeof(char *) * n * 50);
 	*returnSize = 0;
 	char fraction[10];
 	for (int i = 2; i <= n; ++i)

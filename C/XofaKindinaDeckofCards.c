@@ -2,12 +2,10 @@
 
 int gcd(int x, int y)
 {
-	if (x == 0)
-		return y;
-	return gcd(y % x, x);
+	return x == 0 ? y : gcd(y % x, x);
 }
 
-bool hasGroupsSizeX(int* deck, int deckSize)
+bool hasGroupsSizeX(int *deck, int deckSize)
 {
 	int hash[10000] = {0}, count = 0;
 	for (int i = 0; i < deckSize; ++i)

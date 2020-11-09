@@ -8,18 +8,18 @@ class Solution
 public:
 	int maxPoints(vector<vector<int>> &points)
 	{
-		int n = points.size();
-		if (n < 2)
-			return n;
+		int N = points.size();
+		if (N < 2)
+			return N;
 		int res = 0;
-		for (int i = 0; i < n - 1; ++i)
+		for (int i = 0; i < N - 1; ++i)
 		{
 			map<pair<int, int>, int> data;
 			int vertical = 0; //该点与x轴垂直的直线上有多少个点
 			int slope = 0;	//同斜率的直线点的个数
 			int maxp = 0;	 //最多点数
 			int samep = 1;	//相同点,包含自身
-			for (int j = i + 1; j < n; ++j)
+			for (int j = i + 1; j < N; ++j)
 			{
 				if (points[i] == points[j]) //测试用例的点有重复
 					samep++;
@@ -41,8 +41,6 @@ public:
 
 	int gcd(int x, int y)
 	{
-		if (x == 0)
-			return y;
-		return gcd(y % x, x);
+		return x == 0 ? y : gcd(y % x, x);
 	}
 };

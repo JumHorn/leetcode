@@ -31,6 +31,11 @@ int cmp(const void *lhs, const void *rhs)
 	return *(int *)lhs - *(int *)rhs;
 }
 
+int gcd(int x, int y)
+{
+	return x == 0 ? y : gcd(y % x, x);
+}
+
 void reverse(int *arr, int first, int last)
 {
 	for (; first < last; ++first, --last)
