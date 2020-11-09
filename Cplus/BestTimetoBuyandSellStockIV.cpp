@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <cstring>
 #include <vector>
 using namespace std;
 
@@ -22,25 +21,25 @@ public:
 	{
 		if (prices.empty() || k == 0)
 			return 0;
-		if (k > (int)prices.size() / 2)
+		int N = prices.size();
+		if (k > N)
 		{
 			int res = 0;
-			for (int i = 1; i < (int)prices.size(); ++i)
+			for (int i = 1; i < N; ++i)
 				res += max(prices[i] - prices[i - 1], 0);
 			return res;
 		}
-		int hold[k], sold[k];
-		memset(sold, 0, sizeof(sold));
+		vector<int> hold(k), sold(k);
 		for (int i = 0; i < k; ++i)
 			hold[i] = -prices[0];
-		for (int i = 0; i < (int)prices.size(); ++i)
+		for (auto p : prices)
 		{
-			hold[0] = max(-prices[i], hold[0]);
-			sold[0] = max(hold[0] + prices[i], sold[0]);
+			hold[0] = max(-p, hold[0]);
+			sold[0] = max(hold[0] + p, sold[0]);
 			for (int j = 1; j < k; ++j)
 			{
-				hold[j] = max(sold[j - 1] - prices[i], hold[j]);
-				sold[j] = max(hold[j] + prices[i], sold[j]);
+				hold[j] = max(sold[j - 1] - p, hold[j]);
+				sold[j] = max(hold[j] + p, sold[j]);
 			}
 		}
 		return sold[k - 1];

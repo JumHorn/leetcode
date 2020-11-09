@@ -3,7 +3,7 @@
 
 typedef struct Trie
 {
-	int count;
+	int index;
 	struct Trie *node[26];
 } Trie;
 
@@ -17,9 +17,7 @@ Trie *createNode()
 char **addString(char **res, int *size, char *word)
 {
 	res = (char **)realloc(res, *size * sizeof(char *));
-	int len = strlen(word);
-	res[*size - 1] = (char *)malloc((len + 1) * sizeof(char));
-	strcpy(res[*size - 1], word);
+	res[*size - 1] = strdup(word);
 	return res;
 }
 
@@ -33,31 +31,32 @@ void insert(Trie *root, char *word, int index)
 		root = root->node[index];
 		++word;
 	}
-	root->count = index + 1;
+	root->index = index + 1;
 }
 
-void dfs(char **board, int m, int n, int i, int j, Trie *root, char **words, char ***res, int *size)
+void dfs(char **board, int M, int N, int row, int col, Trie *root, char **words, char ***res, int *size)
 {
-	if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] == ' ')
+	if (row < 0 || row >= M || col < 0 || col >= N || board[row][col] == ' ')
 		return;
-	root = root->node[board[i][j] - 'a'];
+	root = root->node[board[row][col] - 'a'];
 	if (!root)
 		return;
-	if (root->count != 0)
+	if (root->index != 0)
 	{ //add result
 		++(*size);
-		*res = addString(*res, size, words[root->count - 1]);
-		root->count = 0;
+		*res = addString(*res, size, words[root->index - 1]);
+		root->index = 0;
 	}
-	char tmp = board[i][j];
-	board[i][j] = ' ';
-	int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-	for (int k = 0; k < 4; k++)
+	char old = board[row][col];
+	board[row][col] = ' ';
+	//board dfs direction
+	int path[5] = {-1, 0, 1, 0, -1};
+	for (int k = 0; k < 4; ++k)
 	{
-		int dx = i + path[k][0], dy = j + path[k][1];
-		dfs(board, m, n, dx, dy, root, words, res, size);
+		int dx = row + path[k], dy = col + path[k + 1];
+		dfs(board, M, N, dx, dy, root, words, res, size);
 	}
-	board[i][j] = tmp;
+	board[row][col] = old;
 }
 
 /**

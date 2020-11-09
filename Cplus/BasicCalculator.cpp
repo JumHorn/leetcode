@@ -12,8 +12,8 @@ public:
 
 	int doCalculate(string &s, int &index)
 	{
-		int res = 0, flag = 1;
-		while (index < (int)s.length())
+		int res = 0, flag = 1, N = s.length();
+		for (; index < N; ++index)
 		{
 			if (s[index] == ')')
 				break;
@@ -26,15 +26,11 @@ public:
 			else if (s[index] != ' ')
 			{
 				int i = index + 1;
-				while (s[i] <= '9' && s[i] >= '0')
-					i++;
-				char tmp = s[i];
-				s[i] = '\0';
-				res += flag * atoi(&s[index]);
-				s[i] = tmp;
+				while (i < N && s[i] <= '9' && s[i] >= '0')
+					++i;
+				res += flag * stoi(s.substr(index, i - index));
 				index = i - 1;
 			}
-			++index;
 		}
 		return res;
 	}

@@ -1,91 +1,88 @@
 #include <string>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
-class Solution
+//Trie
+class Trie
 {
 	struct TreeNode
 	{
-		int count;
-		TreeNode *node[26];
-		TreeNode() : count(0)
-		{
-			memset(node, 0, sizeof(node));
-		}
-		~TreeNode()
-		{
-			for (int i = 0; i < 26; ++i)
-				if (node[i] != NULL)
-					delete node[i];
-		}
+		int count; //number of words ends with this node
+		vector<TreeNode *> nodes;
+
+		TreeNode() : count(0), nodes(26, nullptr) {}
 	};
 
+public:
+	Trie()
+	{
+		root = new TreeNode();
+	}
+
+	/** Inserts a word into the trie. */
+	void insert(const string &word)
+	{
+		TreeNode *node = root;
+		for (auto c : word)
+		{
+			int index = c - 'a';
+			if (node->nodes[index] == nullptr)
+				node->nodes[index] = new TreeNode();
+			node = node->nodes[index];
+		}
+		++node->count;
+	}
+
+	vector<string> search(vector<vector<char>> &board)
+	{
+		int M = board.size(), N = board[0].size();
+		string instances;
+		unordered_set<string> res;
+		for (int i = 0; i < M; ++i)
+		{
+			for (int j = 0; j < N; ++j)
+				dfs(board, root, i, j, instances, res);
+		}
+		return vector<string>(res.begin(), res.end());
+	}
+
+private:
 	TreeNode *root;
 
+	void dfs(vector<vector<char>> &board, TreeNode *node, int row, int col, string &instance, unordered_set<string> &res) const
+	{
+		int M = board.size(), N = board[0].size();
+		if (row < 0 || row >= M || col < 0 || col >= N || board[row][col] == '#')
+			return;
+		char c = board[row][col];
+		node = node->nodes[c - 'a'];
+		if (node == nullptr)
+			return;
+		instance.push_back(c);
+		if (node->count >= 1)
+			res.insert(instance);
+		board[row][col] = '#';
+		//board dfs direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		for (int k = 0; k < 4; ++k)
+			dfs(board, node, row + path[k], col + path[k + 1], instance, res);
+		board[row][col] = c;
+		instance.pop_back();
+	}
+};
+/********end of Trie********/
+
+class Solution
+{
 public:
 	vector<string> findWords(vector<vector<char>> &board, vector<string> &words)
 	{
-		vector<string> res;
+		Trie trie;
 		if (words.empty())
-			return res;
-		root = new TreeNode();
-		for (int i = 0; i < (int)words.size(); ++i)
-			insert(words[i]);
-		for (int i = 0; i < (int)board.size(); ++i)
-			for (int j = 0; j < (int)board[0].size(); ++j)
-				findWords(board, root, i, j);
-		dfs(res, "", root);
-		return res;
-	}
-
-	void findWords(vector<vector<char>> &board, TreeNode *root, int i, int j)
-	{
-		int M = board.size(), N = board[0].size();
-		if (i < 0 || i >= M || j < 0 || j >= N)
-			return;
-		char c = board[i][j];
-		if (c == '#')
-			return;
-		root = root->node[c - 'a'];
-		if (root == NULL)
-			return;
-		if (root->count == 1)
-			root->count = 2;
-		board[i][j] = '#';
-		findWords(board, root, i + 1, j);
-		findWords(board, root, i - 1, j);
-		findWords(board, root, i, j + 1);
-		findWords(board, root, i, j - 1);
-		board[i][j] = c;
-	}
-
-	void dfs(vector<string> &res, string s, TreeNode *root)
-	{
-		if (root == NULL)
-			return;
-		if (root->count == 2)
-			res.push_back(s);
-		for (int i = 0; i < 26; ++i)
-		{
-			string tmp = s;
-			if (root->node[i] != NULL)
-			{
-				tmp += 'a' + i;
-				dfs(res, tmp, root->node[i]);
-			}
-		}
-	}
-
-	void insert(const string &word)
-	{
-		TreeNode *tmp = root;
-		for (int i = 0; i < (int)word.length(); ++i)
-		{
-			int index = word[i] - 'a';
-			if (tmp->node[index] == NULL)
-				tmp->node[index] = new TreeNode();
-			tmp = tmp->node[index];
-		}
-		tmp->count++;
+			return {};
+		for (auto &word : words)
+			trie.insert(word);
+		return trie.search(board);
 	}
 };

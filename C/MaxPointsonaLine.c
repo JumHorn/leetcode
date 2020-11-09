@@ -2,6 +2,17 @@
 向量叉乘，面积为0，即可判断三点共线
 */
 
+// cross product
+long crossProduct(int *pointA, int *pointB, int *pointC)
+{
+	long x1 = pointB[0] - pointA[0];
+	long y1 = pointB[1] - pointA[1];
+	long x2 = pointC[0] - pointA[0];
+	long y2 = pointC[1] - pointA[1];
+	return x1 * y2 - x2 * y1;
+}
+/********end of cross product********/
+
 int maxPoints(int **points, int pointsSize, int *pointsColSize)
 {
 	if (pointsSize <= 2)
@@ -18,14 +29,10 @@ int maxPoints(int **points, int pointsSize, int *pointsColSize)
 				continue;
 			}
 			int localmax = 0;
-			for (int k = 0; k < pointsSize; k++)
+			for (int k = 0; k < pointsSize; ++k)
 			{
 				//向量ik X ij
-				long x1 = points[k][0] - points[i][0];
-				long x2 = points[k][0] - points[j][0];
-				long y1 = points[k][1] - points[i][1];
-				long y2 = points[k][1] - points[j][1];
-				if (x1 * y2 - y1 * x2 == 0)
+				if (crossProduct(points[k], points[i], points[j]) == 0)
 					++localmax;
 			}
 			if (res < localmax)

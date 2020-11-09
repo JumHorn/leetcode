@@ -3,7 +3,7 @@
 int doCalculate(char *s, int *index)
 {
 	int res = 0, flag = 1;
-	while (s[*index])
+	for (; s[*index]; ++(*index))
 	{
 		if (s[*index] == ')')
 			break;
@@ -20,14 +20,13 @@ int doCalculate(char *s, int *index)
 		{
 			int i = *index + 1;
 			while (s[i] <= '9' && s[i] >= '0')
-				i++;
+				++i;
 			char tmp = s[i];
 			s[i] = '\0';
 			res += flag * atoi(&s[*index]);
 			s[i] = tmp;
 			*index = i - 1;
 		}
-		++(*index);
 	}
 	return res;
 }
