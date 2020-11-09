@@ -11,8 +11,8 @@ class Solution
 public:
 	int maximumGap(vector<int> &nums)
 	{
-		int maxval = INT_MIN, minval = INT_MAX, size = nums.size();
-		if (size < 2)
+		int maxval = INT_MIN, minval = INT_MAX, N = nums.size();
+		if (N < 2)
 			return 0;
 		for (auto n : nums)
 		{
@@ -24,30 +24,30 @@ public:
 		int interval = maxval - minval;
 		if (interval == 0)
 			return 0;
-		int gap = max(1, interval / (size - 1));
+		int gap = max(1, interval / (N - 1));
 		int bucketnum = interval / gap + 1;
-		vector<vector<int>> buckets(bucketnum, vector<int>(2, -1));
+		vector<pair<int, int>> buckets(bucketnum, {-1, -1}); //{minval,maxval}
 		int res = gap;
 		for (auto n : nums)
 		{
 			int index = (n - minval) / gap;
-			if (buckets[index][0] == -1)
-				buckets[index][0] = buckets[index][1] = n;
+			if (buckets[index].first == -1)
+				buckets[index].first = buckets[index].second = n;
 			else
 			{
-				if (n < buckets[index][0])
-					buckets[index][0] = n;
-				if (n > buckets[index][1])
-					buckets[index][1] = n;
+				if (n < buckets[index].first)
+					buckets[index].first = n;
+				if (n > buckets[index].second)
+					buckets[index].second = n;
 			}
 		}
-		int tmp = buckets[0][1];
+		int tmp = buckets[0].second;
 		for (int i = 1; i < bucketnum; ++i)
 		{
-			if (buckets[i][0] == -1)
+			if (buckets[i].first == -1)
 				continue;
-			res = max(res, buckets[i][0] - tmp);
-			tmp = buckets[i][1];
+			res = max(res, buckets[i].first - tmp);
+			tmp = buckets[i].second;
 		}
 		return res;
 	}
