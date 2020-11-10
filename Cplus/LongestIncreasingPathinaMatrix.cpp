@@ -7,29 +7,31 @@ class Solution
 public:
 	int longestIncreasingPath(vector<vector<int>> &matrix)
 	{
-		int res = 0;
 		if (matrix.empty())
-			return res;
-		vector<vector<int>> dp(matrix.size(), vector<int>(matrix[0].size()));
-		for (int i = 0; i < (int)matrix.size(); ++i)
-			for (int j = 0; j < (int)matrix[0].size(); ++j)
-				res = max(res, longestIncreasingPath(matrix, dp, i, j));
+			return 0;
+		int res = 0, M = matrix.size(), N = matrix[0].size();
+		vector<vector<int>> dp(M, vector<int>(N, -1));
+		for (int i = 0; i < M; ++i)
+		{
+			for (int j = 0; j < N; ++j)
+				res = max(res, memdp(matrix, i, j, dp));
+		}
 		return res + 1;
 	}
 
-	int longestIncreasingPath(vector<vector<int>> &matrix, vector<vector<int>> &dp, int i, int j)
+	int memdp(vector<vector<int>> &matrix, int row, int col, vector<vector<int>> &dp)
 	{
-		if (dp[i][j] != 0)
-			return dp[i][j];
-		int res = 0;
-		int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-		for (int k = 0; k < 4; k++)
+		if (dp[row][col] != -1)
+			return dp[row][col];
+		int res = 0, M = matrix.size(), N = matrix[0].size();
+		//board dfs direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		for (int k = 0; k < 4; ++k)
 		{
-			int x = i + path[k][0], y = j + path[k][1];
-			if (x >= 0 && x < (int)matrix.size() && y >= 0 && y < (int)matrix[0].size() && matrix[x][y] > matrix[i][j])
-				res = max(res, 1 + longestIncreasingPath(matrix, dp, x, y));
+			int x = row + path[k], y = col + path[k + 1];
+			if (x >= 0 && x < M && y >= 0 && y < N && matrix[x][y] > matrix[row][col])
+				res = max(res, 1 + memdp(matrix, x, y, dp));
 		}
-		dp[i][j] = res;
-		return res;
+		return dp[row][col] = res;
 	}
 };

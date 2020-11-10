@@ -3,49 +3,38 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int memdp(int **matrix, int m, int n, int i, int j, int dp[m][n])
+int memdp(int **matrix, int M, int N, int row, int col, int (*dp)[N])
 {
-	if (dp[i][j] != -1)
-		return dp[i][j];
-	int res = 0, tmp;
-	if (i > 0 && matrix[i][j] < matrix[i - 1][j])
+	if (dp[row][col] != -1)
+		return dp[row][col];
+	int res = 0;
+	//board dfs direction
+	int path[5] = {-1, 0, 1, 0, -1};
+	for (int k = 0; k < 4; ++k)
 	{
-		int tmp = 1 + memdp(matrix, m, n, i - 1, j, dp);
-		res = max(res, tmp);
+		int x = row + path[k], y = col + path[k + 1];
+		if (x >= 0 && x < M && y >= 0 && y < N && matrix[x][y] > matrix[row][col])
+		{
+			int longest = memdp(matrix, M, N, x, y, dp);
+			res = max(res, 1 + longest);
+		}
 	}
-	if (i < m - 1 && matrix[i][j] < matrix[i + 1][j])
-	{
-		int tmp = 1 + memdp(matrix, m, n, i + 1, j, dp);
-		res = max(res, tmp);
-	}
-	if (j > 0 && matrix[i][j] < matrix[i][j - 1])
-	{
-		int tmp = 1 + memdp(matrix, m, n, i, j - 1, dp);
-		res = max(res, tmp);
-	}
-	if (j < n - 1 && matrix[i][j] < matrix[i][j + 1])
-	{
-		int tmp = 1 + memdp(matrix, m, n, i, j + 1, dp);
-		res = max(res, tmp);
-	}
-	dp[i][j] = res;
-	return res;
+	return dp[row][col] = res;
 }
 
 int longestIncreasingPath(int **matrix, int matrixSize, int *matrixColSize)
 {
 	if (matrixSize == 0)
 		return 0;
-	int m = matrixSize, n = *matrixColSize;
-	int dp[m][n];
+	int res = 0, M = matrixSize, N = *matrixColSize;
+	int dp[M][N];
 	memset(dp, -1, sizeof(dp));
-	int res = 0;
-	for (int i = 0; i < m; ++i)
+	for (int i = 0; i < M; ++i)
 	{
-		for (int j = 0; j < n; ++j)
+		for (int j = 0; j < N; ++j)
 		{
-			int tmp = memdp(matrix, m, n, i, j, dp);
-			res = max(res, tmp);
+			int longest = memdp(matrix, M, N, i, j, dp);
+			res = max(res, longest);
 		}
 	}
 	return res + 1;
