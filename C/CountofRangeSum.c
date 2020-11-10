@@ -1,41 +1,45 @@
 #include <string.h>
 
-void merge(long *sum, long *dup, int start, int mid, int end)
+//divide and conquer
+void merge(long *arr, long *dup, int first, int mid, int last)
 {
-	int i = start, j = mid, d = 0;
-	while (i < mid && j < end)
-		dup[d++] = sum[i] < sum[j] ? sum[i++] : sum[j++];
-	while (i < mid)
-		dup[d++] = sum[i++];
-	while (j < end)
-		dup[d++] = sum[j++];
-	memcpy(sum + start, dup, (end - start) * sizeof(long));
+	for (int i = first, j = mid, d = 0; i < mid || j < last;)
+	{
+		if (i == mid)
+			dup[d++] = arr[j++];
+		else if (j == last)
+			dup[d++] = arr[i++];
+		else
+			dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
+	}
+	memcpy(arr + first, dup, sizeof(long) * (last - first));
 }
 
-int divide(long *sum, long *dup, int start, int end, int lower, int upper)
+int divide(long *arr, long *dup, int first, int last, int lower, int upper)
 {
-	if (end - start < 2)
+	if (last - first < 2)
 		return 0;
-	int res = 0, mid = (end - start) / 2 + start;
-	res += divide(sum, dup, start, mid, lower, upper);
-	res += divide(sum, dup, mid, end, lower, upper);
-	for (int i = start, j = mid, k = mid; i < mid; ++i)
+	int mid = first + (last - first) / 2, res = 0;
+	res += divide(arr, dup, first, mid, lower, upper);
+	res += divide(arr, dup, mid, last, lower, upper);
+	for (int i = first, j = mid, k = mid; i < mid; ++i)
 	{
-		while (j < end && sum[j] - sum[i] < lower)
-			j++;
-		while (k < end && sum[k] - sum[i] <= upper)
-			k++;
+		while (j < last && arr[j] - arr[i] < lower)
+			++j;
+		while (k < last && arr[k] - arr[i] <= upper)
+			++k;
 		res += k - j;
 	}
-	merge(sum, dup, start, mid, end);
+	merge(arr, dup, first, mid, last);
 	return res;
 }
+/********end of divide and conquer********/
 
 int countRangeSum(int *nums, int numsSize, int lower, int upper)
 {
-	long sum[numsSize + 1], dup[numsSize + 1];
-	sum[0] = 0;
+	long prefixsum[numsSize + 1], dup[numsSize + 1];
+	prefixsum[0] = 0;
 	for (int i = 0; i < numsSize; ++i)
-		sum[i + 1] = sum[i] + nums[i];
-	return divide(sum, dup, 0, numsSize + 1, lower, upper);
+		prefixsum[i + 1] = prefixsum[i] + nums[i];
+	return divide(prefixsum, dup, 0, numsSize + 1, lower, upper);
 }

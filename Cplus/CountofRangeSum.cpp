@@ -6,50 +6,46 @@ class Solution
 public:
 	int countRangeSum(vector<int> &nums, int lower, int upper)
 	{
-		int n = nums.size();
-		low = lower;
-		up = upper;
-		vector<long> sums(n + 1);
-		dup.resize(n + 1);
-		for (int i = 0; i < n; ++i)
-			sums[i + 1] = sums[i] + nums[i];
-		return divide(sums, 0, n + 1);
+		int N = nums.size();
+		vector<long> prefixsum(N + 1), dup(N + 1);
+		for (int i = 0; i < N; ++i)
+			prefixsum[i + 1] = prefixsum[i] + nums[i];
+		return divide(prefixsum, dup, 0, N + 1, lower, upper);
 	}
 
-	int divide(vector<long> &sums, int start, int end)
+	//divide and conquer
+	int divide(vector<long> &arr, vector<long> &dup, int first, int last, int lower, int upper)
 	{
-		int res = 0;
-		if (end - start <= 1)
+		if (last - first <= 1)
 			return 0;
-		int mid = start + (end - start) / 2;
-		res = divide(sums, start, mid) + divide(sums, mid, end);
-		for (int i = start, j = mid, k = mid; i < mid; ++i)
+		int mid = first + (last - first) / 2, res = 0;
+		res += divide(arr, dup, first, mid, lower, upper);
+		res += divide(arr, dup, mid, last, lower, upper);
+		for (int i = first, j = mid, k = mid; i < mid; ++i)
 		{
-			while (j < end && sums[j] - sums[i] < low)
-				j++;
-			while (k < end && sums[k] - sums[i] <= up)
-				k++;
+			while (j < last && arr[j] - arr[i] < lower)
+				++j;
+			while (k < last && arr[k] - arr[i] <= upper)
+				++k;
 			res += k - j;
 		}
-		merge(sums, start, mid, end);
+		merge(arr, dup, first, mid, last);
 		return res;
 	}
 
-	void merge(vector<long> &sums, int start, int mid, int end)
+	void merge(vector<long> &arr, vector<long> &dup, int first, int mid, int last)
 	{
-		int s = start, m = mid, d = 0, d1 = 0;
-		while (s != mid && m != end)
-			dup[d++] = (sums[s] > sums[m]) ? sums[m++] : sums[s++];
-		while (s != mid)
-			dup[d++] = sums[s++];
-		while (m != end)
-			dup[d++] = sums[m++];
-		while (start != end)
-			sums[start++] = dup[d1++];
+		for (int i = first, j = mid, d = 0; i < mid || j < last;)
+		{
+			if (i == mid)
+				dup[d++] = arr[j++];
+			else if (j == last)
+				dup[d++] = arr[i++];
+			else
+				dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
+		}
+		for (int i = first, j = 0; i < last; ++i, ++j)
+			arr[i] = dup[j];
 	}
-
-private:
-	vector<int> dup;
-	int low;
-	int up;
+	/********end of divide and conquer********/
 };
