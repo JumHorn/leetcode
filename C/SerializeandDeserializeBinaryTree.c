@@ -10,69 +10,59 @@ struct TreeNode
 	struct TreeNode *right;
 };
 
-#define MAX_LENGTH 100000
-#define STACK_SIZE 1000
-char data[MAX_LENGTH];
-struct TreeNode *stack[STACK_SIZE];
-
-struct TreeNode *createTreeNode()
+struct TreeNode *createNode(int val)
 {
-	struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
-	memset(root, 0, sizeof(struct TreeNode));
-	return root;
+	struct TreeNode *node = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+	node->left = node->right = NULL;
+	node->val = val;
+	return node;
 }
 
 /** Encodes a tree to a single string. */
 char *serialize(struct TreeNode *root)
 {
-	int top = 0;
+	struct TreeNode *stack[1000];
+	char data[100000];
 	stack[0] = root;
-	char *p = data;
+	int top = 0, dataSize = 0;
+	//preorder
 	while (top != -1)
 	{
 		struct TreeNode *node = stack[top--];
 		if (node)
 		{
-			sprintf(p, ",%d", node->val);
-			p += strlen(p);
+			dataSize += sprintf(&data[dataSize], ",%d", node->val);
 			stack[++top] = node->right;
 			stack[++top] = node->left;
 		}
 		else
-		{
-			sprintf(p, ",n");
-			p += 2;
-		}
+			dataSize += sprintf(&data[dataSize], ",n");
 	}
-	return &data[1];
-}
-
-struct TreeNode *dodeserialize(char **data)
-{
-	char *p = *data;
-	if (*p == 'n')
-	{
-		++p;
-		if (*p == ',')
-			++p;
-		*data = p;
-		return NULL;
-	}
-	while (*p != ',')
-		++p;
-	*p = '\0';
-	struct TreeNode *root = createTreeNode();
-	root->val = atoi(*data);
-	*data = p + 1;
-	root->left = dodeserialize(data);
-	root->right = dodeserialize(data);
-	return root;
+	return strdup(&data[1]);
 }
 
 /** Decodes your encoded data to tree. */
 struct TreeNode *deserialize(char *data)
 {
-	return dodeserialize(&data);
+	struct TreeNode **stack[1000];
+	if (!data || data[0] == 'n')
+		return NULL;
+	struct TreeNode *res = NULL;
+	stack[0] = &res;
+	int top = 0;
+	for (char *token = strtok(data, ","); token; token = strtok(NULL, ","))
+	{
+		if (token[0] == 'n')
+			--top;
+		else
+		{
+			struct TreeNode *node = createNode(atoi(token));
+			*stack[top--] = node;
+			stack[++top] = &node->right;
+			stack[++top] = &node->left;
+		}
+	}
+	return res;
 }
 
 // Your functions will be called as such:
