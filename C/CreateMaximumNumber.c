@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+//decreasing stack
 void maxKNumber(int *nums, int size, int k, int *res)
 {
 	if (k == 0)
@@ -18,26 +19,30 @@ void maxKNumber(int *nums, int size, int k, int *res)
 
 bool less(int *nums1, int size1, int *nums2, int size2)
 {
-	for (int i = 0, j = 0; i < size1 && j < size2; i++, j++)
+	for (int i = 0, j = 0; i < size1 && j < size2; ++i, ++j)
+	{
 		if (nums1[i] != nums2[j])
 			return nums1[i] < nums2[j];
+	}
 	return size1 < size2;
 }
 
-void merge(int *left, int leftsize, int *right, int rightsize, int *dup)
+void merge(int *num1, int num1Size, int *num2, int num2Size, int *dup)
 {
-	int i = 0, j = 0, d = 0;
-	while (i < leftsize && j < rightsize)
+	for (int i = 0, j = 0, d = 0; i < num1Size || j < num2Size;)
 	{
-		if (less(left + i, leftsize - i, right + j, rightsize - j))
-			dup[d++] = right[j++];
+		if (i == num1Size)
+			dup[d++] = num2[j++];
+		else if (j == num2Size)
+			dup[d++] = num1[i++];
 		else
-			dup[d++] = left[i++];
+		{
+			if (less(num1 + i, num1Size - i, num2 + j, num2Size - j))
+				dup[d++] = num2[j++];
+			else
+				dup[d++] = num1[i++];
+		}
 	}
-	while (i < leftsize)
-		dup[d++] = left[i++];
-	while (j < rightsize)
-		dup[d++] = right[j++];
 }
 
 /**
@@ -48,16 +53,16 @@ int *maxNumber(int *nums1, int nums1Size, int *nums2, int nums2Size, int k, int 
 	*returnSize = k;
 	int *res = (int *)malloc(sizeof(int) * k);
 	memset(res, 0, sizeof(int) * k);
-	int left[k], right[k], tmp[k];
+	int num1[k], num2[k], num[k];
 	for (int i = 0; i <= k && i <= nums1Size; ++i)
 	{
 		if (k - i > nums2Size)
 			continue;
-		maxKNumber(nums1, nums1Size, i, left);
-		maxKNumber(nums2, nums2Size, k - i, right);
-		merge(left, i, right, k - i, tmp);
-		if (less(res, k, tmp, k))
-			memcpy(res, tmp, sizeof(int) * k);
+		maxKNumber(nums1, nums1Size, i, num1);
+		maxKNumber(nums2, nums2Size, k - i, num2);
+		merge(num1, i, num2, k - i, num);
+		if (less(res, k, num, k))
+			memcpy(res, num, sizeof(int) * k);
 	}
 	return res;
 }
