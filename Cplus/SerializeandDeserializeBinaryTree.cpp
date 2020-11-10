@@ -1,6 +1,6 @@
-#include <string>
-#include <deque>
 #include <queue>
+#include <sstream>
+#include <string>
 using namespace std;
 
 //Definition for a binary tree node.
@@ -9,7 +9,9 @@ struct TreeNode
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 /*
@@ -22,28 +24,27 @@ public:
 	// Encodes a tree to a single string.
 	string serialize(TreeNode *root)
 	{
-		deque<TreeNode *> q;
-		q.push_back(root);
+		queue<TreeNode *> q;
+		q.push(root);
 		string res;
-		bool flag = true;
-		while (!q.empty() && flag)
+		bool hash_node = true;
+		while (!q.empty() && hash_node)
 		{
-			flag = false;
+			hash_node = false;
 			int size = q.size();
 			while (--size >= 0)
 			{
 				TreeNode *node = q.front();
-				q.pop_front();
-				if (node == NULL)
-				{
+				q.pop();
+				if (node == nullptr)
 					res += ",n";
-					continue;
+				else //node != nullptr
+				{
+					res += "," + to_string(node->val);
+					q.push(node->left);
+					q.push(node->right);
+					hash_node = (hash_node || root->left || root->right);
 				}
-				res += "," + to_string(node->val);
-				q.push_back(node->left);
-				q.push_back(node->right);
-				if (node->left || node->right)
-					flag = true;
 			}
 		}
 		return res.substr(1);
@@ -52,38 +53,29 @@ public:
 	// Decodes your encoded data to tree.
 	TreeNode *deserialize(string data)
 	{
-		if (data[0] == 'n')
-			return NULL;
-		int n = data.length(), index = 0, tmp = 0;
-		while (tmp < n && data[tmp] != ',')
-			tmp++;
-		TreeNode *root = new TreeNode(stoi(data.substr(index, tmp - index)));
+		stringstream ss(data);
+		string token;
+		getline(ss, token, ',');
+		if (token == "n")
+			return nullptr;
+		TreeNode *root = new TreeNode(stoi(token));
 		queue<TreeNode *> q;
 		q.push(root);
-		index = tmp + 1;
-		while (index < n)
+		while (getline(ss, token, ','))
 		{
 			TreeNode *node = q.front();
 			q.pop();
-			tmp = index;
-			while (tmp < n && data[tmp] != ',')
-				tmp++;
-			if (index < n && data[index] != 'n')
+			if (token != "n")
 			{
-				node->left = new TreeNode(stoi(data.substr(index, tmp - index)));
+				node->left = new TreeNode(stoi(token));
 				q.push(node->left);
 			}
-			index = tmp + 1;
-
-			tmp = index;
-			while (tmp < n && data[tmp] != ',')
-				tmp++;
-			if (index < n && data[index] != 'n')
+			getline(ss, token, ',');
+			if (token != "n")
 			{
-				node->right = new TreeNode(stoi(data.substr(index, tmp - index)));
+				node->right = new TreeNode(stoi(token));
 				q.push(node->right);
 			}
-			index = tmp + 1;
 		}
 		return root;
 	}
