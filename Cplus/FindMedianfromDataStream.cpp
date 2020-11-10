@@ -1,4 +1,6 @@
+#include <functional>
 #include <queue>
+#include <vector>
 using namespace std;
 
 class MedianFinder
@@ -7,51 +9,34 @@ public:
 	/** initialize your data structure here. */
 	MedianFinder()
 	{
-		median = 0.0;
-		count = 0;
 	}
 
 	void addNum(int num)
 	{
-		int left, right = num;
-		++count;
-		if (count == 1)
-		{
-			median = num;
-			low.push(num);
-			return;
-		}
-		if (count % 2 == 0)
-			high.push(-num);
+		if (low.size() > high.size())
+			high.push(num);
 		else
 			low.push(num);
-		left = low.top();
-		right = -high.top();
-		if (left > right)
+		if (!high.empty() && low.top() > high.top())
 		{
-			low.pop();
+			int h = high.top(), l = low.top();
 			high.pop();
-			low.push(right);
-			high.push(-left);
+			low.pop();
+			high.push(l);
+			low.push(h);
 		}
-		left = low.top();
-		right = -high.top();
-		if (count % 2 == 0)
-			median = (left + right) / 2.0;
-		else
-			median = left;
 	}
 
 	double findMedian()
 	{
-		return median;
+		if (low.size() > high.size())
+			return low.top();
+		return (low.top() + high.top()) / 2.0;
 	}
 
 private:
-	double median;
 	priority_queue<int> low;
-	priority_queue<int> high;
-	int count;
+	priority_queue<int, vector<int>, greater<int>> high;
 };
 
 /**
