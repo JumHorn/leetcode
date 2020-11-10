@@ -44,7 +44,7 @@ public:
 		for (int i = first, j = mid; i < mid; ++i)
 		{
 			while (j != last && pairs[i].first > pairs[j].first)
-				j++;
+				++j;
 			res[pairs[i].second] += j - mid;
 		}
 		merge(pairs, dup, first, mid, last);

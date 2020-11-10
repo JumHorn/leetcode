@@ -1,5 +1,5 @@
 
-int minPatches(int* nums, int numsSize, int n)
+int minPatches(int *nums, int numsSize, int n)
 {
 	long maxn = 0, res = 0;
 	for (int i = 0; i < numsSize && maxn < n;)
@@ -12,10 +12,7 @@ int minPatches(int* nums, int numsSize, int n)
 		else
 			maxn += nums[i++];
 	}
-	while (maxn < n)
-	{
-		maxn = 2 * maxn + 1;
+	for (; maxn < n; maxn = 2 * maxn + 1)
 		++res;
-	}
 	return res;
 }

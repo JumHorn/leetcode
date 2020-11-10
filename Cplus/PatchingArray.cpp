@@ -6,8 +6,8 @@ class Solution
 public:
 	int minPatches(vector<int> &nums, int n)
 	{
-		long m = 0, res = 0, size = nums.size();
-		for (int i = 0; i < size && m < n;)
+		long m = 0, res = 0, N = nums.size();
+		for (int i = 0; i < N && m < n;)
 		{
 			if (nums[i] - m > 1)
 			{
@@ -17,11 +17,8 @@ public:
 			else
 				m += nums[i++];
 		}
-		while (m < n)
-		{
-			m = 2 * m + 1;
+		for (; m < n; m = 2 * m + 1)
 			++res;
-		}
 		return res;
 	}
 };
