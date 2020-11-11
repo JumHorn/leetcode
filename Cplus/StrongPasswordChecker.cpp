@@ -13,35 +13,30 @@ class Solution
 public:
 	int strongPasswordChecker(string s)
 	{
-		int missing = 0, n = s.length();
+		int missing = 0, N = s.length();
 		missing += anyof(s, '1', '9');
 		missing += anyof(s, 'a', 'z');
 		missing += anyof(s, 'A', 'Z');
 		int change = 0, one = 0 /*mod3==0*/, two = 0 /*mod3==1*/;
-		for (int i = 2; i < n;)
+		for (int i = 2; i < N; ++i)
 		{
 			if (s[i] == s[i - 1] && s[i] == s[i - 2])
 			{
-				int count = 2;
-				while (i < n && s[i] == s[i - 1])
-				{
+				int count = 3;
+				for (; i + 1 < N && s[i] == s[i + 1]; ++i)
 					++count;
-					++i;
-				}
 				change += count / 3;
 				if (count % 3 == 0)
 					++one;
-				if (count % 3 == 1)
+				else if (count % 3 == 1)
 					++two;
 			}
-			else
-				++i;
 		}
-		if (n < 6)
-			return max(missing, 6 - n);
-		if (n <= 20)
+		if (N < 6)
+			return max(missing, 6 - N);
+		if (N <= 20)
 			return max(missing, change);
-		int deletion = n - 20;
+		int deletion = N - 20;
 		change -= min(deletion, one);
 		change -= min(max(deletion - one, 0) / 2, two);
 		change -= max(deletion - one - two * 2, 0) / 3;
