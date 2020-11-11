@@ -1,5 +1,5 @@
-#include <vector>
 #include <map>
+#include <vector>
 using namespace std;
 
 class SummaryRanges
@@ -12,59 +12,27 @@ public:
 
 	void addNum(int val)
 	{
-		if (data.empty())
-		{
-			data[val] = val;
+		if (data.find(val) != data.end())
 			return;
-		}
-		auto iter = data.upper_bound(val);
-		if (iter == data.begin())
-		{
-			if (iter->first == val + 1)
-			{
-				data[val] = iter->second;
-				data.erase(iter);
-			}
-			else
-				data[val] = val;
-		}
-		else if (iter == data.end())
-		{
-			--iter;
-			if (val <= iter->second + 1)
-				data[iter->first] = max(val, iter->second);
-			else
-				data[val] = val;
-		}
-		else
-		{
-			auto preiter = iter;
-			--preiter;
-			if (preiter->second < val)
-			{
-				if (iter->first == val + 1 && preiter->second + 1 == val)
-				{
-					data[preiter->first] = iter->second;
-					data.erase(iter);
-				}
-				else if (iter->first == val + 1)
-				{
-					data[val] = iter->second;
-					data.erase(iter);
-				}
-				else if (preiter->second + 1 == val)
-					data[preiter->first] = val;
-				else
-					data[val] = val;
-			}
-		}
+		data[val] = val;
+		int minval = val, maxval = val;
+		if (data.find(val - 1) != data.end())
+			minval = data[val - 1];
+		if (data.find(val + 1) != data.end())
+			maxval = data[val + 1];
+		data[minval] = maxval;
+		data[maxval] = minval;
 	}
 
 	vector<vector<int>> getIntervals()
 	{
 		vector<vector<int>> res;
-		for (auto &n : data)
-			res.push_back({n.first, n.second});
+		auto iter = data.begin();
+		for (auto iter = data.begin(); iter != data.end();)
+		{
+			res.push_back({iter->first, iter->second});
+			iter = data.upper_bound(iter->second);
+		}
 		return res;
 	}
 
