@@ -7,7 +7,7 @@ using namespace std;
 class AllOne
 {
 public:
-	/** Initialize your data structure here. */
+	/** Initialize your bucket structure here. */
 	AllOne()
 	{
 	}
@@ -15,79 +15,59 @@ public:
 	/** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
 	void inc(string key)
 	{
-		auto iter = m.find(key);
-		if (iter == m.end())
-		{
-			if (data.empty() || data.front().first != 1)
-				data.push_front({1, {key}});
-			else
-				data.front().second.insert(key);
-			m[key] = data.begin();
-		}
-		else
-		{
-			int freq = iter->second->first;
-			auto after = iter->second;
-			++after;
-			iter->second->second.erase(key);
-			if (iter->second->second.empty())
-				data.erase(iter->second);
-			if (after == data.end() || after->first != freq + 1)
-				m[key] = data.insert(after, {freq + 1, {key}});
-			else
-			{
-				after->second.insert(key);
-				m[key] = after;
-			}
-		}
+		// If the key doesn't exist, insert it with value 0.
+		if (m.find(key) == m.end())
+			m[key] = bucket.insert(bucket.begin(), {0, {key}});
+		// Insert the key in next bucket and update the lookup.
+		auto next = m[key], cur = next++;
+		if (next == bucket.end() || next->first > cur->first + 1)
+			next = bucket.insert(next, {cur->first + 1, {}});
+		next->second.insert(key);
+		m[key] = next;
+		// Remove the key from its old bucket.
+		cur->second.erase(key);
+		if (cur->second.empty())
+			bucket.erase(cur);
 	}
 
-	/** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+	/** Decrements an existing key by 1. If Key's value is 1, remove it from the bucket structure. */
 	void dec(string key)
 	{
+		// If the key doesn't exist, just leave.
 		auto iter = m.find(key);
 		if (iter == m.end())
 			return;
-		auto iter1 = iter->second;
-		int freq = iter->second->first;
-		if (freq != 1)
+		// Maybe insert the key in previous bucket and update the lookup.
+		auto pre = iter->second, cur = pre--;
+		m.erase(key);
+		if (cur->first > 1)
 		{
-			auto before = iter->second;
-			--before;
-			if (iter->second == data.begin() || before->first != freq - 1)
-				m[key] = data.insert(iter->second, {freq - 1, {key}});
-			else
-			{
-				before->second.insert(key);
-				m[key] = before;
-			}
+			if (cur == bucket.begin() || pre->first < cur->first - 1)
+				pre = bucket.insert(cur, {cur->first - 1, {}});
+			pre->second.insert(key);
+			m[key] = pre;
 		}
-		else
-			m.erase(key);
-		iter1->second.erase(key);
-		if (iter1->second.empty())
-			data.erase(iter1);
+		// Remove the key from its old bucket.
+		cur->second.erase(key);
+		if (cur->second.empty())
+			bucket.erase(cur);
 	}
 
 	/** Returns one of the keys with maximal value. */
 	string getMaxKey()
 	{
-		if (data.empty())
-			return "";
-		return *data.back().second.begin();
+		return m.empty() ? "" : *bucket.back().second.begin();
 	}
 
 	/** Returns one of the keys with Minimal value. */
 	string getMinKey()
 	{
-		if (data.empty())
-			return "";
-		return *data.front().second.begin();
+		return m.empty() ? "" : *bucket.front().second.begin();
 	}
 
 private:
-	list<pair<int, unordered_set<string>>> data;
-	unordered_map<string, list<pair<int, unordered_set<string>>>::iterator> m;
+	list<pair<int, unordered_set<string>>> bucket;							   //{count,keys}
+	unordered_map<string, list<pair<int, unordered_set<string>>>::iterator> m; //{keys,buckets iter}
 };
 
 /**
