@@ -1,6 +1,6 @@
+#include <cstdlib> //for rand
 #include <unordered_map>
 #include <vector>
-#include <cstdlib>
 using namespace std;
 
 class RandomizedSet
