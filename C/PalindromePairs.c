@@ -2,66 +2,62 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Trie
+//prefix tree
+typedef struct Trie
 {
 	int index;
-	struct Trie *node[26];
-};
+	struct Trie *nodes[26];
+} Trie;
 
-struct Trie *creataNode(int v)
+Trie *createNode(int val)
 {
-	struct Trie *node = (struct Trie *)malloc(sizeof(struct Trie));
-	memset(node, 0, sizeof(struct Trie));
-	node->index = v;
+	Trie *node = (Trie *)malloc(sizeof(Trie));
+	memset(node, 0, sizeof(Trie));
+	node->index = val;
 	return node;
 }
 
-void insert(struct Trie *root, char *s, int index)
+void insert(Trie *root, char *str, int index)
 {
-	if (!*s)
+	while (*str)
 	{
-		root->index = index;
-		return;
-	}
-	while (*s)
-	{
-		if (!root->node[*s - 'a'])
-			root->node[*s - 'a'] = creataNode(-1);
-		root = root->node[*s - 'a'];
-		++s;
+		int index = *str++ - 'a';
+		if (!root->nodes[index])
+			root->nodes[index] = createNode(-1);
+		root = root->nodes[index];
 	}
 	root->index = index;
 }
 
-bool isPalindrome(char *s, int start, int end)
+bool isPalindrome(char *s, int first, int last)
 {
-	--end;
-	while (start < end)
+	for (; first < last; ++first, --last)
 	{
-		if (s[start++] != s[end--])
+		if (s[first] != s[last])
 			return false;
 	}
 	return true;
 }
 
-int **addPair(int **res, int *size, int i, int j)
+int **addPair(int **res, int *resSize, int i, int j)
 {
-	++(*size);
-	res = (int **)realloc(res, sizeof(int *) * (*size));
-	res[*size - 1] = (int *)malloc(sizeof(int) * 2);
-	res[*size - 1][0] = i;
-	res[*size - 1][1] = j;
+	++(*resSize);
+	res = (int **)realloc(res, sizeof(int *) * (*resSize));
+	res[*resSize - 1] = (int *)malloc(sizeof(int) * 2);
+	res[*resSize - 1][0] = i;
+	res[*resSize - 1][1] = j;
 	return res;
 }
 
-void search(struct Trie *root, int index, char **words, int *len, int ***res, int *size)
+void search(Trie *root, char **words, int *wordsColSize, int index, int ***res, int *resSize)
 {
 	if (!root)
 		return;
-	if (root->index >= 0 && len[index] != len[root->index] && isPalindrome(words[root->index], len[index], len[root->index]))
-		*res = addPair(*res, size, root->index, index);
+	if (root->index >= 0 && wordsColSize[index] != wordsColSize[root->index] &&
+		isPalindrome(words[root->index], wordsColSize[index], wordsColSize[root->index] - 1))
+		*res = addPair(*res, resSize, root->index, index);
 	for (int i = 0; i < 26; ++i)
-		search(root->node[i], index, words, len, res, size);
+		search(root->nodes[i], words, wordsColSize, index, res, resSize);
 }
 
 /**
@@ -71,29 +67,30 @@ void search(struct Trie *root, int index, char **words, int *len, int ***res, in
  */
 int **palindromePairs(char **words, int wordsSize, int *returnSize, int **returnColumnSizes)
 {
-	struct Trie *root = creataNode(-1);
+	Trie *trie = createNode(-1);
 	for (int i = 0; i < wordsSize; ++i)
-		insert(root, words[i], i);
-	int len[wordsSize];
+		insert(trie, words[i], i);
+	int wordsColSize[wordsSize];
 	for (int i = 0; i < wordsSize; ++i)
-		len[i] = strlen(words[i]);
+		wordsColSize[i] = strlen(words[i]);
 	*returnSize = 0;
 	int **res = NULL;
 	for (int i = 0; i < wordsSize; ++i)
 	{
 		//exist empty string
-		if (root->index >= 0 && root->index != i && isPalindrome(words[i], 0, len[i]))
-			res = addPair(res, returnSize, root->index, i);
-		struct Trie *tmp = root;
-		for (int j = len[i] - 1; j >= 0; --j)
+		if (trie->index >= 0 && trie->index != i &&
+			isPalindrome(words[i], 0, wordsColSize[i] - 1))
+			res = addPair(res, returnSize, trie->index, i);
+		Trie *node = trie;
+		for (int j = wordsColSize[i] - 1; j >= 0; --j)
 		{
-			tmp = tmp->node[words[i][j] - 'a'];
-			if (!tmp)
+			node = node->nodes[words[i][j] - 'a'];
+			if (!node)
 				break;
-			if (tmp->index >= 0 && tmp->index != i && isPalindrome(words[i], 0, j))
-				res = addPair(res, returnSize, tmp->index, i);
+			if (node->index >= 0 && node->index != i && isPalindrome(words[i], 0, j - 1))
+				res = addPair(res, returnSize, node->index, i);
 		}
-		search(tmp, i, words, len, &res, returnSize);
+		search(node, words, wordsColSize, i, &res, returnSize);
 	}
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)

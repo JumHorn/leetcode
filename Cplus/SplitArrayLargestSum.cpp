@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <climits>
 #include <vector>
 using namespace std;
 
@@ -7,22 +8,22 @@ class Solution
 public:
 	int splitArray(vector<int> &nums, int m)
 	{
-		int n = nums.size();
-		vector<long> prefix(n + 1);
-		for (int i = 0; i < n; ++i)
+		int N = nums.size();
+		vector<long> prefix(N + 1);
+		for (int i = 0; i < N; ++i)
 			prefix[i + 1] += prefix[i] + nums[i];
-		vector<vector<long>> dp(m + 1, vector<long>(n + 1));
-		for (int i = 0; i < n; ++i)
-			dp[1][i + 1] = prefix[i + 1];
-		for (int i = 2; i <= m; ++i)
+		vector<vector<long>> dp(N + 1, vector<long>(m + 1));
+		for (int i = 0; i < N; ++i)
+			dp[i + 1][1] = prefix[i + 1];
+		for (int j = 2; j <= m; ++j)
 		{
-			for (int j = i - 1; j <= n; ++j)
+			for (int i = j - 1; i <= N; ++i)
 			{
 				dp[i][j] = INT_MAX;
-				for (int k = j - 1; k >= i - 2; k--)
-					dp[i][j] = min(dp[i][j], max(dp[i - 1][k], prefix[j] - prefix[k]));
+				for (int k = i - 1; k >= j - 2; --k)
+					dp[i][j] = min(dp[i][j], max(dp[k][j - 1], prefix[i] - prefix[k]));
 			}
 		}
-		return dp[m][n];
+		return dp[N][m];
 	}
 };

@@ -2,14 +2,12 @@
 #include <stdlib.h>
 
 //Definition for an interval.
-struct Interval
+typedef struct Interval
 {
 	int start;
 	int end;
 	struct Interval *next;
-};
-
-typedef struct Interval Interval;
+} Interval;
 
 typedef struct
 {
@@ -31,26 +29,18 @@ Interval *createNode(int start, int end)
 SummaryRanges *summaryRangesCreate()
 {
 	SummaryRanges *res = (SummaryRanges *)malloc(sizeof(SummaryRanges));
-	res->data = (Interval *)malloc(sizeof(Interval));
-	res->data->start = INT_MIN;
-	res->data->end = INT_MIN;
+	res->data = createNode(INT_MIN, INT_MIN);
 	res->size = 0;
 	return res;
 }
 
 void summaryRangesAddNum(SummaryRanges *obj, int val)
 {
-	if (obj->size == 0)
-	{
-		++obj->size;
-		obj->data->next = createNode(val, val);
-		return;
-	}
 	Interval *iter;
 	for (iter = obj->data; iter->next; iter = iter->next)
 	{
-		Interval *curr = iter->next;
-		if (val < curr->start - 1)
+		Interval *cur = iter->next;
+		if (val < cur->start - 1)
 		{
 			Interval *newnode = createNode(val, val);
 			newnode->next = iter->next;
@@ -58,20 +48,20 @@ void summaryRangesAddNum(SummaryRanges *obj, int val)
 			++obj->size;
 			break;
 		}
-		if (val == curr->start - 1)
+		if (val == cur->start - 1)
 		{
-			curr->start = val;
+			cur->start = val;
 			break;
 		}
-		if (val <= curr->end + 1)
+		if (val <= cur->end + 1)
 		{
-			if (val == curr->end + 1)
-				curr->end = val;
-			if (curr->next && curr->end + 1 == curr->next->start)
+			if (val == cur->end + 1)
+				cur->end = val;
+			if (cur->next && cur->end + 1 == cur->next->start)
 			{
-				curr->end = curr->next->end;
-				Interval *tmp = curr->next;
-				curr->next = curr->next->next;
+				cur->end = cur->next->end;
+				Interval *tmp = cur->next;
+				cur->next = cur->next->next;
 				free(tmp);
 				--obj->size;
 			}
@@ -87,31 +77,29 @@ void summaryRangesAddNum(SummaryRanges *obj, int val)
 
 int **summaryRangesGetIntervals(SummaryRanges *obj, int *retSize, int **retColSize)
 {
-	int size = obj->size;
-	*retSize = size;
-	if (size == 0)
+	*retSize = obj->size;
+	if (*retSize == 0)
 		return NULL;
-	*retColSize = (int *)malloc(sizeof(int) * size);
-	for (int i = 0; i < size; ++i)
-		(*retColSize)[i] = 2;
-	int **res = (int **)malloc(sizeof(int *) * size);
-	Interval *root = obj->data->next;
-	for (int i = 0; i < size; i++, root = root->next)
+	int **res = (int **)malloc(sizeof(int *) * (*retSize));
+	*retColSize = (int *)malloc(sizeof(int) * (*retSize));
+	Interval *node = obj->data->next;
+	for (int i = 0; i < *retSize; ++i, node = node->next)
 	{
-		res[i] = (int *)malloc(sizeof(int) * 2);
-		res[i][0] = root->start;
-		res[i][1] = root->end;
+		(*retColSize)[i] = 2;
+		res[i] = (int *)malloc(sizeof(int) * (*retColSize)[i]);
+		res[i][0] = node->start;
+		res[i][1] = node->end;
 	}
 	return res;
 }
 
 void summaryRangesFree(SummaryRanges *obj)
 {
-	Interval *root = obj->data;
-	while (root)
+	Interval *node = obj->data;
+	while (node)
 	{
-		Interval *tmp = root;
-		root = root->next;
+		Interval *tmp = node;
+		node = node->next;
 		free(tmp);
 	}
 	free(obj);

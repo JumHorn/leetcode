@@ -1,5 +1,6 @@
-#include <map>
+#include <algorithm>
 #include <string>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -8,12 +9,12 @@ class Solution
 public:
 	vector<vector<int>> palindromePairs(vector<string> &words)
 	{
-		map<string, int> m;
-		int n = words.size();
-		for (int i = 0; i < n; ++i)
+		unordered_map<string, int> m; //{str,index}
+		int N = words.size();
+		for (int i = 0; i < N; ++i)
 			m[words[i]] = i;
 		vector<vector<int>> res;
-		for (int i = 0; i < n; ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			for (int j = 0; j <= (int)words[i].length(); ++j)
 			{
@@ -38,10 +39,9 @@ public:
 
 	bool isPalindrome(const string &word)
 	{
-		int i = 0, j = word.length() - 1;
-		while (i < j)
+		for (int i = 0, j = word.length() - 1; i < j; ++i, --j)
 		{
-			if (word[i++] != word[j--])
+			if (word[i] != word[j])
 				return false;
 		}
 		return true;
