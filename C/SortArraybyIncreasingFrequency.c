@@ -5,7 +5,7 @@ int cmp(const void *lhs, const void *rhs)
 {
 	int *l = (int *)lhs, *r = (int *)rhs;
 	if (l[0] != r[0])
-		return l[0] - r[0];
+		return l[0] < r[0] ? -1 : 1;
 	return r[1] - l[1];
 }
 
@@ -15,7 +15,7 @@ int cmp(const void *lhs, const void *rhs)
 int *frequencySort(int *nums, int numsSize, int *returnSize)
 {
 	*returnSize = numsSize;
-	int arr[numsSize][2], arrSize = 0;  //{freq,num}
+	int arr[numsSize][2], arrSize = 0; //{freq,num}
 	int count[201] = {0};
 	for (int i = 0; i < numsSize; ++i)
 		++count[nums[i] + 100];

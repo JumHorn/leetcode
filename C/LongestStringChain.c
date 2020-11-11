@@ -4,13 +4,15 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
-bool checkValid(char *lhs, char *rhs)  //lhs is subsequence of rhs or not
+bool checkValid(char *lhs, char *rhs) //lhs is subsequence of rhs or not
 {
 	while (*lhs && *rhs)
 	{
@@ -23,7 +25,7 @@ bool checkValid(char *lhs, char *rhs)  //lhs is subsequence of rhs or not
 
 int longestStrChain(char **words, int wordsSize)
 {
-	int arr[wordsSize][2];  //{word length,index}
+	int arr[wordsSize][2]; //{word length,index}
 	for (int i = 0; i < wordsSize; ++i)
 	{
 		arr[i][0] = strlen(words[i]);

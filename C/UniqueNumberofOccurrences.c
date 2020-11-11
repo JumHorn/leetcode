@@ -1,10 +1,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 bool uniqueOccurrences(int *arr, int arrSize)

@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int binarySearch(int *arr, int lo, int hi, int val)

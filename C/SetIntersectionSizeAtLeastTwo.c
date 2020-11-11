@@ -3,9 +3,10 @@
 //cmp function don't consider overflow
 int cmp(const void *lhs, const void *rhs)
 {
-	if ((*(int **)lhs)[1] != (*(int **)rhs)[1])
-		return (*(int **)lhs)[1] - (*(int **)rhs)[1];
-	return (*(int **)rhs)[0] - (*(int **)lhs)[0];
+	int *l = *(int **)lhs, *r = *(int **)rhs;
+	if (l[1] != r[1])
+		return l[1] < r[1] ? -1 : 1;
+	return r[0] - l[0];
 }
 
 int intersectionSizeTwo(int **intervals, int intervalsSize, int *intervalsColSize)

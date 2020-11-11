@@ -1,9 +1,11 @@
 #include <stdlib.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int findTheDistanceValue(int *arr1, int arr1Size, int *arr2, int arr2Size, int d)

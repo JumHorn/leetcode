@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(char *)lhs - *(char *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 typedef struct Anagrams

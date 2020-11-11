@@ -58,10 +58,12 @@ bool dsu_union(DSU *dsu, int x, int y)
 }
 /********end of DSU********/
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int minCostConnectPoints(int **points, int pointsSize, int *pointsColSize)

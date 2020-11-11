@@ -2,16 +2,18 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int findLHS(int *nums, int numsSize)
 {
 	qsort(nums, numsSize, sizeof(int), cmp);
-	int arr[numsSize][2], arrSize = 0;  //{value,count}
+	int arr[numsSize][2], arrSize = 0; //{value,count}
 	for (int i = 0, j = 0; i <= numsSize; ++i)
 	{
 		if (i == numsSize || nums[i] != nums[j])

@@ -1,13 +1,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return strcmp((char *)lhs, (char *)rhs);
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
-void normaliseWord(char *word, char *encode)  //encode the odd/even indexed element
+void normaliseWord(char *word, char *encode) //encode the odd/even indexed element
 {
 	for (int i = 0; word[i]; ++i)
 		++encode[word[i] - 'a' + 26 * (i & 1)];

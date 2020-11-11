@@ -25,10 +25,12 @@
 //board dfs direction
 int path[5] = {-1, 0, 1, 0, -1};
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int gcd(int x, int y)

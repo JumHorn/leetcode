@@ -1,9 +1,11 @@
 #include <stdlib.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int *mallocRes(int a, int b, int *returnSize)
@@ -21,7 +23,7 @@ int *mallocRes(int a, int b, int *returnSize)
 int *twoSum(int *nums, int numsSize, int target, int *returnSize)
 {
 	*returnSize = 2;
-	int arr[numsSize][2];  //{value,index}
+	int arr[numsSize][2]; //{value,index}
 	for (int i = 0; i < numsSize; ++i)
 	{
 		arr[i][0] = nums[i];

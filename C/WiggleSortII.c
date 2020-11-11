@@ -15,10 +15,12 @@ Accessing A(8) actually accesses nums[6].
 Accessing A(9) actually accesses nums[8].
 */
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 void swap(int *lhs, int *rhs)

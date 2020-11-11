@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	if (**(int **)lhs != **(int **)rhs)
-		return **(int **)lhs - **(int **)rhs;
-	return (*(int **)lhs)[1] - (*(int **)rhs)[1];
+	int *l = *(int **)lhs, *r = *(int **)rhs;
+	if (l[0] != r[0])
+		return l[0] < r[0] ? -1 : 1;
+	return l[1] - r[1];
 }
 
 int crossProduct(int *pointA, int *pointB, int *pointC)

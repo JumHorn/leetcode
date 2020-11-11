@@ -1,14 +1,16 @@
 #include <stdlib.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int largestValsFromLabels(int *values, int valuesSize, int *labels, int labelsSize, int num_wanted, int use_limit)
 {
-	int arr[labelsSize][2];  //{value,label}
+	int arr[labelsSize][2]; //{value,label}
 	for (int i = 0; i < valuesSize; ++i)
 	{
 		arr[i][0] = values[i];

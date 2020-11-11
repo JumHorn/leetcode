@@ -2,13 +2,12 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
 	if (*(int *)lhs == *(int *)rhs)
 		return 0;
-	if (*(int *)lhs < *(int *)rhs)
-		return -1;
-	return 1;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 /**

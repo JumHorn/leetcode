@@ -3,9 +3,10 @@
 //cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	if ((*(int **)lhs)[0] != (*(int **)rhs)[0])
-		return (*(int **)lhs)[0] - (*(int **)rhs)[0];
-	return (*(int **)rhs)[1] - (*(int **)lhs)[1];
+	int *l = *(int **)lhs, *r = *(int **)rhs;
+	if (l[0] != r[0])
+		return l[0] < r[0] ? -1 : 1;
+	return r[1] - l[1];
 }
 
 int maxEnvelopes(int **envelopes, int envelopesSize, int *envelopesColSize)

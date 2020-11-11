@@ -1,15 +1,17 @@
 #include <stdlib.h>
 
-//cmp function don't consider overflow
+//integer cmp function
 int cmp(const void *lhs, const void *rhs)
 {
-	return *(int *)lhs - *(int *)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 int findBestValue(int *arr, int arrSize, int target)
 {
 	qsort(arr, arrSize, sizeof(int), cmp);
-	int sum[arrSize + 1];  //if current value choosed as best ,then calculate sum
+	int sum[arrSize + 1]; //if current value choosed as best ,then calculate sum
 	sum[0] = 0;
 	for (int i = 0; i < arrSize; ++i)
 		sum[i + 1] = sum[i] + arr[i];

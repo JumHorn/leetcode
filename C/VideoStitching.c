@@ -7,7 +7,7 @@ int cmp(const void *lhs, const void *rhs)
 {
 	int *l = *(int **)lhs, *r = *(int **)rhs;
 	if (l[0] != r[0])
-		return l[0] - r[0];
+		return l[0] < r[0] ? -1 : 1;
 	return r[1] - l[1];
 }
 
