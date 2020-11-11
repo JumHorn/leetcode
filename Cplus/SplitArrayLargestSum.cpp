@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <climits>
+#include <numeric>
 #include <vector>
 using namespace std;
 
@@ -8,22 +9,32 @@ class Solution
 public:
 	int splitArray(vector<int> &nums, int m)
 	{
-		int N = nums.size();
-		vector<long> prefix(N + 1);
-		for (int i = 0; i < N; ++i)
-			prefix[i + 1] += prefix[i] + nums[i];
-		vector<vector<long>> dp(N + 1, vector<long>(m + 1));
-		for (int i = 0; i < N; ++i)
-			dp[i + 1][1] = prefix[i + 1];
-		for (int j = 2; j <= m; ++j)
+		int sum = accumulate(nums.begin(), nums.end(), 0);
+		int maxval = *max_element(nums.begin(), nums.end());
+		int lo = maxval, hi = sum;
+		while (lo < hi)
 		{
-			for (int i = j - 1; i <= N; ++i)
-			{
-				dp[i][j] = INT_MAX;
-				for (int k = i - 1; k >= j - 2; --k)
-					dp[i][j] = min(dp[i][j], max(dp[k][j - 1], prefix[i] - prefix[k]));
-			}
+			int mi = (hi - lo) / 2 + lo;
+			if (doSplit(nums, mi) > m)
+				lo = mi + 1;
+			else
+				hi = mi;
 		}
-		return dp[N][m];
+		return lo;
+	}
+
+	int doSplit(vector<int> &nums, int maxsum)
+	{
+		int res = 0, sum = 0;
+		for (auto n : nums)
+		{
+			if (sum + n > maxsum)
+			{
+				++res;
+				sum = 0;
+			}
+			sum += n;
+		}
+		return res + (sum == 0 ? 0 : 1);
 	}
 };
