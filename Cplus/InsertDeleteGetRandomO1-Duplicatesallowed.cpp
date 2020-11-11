@@ -1,6 +1,6 @@
-#include <vector>
-#include <cstdlib>
+#include <cstdlib> //for rand
 #include <unordered_map>
+#include <vector>
 using namespace std;
 
 class RandomizedCollection
@@ -14,43 +14,36 @@ public:
 	/** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
 	bool insert(int val)
 	{
-		bool res = true;
-		if (modify.find(val) != modify.end())
-			res = false;
-		randaccess.push_back(val);
-		modify.insert({val, randaccess.size() - 1});
+		bool res = m.find(val) != m.end();
+		m[val].push_back(randaccess.size());
+		randaccess.push_back({val, (int)m[val].size() - 1});
 		return res;
 	}
 
 	/** Removes a value from the collection. Returns true if the collection contained the specified element. */
 	bool remove(int val)
 	{
-		unordered_multimap<int, int>::iterator iter = modify.find(val);
-		if (iter == modify.end())
+		if (m.find(val) == m.end())
 			return false;
-		unordered_multimap<int, int>::iterator iter1 = modify.find(randaccess.back());
-		int n = modify.count(randaccess.back());
-		for (int i = 0; i < n; ++i, ++iter1)
-		{
-			if (iter1->second == randaccess.size() - 1)
-				break;
-		}
-		iter1->second = iter->second;
-		randaccess[iter->second] = randaccess.back();
+		auto last = randaccess.back();
+		m[last.first][last.second] = m[val].back();
+		randaccess[m[val].back()] = last;
+		m[val].pop_back();
+		if (m[val].empty())
+			m.erase(val);
 		randaccess.pop_back();
-		modify.erase(iter);
 		return true;
 	}
 
 	/** Get a random element from the collection. */
 	int getRandom()
 	{
-		return randaccess[rand() % randaccess.size()];
+		return randaccess[rand() % randaccess.size()].first;
 	}
 
 private:
-	vector<int> randaccess;
-	unordered_multimap<int, int> modify;
+	vector<pair<int, int>> randaccess; //{value,index in m}
+	unordered_map<int, vector<int>> m; //{value,index in randaccess}
 };
 
 /**
