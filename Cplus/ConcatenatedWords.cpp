@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -8,39 +9,37 @@ class Solution
 public:
 	vector<string> findAllConcatenatedWordsInADict(vector<string> &words)
 	{
-		unordered_set<string> s(words.begin(), words.end());
+		unordered_set<string> dict;
 		vector<string> res;
+		sort(words.begin(), words.end(),
+			 [](string &lhs, string &rhs) { return lhs.length() < rhs.length(); });
 		for (auto &word : words)
 		{
-			vector<int> dp(word.length());
-			for (int i = 1; i < (int)word.length(); ++i)
-			{
-				if (s.find(word.substr(0, i)) != s.end() && backTracking(s, word, i, dp))
-				{
-					res.push_back(word);
-					break;
-				}
-			}
+			if (canForm(dict, word))
+				res.push_back(word);
+			dict.insert(word);
 		}
 		return res;
 	}
 
-	bool backTracking(unordered_set<string> &s, string &word, int index, vector<int> &dp)
+	bool canForm(unordered_set<string> &dict, string &word)
 	{
-		int n = word.length();
-		if (index >= n)
-			return true;
-		if (dp[index] != 0)
-			return dp[index] == 1;
-		for (int i = index; i < n; ++i)
+		if (word.empty() || dict.empty())
+			return false;
+		int N = word.length();
+		vector<int> dp(N + 1);
+		dp[0] = true;
+		for (int i = 1; i <= N; ++i)
 		{
-			if (s.find(word.substr(index, i - index + 1)) != s.end())
+			for (int j = 0; j < i && !dp[i]; ++j)
 			{
-				if (backTracking(s, word, i + 1, dp))
-					return true;
+				if (dp[j])
+				{
+					if (dict.find(word.substr(j, i - j)) != dict.end())
+						dp[i] = true;
+				}
 			}
 		}
-		dp[index] = -1;
-		return false;
+		return dp[N];
 	}
 };

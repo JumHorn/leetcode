@@ -6,7 +6,7 @@
 typedef struct Trie
 {
 	int val;
-	struct Trie *node[26];
+	struct Trie *nodes[26];
 } Trie;
 
 Trie *createNode(int val)
@@ -17,15 +17,14 @@ Trie *createNode(int val)
 	return node;
 }
 
-void insert(Trie *root, char *s, int index)
+void insert(Trie *root, char *str, int index)
 {
-	while (*s)
+	while (*str)
 	{
-		int index = *s - 'a';
-		if (!root->node[index])
-			root->node[index] = createNode(-1);
-		root = root->node[index];
-		++s;
+		int index = *str++ - 'a';
+		if (!root->nodes[index])
+			root->nodes[index] = createNode(-1);
+		root = root->nodes[index];
 	}
 	root->val = index;
 }
@@ -37,16 +36,15 @@ char **addString(char **res, int size, char *s)
 	return res;
 }
 
-bool backTracking(Trie *root, Trie *node, char *s, int index, int first)
+bool backTracking(Trie *root, Trie *node, char *s, int index, int indexOfWords)
 {
-	if (!s[first])
-		return node->val != -1 && node->val != index;
-	Trie *tmp = node->node[s[first] - 'a'];
-	if (!tmp)
+	if (!s[index])
+		return node->val != -1 && node->val != indexOfWords;
+	Trie *cur = node->nodes[s[index] - 'a'];
+	if (!cur)
 		return false;
-	if (tmp->val != -1 && backTracking(root, root, s, index, first + 1))
-		return true;
-	return backTracking(root, tmp, s, index, first + 1);
+	return (cur->val != -1 && backTracking(root, root, s, index + 1, indexOfWords)) ||
+		   backTracking(root, cur, s, index + 1, indexOfWords);
 }
 
 /**
@@ -65,7 +63,7 @@ char **findAllConcatenatedWordsInADict(char **words, int wordsSize, int *returnS
 	char **res = NULL;
 	for (int i = 0; i < wordsSize; ++i)
 	{
-		if (backTracking(root, root, words[i], i, 0))
+		if (backTracking(root, root, words[i], 0, i))
 			res = addString(res, ++*returnSize, words[i]);
 	}
 	return res;
