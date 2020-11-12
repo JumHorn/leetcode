@@ -1,4 +1,5 @@
 #include <list>
+#include <tuple>
 #include <unordered_map>
 using namespace std;
 
@@ -15,12 +16,14 @@ public:
 	{
 		if (dict.find(key) == dict.end())
 			return -1;
-		freq[dict[key].second].erase(iter[key]);
-		freq[++dict[key].second].push_back(key);
-		iter[key] = --freq[dict[key].second].end();
+		auto &keyinfo = dict[key];
+		int f = std::get<1>(keyinfo)++;
+		freq[f].erase(std::get<2>(keyinfo));
+		freq[++f].push_front(key);
+		std::get<2>(keyinfo) = freq[f].begin();
 		if (freq[minfreq].empty())
-			minfreq++;
-		return dict[key].first;
+			++minfreq;
+		return std::get<0>(keyinfo);
 	}
 
 	void put(int key, int value)
@@ -29,29 +32,26 @@ public:
 			return;
 		if (get(key) != -1)
 		{
-			dict[key].first = value;
+			std::get<0>(dict[key]) = value;
 			return;
 		}
 		if ((int)dict.size() >= c)
 		{
-			dict.erase(freq[minfreq].front());
-			iter.erase(freq[minfreq].front());
-			freq[minfreq].pop_front();
+			dict.erase(freq[minfreq].back());
+			freq[minfreq].pop_back();
 		}
-		freq[1].push_back(key);
-		iter[key] = --freq[1].end();
-		dict[key] = {value, 1};
+		freq[1].push_front(key);
+		dict[key] = {value, 1, freq[1].begin()};
 		minfreq = 1;
 	}
 
 private:
 	int c; //capacity
 	int minfreq;
-
-	unordered_map<int, list<int>::iterator> iter; //key list iter
-	unordered_map<int, list<int>> freq;			  //freq key list
-
-	unordered_map<int, pair<int, int>> dict; //key {value freq}
+	//freq key list (front key is latest)
+	unordered_map<int, list<int>> freq;
+	//{key {value,freq,postion of freq list}}
+	unordered_map<int, tuple<int, int, list<int>::iterator>> dict;
 };
 
 /**
