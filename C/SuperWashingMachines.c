@@ -1,5 +1,6 @@
+#include <math.h>
+
 #define max(a, b) (((a) > (b)) ? (a) : (b))
-#define abs(x) (((x) < 0) ? (-(x)) : (x))
 
 int findMinMoves(int *machines, int machinesSize)
 {

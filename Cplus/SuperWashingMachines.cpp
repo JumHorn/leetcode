@@ -14,12 +14,12 @@ public:
 		if (sum % N != 0)
 			return -1;
 		int avg = sum / N, res = 0, count = 0;
-		for (int i = 0; i < (int)machines.size(); ++i)
-			machines[i] -= avg;
-		for (int i = 0; i < (int)machines.size(); ++i)
+		for (auto &n : machines)
+			n -= avg;
+		for (auto n : machines)
 		{
-			count += machines[i];
-			res = max(res, max(machines[i], abs(count)));
+			count += n;
+			res = max(res, max(n, abs(count)));
 		}
 		return res;
 	}

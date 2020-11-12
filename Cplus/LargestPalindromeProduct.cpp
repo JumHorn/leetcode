@@ -10,7 +10,7 @@ class Solution
 public:
 	int largestPalindrome(int n)
 	{
-		for (long halfval = pow(10, n) - 1; halfval > 0; halfval--)
+		for (long halfval = pow(10, n) - 1; halfval > 0; --halfval)
 		{
 			long left = halfval, right = 0, palindrome;
 			for (long i = halfval; i > 0; i /= 10)

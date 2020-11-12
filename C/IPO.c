@@ -2,32 +2,33 @@ typedef struct pair
 {
 	int first;
 	int second;
-} PAIR;
+} pair;
 
 //max heap function series
-void push_heap(PAIR *ptr, int size)
+void push_heap(pair *ptr, int size)
 {
-	if (size > 0)
+	if (size <= 1)
+		return;
+	pair val = ptr[size - 1];
+	int hole = size - 1;
+	for (int i = (hole - 1) >> 1; hole > 0 && val.first > ptr[i].first; i = (hole - 1) >> 1)
 	{
-		PAIR val = ptr[size - 1];
-		int hole = size - 1;
-		for (int i = (hole - 1) >> 1; hole > 0 && val.first > ptr[i].first; i = (hole - 1) >> 1)
-		{
-			ptr[hole] = ptr[i];
-			hole = i;
-		}
-		ptr[hole] = val;
+		ptr[hole] = ptr[i];
+		hole = i;
 	}
+	ptr[hole] = val;
 }
 
-//for internal usage
-void _adjust_heap(PAIR *ptr, int size, int hole, PAIR val)
+void pop_heap(pair *ptr, int size)
 {
-	int non_leaf = (size - 1) >> 1, i = hole;
+	if (size <= 0)
+		return;
+	pair val = *ptr;
+	int non_leaf = (size - 1) >> 1, hole = 0, i = 0;
 	while (i < non_leaf)
 	{
 		i = 2 * i + 2;
-		if (ptr[i].first < ptr[i - 1].first)
+		if (ptr[i - 1].first > ptr[i].first)
 			--i;
 		ptr[hole] = ptr[i];
 		hole = i;
@@ -37,31 +38,23 @@ void _adjust_heap(PAIR *ptr, int size, int hole, PAIR val)
 		ptr[hole] = ptr[size - 1];
 		hole = size - 1;
 	}
-	ptr[hole] = val;
+	ptr[hole] = ptr[size - 1];
 	push_heap(ptr, hole + 1);
+	ptr[size - 1] = val;
 }
 
-void make_heap(PAIR *ptr, int size)
+void make_heap(pair *ptr, int size)
 {
-	for (int hole = (size - 1) >> 1; hole >= 0; --hole)
-		_adjust_heap(ptr, size, hole, ptr[hole]);
+	for (int i = 1; i < size; ++i)
+		push_heap(ptr, i + 1);
 }
-
-void pop_heap(PAIR *ptr, int size)
-{
-	if (size > 0)
-	{
-		PAIR val = *ptr;
-		_adjust_heap(ptr, size, 0, ptr[size - 1]);
-		ptr[size - 1] = val;
-	}
-}
+/********end of max heap********/
 
 int findMaximizedCapital(int k, int W, int *Profits, int ProfitsSize, int *Capital, int CapitalSize)
 {
 	//[0] profit [1] capital
 	int psize = 0, csize = 0;
-	PAIR ipo[ProfitsSize], nonipo[ProfitsSize];
+	pair ipo[ProfitsSize], nonipo[ProfitsSize];
 	for (int i = 0; i < ProfitsSize; ++i)
 	{
 		if (Capital[i] <= W)

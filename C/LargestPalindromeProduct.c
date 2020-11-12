@@ -3,7 +3,7 @@
 int largestPalindrome(int n)
 {
 	static const int MOD = 1337;
-	for (long halfval = pow(10, n) - 1; halfval > 0; halfval--)
+	for (long halfval = pow(10, n) - 1; halfval > 0; --halfval)
 	{
 		long left = halfval, right = 0, palindrome;
 		for (long i = halfval; i > 0; i /= 10)

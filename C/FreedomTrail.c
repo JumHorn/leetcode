@@ -2,30 +2,25 @@
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int memdp(char *ring, int size, int index, char *key, int k, int (*dp)[size])
+int memdp(char *ring, int N, int index, char *key, int k, int (*dp)[N])
 {
 	if (!key[k])
 		return 0;
 	if (dp[k][index] != -1)
 		return dp[k][index];
-	int i = index, j = index, clockwise = 0, counterclockwise = 0, count = 0;
-	while (key[k] != ring[i])
+	int i = index, j = index, count = 0;
+	for (count = 0; key[k] != ring[i]; ++count)
 	{
-		++i;
-		if (i >= size)
+		if (++i >= N)
 			i = 0;
-		++count;
 	}
-	clockwise = memdp(ring, size, i, key, k + 1, dp) + count + 1;
-	count = 0;
-	while (key[k] != ring[j])
+	int clockwise = memdp(ring, N, i, key, k + 1, dp) + count + 1;
+	for (count = 0; key[k] != ring[j]; ++count)
 	{
-		if (j == 0)
-			j = size;
-		--j;
-		++count;
+		if (j-- == 0)
+			j = N - 1;
 	}
-	counterclockwise = memdp(ring, size, j, key, k + 1, dp) + count + 1;
+	int counterclockwise = memdp(ring, N, j, key, k + 1, dp) + count + 1;
 	return dp[k][index] = min(clockwise, counterclockwise);
 }
 

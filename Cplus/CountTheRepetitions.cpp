@@ -7,15 +7,15 @@ class Solution
 public:
 	int getMaxRepetitions(string s1, int n1, string s2, int n2)
 	{
-		int N = s1.length(), M = s2.length(), res = 0, index = 0;
-		vector<int> count(M + 1), seen(M, -1);
+		int N1 = s1.length(), N2 = s2.length(), res = 0, index = 0;
+		vector<int> count(N2 + 1), seen(N2, -1);
 		for (int i = 0; i < n1; ++i)
 		{
-			for (int j = 0; j < N; ++j)
+			for (int j = 0; j < N1; ++j)
 			{
 				if (s1[j] == s2[index])
 					++index;
-				if (index == M)
+				if (index == N2)
 				{
 					index = 0;
 					++res;

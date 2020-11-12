@@ -9,7 +9,7 @@ public:
 	{
 		unsigned long long S = stoll(n);
 		int max_m = log2(S);
-		for (int m = max_m; m >= 2; m--)
+		for (int m = max_m; m >= 2; --m)
 		{
 			int k = pow(S, 1.0 / m);
 			unsigned long long sum = 1, prod = 1;

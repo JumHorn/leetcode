@@ -1,33 +1,37 @@
 #include <string.h>
 
-void merge(int *nums, int *dup, int start, int mid, int end)
+//divide and conquer
+void merge(int *arr, int *dup, int first, int mid, int last)
 {
-	int i = start, j = mid, d = 0;
-	while (i < mid && j < end)
-		dup[d++] = nums[i] < nums[j] ? nums[i++] : nums[j++];
-	while (i < mid)
-		dup[d++] = nums[i++];
-	while (j < end)
-		dup[d++] = nums[j++];
-	memcpy(nums + start, dup, (end - start) * sizeof(int));
+	for (int i = first, j = mid, d = 0; i < mid || j < last;)
+	{
+		if (i == mid)
+			dup[d++] = arr[j++];
+		else if (j == last)
+			dup[d++] = arr[i++];
+		else
+			dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
+	}
+	memcpy(arr + first, dup, sizeof(int) * (last - first));
 }
 
-int divide(int *nums, int *dup, int start, int end)
+int divide(int *arr, int *dup, int first, int last)
 {
-	if (end - start < 2)
+	if (last - first < 2)
 		return 0;
-	int res = 0, mid = (end - start) / 2 + start;
-	res += divide(nums, dup, start, mid);
-	res += divide(nums, dup, mid, end);
-	for (int i = start, j = mid; i < mid; ++i)
+	int mid = (last - first) / 2 + first, res = 0;
+	res += divide(arr, dup, first, mid);
+	res += divide(arr, dup, mid, last);
+	for (int i = first, j = mid; i < mid; ++i)
 	{
-		while (j < end && (long)nums[i] > 2 * (long)nums[j])
-			j++;
+		while (j < last && (long)arr[i] > 2L * arr[j])
+			++j;
 		res += j - mid;
 	}
-	merge(nums, dup, start, mid, end);
+	merge(arr, dup, first, mid, last);
 	return res;
 }
+/********end of divide and conquer********/
 
 int reversePairs(int *nums, int numsSize)
 {
