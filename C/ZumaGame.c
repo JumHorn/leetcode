@@ -1,29 +1,28 @@
 #include <string.h>
 
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+
 int dfs(char *board, int *map)
 {
 	int res = 100;
+	char dummy[20] = {0};
 	if (!*board)
 		return 0;
-	char dummy[17];
-	for (int i = 0, j = 0; board[i];)
+	for (int i = 0, j = 0; board[i]; i = j++)
 	{
-		while (board[j] && board[i] == board[j])
+		while (board[i] == board[j])
 			++j;
-		int insert = 3 - (j - i);
-		if (insert < 0)
-			insert = 0;
+		int insert = max(3 - (j - i), 0);
 		if (map[board[i] - 'A'] >= insert)
 		{
-			memcpy(dummy, board, i);
+			strncpy(dummy, board, i);
 			strcpy(&dummy[i], &board[j]);
 			map[board[i] - 'A'] -= insert;
-			int tmp = dfs(dummy, map) + insert;
-			if (tmp < res)
-				res = tmp;
+			int insert_needed = dfs(dummy, map) + insert;
+			res = min(res, insert_needed);
 			map[board[i] - 'A'] += insert;
 		}
-		i = j++;
 	}
 	return res;
 }
@@ -31,12 +30,8 @@ int dfs(char *board, int *map)
 int findMinStep(char *board, char *hand)
 {
 	int map[26] = {0};
-	while (*hand)
-	{
+	for (; *hand; ++hand)
 		++map[*hand - 'A'];
-		++hand;
-	}
-	int size = strlen(board);
 	int res = dfs(board, map);
-	return res == 100 ? -1 : res;
+	return res >= 100 ? -1 : res;
 }

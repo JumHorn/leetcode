@@ -18,10 +18,10 @@ public:
 	{
 		if (board.empty())
 			return 0;
-		int res = 100, n = board.length();
-		for (int i = 0, j = 0; i < n;)
+		int res = 100, N = board.length();
+		for (int i = 0, j = 0; i < N; i = j++)
 		{
-			while (j < n && board[i] == board[j])
+			while (j < N && board[i] == board[j])
 				++j;
 			int insert = max(3 - (j - i), 0);
 			if (hand[board[i]] >= insert)
@@ -30,7 +30,6 @@ public:
 				res = min(res, dfs(board.substr(0, i) + board.substr(j), hand) + insert);
 				hand[board[i]] += insert;
 			}
-			i = j++;
 		}
 		return res;
 	}
