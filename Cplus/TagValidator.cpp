@@ -1,6 +1,6 @@
-#include <string>
-#include <stack>
 #include <cctype>
+#include <stack>
+#include <string>
 using namespace std;
 
 class Solution
@@ -10,78 +10,55 @@ public:
 	{
 		if (code.empty() || code[0] != '<')
 			return false;
-		int index = 0, N = code.length();
+		int N = code.length();
 		stack<string> tag;
-		while (index < N)
+		bool valid = false;
+		for (int index = 0; index + 1 < N;)
 		{
-			if (code[index] == '<')
+			if (code[index++] != '<')
+				continue;
+			valid = false;
+			if (code[index] == '!') //comment tag
 			{
-				++index;
-				if (index < N && code[index] == '!')
+				if (tag.empty()) //[CDATA[ must be wrapped in a tag
+					return false;
+				if (code.compare(index + 1, 7, "[CDATA[") != 0)
+					return false;
+				//jump to comment
+				for (index += 8; index < N; ++index)
 				{
-					if (tag.empty())
-						return false;
-					++index;
-					if (code.substr(index, 7) != "[CDATA[")
-						return false;
-					index += 7;
-					while (true)
-					{
-						while (index < N && code[index] != ']')
-							index++;
-						if (index < N)
-						{
-							if (code.substr(index, 3) == "]]>")
-								break;
-						}
-						else
-							break;
-						++index;
-					}
+					if (code[index] == ']' && code.compare(index, 3, "]]>") == 0)
+						break;
 				}
-				else if (index < N && code[index] == '/')
-				{
-					if (tag.empty())
-						return false;
-					++index;
-					int i = index, len;
-					while (i < N && code[i] != '>')
-					{
-						len = i - index + 1;
-						if (len > (int)tag.top().length() || code[i] != tag.top()[len - 1])
-							return false;
-						i++;
-					}
-					len = i - index;
-					if (len != (int)tag.top().length())
-						return false;
-					tag.pop();
-					index = ++i;
-					if (tag.empty() && index != N)
-						return false;
-				}
-				else
-				{
-					int i = index, len;
-					while (i < N && code[i] != '>')
-					{
-						len = i - index + 1;
-						if (code[i] > 'Z' || code[i] < 'A')
-							return false;
-						i++;
-						if (len > 9)
-							return false;
-					}
-					len = i - index;
-					if (i == N || len < 1 || len > 9)
-						return false;
-					tag.push(code.substr(index, len));
-					index = ++i;
-				}
+				index += 3;
 			}
-			else
-				++index;
+			else if (code[index] == '/') //finish tag
+			{
+				if (tag.empty()) //finish tag must be matched
+					return false;
+				int pos = code.find(">", ++index);
+				if (pos == string::npos || code.compare(index, pos - index, tag.top()) != 0)
+					return false;
+				tag.pop();
+				index = pos + 1;
+				if (index < N && tag.empty()) //all string should be wrapped in one tag
+					return false;
+			}
+			else //start tag
+			{
+				int tagSize = 0;
+				for (int i = index; i < N && code[i] != '>'; ++i, ++tagSize)
+				{
+					if (code[i] > 'Z' || code[i] < 'A') //tag only consist of uppercase letters
+						return false;
+				}
+				if (index + tagSize == N || tagSize < 1 || tagSize > 9)
+					return false;
+				tag.push(code.substr(index, tagSize));
+				index += tagSize + 1;
+			}
+			valid = true;
 		}
-		return tag.empty();
+		return valid && tag.empty();
 	}
 };
