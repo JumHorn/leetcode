@@ -1,17 +1,26 @@
 
-int dfs(int n, int num)
-{
-	if (n > num)
-		return 0;
-	int res = 1;
-	if ((n & 1) == 0)
-		res += dfs(n << 1 | 1, num);
-	if (n != 0)
-		res += dfs(n << 1, num);
-	return res;
-}
-
 int findIntegers(int num)
 {
-	return dfs(0, num);
+	int f[32];
+	f[0] = 1;
+	f[1] = 2;
+	for (int i = 2; i < 32; ++i)
+		f[i] = f[i - 1] + f[i - 2];
+	int pre = 0, res = 0;
+	for (int j = 31; j >= 0; --j)
+	{
+		if ((num & (1u << j)) != 0)
+		{
+			res += f[j];
+			if (pre == 1)
+			{
+				--res;
+				break;
+			}
+			pre = 1;
+		}
+		else
+			pre = 0;
+	}
+	return res + 1;
 }
