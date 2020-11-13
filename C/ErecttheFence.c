@@ -20,6 +20,20 @@ int crossProduct(int *pointA, int *pointB, int *pointC)
 	return x1 * y2 - x2 * y1;
 }
 
+int tagSeenPoint(int *stack, int top, int *seen)
+{
+	int res = 0;
+	for (; top >= 0; --top)
+	{
+		if (seen[stack[top]] == 0)
+		{
+			seen[stack[top]] = 1;
+			++res;
+		}
+	}
+	return res;
+}
+
 /**
  * Return an array of arrays of size *returnSize.
  * The sizes of the arrays are returned as *returnColumnSizes array.
@@ -28,9 +42,9 @@ int crossProduct(int *pointA, int *pointB, int *pointC)
 int **outerTrees(int **points, int pointsSize, int *pointsColSize, int *returnSize, int **returnColumnSizes)
 {
 	int stack[pointsSize], top = -1, seen[pointsSize];
+	memset(seen, 0, sizeof(seen));
 	qsort(points, pointsSize, sizeof(int *), cmp);
 	*returnSize = 0;
-	memset(seen, 0, sizeof(seen));
 	// left to right
 	for (int i = 0; i < pointsSize; ++i)
 	{
@@ -38,42 +52,30 @@ int **outerTrees(int **points, int pointsSize, int *pointsColSize, int *returnSi
 			--top;
 		stack[++top] = i;
 	}
-	while (top >= 0)
-	{
-		if (seen[stack[top]] == 0)
-		{
-			seen[stack[top]] = 1;
-			++*returnSize;
-		}
-		--top;
-	}
+	*returnSize += tagSeenPoint(stack, top, seen);
+
 	// right to left
+	top = -1;
 	for (int i = pointsSize - 1; i >= 0; --i)
 	{
 		while (top >= 1 && crossProduct(points[stack[top]], points[i], points[stack[top - 1]]) < 0)
 			--top;
 		stack[++top] = i;
 	}
-	while (top >= 0)
-	{
-		if (seen[stack[top]] == 0)
-		{
-			seen[stack[top]] = 1;
-			++*returnSize;
-		}
-		--top;
-	}
+	*returnSize += tagSeenPoint(stack, top, seen);
+
+	//malloc res
 	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
-	for (int i = 0; i < pointsSize; ++i)
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	for (int i = 0, j = 0; i < pointsSize; ++i)
 	{
 		if (seen[i] == 1)
 		{
-			res[++top] = (int *)malloc(sizeof(int) * 2);
-			memcpy(res[top], points[i], sizeof(int) * 2);
+			(*returnColumnSizes)[j] = 2;
+			res[j] = (int *)malloc(sizeof(int) * (*returnColumnSizes)[j]);
+			memcpy(res[j], points[i], sizeof(int) * (*returnColumnSizes)[j]);
+			++j;
 		}
 	}
-	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
-	for (int i = 0; i < *returnSize; ++i)
-		(*returnColumnSizes)[i] = 2;
 	return res;
 }

@@ -8,18 +8,17 @@ int removeBoxes(int *boxes, int boxesSize)
 	memset(dp, 0, sizeof(dp));
 	for (int i = 0; i < boxesSize; ++i)
 	{
-		for (int k = 0; k <= i; k++)
+		for (int k = 0; k <= i; ++k)
 			dp[i][i][k] = (k + 1) * (k + 1);
 	}
-	for (int l = 1; l < boxesSize; l++)
+	for (int i = boxesSize - 1; i >= 0; --i)
 	{
-		for (int j = l; j < boxesSize; ++j)
+		for (int j = i + 1; j < boxesSize; ++j)
 		{
-			int i = j - l;
-			for (int k = 0; k <= i; k++)
+			for (int k = 0; k <= i; ++k)
 			{
 				int res = (k + 1) * (k + 1) + dp[i + 1][j][0];
-				for (int m = i + 1; m <= j; m++)
+				for (int m = i + 1; m <= j; ++m)
 				{
 					if (boxes[m] == boxes[i])
 						res = max(res, dp[i + 1][m - 1][0] + dp[m][j][k + 1]);

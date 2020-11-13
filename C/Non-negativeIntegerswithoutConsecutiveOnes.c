@@ -13,10 +13,7 @@ int findIntegers(int num)
 		{
 			res += f[j];
 			if (pre == 1)
-			{
-				--res;
-				break;
-			}
+				return res;
 			pre = 1;
 		}
 		else

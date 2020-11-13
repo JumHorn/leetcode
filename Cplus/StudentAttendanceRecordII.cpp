@@ -1,3 +1,4 @@
+#include <cstring>
 #include <vector>
 using namespace std;
 
@@ -6,30 +7,33 @@ class Solution
 public:
 	int checkRecord(int n)
 	{
-		int MOD = 1e9 + 7;
-		int dp[2][3];
+		int dp[2][3] = {0};
 		for (int i = 0; i < 2; ++i)
 		{
 			for (int j = 0; j < 3; ++j)
 				dp[i][j] = 1;
 		}
+
 		for (int i = 0; i < n; ++i)
 		{
-			int dp1[2][3] = {0};
+			int next_dp[2][3] = {0};
 			for (int j = 0; j < 2; ++j)
 			{
-				for (int k = 0; k < 3; k++)
+				for (int k = 0; k < 3; ++k)
 				{
 					int val = dp[j][2];
 					if (j > 0)
 						val = (val + dp[j - 1][2]) % MOD;
 					if (k > 0)
 						val = (val + dp[j][k - 1]) % MOD;
-					dp1[j][k] = val;
+					next_dp[j][k] = val;
 				}
 			}
-			memcpy(dp, dp1, sizeof(dp));
+			memcpy(dp, next_dp, sizeof(dp));
 		}
 		return dp[1][2];
 	}
+
+private:
+	static const int MOD = 1e9 + 7;
 };

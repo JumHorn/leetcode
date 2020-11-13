@@ -7,11 +7,13 @@ class Solution
 public:
 	vector<int> kthSmallestPrimeFraction(vector<int> &A, int K)
 	{
-		int n = A.size();
-		auto f = [&](int *lhs, int *rhs) { return A[lhs[0]] * A[rhs[1]] > A[lhs[1]] * A[rhs[0]]; };
+		int N = A.size();
+		auto f = [&](int *lhs, int *rhs) {
+			return A[lhs[0]] * A[rhs[1]] > A[lhs[1]] * A[rhs[0]];
+		};
 		priority_queue<int *, vector<int *>, decltype(f)> q(f);
-		for (int i = 0; i < n - 1; ++i)
-			q.push(new int[2]{i, n - 1});
+		for (int i = 0; i < N - 1; ++i)
+			q.push(new int[2]{i, N - 1});
 		int x, y;
 		while (--K > 0)
 		{

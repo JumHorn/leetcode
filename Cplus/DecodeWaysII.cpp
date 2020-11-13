@@ -7,14 +7,13 @@ class Solution
 public:
 	int numDecodings(string s)
 	{
-		if (s.empty())
+		if (s.empty() || s.front() == '0')
 			return 0;
-		if (s.front() == '0')
-			return 0;
-		vector<long> dp(s.length() + 1);
+		int N = s.length();
+		vector<long> dp(N + 1);
 		dp[0] = 1;
 		dp[1] = (s[0] == '*' ? 9 : 1);
-		for (int j = 1; j < (int)s.length(); ++j)
+		for (int j = 1; j < N; ++j)
 		{
 			int i = j + 1;
 			if (s[j] == '*')

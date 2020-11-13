@@ -4,26 +4,26 @@
 //max heap function series
 void push_heap(int *ptr, int size)
 {
-	if (size > 0)
+	if (size <= 1)
+		return;
+	int val = ptr[size - 1], hole = size - 1;
+	for (int i = (hole - 1) >> 1; hole > 0 && val > ptr[i]; i = (hole - 1) >> 1)
 	{
-		int val = ptr[size - 1], hole = size - 1;
-		for (int i = (hole - 1) >> 1; hole > 0 && val > ptr[i]; i = (hole - 1) >> 1)
-		{
-			ptr[hole] = ptr[i];
-			hole = i;
-		}
-		ptr[hole] = val;
+		ptr[hole] = ptr[i];
+		hole = i;
 	}
+	ptr[hole] = val;
 }
 
-//for internal usage
-void _adjust_heap(int *ptr, int size, int hole, int val)
+void pop_heap(int *ptr, int size)
 {
-	int non_leaf = (size - 1) >> 1, i = hole;
+	if (size <= 0)
+		return;
+	int val = *ptr, non_leaf = (size - 1) >> 1, hole = 0, i = 0;
 	while (i < non_leaf)
 	{
 		i = 2 * i + 2;
-		if (ptr[i] < ptr[i - 1])
+		if (ptr[i - 1] > ptr[i])
 			--i;
 		ptr[hole] = ptr[i];
 		hole = i;
@@ -33,25 +33,17 @@ void _adjust_heap(int *ptr, int size, int hole, int val)
 		ptr[hole] = ptr[size - 1];
 		hole = size - 1;
 	}
-	ptr[hole] = val;
+	ptr[hole] = ptr[size - 1];
 	push_heap(ptr, hole + 1);
+	ptr[size - 1] = val;
 }
 
 void make_heap(int *ptr, int size)
 {
-	for (int hole = (size - 1) >> 1; hole >= 0; --hole)
-		_adjust_heap(ptr, size, hole, ptr[hole]);
+	for (int i = 1; i < size; ++i)
+		push_heap(ptr, i + 1);
 }
-
-void pop_heap(int *ptr, int size)
-{
-	if (size > 0)
-	{
-		int val = *ptr;
-		_adjust_heap(ptr, size, 0, ptr[size - 1]);
-		ptr[size - 1] = val;
-	}
-}
+/********end of max heap********/
 
 //cmp function don't consider overflow
 int cmp(const void *lhs, const void *rhs)
@@ -62,26 +54,26 @@ int cmp(const void *lhs, const void *rhs)
 int scheduleCourse(int **courses, int coursesSize, int *coursesColSize)
 {
 	qsort(courses, coursesSize, sizeof(int *), cmp);
-	int size = 1, priorityqueue[coursesSize];
-	int time = priorityqueue[0] = courses[0][0];
+	int heap[coursesSize], heapSize = 1;
+	int time = heap[0] = courses[0][0];
 	for (int i = 1; i < coursesSize; ++i)
 	{
 		if (time + courses[i][0] <= courses[i][1])
 		{
 			time += courses[i][0];
-			priorityqueue[size++] = courses[i][0];
-			push_heap(priorityqueue, size);
+			heap[heapSize++] = courses[i][0];
+			push_heap(heap, heapSize);
 		}
 		else
 		{
-			if (courses[i][0] < priorityqueue[0])
+			if (courses[i][0] < heap[0])
 			{
-				time += courses[i][0] - priorityqueue[0];
-				pop_heap(priorityqueue, size);
-				priorityqueue[size - 1] = courses[i][0];
-				push_heap(priorityqueue, size);
+				time += courses[i][0] - heap[0];
+				pop_heap(heap, heapSize--);
+				heap[heapSize++] = courses[i][0];
+				push_heap(heap, heapSize);
 			}
 		}
 	}
-	return size;
+	return heapSize;
 }

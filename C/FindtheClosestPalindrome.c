@@ -20,30 +20,29 @@ long makePalindrome(long half, int even)
 char *nearestPalindromic(char *n)
 {
 	long num = atoll(n);
-	int len = strlen(n);
-	n[len / 2 + len % 2] = '\0';
+	int N = strlen(n);
+	n[N / 2 + N % 2] = '\0';
 	long half = atoll(n);
-	long res0 = makePalindrome(half, len % 2);
+	long res0 = makePalindrome(half, N % 2);
 	long abs0 = abs(num - res0);
 	if (abs0 == 0)
 		abs0 = LONG_MAX;
 
 	long res1;
-	if (half != pow(10, len / 2 + len % 2) - 1)
-		res1 = makePalindrome(half + 1, len % 2);
+	if (half != pow(10, N / 2 + N % 2) - 1)
+		res1 = makePalindrome(half + 1, N % 2);
 	else
-		res1 = pow(10, len) + 1;
+		res1 = pow(10, N) + 1;
 	long abs1 = abs(num - res1);
 
 	long res2;
-	if (half != pow(10, len / 2 + len % 2 - 1))
-		res2 = makePalindrome(half - 1, len % 2);
+	if (half != pow(10, N / 2 + N % 2 - 1))
+		res2 = makePalindrome(half - 1, N % 2);
 	else
-		res2 = pow(10, len - 1) - 1;
+		res2 = pow(10, N - 1) - 1;
 	long abs2 = abs(num - res2);
 
 	char *res = (char *)malloc(sizeof(char) * 20);
-	memset(res, 0, sizeof(char) * 20);
 	if (abs2 <= abs0 && abs2 <= abs1)
 		sprintf(res, "%ld", res2);
 	else if (abs0 <= abs1 && abs0 < abs2)

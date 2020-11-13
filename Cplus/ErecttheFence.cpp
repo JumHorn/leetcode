@@ -8,13 +8,13 @@ class Solution
 public:
 	vector<vector<int>> outerTrees(vector<vector<int>> &points)
 	{
-		int n = points.size();
+		int N = points.size();
 		sort(points.begin(), points.end());
-		vector<int> seen(n);
+		vector<int> seen(N);
 		stack<int> s;
 		// left to right
 		int top = 0;
-		for (int i = 1; i < n; ++i)
+		for (int i = 1; i < N; ++i)
 		{
 			while (!s.empty() && crossProduct(points[top], points[i], points[s.top()]) < 0)
 			{
@@ -27,11 +27,11 @@ public:
 		s.push(top);
 
 		vector<vector<int>> res;
-		dumpPoints(res, s, points, seen);
+		dumpPoints(points, s, seen, res);
 
 		// right to left
-		top = n - 1;
-		for (int i = n - 2; i >= 0; --i)
+		top = N - 1;
+		for (int i = N - 2; i >= 0; --i)
 		{
 			while (!s.empty() && crossProduct(points[top], points[i], points[s.top()]) < 0)
 			{
@@ -43,20 +43,19 @@ public:
 		}
 		s.push(top);
 
-		dumpPoints(res, s, points, seen);
+		dumpPoints(points, s, seen, res);
 		return res;
 	}
 
-	void dumpPoints(vector<vector<int>> &res, stack<int> &s, vector<vector<int>> &points, vector<int> &seen)
+	void dumpPoints(vector<vector<int>> &points, stack<int> &s, vector<int> &seen, vector<vector<int>> &res)
 	{
-		while (!s.empty())
+		for (; !s.empty(); s.pop())
 		{
 			if (seen[s.top()] == 0)
 			{
 				seen[s.top()] = 1;
 				res.push_back(points[s.top()]);
 			}
-			s.pop();
 		}
 	}
 

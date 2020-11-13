@@ -18,14 +18,14 @@ int checkRecord(int n)
 	dp[0] = 1;
 	for (int i = 0; i < n; ++i)
 	{
-		long dp1[6] = {0};
-		dp1[0] = (dp[0] + dp[1] + dp[2]) % MOD;
-		dp1[1] = dp[0];
-		dp1[2] = dp[1];
-		dp1[3] = (dp[0] + dp[1] + dp[2] + dp[3] + dp[4] + dp[5]) % MOD;
-		dp1[4] = dp[3];
-		dp1[5] = dp[4];
-		memcpy(dp, dp1, sizeof(dp));
+		long next_dp[6] = {0};
+		next_dp[0] = (dp[0] + dp[1] + dp[2]) % MOD;
+		next_dp[1] = dp[0];
+		next_dp[2] = dp[1];
+		next_dp[3] = (dp[0] + dp[1] + dp[2] + dp[3] + dp[4] + dp[5]) % MOD;
+		next_dp[4] = dp[3];
+		next_dp[5] = dp[4];
+		memcpy(dp, next_dp, sizeof(dp));
 	}
 	int res = 0;
 	for (int i = 0; i < 6; ++i)
