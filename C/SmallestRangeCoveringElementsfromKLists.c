@@ -1,42 +1,95 @@
+#include <limits.h>
 #include <string.h>
+
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+typedef struct tuple
+{
+	int val;
+	int row;
+	int col;
+} tuple;
+
+//min heap function series
+void push_heap(tuple *ptr, int size)
+{
+	if (size <= 1)
+		return;
+	tuple val = ptr[size - 1];
+	int hole = size - 1;
+	for (int i = (hole - 1) >> 1; hole > 0 && val.val<ptr[i].val; i = (hole - 1)>> 1)
+	{
+		ptr[hole] = ptr[i];
+		hole = i;
+	}
+	ptr[hole] = val;
+}
+
+void pop_heap(tuple *ptr, int size)
+{
+	if (size <= 0)
+		return;
+	tuple val = *ptr;
+	int non_leaf = (size - 1) >> 1, hole = 0, i = 0;
+	while (i < non_leaf)
+	{
+		i = 2 * i + 2;
+		if (ptr[i - 1].val < ptr[i].val)
+			--i;
+		ptr[hole] = ptr[i];
+		hole = i;
+	}
+	if (i == non_leaf && size % 2 == 0)
+	{
+		ptr[hole] = ptr[size - 1];
+		hole = size - 1;
+	}
+	ptr[hole] = ptr[size - 1];
+	push_heap(ptr, hole + 1);
+	ptr[size - 1] = val;
+}
+
+void make_heap(tuple *ptr, int size)
+{
+	for (int i = 1; i < size; ++i)
+		push_heap(ptr, i + 1);
+}
+/********end of min heap********/
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
 int *smallestRange(int **nums, int numsSize, int *numsColSize, int *returnSize)
 {
-	int index[numsSize], maxindex = 0, minindex = 0;
 	*returnSize = 2;
-	int *res = (int *)malloc(sizeof(int) * 2);
-	memset(index, 0, sizeof(index));
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	int heapSize = 0, maxval = INT_MIN;
+	tuple heap[numsSize], ele;
 	for (int i = 0; i < numsSize; ++i)
 	{
-		if (nums[i][0] < nums[minindex][0])
-			minindex = i;
-		if (nums[i][0] > nums[maxindex][0])
-			maxindex = i;
+		maxval = max(maxval, nums[i][0]);
+		heap[heapSize].val = nums[i][0];
+		heap[heapSize].row = i;
+		heap[heapSize].col = 0;
+		make_heap(heap, ++heapSize);
 	}
-	int range = nums[maxindex][index[maxindex]] - nums[minindex][index[minindex]];
-	res[0] = nums[minindex][index[minindex]];
-	res[1] = nums[maxindex][index[maxindex]];
+	int range = maxval - heap[0].val;
+	res[0] = heap[0].val;
+	res[1] = maxval;
 
-	while (index[minindex] + 1 < numsColSize[minindex])
+	while (heap[0].col + 1 < numsColSize[heap[0].row])
 	{
-		++index[minindex];
-		if (nums[maxindex][index[maxindex]] < nums[minindex][index[minindex]])
-			maxindex = minindex;
-		minindex = 0;
-		for (int i = 0; i < numsSize; ++i)
+		tuple ele = heap[0];
+		pop_heap(heap, heapSize--);
+		ele.val = nums[ele.row][++ele.col];
+		maxval = max(maxval, ele.val);
+		heap[heapSize++] = ele;
+		push_heap(heap, heapSize);
+		if (maxval - heap[0].val < range)
 		{
-			if (nums[i][index[i]] < nums[minindex][index[minindex]])
-				minindex = i;
-		}
-		int tmp = nums[maxindex][index[maxindex]] - nums[minindex][index[minindex]];
-		if (tmp < range)
-		{
-			range = tmp;
-			res[0] = nums[minindex][index[minindex]];
-			res[1] = nums[maxindex][index[maxindex]];
+			range = maxval - heap[0].val;
+			res[0] = heap[0].val;
+			res[1] = maxval;
 		}
 	}
 	return res;
