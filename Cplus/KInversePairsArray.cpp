@@ -1,11 +1,17 @@
 #include <vector>
 using namespace std;
 
+/*
+dp[i][k] accumulate [0,k] inverse pairs until index i
+*/
+
 class Solution
 {
 public:
 	int kInversePairs(int n, int k)
 	{
+		if (k == 0)
+			return 1;
 		vector<vector<int>> dp(n + 1, vector<int>(k + 1));
 		for (int i = 1; i <= n; ++i)
 			dp[i][0] = 1;
@@ -19,9 +25,7 @@ public:
 					dp[i][j] = (dp[i][j - 1] + dp[i - 1][j]) % MOD;
 			}
 		}
-		if (k > 0)
-			return (dp[n][k] + MOD - dp[n][k - 1]) % MOD;
-		return dp[n][k];
+		return (dp[n][k] + MOD - dp[n][k - 1]) % MOD;
 	}
 
 private:
