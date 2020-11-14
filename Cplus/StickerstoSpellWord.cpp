@@ -1,6 +1,3 @@
-#include <map>
-#include <queue>
-#include <set>
 #include <string>
 #include <vector>
 using namespace std;
@@ -10,50 +7,33 @@ class Solution
 public:
 	int minStickers(vector<string> &stickers, string target)
 	{
-		int n = stickers.size(), res = 0;
-		map<char, int> targetmap;
-		vector<map<char, int>> words(n);
-		for (auto c : target)
-			++targetmap[c];
-		for (int i = 0; i < n; ++i)
+		int N = target.length();
+		vector<int> dp(1 << N, -1);
+		dp[0] = 0;
+		for (int mask = 0; mask < 1 << N; ++mask)
 		{
-			for (auto c : stickers[i])
-				if (targetmap.find(c) != targetmap.end())
-					++words[i][c];
-		}
-		queue<map<char, int>> q;
-		set<map<char, int>> seen;
-		q.push(targetmap);
-		seen.insert(targetmap);
-		while (!q.empty())
-		{
-			++res;
-			int size = q.size();
-			while (--size >= 0)
+			if (dp[mask] == -1)
+				continue;
+			for (auto &sticker : stickers)
 			{
-				for (int i = 0; i < n; ++i)
+				int next_mask = mask;
+				for (auto c : sticker)
 				{
-					targetmap = q.front();
-					for (auto c : words[i])
+					for (int i = 0; i < N; ++i)
 					{
-						if (targetmap.find(c.first) != targetmap.end())
+						if (((next_mask >> i) & 1) == 1)
+							continue;
+						if (c == target[i])
 						{
-							targetmap[c.first] -= c.second;
-							if (targetmap[c.first] <= 0)
-								targetmap.erase(c.first);
+							next_mask |= 1u << i;
+							break;
 						}
 					}
-					if (targetmap.empty())
-						return res;
-					if (seen.find(targetmap) == seen.end())
-					{
-						seen.insert(targetmap);
-						q.push(targetmap);
-					}
 				}
-				q.pop();
+				if (dp[next_mask] == -1 || dp[next_mask] > dp[mask] + 1)
+					dp[next_mask] = dp[mask] + 1;
 			}
 		}
-		return -1;
+		return dp[(1 << N) - 1];
 	}
 };
