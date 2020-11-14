@@ -16,12 +16,12 @@ public:
 			{
 				if (S[i - 1] == 'D')
 				{
-					for (int k = j; k < i; k++)
+					for (int k = j; k < i; ++k)
 						dp[i][j] = (dp[i][j] + dp[i - 1][k]) % MOD;
 				}
 				else
 				{
-					for (int k = 0; k < j; k++)
+					for (int k = 0; k < j; ++k)
 						dp[i][j] = (dp[i][j] + dp[i - 1][k]) % MOD;
 				}
 			}

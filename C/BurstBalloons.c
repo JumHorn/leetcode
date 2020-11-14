@@ -18,7 +18,7 @@ int maxCoins(int *nums, int numsSize)
 	{
 		for (int i = j - 1; i >= 0; --i)
 		{
-			for (int k = i + 1; k < j; k++)
+			for (int k = i + 1; k < j; ++k)
 				dp[i][j] = max(dp[i][j], dup[i] * dup[k] * dup[j] + dp[i][k] + dp[k][j]);
 		}
 	}

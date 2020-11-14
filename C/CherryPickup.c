@@ -9,7 +9,7 @@ int cherryPickup(int **grid, int gridSize, int *gridColSize)
 	int dp[n][n];
 	memset(dp, 1u << 7, sizeof(dp)); //init to 0x80808080 a large minus number
 	dp[0][0] = grid[0][0];
-	for (int k = 1; k < 2 * n - 1; k++)
+	for (int k = 1; k < 2 * n - 1; ++k)
 	{
 		int dp1[n][n];
 		memset(dp1, 1u << 7, sizeof(dp1));

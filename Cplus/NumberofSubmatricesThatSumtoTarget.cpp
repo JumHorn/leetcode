@@ -20,7 +20,7 @@ public:
 				unordered_map<int, int> m;
 				m[0] = 1;
 				int add = 0;
-				for (int k = 0; k < M; k++)
+				for (int k = 0; k < M; ++k)
 				{
 					add += matrix[k][j] - (i > 0 ? matrix[k][i - 1] : 0);
 					res += m[add - target];

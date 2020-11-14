@@ -28,14 +28,14 @@ int minDistance(int **forest, int M, int N, int from, int to)
 		{
 			int at = queue[front];
 			front = (front - 1 + size) % size; //pop front
-			int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+			int path[5] = {-1, 0, 1, 0, -1};   //board dfs direction
 			int x = at / N, y = at % N;
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < 4; ++k)
 			{
-				int i = x + path[k][0], j = y + path[k][1];
-				if (i < 0 || i >= M || j < 0 || j >= N || forest[i][j] == 0)
+				int i = x + path[k], j = y + path[k + 1];
+				if (i < 0 || i >= M || j < 0 || j >= N)
 					continue;
-				if (seen[i * N + j] == 1)
+				if (forest[i][j] == 0 || seen[i * N + j] == 1)
 					continue;
 				seen[i * N + j] = 1;
 				if (i * N + j == to)

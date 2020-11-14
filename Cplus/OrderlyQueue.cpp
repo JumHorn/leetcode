@@ -37,7 +37,7 @@ public:
 
 	bool minReverse(const string &s, int n, int i, int j)
 	{
-		for (int k = 0; k < n; k++)
+		for (int k = 0; k < n; ++k)
 		{
 			if (s[(i + k) % n] != s[(j + k) % n])
 				return s[(i + k) % n] < s[(j + k) % n];

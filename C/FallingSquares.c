@@ -24,9 +24,9 @@ int *fallingSquares(int **positions, int positionsSize, int *positionsColSize, i
 				query[j] = max(query[j], query[i]);
 		}
 	}
+	int cur = -1;
 	*returnSize = positionsSize;
 	int *res = (int *)malloc(sizeof(int) * positionsSize);
-	int cur = -1;
 	for (int i = 0; i < positionsSize; ++i)
 	{
 		cur = max(cur, query[i]);

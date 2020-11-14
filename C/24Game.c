@@ -1,37 +1,37 @@
 #include <math.h>
 #include <stdbool.h>
 
-bool backTracking(double *nums, int n)
+bool backTracking(double *nums, int numsSize)
 {
-	if (n == 1 && fabs(nums[0] - 24) < 0.000001)
+	if (numsSize == 1 && fabs(nums[0] - 24) < 0.000001)
 		return true;
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < numsSize; ++i)
 	{
-		for (int j = 0; j < n; ++j)
+		for (int j = 0; j < numsSize; ++j)
 		{
 			if (i == j)
 				continue;
-			double v[4];
-			int size = 0;
-			for (int k = 0; k < n; k++) // add leftover nums to v
+			double arr[4];
+			int arrSize = 0;
+			for (int k = 0; k < numsSize; ++k) // add leftover nums to arr
 			{
 				if (k != i && k != j)
-					v[size++] = nums[k];
+					arr[arrSize++] = nums[k];
 			}
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < 4; ++k)
 			{
-				double tmp;
+				double val;
 				if (k == 0)
-					tmp = nums[i] + nums[j];
+					val = nums[i] + nums[j];
 				else if (k == 1)
-					tmp = nums[i] - nums[j];
+					val = nums[i] - nums[j];
 				else if (k == 2)
-					tmp = nums[i] * nums[j];
+					val = nums[i] * nums[j];
 				else if (nums[j] != 0)
-					tmp = nums[i] / nums[j];
+					val = nums[i] / nums[j];
 
-				v[size] = tmp;
-				if (backTracking(v, size + 1))
+				arr[arrSize] = val;
+				if (backTracking(arr, arrSize + 1))
 					return true;
 			}
 		}

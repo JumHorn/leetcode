@@ -22,7 +22,7 @@ int dfs(int ***dp, int m, int n, int N, int i, int j)
 int findPaths(int m, int n, int N, int i, int j)
 {
 	int ***dp = (int ***)malloc(m * sizeof(int **));
-	for (int k = 0; k < m; k++)
+	for (int k = 0; k < m; ++k)
 	{
 		dp[k] = (int **)malloc(n * sizeof(int *));
 		for (int l = 0; l < n; l++)

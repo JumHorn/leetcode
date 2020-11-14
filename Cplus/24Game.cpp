@@ -13,37 +13,37 @@ public:
 
 	bool backTracking(vector<double> &nums)
 	{
-		int n = nums.size();
-		if (n == 1 && abs(nums[0] - 24) < 0.000001)
+		int N = nums.size();
+		if (N == 1 && abs(nums[0] - 24) < 0.000001)
 			return true;
-		for (int i = 0; i < n; ++i)
+		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j < n; ++j)
+			for (int j = 0; j < N; ++j)
 			{
 				if (i == j)
 					continue;
-				vector<double> v;
-				for (int k = 0; k < n; k++) // add leftover nums to v
+				vector<double> next_nums;
+				for (int k = 0; k < N; ++k) // add not choosed nums to next_nums
 				{
 					if (k != i && k != j)
-						v.push_back(nums[k]);
+						next_nums.push_back(nums[k]);
 				}
-				for (int k = 0; k < 4; k++)
+				for (int k = 0; k < 4; ++k)
 				{
-					double tmp;
+					double val;
 					if (k == 0)
-						tmp = nums[i] + nums[j];
+						val = nums[i] + nums[j];
 					else if (k == 1)
-						tmp = nums[i] - nums[j];
+						val = nums[i] - nums[j];
 					else if (k == 2)
-						tmp = nums[i] * nums[j];
+						val = nums[i] * nums[j];
 					else if (nums[j] != 0)
-						tmp = nums[i] / nums[j];
+						val = nums[i] / nums[j];
 
-					v.push_back(tmp);
-					if (backTracking(v))
+					next_nums.push_back(val);
+					if (backTracking(next_nums))
 						return true;
-					v.pop_back();
+					next_nums.pop_back();
 				}
 			}
 		}

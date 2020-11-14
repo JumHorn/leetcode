@@ -37,7 +37,7 @@ double getProbability(int *balls, int ballsSize)
 		{
 			for (int j = 0; j < 2 * m + 1; ++j)
 			{
-				for (int k = 0; k < S / 2 + 1; k++)
+				for (int k = 0; k < S / 2 + 1; ++k)
 				{
 					if (dp[j][k] == 0)
 						continue;

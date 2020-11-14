@@ -31,7 +31,7 @@ public:
 		vector<int> right = rightNext(S);
 		for (int i = 0; i < len; ++i)
 			dp[i][i] = 1;
-		for (int n = 1; n < len; n++)
+		for (int n = 1; n < len; ++n)
 		{
 			for (int i = 0, j = n; i < len - n; i++, j++)
 			{

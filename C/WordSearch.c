@@ -11,7 +11,7 @@ bool dfs(char **board, int m, int n, int i, int j, char *word)
 	char tmp = board[i][j];
 	board[i][j] = ' ';
 	int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-	for (int k = 0; k < 4; k++)
+	for (int k = 0; k < 4; ++k)
 	{
 		int dx = i + path[k][0], dy = j + path[k][1];
 		if (dfs(board, m, n, dx, dy, word + 1))

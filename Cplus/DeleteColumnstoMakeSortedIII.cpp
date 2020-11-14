@@ -17,7 +17,7 @@ public:
 		vector<int> dp(N, 1);
 		for (int i = 1; i < N; ++i)
 		{
-			for (int k = 0; k < i; k++)
+			for (int k = 0; k < i; ++k)
 			{
 				int j;
 				for (j = 0; j < M; ++j)

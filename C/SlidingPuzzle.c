@@ -71,7 +71,7 @@ int slidingPuzzle(int **board, int boardSize, int *boardColSize)
 			pair zero = findZero(board, M, N);
 			//board dfs direction
 			int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < 4; ++k)
 			{
 				int x = zero.first + path[k][0], y = zero.second + path[k][1];
 				if (x < 0 || x >= M || y < 0 || y >= N)

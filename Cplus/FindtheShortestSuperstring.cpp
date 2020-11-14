@@ -31,7 +31,7 @@ public:
 					dp[i][j] = A[j].length();
 				else
 				{
-					for (int k = 0; k < N; k++)
+					for (int k = 0; k < N; ++k)
 					{
 						if ((pre & (1 << k)) != 0 && dp[pre][k] + graph[k][j] < dp[i][j])
 						{
@@ -79,7 +79,7 @@ public:
 	int overlap(string &a, string &b)
 	{
 		int k = 0, N = a.length();
-		for (k = 1; k < N; k++)
+		for (k = 1; k < N; ++k)
 		{
 			int n = k, m = 0;
 			while (n < N && a[n] == b[m++])

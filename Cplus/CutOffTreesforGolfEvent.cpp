@@ -10,7 +10,7 @@ public:
 	int cutOffTree(vector<vector<int>> &forest)
 	{
 		int M = forest.size(), N = forest[0].size();
-		priority_queue<pair<int, int>> height;
+		priority_queue<pair<int, int>> height; //{height,pos}
 		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; ++j)
@@ -23,7 +23,7 @@ public:
 		vector<vector<int>> cache(M * N, vector<int>(M * N));
 		while (!height.empty())
 		{
-			int distance = minDistance(forest, cut, height.top().second, cache);
+			int distance = bfs(forest, cut, height.top().second, cache);
 			if (distance == -1)
 				return -1;
 			res += distance;
@@ -33,7 +33,7 @@ public:
 		return res;
 	}
 
-	int minDistance(vector<vector<int>> &forest, int from, int to, vector<vector<int>> &cache)
+	int bfs(vector<vector<int>> &forest, int from, int to, vector<vector<int>> &cache)
 	{
 		if (from == to)
 			return 0;
@@ -52,14 +52,15 @@ public:
 			{
 				int at = q.front();
 				q.pop();
-				int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+				//board dfs direction
+				int path[5] = {-1, 0, 1, 0, -1};
 				int x = at / N, y = at % N;
-				for (int k = 0; k < 4; k++)
+				for (int k = 0; k < 4; ++k)
 				{
-					int i = x + path[k][0], j = y + path[k][1];
-					if (i < 0 || i >= M || j < 0 || j >= N || forest[i][j] == 0)
+					int i = x + path[k], j = y + path[k + 1];
+					if (i < 0 || i >= M || j < 0 || j >= N)
 						continue;
-					if (seen[i * N + j] == 1)
+					if (forest[i][j] == 0 || seen[i * N + j] == 1)
 						continue;
 					seen[i * N + j] = 1;
 					cache[from][i * N + j] = cache[i * N + j][from] = dist;

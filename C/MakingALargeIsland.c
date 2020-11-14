@@ -40,7 +40,7 @@ int largestIsland(int **grid, int gridSize, int *gridColSize)
 			int colorset[4], n = 0, area = 0;
 			//board dfs direction
 			int path[5] = {-1, 0, 1, 0, -1};
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < 4; ++k)
 			{
 				int dx = i + path[k], dy = j + path[k + 1];
 				if (dx < 0 || dx >= gridSize || dy < 0 || dy >= *gridColSize || grid[dx][dy] <= 1)

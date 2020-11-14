@@ -8,10 +8,11 @@ int *findRedundantDirectedConnection(int **edges, int edgesSize, int *edgesColSi
 {
 	int graph[edgesSize + 1][2], graphColSize[edgesSize + 1];
 	int seen[edgesSize + 1];
-	int *res = (int *)malloc(sizeof(int) * 2);
+	*returnSize = 2;
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
 	memset(graphColSize, 0, sizeof(graphColSize));
 	memset(seen, 0, sizeof(seen));
-	int indegree2 = -1;
+	int twoParentsNode = -1;
 	for (int i = 0; i < edgesSize; ++i)
 	{
 		if (seen[edges[i][0]] == 1 && seen[edges[i][1]] == 1)
@@ -19,23 +20,22 @@ int *findRedundantDirectedConnection(int **edges, int edgesSize, int *edgesColSi
 		seen[edges[i][0]] = seen[edges[i][1]] = 1;
 		graph[edges[i][1]][graphColSize[edges[i][1]]++] = edges[i][0];
 		if (graphColSize[edges[i][1]] > 1)
-			indegree2 = edges[i][1];
+			twoParentsNode = edges[i][1];
 	}
-	if (indegree2 == -1)
+	if (twoParentsNode == -1)
 		return res;
-	int id = graph[indegree2][0];
-	while (graphColSize[id] != 0 && id != indegree2)
+	int id = graph[twoParentsNode][0];
+	while (graphColSize[id] != 0 && id != twoParentsNode)
 		id = graph[id][0];
-	if (id == indegree2)
+	if (id == twoParentsNode)
 	{
-		res[0] = graph[indegree2][0];
-		res[1] = indegree2;
+		res[0] = graph[twoParentsNode][0];
+		res[1] = twoParentsNode;
 	}
 	else
 	{
-		res[0] = graph[indegree2][1];
-		res[1] = indegree2;
+		res[0] = graph[twoParentsNode][1];
+		res[1] = twoParentsNode;
 	}
-	*returnSize = 2;
 	return res;
 }

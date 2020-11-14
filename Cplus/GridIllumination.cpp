@@ -27,7 +27,7 @@ public:
 				res[i] = 1;
 				for (int j = x - 1; j <= x + 1; ++j)
 				{
-					for (int k = y - 1; k <= y + 1; k++)
+					for (int k = y - 1; k <= y + 1; ++k)
 					{
 						if (s.find({j, k}) != s.end())
 						{

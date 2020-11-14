@@ -1,7 +1,6 @@
-#include <string>
-#include <climits>
-#include <vector>
 #include <algorithm>
+#include <string>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -11,23 +10,23 @@ public:
 	{
 		if (s.empty())
 			return 0;
-		int n = s.length();
-		vector<vector<int>> dp(n, vector<int>(n, -1));
-		return memdp(s, 0, n - 1, dp);
+		int N = s.length();
+		vector<vector<int>> dp(N, vector<int>(N, -1));
+		return memdp(s, 0, N - 1, dp);
 	}
 
-	int memdp(const string &s, int i, int j, vector<vector<int>> &dp)
+	int memdp(const string &s, int first, int last, vector<vector<int>> &dp)
 	{
-		if (i > j)
+		if (first > last)
 			return 0;
-		if (dp[i][j] != -1)
-			return dp[i][j];
-		int res = memdp(s, i + 1, j, dp) + 1;
-		for (int k = i + 1; k <= j; k++)
+		if (dp[first][last] != -1)
+			return dp[first][last];
+		int res = memdp(s, first + 1, last, dp) + 1;
+		for (int k = first + 1; k <= last; ++k)
 		{
-			if (s[k] == s[i])
-				res = min(res, memdp(s, i, k - 1, dp) + memdp(s, k + 1, j, dp));
+			if (s[k] == s[first])
+				res = min(res, memdp(s, first, k - 1, dp) + memdp(s, k + 1, last, dp));
 		}
-		return dp[i][j] = res;
+		return dp[first][last] = res;
 	}
 };

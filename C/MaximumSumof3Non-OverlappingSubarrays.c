@@ -19,9 +19,10 @@ int *maxSumOfThreeSubarrays(int *nums, int numsSize, int k, int *returnSize)
 		for (int j = k; j <= numsSize; ++j)
 			dp[j][i + 1] = max(dp[j - 1][i + 1], dp[j - k][i] + prefixsum[j] - prefixsum[j - k]);
 	}
+
 	*returnSize = 3;
 	int *res = (int *)malloc(sizeof(int) * (*returnSize));
-	for (int i = 3, j = numsSize; i >= 1; i--, j -= k)
+	for (int i = 3, j = numsSize; i >= 1; --i, j -= k)
 	{
 		while (dp[j][i] == dp[j - 1][i])
 			--j;
