@@ -1,6 +1,5 @@
-#include <cstdlib>
+#include <cmath> // for rand
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -9,32 +8,32 @@ class Solution
 public:
 	Solution(int N, vector<int> &blacklist)
 	{
-		unordered_set<int> tmp(blacklist.begin(), blacklist.end());
-		n = N - blacklist.size();
+		for (auto black : blacklist)
+			blackmap[black] = black;
+		size = N - blacklist.size();
 		--N;
-		for (int i = 0; i < (int)blacklist.size(); ++i)
+		for (auto black : blacklist)
 		{
-			if (blacklist[i] < n)
+			if (black < size)
 			{
-				while (tmp.find(N) != tmp.end())
+				while (blackmap.find(N) != blackmap.end())
 					--N;
-				black[blacklist[i]] = N;
-				--N;
+				blackmap[black] = N--;
 			}
 		}
 	}
 
 	int pick()
 	{
-		int res = rand() % n;
-		if (black.find(res) == black.end())
+		int res = rand() % size;
+		if (blackmap.find(res) == blackmap.end())
 			return res;
-		return black[res];
+		return blackmap[res];
 	}
 
 private:
-	unordered_map<int, int> black;
-	int n;
+	unordered_map<int, int> blackmap;
+	int size;
 };
 
 /**
