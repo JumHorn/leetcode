@@ -1,5 +1,4 @@
 #include <map>
-#include <set>
 #include <string>
 #include <vector>
 using namespace std;
@@ -9,58 +8,35 @@ class WordFilter
 public:
 	WordFilter(vector<string> &words)
 	{
-		int n = words.size();
-		for (int i = 0; i < n; ++i)
+		int N = words.size();
+		for (int i = 0; i < N; ++i)
 			m_prefix[words[i]] = i;
 	}
 
 	int f(string prefix, string suffix)
 	{
 		auto iter = m_prefix.lower_bound(prefix);
-		set<int> s;
-		while (iter != m_prefix.end())
+		int res = -1;
+		for (; iter != m_prefix.end(); ++iter)
 		{
 			if (!starts_with(iter->first, prefix))
 				break;
-			if (ends_with(iter->first, suffix))
-				s.insert(iter->second);
-			++iter;
+			if (iter->second > res && ends_with(iter->first, suffix))
+				res = iter->second;
 		}
-		if (s.empty())
-			return -1;
-		return *s.rbegin();
+		return res;
 	}
 
 	bool starts_with(const string &s, const string &prefix)
 	{
-		if (prefix.empty())
-			return true;
-		int n = s.length(), m = prefix.length();
-		int i = 0, j = 0;
-		while (i < n && j < m)
-		{
-			if (s[i] != prefix[j])
-				return false;
-			++i;
-			++j;
-		}
-		return j == m;
+		return s.compare(0, prefix.size(), prefix) == 0;
 	}
 
 	bool ends_with(const string &s, const string &suffix)
 	{
-		if (suffix.empty())
-			return true;
-		int n = s.length(), m = suffix.length();
-		int i = n - 1, j = m - 1;
-		while (i >= 0 && j >= 0)
-		{
-			if (s[i] != suffix[j])
-				return false;
-			--i;
-			--j;
-		}
-		return j == -1;
+		if (suffix.length() > s.length())
+			return false;
+		return s.compare(s.length() - suffix.length(), suffix.length(), suffix) == 0;
 	}
 
 private:

@@ -25,15 +25,15 @@ class Solution
 public:
 	int countPalindromicSubsequences(string S)
 	{
-		int len = S.length();
-		vector<vector<int>> dp(len, vector<int>(len));
+		int N = S.length();
+		vector<vector<int>> dp(N, vector<int>(N));
 		vector<int> left = leftNext(S);
 		vector<int> right = rightNext(S);
-		for (int i = 0; i < len; ++i)
+		for (int i = 0; i < N; ++i)
 			dp[i][i] = 1;
-		for (int n = 1; n < len; ++n)
+		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int i = 0, j = n; i < len - n; i++, j++)
+			for (int j = i + 1; j < N; ++j)
 			{
 				if (S[i] != S[j])
 					dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1];
@@ -47,14 +47,14 @@ public:
 				dp[i][j] = dp[i][j] < 0 ? dp[i][j] + MOD : dp[i][j] % MOD;
 			}
 		}
-		return dp[0][len - 1];
+		return dp[0][N - 1];
 	}
 
 	vector<int> leftNext(const string &s)
 	{
-		int n = s.length();
-		vector<int> v(26, n), res(n);
-		for (int i = n - 1; i >= 0; --i)
+		int N = s.length();
+		vector<int> v(26, N), res(N);
+		for (int i = N - 1; i >= 0; --i)
 		{
 			res[i] = v[s[i] - 'a'];
 			v[s[i] - 'a'] = i;

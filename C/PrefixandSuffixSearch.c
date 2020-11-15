@@ -17,28 +17,26 @@ Trie *createNode(int val)
 	return node;
 }
 
-void insert(Trie *root, char *word, int weight)
+void insert(Trie *root, char *word, int pos)
 {
 	while (*word)
 	{
-		int index = *word - 'a';
+		int index = *word++ - 'a';
 		if (root->node[index] == NULL)
 			root->node[index] = createNode(-1);
 		root = root->node[index];
-		++word;
 	}
-	root->val = weight;
+	root->val = pos;
 }
 
 Trie *search(Trie *root, char *prefix)
 {
 	while (*prefix)
 	{
-		int index = *prefix - 'a';
+		int index = *prefix++ - 'a';
 		if (root->node[index] == NULL)
 			return NULL;
 		root = root->node[index];
-		++prefix;
 	}
 	return root;
 }
@@ -52,18 +50,10 @@ typedef struct
 
 bool ends_with(char *s, char *suffix)
 {
-	int n = strlen(s), m = strlen(suffix);
-	if (m == 0)
-		return true;
-	int i = n - 1, j = m - 1;
-	while (i >= 0 && j >= 0)
-	{
-		if (s[i] != suffix[j])
-			return false;
-		--i;
-		--j;
-	}
-	return j == -1;
+	int N = strlen(s), M = strlen(suffix);
+	if (M > N)
+		return false;
+	return strncmp(s + N - M, suffix, M) == 0;
 }
 
 void dfs(Trie *root, char *suffix, char **words, int *res)

@@ -1,6 +1,6 @@
-#include <vector>
 #include <algorithm>
 #include <climits>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -26,8 +26,8 @@ public:
 		int res = grid[r1][c1];
 		if (r1 != r2)
 			res += grid[r2][c2];
-		res += max(max(memdp(grid, r1, c1 + 1, r2, dp), memdp(grid, r1, c1 + 1, r2 + 1, dp)),
-				   max(memdp(grid, r1 + 1, c1, r2, dp), memdp(grid, r1 + 1, c1, r2 + 1, dp)));
+		res += max({memdp(grid, r1, c1 + 1, r2, dp), memdp(grid, r1, c1 + 1, r2 + 1, dp),
+					memdp(grid, r1 + 1, c1, r2, dp), memdp(grid, r1 + 1, c1, r2 + 1, dp)});
 		return dp[r1][c1][r2] = res;
 	}
 };

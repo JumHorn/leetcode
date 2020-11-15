@@ -17,7 +17,7 @@ public:
 			for (int i = 0, j = 0; i < (int)nums.size(); ++i)
 			{
 				while (nums[i] - nums[j] > mi)
-					j++;
+					++j;
 				count += i - j;
 			}
 

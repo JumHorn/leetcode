@@ -11,121 +11,108 @@ public:
 		if (expression.empty())
 			return 0;
 		vector<unordered_map<string, int>> variables;
-		return evaluate(expression, 1, expression.length() - 1, variables);
+		return recursion(expression, variables);
 	}
 
-	int evaluate(const string &expression, int start, int end, vector<unordered_map<string, int>> &variables)
+	int recursion(const string expression, vector<unordered_map<string, int>> &variables)
 	{
-		int i = start, j = start, res = 0;
-		unordered_map<string, int> localvar;
-		variables.push_back(localvar);
-		while (i < end)
+		variables.emplace_back();
+		int res = 0, N = expression.length();
+		for (int i = 0, j = 0; i < N; i = j)
 		{
 			if (expression[i] == '(')
 			{
 				j = matchParethesis(expression, i);
-				res = evaluate(expression, i + 1, j, variables);
+				res = recursion(expression.substr(i + 1, j - i - 1), variables);
 				break;
 			}
-			while (j < end && expression[j] != ' ')
-				j++;
+			j = jumpToSpace(expression, j);
 			string exp = expression.substr(i, j - i);
+			i = j = skipSpace(expression, j + 1);
 			if (exp == "let")
 			{
-				i = ++j;
-				while (j < end)
+				while (j < N)
 				{
 					if (expression[i] == '(')
 					{
 						j = matchParethesis(expression, i);
-						res = evaluate(expression, i + 1, j, variables);
-						i = ++j;
+						res = recursion(expression.substr(i + 1, j - i - 1), variables);
+						i = j = skipSpace(expression, j + 1);
 					}
 					else
 					{
-						while (j < end && expression[j] != ' ')
-							j++;
+						j = jumpToSpace(expression, j);
 						string valname = expression.substr(i, j - i);
-						if (j >= end - 1)
+						if (j >= N - 1)
 						{
-							res = evaluate(valname, variables);
-							i = ++j;
+							res = getVariableValue(valname, variables);
+							i = j = skipSpace(expression, j + 1);
 							break;
 						}
-						i = ++j;
+						i = j = skipSpace(expression, j + 1);
 						if (expression[i] == '(')
 						{
 							j = matchParethesis(expression, i);
-							variables.back()[valname] = evaluate(expression, i, j, variables);
+							variables.back()[valname] = recursion(expression.substr(i + 1, j - i - 1), variables);
 						}
 						else
 						{
-							while (j < end && expression[j] != ' ')
-								j++;
-							variables.back()[valname] = evaluate(expression.substr(i, j - i), variables);
+							j = jumpToSpace(expression, j);
+							variables.back()[valname] = getVariableValue(expression.substr(i, j - i), variables);
 						}
-						while (++j < end && expression[j] == ' ')
-							;
-						i = j;
+						i = j = skipSpace(expression, j + 1);
 					}
 				}
 			}
 			else
 			{
-				i = ++j;
 				int lhs, rhs;
 				if (expression[i] == '(')
 				{
 					j = matchParethesis(expression, i);
-					lhs = evaluate(expression, i + 1, j, variables);
+					lhs = recursion(expression.substr(i + 1, j - i - 1), variables);
 				}
 				else
 				{
-					while (j < end && expression[j] != ' ')
-						j++;
-					lhs = evaluate(expression.substr(i, j - i), variables);
+					j = jumpToSpace(expression, j);
+					lhs = getVariableValue(expression.substr(i, j - i), variables);
 				}
 
-				j++;
-				while (j < end && expression[j] == ' ')
-					j++;
-				i = j;
-
+				i = j = skipSpace(expression, j + 1);
 				if (expression[i] == '(')
 				{
 					j = matchParethesis(expression, i);
-					rhs = evaluate(expression, i + 1, j, variables);
+					rhs = recursion(expression.substr(i + 1, j - i - 1), variables);
 				}
 				else
 				{
-					while (j < end && expression[j] != ' ')
-						j++;
-					rhs = evaluate(expression.substr(i, j - i), variables);
+					j = jumpToSpace(expression, j);
+					rhs = getVariableValue(expression.substr(i, j - i), variables);
 				}
 
 				if (exp == "add")
 					res = lhs + rhs;
 				else if (exp == "mult")
 					res = lhs * rhs;
-				i = ++j;
+				i = j = skipSpace(expression, j + 1);
 			}
 		}
 		variables.pop_back();
 		return res;
 	}
 
-	int evaluate(const string &expression, vector<unordered_map<string, int>> &variables)
+	int getVariableValue(const string &variable, vector<unordered_map<string, int>> &variables)
 	{
 		int res = 0;
-		if (isdigit(expression[0]) || expression[0] == '-')
-			res = stoi(expression);
+		if (isdigit(variable[0]) || variable[0] == '-')
+			res = stoi(variable);
 		else
 		{
 			for (int i = variables.size() - 1; i >= 0; --i)
 			{
-				if (variables[i].find(expression) != variables[i].end())
+				if (variables[i].find(variable) != variables[i].end())
 				{
-					res = variables[i][expression];
+					res = variables[i][variable];
 					break;
 				}
 			}
@@ -133,18 +120,28 @@ public:
 		return res;
 	}
 
-	int matchParethesis(const string &expression, int start)
+	int jumpToSpace(const string &str, int index)
+	{
+		index = str.find(' ', index);
+		return index == -1 ? str.length() : index;
+	}
+
+	int skipSpace(const string &str, int index)
+	{
+		index = str.find_first_not_of(' ', index); //skip space
+		return index == -1 ? str.length() : index;
+	}
+
+	int matchParethesis(const string &str, int index)
 	{
 		int parenthesis = 1;
-		while (++start)
+		for (++index; parenthesis != 0; ++index)
 		{
-			if (expression[start] == '(')
-				parenthesis++;
-			else if (expression[start] == ')')
-				parenthesis--;
-			if (parenthesis == 0)
-				break;
+			if (str[index] == '(')
+				++parenthesis;
+			else if (str[index] == ')')
+				--parenthesis;
 		}
-		return start;
+		return index - 1;
 	}
 };

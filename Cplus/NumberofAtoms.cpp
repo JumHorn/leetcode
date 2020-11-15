@@ -25,24 +25,21 @@ public:
 			if (formula[i] == '(')
 			{
 				//match parenthesis
-				j = i + 1;
 				int parenthesis = 1;
-				while (j < end)
+				for (j = i + 1; j < end; ++j)
 				{
 					if (formula[j] == '(')
-						parenthesis++;
+						++parenthesis;
 					else if (formula[j] == ')')
-						parenthesis--;
+						--parenthesis;
 					if (parenthesis == 0)
 						break;
-					j++;
 				}
 
 				map<string, int> subatoms = recursion(formula, i + 1, j);
-				j++;
-				i = j;
+				i = ++j;
 				while (j < end && isdigit(formula[j]))
-					j++;
+					++j;
 				if (j > i)
 				{
 					int subscript = stoi(formula.substr(i, j - i));
@@ -55,11 +52,11 @@ public:
 			{
 				j = i + 1;
 				while (j < end && islower(formula[j]))
-					j++;
+					++j;
 				string atomstr = formula.substr(i, j - i);
 				i = j;
 				while (j < end && isdigit(formula[j]))
-					j++;
+					++j;
 				int subscript = 1;
 				if (j > i)
 				{

@@ -21,14 +21,14 @@ all elements in [i1+1, j1-1] will be duplicated, because:
 int countPalindromicSubsequences(char *S)
 {
 	static const int MOD = 1e9 + 7;
-	int len = strlen(S);
-	int dp[len][len];
+	int N = strlen(S);
+	int dp[N][N];
 	memset(dp, 0, sizeof(dp));
-	for (int i = 0; i < len; ++i)
+	for (int i = 0; i < N; ++i)
 		dp[i][i] = 1;
-	for (int n = 1; n < len; ++n)
+	for (int i = N - 1; i >= 0; --i)
 	{
-		for (int i = 0, j = n; i < len - n; i++, j++)
+		for (int j = i + 1; j < N; ++j)
 		{
 			if (S[i] != S[j])
 				dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1];
@@ -45,5 +45,5 @@ int countPalindromicSubsequences(char *S)
 			dp[i][j] = dp[i][j] < 0 ? dp[i][j] + MOD : dp[i][j] % MOD;
 		}
 	}
-	return dp[0][len - 1];
+	return dp[0][N - 1];
 }
