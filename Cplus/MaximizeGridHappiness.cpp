@@ -7,7 +7,6 @@ class Solution
 public:
 	int getMaxGridHappiness(int m, int n, int introvertsCount, int extrovertsCount)
 	{
-		// row mask for every 2 bits as a group 00 for no people 01 for introverts 10 for extroverts
 		// int dp[3^n][m + 1][introvertsCount][extrovertsCount];
 		int dp[243][6][7][7];
 		preCalcu(n, cache);
