@@ -31,18 +31,18 @@ public:
 	{
 		int N = grid.size();
 		//board dfs direction
-		int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+		int path[5] = {-1, 0, 1, 0, -1};
 		for (int i = 0; i < 4; ++i)
 		{
-			int x = row + path[i][0], y = column + path[i][1];
+			int x = row + path[i], y = column + path[i + 1];
 			if (x < 0 || x >= N || y < 0 || y >= N || grid[x][y] == -1)
 				continue;
-			int tmp = grid[x][y];
+			int height = grid[x][y];
 			grid[x][y] = -1;
-			if (elevation >= tmp)
+			if (elevation >= height)
 				dfs(grid, x, y, elevation, q);
 			else
-				q.push({-tmp, x * N + y});
+				q.push({-height, x * N + y});
 		}
 	}
 };

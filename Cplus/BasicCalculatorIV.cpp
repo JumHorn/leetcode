@@ -50,12 +50,12 @@ public:
 		{
 			map<string, int, comp> val;
 			while (i < end && expression[i] == ' ')
-				i++;
+				++i;
 			if (isdigit(expression[i]))
 			{
 				j = i + 1;
 				while (j < end && isdigit(expression[j]))
-					j++;
+					++j;
 				val[""] = stoi(expression.substr(i, j - i));
 				calcuMap(current, pre, val, symbol);
 				i = j + 1;
@@ -68,15 +68,12 @@ public:
 				i = j + 1;
 			}
 			else if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*')
-			{
-				symbol = expression[i];
-				i++;
-			}
+				symbol = expression[i++];
 			else
 			{
 				j = i + 1;
 				while (j < end && isalpha(expression[j]))
-					j++;
+					++j;
 				string tmp = expression.substr(i, j - i);
 				if (evalmap.find(tmp) == evalmap.end())
 					val[tmp] = 1;
@@ -121,20 +118,17 @@ public:
 		}
 	}
 
-	int matchParenthesis(const string &expression, int i)
+	int matchParenthesis(const string &str, int index)
 	{
-		int tmp = 0;
-		while (i < (int)expression.length())
+		int parenthesis = 1;
+		for (++index; parenthesis != 0; ++index)
 		{
-			if (expression[i] == '(')
-				tmp++;
-			else if (expression[i] == ')')
-				tmp--;
-			if (tmp == 0)
-				break;
-			i++;
+			if (str[index] == '(')
+				++parenthesis;
+			else if (str[index] == ')')
+				--parenthesis;
 		}
-		return i;
+		return index - 1;
 	}
 
 	void addMap(map<string, int, comp> &lhs, map<string, int, comp> &rhs)
@@ -186,8 +180,8 @@ public:
 		{
 			j = i + 1;
 			while (j < (int)s1.length() && s1[j] != '*')
-				j++;
-			valmap[s1.substr(i, j - i)]++;
+				++j;
+			++valmap[s1.substr(i, j - i)];
 			i = j + 1;
 		}
 		i = 0;
@@ -195,8 +189,8 @@ public:
 		{
 			j = i + 1;
 			while (j < (int)s2.length() && s2[j] != '*')
-				j++;
-			valmap[s2.substr(i, j - i)]++;
+				++j;
+			++valmap[s2.substr(i, j - i)];
 			i = j + 1;
 		}
 		string res;

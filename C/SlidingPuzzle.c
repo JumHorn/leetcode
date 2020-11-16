@@ -58,22 +58,22 @@ int slidingPuzzle(int **board, int boardSize, int *boardColSize)
 	if (state == finalstate)
 		return res;
 	queue[rear] = state;
-	rear = (rear - 1 + size) % size;
+	rear = (rear - 1 + size) % size; //push back
 	while (front != rear)
 	{
 		++res;
-		int s = (front - rear + size) % size;
+		int s = (front - rear + size) % size; //qsize
 		while (--s >= 0)
 		{
 			state = queue[front];
-			front = (front - 1 + size) % size;
+			front = (front - 1 + size) % size; //pop front
 			decompress(board, M, N, state);
 			pair zero = findZero(board, M, N);
 			//board dfs direction
-			int path[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+			int path[5] = {-1, 0, 1, 0, -1};
 			for (int k = 0; k < 4; ++k)
 			{
-				int x = zero.first + path[k][0], y = zero.second + path[k][1];
+				int x = zero.first + path[k], y = zero.second + path[k + 1];
 				if (x < 0 || x >= M || y < 0 || y >= N)
 					continue;
 				swap(board[zero.first][zero.second], board[x][y]);
@@ -84,7 +84,7 @@ int slidingPuzzle(int **board, int boardSize, int *boardColSize)
 						return res;
 					seen[state] = 1;
 					queue[rear] = state;
-					rear = (rear - 1 + size) % size;
+					rear = (rear - 1 + size) % size; //push back
 				}
 				swap(board[zero.first][zero.second], board[x][y]);
 			}

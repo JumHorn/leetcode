@@ -6,20 +6,22 @@
 int *kthSmallestPrimeFraction(int *A, int ASize, int K, int *returnSize)
 {
 	double lo = 0, hi = 1;
-	int p = 0, q = 1;
-	for (int n = ASize, count = 0;; count = 0, p = 0)
+	int p = 0, q = 1, N = ASize;
+	while (lo <= hi)
 	{
 		double mi = (hi - lo) / 2 + lo;
-		for (int i = 0, j = n - 1; i < n; ++i)
+		int count = 0;
+		p = 0;
+		for (int i = 0, j = N - 1; i < N; ++i)
 		{
-			while (j >= 0 && A[i] > mi * A[n - 1 - j])
-				j--;
-			count += (j + 1);
+			while (j >= 0 && A[i] > mi * A[N - 1 - j])
+				--j;
+			count += j + 1;
 
-			if (j >= 0 && p * A[n - 1 - j] < q * A[i])
+			if (j >= 0 && p * A[N - 1 - j] < q * A[i])
 			{
 				p = A[i];
-				q = A[n - 1 - j];
+				q = A[N - 1 - j];
 			}
 		}
 

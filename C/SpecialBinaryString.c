@@ -28,12 +28,12 @@ char *makeLargestSpecial(char *S)
 			strcpy(&strs[size][1], makeLargestSpecial(dup));
 			strs[size][j - i] = '0';
 			strs[size][j - i + 1] = '\0';
-
 			++size;
+
 			i = j + 1;
 		}
 	}
-	qsort(strs, size, sizeof(strs[0]), cmp);
+	qsort(strs, size, sizeof(strs[0]), cmp); //desc
 	static char res[51];
 	res[0] = '\0'; //如果没有初始化且下面的for循环没有进入,很可能在下次strcpy时overflow
 	for (int i = 0, j = 0; i < size; ++i)

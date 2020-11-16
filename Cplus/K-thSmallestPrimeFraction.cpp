@@ -14,7 +14,6 @@ public:
 		priority_queue<int *, vector<int *>, decltype(f)> q(f);
 		for (int i = 0; i < N - 1; ++i)
 			q.push(new int[2]{i, N - 1});
-		int x, y;
 		while (--K > 0)
 		{
 			int *top = q.top();

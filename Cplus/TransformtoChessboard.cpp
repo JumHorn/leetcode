@@ -7,11 +7,11 @@ class Solution
 public:
 	int movesToChessboard(vector<vector<int>> &board)
 	{
-		int m = board.size(), n = board[0].size();
-		vector<int> v(m);
-		for (int i = 0; i < m; ++i)
+		int M = board.size(), N = board[0].size();
+		vector<int> v(M);
+		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < n; ++j)
+			for (int j = 0; j < N; ++j)
 				v[i] |= board[i][j] << j;
 		}
 		vector<int> board0 = v, board1 = v;
@@ -50,21 +50,23 @@ public:
 
 	vector<int> transpose(vector<int> &v)
 	{
-		int n = v.size();
-		vector<int> res(n);
-		for (int i = 0; i < n; ++i)
-			for (int j = 0; j < n; ++j)
+		int N = v.size();
+		vector<int> res(N);
+		for (int i = 0; i < N; ++i)
+		{
+			for (int j = 0; j < N; ++j)
 				res[i] |= ((v[j] >> i) & 1) << j;
+		}
 		return res;
 	}
 
 	//swap with flag equals to zero or one
 	int transfer(vector<int> &board, int flag)
 	{
-		int m = board.size();
+		int M = board.size();
 		stack<int> s;
 		int res = 0;
-		for (int i = 0; i < m; ++i)
+		for (int i = 0; i < M; ++i)
 		{
 			int tmp = (board[i] & 1);
 			if (tmp != flag)
@@ -73,8 +75,8 @@ public:
 					s.push(i);
 				else
 				{
+					++res;
 					swap(board[s.top()], board[i]);
-					res++;
 					s.pop();
 				}
 			}
@@ -88,9 +90,9 @@ public:
 	bool checkValid(vector<int> &board)
 	{
 		int mask = (1 << board.size()) - 1;
-		for (auto n : board)
+		for (auto N : board)
 		{
-			if ((n & 0x55555555 & mask) != n && (n & 0xAAAAAAAA & mask) != n)
+			if ((N & 0x55555555 & mask) != N && (N & 0xAAAAAAAA & mask) != N)
 				return false;
 		}
 		return true;
