@@ -59,10 +59,10 @@ public:
 			return 0;
 		int res = 1;
 		grid[row][col] = color;
-		res += colorNode(grid, row - 1, col, color);
-		res += colorNode(grid, row + 1, col, color);
-		res += colorNode(grid, row, col - 1, color);
-		res += colorNode(grid, row, col + 1, color);
+		//board dfs direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		for (int i = 0; i < 4; ++i)
+			res += colorNode(grid, row + path[i], col + path[i + 1], color);
 		return res;
 	}
 };

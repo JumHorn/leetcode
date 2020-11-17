@@ -15,8 +15,8 @@ public:
 		int N = routes.size();
 		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j < (int)routes[i].size(); ++j)
-				station[routes[i][j]].push_back(i);
+			for (auto busstop : routes[i])
+				station[busstop].push_back(i);
 		}
 		queue<int> q;
 		unordered_set<int> seen;

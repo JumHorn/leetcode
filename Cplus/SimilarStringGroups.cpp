@@ -44,10 +44,11 @@ class Solution
 public:
 	int numSimilarGroups(vector<string> &A)
 	{
-		DSU dsu(A.size());
-		for (int i = 0; i < (int)A.size(); ++i)
+		int N = A.size();
+		DSU dsu(N);
+		for (int i = 0; i < N; ++i)
 		{
-			for (int j = i + 1; j < (int)A.size(); ++j)
+			for (int j = i + 1; j < N; ++j)
 			{
 				if (strDiff(A[i], A[j]))
 					dsu.Union(i, j);
@@ -62,7 +63,7 @@ public:
 		for (int i = 0; i < (int)lhs.length(); ++i)
 		{
 			if (lhs[i] != rhs[i])
-				res++;
+				++res;
 		}
 		return res == 2 || res == 0;
 	}

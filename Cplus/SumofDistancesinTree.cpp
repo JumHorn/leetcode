@@ -1,4 +1,3 @@
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -7,37 +6,42 @@ class Solution
 public:
 	vector<int> sumOfDistancesInTree(int N, vector<vector<int>> &edges)
 	{
-		vector<unordered_set<int>> graph(N);
+		vector<vector<int>> graph(N);
 		for (auto &edge : edges)
 		{
-			graph[edge[0]].insert(edge[1]);
-			graph[edge[1]].insert(edge[0]);
+			graph[edge[0]].push_back(edge[1]);
+			graph[edge[1]].push_back(edge[0]);
 		}
-		vector<int> res(N), nodecount(N, 1);
-		res[0] = postorder(graph, nodecount, 0);
-		preorder(graph, nodecount, res, 0);
+		vector<int> res(N), nodecount(N, 1), seen(N);
+		res[0] = postorder(graph, -1, 0, nodecount);
+		preorder(graph, nodecount, -1, 0, res);
 		return res;
 	}
 
-	void preorder(vector<unordered_set<int>> &graph, vector<int> &nodecount, vector<int> &dis, int node)
+	void preorder(vector<vector<int>> &graph, vector<int> &nodecount, int from, int at, vector<int> &dis)
 	{
 		int N = graph.size();
-		for (auto n : graph[node])
+		for (auto to : graph[at])
 		{
-			dis[n] = dis[node] + N - 2 * nodecount[n];
-			preorder(graph, nodecount, dis, n);
+			if (from != to) //don't go back to parent
+			{
+				dis[to] = dis[at] + N - 2 * nodecount[to];
+				preorder(graph, nodecount, at, to, dis);
+			}
 		}
 	}
 
-	int postorder(vector<unordered_set<int>> &graph, vector<int> &nodecount, int node)
+	int postorder(vector<vector<int>> &graph, int from, int at, vector<int> &nodecount)
 	{
 		int res = 0;
-		for (auto n : graph[node])
+		for (auto to : graph[at])
 		{
-			graph[n].erase(node);
-			res += postorder(graph, nodecount, n);
-			nodecount[node] += nodecount[n];
-			res += nodecount[n];
+			if (from != to) //don't go back to parent
+			{
+				res += postorder(graph, at, to, nodecount);
+				nodecount[at] += nodecount[to];
+				res += nodecount[to];
+			}
 		}
 		return res;
 	}

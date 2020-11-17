@@ -47,12 +47,10 @@ bool dsu_union(DSU *dsu, int x, int y)
 bool strDiff(char *lhs, char *rhs)
 {
 	int res = 0;
-	while (*lhs)
+	for (; *lhs; ++lhs, ++rhs)
 	{
 		if (*lhs != *rhs)
 			++res;
-		++lhs;
-		++rhs;
 	}
 	return res == 0 || res == 2;
 }

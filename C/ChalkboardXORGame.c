@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include <stdlib.h>
 
 bool xorGame(int *nums, int numsSize)
 {
