@@ -47,7 +47,7 @@ public:
 		for (int i = 0; i < (int)lhs.length(); ++i)
 		{
 			if (lhs[i] == rhs[i])
-				res++;
+				++res;
 		}
 		return res;
 	}

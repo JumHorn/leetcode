@@ -13,7 +13,7 @@ public:
 		int res = -1, M = grid.size(), N = grid[0].length();
 		vector<unordered_set<string>> seen(M * N);
 		string target = "......";
-		auto start = findStart(grid, target);
+		auto start = findStartAndTarget(grid, target);
 		q.push({"......", start.first * N + start.second});
 		seen[start.first * N + start.second].insert("......");
 		while (!q.empty())
@@ -49,7 +49,7 @@ public:
 		return -1;
 	}
 
-	pair<int, int> findStart(vector<string> &grid, string &target)
+	pair<int, int> findStartAndTarget(vector<string> &grid, string &target)
 	{
 		pair<int, int> res = {0, 0};
 		for (int i = 0; i < (int)grid.size(); ++i)

@@ -12,7 +12,7 @@ public:
 		dp[0][0] = 1;
 		for (int i = 0; i < N; ++i)
 		{
-			for (int k = G - group[i]; k >= 0; k--)
+			for (int k = G - group[i]; k >= 0; --k)
 			{
 				for (int j = 0; j <= P; ++j)
 					dp[k + group[i]][min(j + profit[i], P)] = (dp[k + group[i]][min(j + profit[i], P)] + dp[k][j]) % MOD;

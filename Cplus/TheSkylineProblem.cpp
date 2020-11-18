@@ -11,9 +11,9 @@ class Solution
 public:
 	vector<vector<int>> getSkyline(vector<vector<int>> &buildings)
 	{
-		vector<vector<int>> result;
+		vector<vector<int>> res;
 		int maxheight = 0;
-		multiset<pair<int, int>> criticalpoint;
+		multiset<pair<int, int>> criticalpoint; //{range bounder,height}
 		for (auto &b : buildings)
 		{
 			criticalpoint.insert({b[0], -b[2]});
@@ -30,9 +30,9 @@ public:
 			if (*height.rbegin() != maxheight)
 			{
 				maxheight = *height.rbegin();
-				result.push_back({p.first, maxheight});
+				res.push_back({p.first, maxheight});
 			}
 		}
-		return result;
+		return res;
 	}
 };
