@@ -72,7 +72,7 @@ front = (front + 1) % size;			 //push front
 front = (front - 1 + size) % size;   //pop front
 rear = (rear - 1 + size) % size;	 //push back
 rear = (rear + 1) % size;			 //pop back
-size = (front - rear + size) % size; //size
+qsize = (front - rear + size) % size; //size
 (front + 1) % size == rear;			 //is full
 front == rear;						 //is empty
 */
