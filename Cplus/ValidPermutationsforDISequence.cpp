@@ -7,10 +7,10 @@ class Solution
 public:
 	int numPermsDISequence(string S)
 	{
-		int n = S.length();
-		vector<vector<int>> dp(n + 1, vector<int>(n + 1));
+		int N = S.length();
+		vector<vector<int>> dp(N + 1, vector<int>(N + 1));
 		dp[0][0] = 1;
-		for (int i = 1; i <= n; ++i)
+		for (int i = 1; i <= N; ++i)
 		{
 			for (int j = 0; j <= i; ++j)
 			{
@@ -27,8 +27,8 @@ public:
 			}
 		}
 		int res = 0;
-		for (int i = 0; i <= n; ++i)
-			res = (res + dp[n][i]) % MOD;
+		for (int i = 0; i <= N; ++i)
+			res = (res + dp[N][i]) % MOD;
 		return res;
 	}
 

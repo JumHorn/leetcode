@@ -1,6 +1,6 @@
 #include <string.h>
 
-int numPermsDISequence(char* S)
+int numPermsDISequence(char *S)
 {
 	static const int MOD = 1e9 + 7;
 	int N = strlen(S);
