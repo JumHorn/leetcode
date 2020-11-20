@@ -20,7 +20,7 @@ public:
 				dp[i + 1] = (MOD + dp[i + 1] - dp[last[index]]) % MOD;
 			last[index] = i;
 		}
-		return dp.back() - 1;
+		return (dp[N] - 1 + MOD) % MOD;
 	}
 
 private:

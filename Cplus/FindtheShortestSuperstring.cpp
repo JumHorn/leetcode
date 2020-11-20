@@ -81,10 +81,10 @@ public:
 		int k = 0, N = a.length();
 		for (k = 1; k < N; ++k)
 		{
-			int n = k, m = 0;
-			while (n < N && a[n] == b[m++])
-				++n;
-			if (n == N)
+			int i = k, j = 0;
+			while (i < N && a[i] == b[j])
+				++i, ++j;
+			if (i == N)
 				break;
 		}
 		return b.length() - a.length() + k;

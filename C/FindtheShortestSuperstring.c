@@ -1,24 +1,24 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int overlap(char* a, char* b)
+int overlap(char *a, char *b)
 {
 	int k = 0, len_a = strlen(a), len_b = strlen(b);
-	int m = min(len_a, len_b);
-	for (k = m; k > 0; --k)
+	for (k = min(len_a, len_b); k > 0; --k)
 	{
 		int i = len_a - k, j = 0;
-		while (j < k && a[i++] == b[j])
-			++j;
+		while (j < k && a[i] == b[j])
+			++i, ++j;
 		if (j == k)
 			break;
 	}
 	return k;
 }
 
-char* shortestSuperstring(char** A, int ASize)
+char *shortestSuperstring(char **A, int ASize)
 {
 	int graph[ASize][ASize];
 	memset(graph, 0, sizeof(graph));
@@ -67,7 +67,7 @@ char* shortestSuperstring(char** A, int ASize)
 		if (dp[mask][i] > dp[mask][max])
 			max = i;
 	}
-	int stack[ASize], index = ASize, seen[ASize];  //store result order
+	int stack[ASize], index = ASize, seen[ASize]; //store result order
 	memset(seen, 0, sizeof(seen));
 	while (max != -1)
 	{
@@ -82,10 +82,11 @@ char* shortestSuperstring(char** A, int ASize)
 		if (seen[i] == 0)
 			stack[--index] = i;
 	}
-	char* res = (char*)malloc(sizeof(char) * 300);
+	char *res = (char *)malloc(sizeof(char) * 300);
 	memset(res, 0, sizeof(char) * 300);
-	strcat(res, A[stack[0]]);
+	int resSize = 0;
+	resSize += sprintf(&res[resSize], "%s", A[stack[0]]);
 	for (int i = 1; i < ASize; ++i)
-		strcat(res, A[stack[i]] + graph[stack[i - 1]][stack[i]]);
+		resSize += sprintf(&res[resSize], "%s", A[stack[i]] + graph[stack[i - 1]][stack[i]]);
 	return res;
 }

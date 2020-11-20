@@ -49,9 +49,10 @@ class Solution
 public:
 	int largestComponentSize(vector<int> &A)
 	{
-		DSU dsu(A.size());
+		int N = A.size();
+		DSU dsu(N);
 		unordered_map<int, int> factor;
-		for (int i = 0; i < (int)A.size(); ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			for (int j = 2; j * j <= A[i]; ++j)
 			{

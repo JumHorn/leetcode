@@ -4,20 +4,15 @@
 
 int leastOpsExpressTarget(int x, int target)
 {
-	if (target == 0)
-		return 0;
-	if (target == 1)
-		return 1;
+	if (target < 2)
+		return target;
 	if (x == target)
 		return 0;
 	if (x > target)
 		return min(target * 2 - 1, (x - target) * 2);
 	long val = 1, count = 0;
-	while (val < target)
-	{
-		val *= x;
+	for (; val < target; val *= x)
 		++count;
-	}
 	if (val == target)
 		return count - 1;
 	int res1 = INT_MAX, res2 = INT_MAX;
