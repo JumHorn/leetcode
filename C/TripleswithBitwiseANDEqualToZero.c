@@ -1,6 +1,5 @@
 
-
-int countTriplets(int* A, int ASize)
+int countTriplets(int *A, int ASize)
 {
 	int count[1 << 16] = {0};
 	for (int i = 0; i < ASize; ++i)

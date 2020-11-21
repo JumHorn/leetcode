@@ -9,10 +9,10 @@ int dfs(int **grid, int gridSize, int *gridColSize, int allzero, int row, int co
 		return allzero == 0 ? 1 : 0;
 	int res = 0;
 	grid[row][col] = -1;
-	res += dfs(grid, gridSize, gridColSize, allzero - 1, row + 1, col);
-	res += dfs(grid, gridSize, gridColSize, allzero - 1, row - 1, col);
-	res += dfs(grid, gridSize, gridColSize, allzero - 1, row, col + 1);
-	res += dfs(grid, gridSize, gridColSize, allzero - 1, row, col - 1);
+	//board dfs direction
+	int path[5] = {-1, 0, 1, 0, -1};
+	for (int i = 0; i < 4; ++i)
+		res += dfs(grid, gridSize, gridColSize, allzero - 1, row + path[i], col + path[i + 1]);
 	grid[row][col] = 0;
 	return res;
 }
