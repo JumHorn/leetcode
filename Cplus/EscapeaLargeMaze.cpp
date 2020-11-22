@@ -9,8 +9,8 @@ public:
 	bool isEscapePossible(vector<vector<int>> &blocked, vector<int> &source, vector<int> &target)
 	{
 		set<pair<int, int>> block;
-		for (int i = 0; i < (int)blocked.size(); ++i)
-			block.insert({blocked[i][0], blocked[i][1]});
+		for (auto &b : blocked)
+			block.insert({b[0], b[1]});
 		return bfs(block, source, target) && bfs(block, target, source);
 	}
 
@@ -20,8 +20,8 @@ public:
 		set<pair<int, int>> seen;
 		q.push({source[0], source[1]});
 		seen.insert({source[0], source[1]});
-		int path[5] = {-1, 0, 1, 0, -1}, count = 1;
-		while (count < (int)block.size() && !q.empty())
+		int path[5] = {-1, 0, 1, 0, -1};
+		while (q.size() < block.size() && !q.empty())
 		{
 			int size = q.size();
 			while (--size >= 0)
@@ -42,7 +42,6 @@ public:
 					}
 				}
 			}
-			++count;
 		}
 		return !q.empty();
 	}
