@@ -9,8 +9,8 @@ class Solution
 public:
 	vector<string> braceExpansionII(string expression)
 	{
-		auto tmp = recursive(expression, 0, expression.length());
-		vector<string> res(tmp.begin(), tmp.end());
+		auto strset = recursive(expression, 0, expression.length());
+		vector<string> res(strset.begin(), strset.end());
 		sort(res.begin(), res.end());
 		return res;
 	}
@@ -24,33 +24,31 @@ public:
 		{
 			if (expr[start] == ',')
 			{
-				auto tmp = recursive(expr, start + 1, end);
-				res = add(res, tmp);
+				res = add(res, recursive(expr, start + 1, end));
 				break;
 			}
-			else if (expr[start] == '{')
+
+			if (expr[start] == '{')
 			{
 				while (start < end && expr[start] == '{')
 				{
-					int count = 1, i = start;
-					while (count != 0)
+					int i = start + 1;
+					for (int count = 1; count != 0; ++i)
 					{
-						i++;
 						if (expr[i] == '{')
-							count++;
+							++count;
 						else if (expr[i] == '}')
-							count--;
+							--count;
 					}
-					auto tmp = recursive(expr, start + 1, i);
-					res = product(res, tmp);
-					start = i + 1;
+					res = product(res, recursive(expr, start + 1, i - 1));
+					start = i;
 				}
 			}
 			else
 			{
 				int i = start;
 				while (i < end && expr[i] != '{' && expr[i] != ',')
-					i++;
+					++i;
 				unordered_set<string> s;
 				string val = expr.substr(start, i - start);
 				s.insert(val);
@@ -61,26 +59,25 @@ public:
 				}
 				else if (expr[i] == '{')
 				{
-					int j = i, count = 1;
-					while (count != 0)
+					int j = i + 1;
+					for (int count = 1; count != 0; ++j)
 					{
-						j++;
 						if (expr[j] == '{')
-							count++;
+							++count;
 						else if (expr[j] == '}')
-							count--;
+							--count;
 					}
-					auto tmp = recursive(expr, i + 1, j);
+					auto tmp = recursive(expr, i + 1, j - 1);
 					res = product(res, s);
 					res = product(res, tmp);
-					start = j + 1;
+					start = j;
 				}
 			}
 		}
 		return res;
 	}
 
-	unordered_set<string> add(unordered_set<string> &lhs, unordered_set<string> &rhs)
+	unordered_set<string> add(const unordered_set<string> &lhs, const unordered_set<string> &rhs)
 	{
 		unordered_set<string> res;
 		for (auto &n : lhs)
@@ -90,7 +87,7 @@ public:
 		return res;
 	}
 
-	unordered_set<string> product(unordered_set<string> &lhs, unordered_set<string> &rhs)
+	unordered_set<string> product(const unordered_set<string> &lhs, const unordered_set<string> &rhs)
 	{
 		if (lhs.empty())
 			return rhs;
@@ -98,8 +95,10 @@ public:
 			return lhs;
 		unordered_set<string> res;
 		for (auto &n : lhs)
+		{
 			for (auto &m : rhs)
 				res.insert(n + m);
+		}
 		return res;
 	}
 };

@@ -45,7 +45,7 @@ public:
 			{
 				for (auto index : m[hash])
 				{
-					if (S.substr(index, len) == S.substr(i - len + 1, len))
+					if (S.compare(index, len, S, i - len + 1, len) == 0)
 						return index;
 				}
 			}

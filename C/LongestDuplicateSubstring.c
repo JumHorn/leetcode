@@ -77,16 +77,16 @@ char *longestDupSubstring(char *S)
 	for (int i = 0, k = 0; i < N; ++i)
 	{
 		if (rank[i] == N - 1)
-		{
 			lcp[rank[i]] = k = 0;
-			continue;
+		else
+		{
+			int j = sa[rank[i] + 1].index;
+			while (i + k < N && j + k < N && S[i + k] == S[j + k])
+				++k;
+			lcp[rank[i]] = k;
+			if (k > 0)
+				--k;
 		}
-		int j = sa[rank[i] + 1].index;
-		while (i + k < N && j + k < N && S[i + k] == S[j + k])
-			++k;
-		lcp[rank[i]] = k;
-		if (k > 0)
-			--k;
 	}
 	//calc result
 	int len = lcp[0], index = 0;

@@ -24,11 +24,8 @@ public:
 	int strToInt(string &S, int &index)
 	{
 		int res = 0;
-		while (index < (int)S.length() && S[index] != '-')
-		{
+		for (; index < (int)S.length() && S[index] != '-'; ++index)
 			res = res * 10 + S[index] - '0';
-			++index;
-		}
 		return res;
 	}
 
@@ -39,7 +36,7 @@ public:
 			++depth;
 		depth -= index;
 		if (depth != layer)
-			return NULL;
+			return nullptr;
 		index += depth;
 		TreeNode *node = new TreeNode(strToInt(S, index));
 		node->left = preorder(S, index, layer + 1);

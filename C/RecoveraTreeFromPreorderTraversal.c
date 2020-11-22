@@ -20,11 +20,8 @@ struct TreeNode *createNode(int val)
 int strToInt(char *S, int *index)
 {
 	int res = 0;
-	while (S[*index] && S[*index] != '-')
-	{
+	for (; S[*index] && S[*index] != '-'; ++*index)
 		res = res * 10 + S[*index] - '0';
-		++*index;
-	}
 	return res;
 }
 

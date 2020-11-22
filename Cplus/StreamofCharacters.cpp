@@ -2,62 +2,76 @@
 #include <vector>
 using namespace std;
 
-class StreamChecker
+//Trie
+class Trie
 {
-private:
 	struct TreeNode
 	{
-		int count;
-		TreeNode *node[26];
-		TreeNode() : count(0)
-		{
-			for (int i = 0; i < 26; ++i)
-				node[i] = NULL;
-		}
+		int count; //number of words ends with this node
+		vector<TreeNode *> nodes;
+
+		TreeNode() : count(0), nodes(26, nullptr) {}
 	};
 
-	TreeNode *root;
-	vector<char> letters;
-
-	void insert(const string &str)
+public:
+	Trie()
 	{
-		TreeNode *tmp = root;
-		for (int i = str.length() - 1; i >= 0; --i)
-		{
-			if (tmp->node[str[i] - 'a'] == NULL)
-				tmp->node[str[i] - 'a'] = new TreeNode();
-			tmp = tmp->node[str[i] - 'a'];
-		}
-		++tmp->count;
+		root = new TreeNode();
 	}
 
-	bool search()
+	/** Inserts a word into the trie. */
+	void insert(const string &word)
 	{
-		TreeNode *tmp = root;
-		for (int i = letters.size() - 1; i >= 0; --i)
+		TreeNode *node = root;
+		for (int i = (int)word.length() - 1; i >= 0; --i)
 		{
-			tmp = tmp->node[letters[i] - 'a'];
-			if (tmp == NULL)
+			int index = word[i] - 'a';
+			if (node->nodes[index] == nullptr)
+				node->nodes[index] = new TreeNode();
+			node = node->nodes[index];
+		}
+		++node->count;
+	}
+
+	/** Returns if the word is in the trie. */
+	bool search(const string &word) const
+	{
+		TreeNode *node = root;
+		for (int i = (int)word.length() - 1; i >= 0; --i)
+		{
+			node = node->nodes[word[i] - 'a'];
+			if (node == nullptr)
 				return false;
-			if (tmp->count > 0)
+			if (node->count > 0)
 				return true;
 		}
 		return false;
 	}
 
+private:
+	TreeNode *root;
+};
+/********end of Trie********/
+
+class StreamChecker
+{
 public:
 	StreamChecker(vector<string> &words)
 	{
-		root = new TreeNode();
-		for (int i = 0; i < (int)words.size(); ++i)
-			insert(words[i]);
+		trie = new Trie();
+		for (auto &word : words)
+			trie->insert(word);
 	}
 
 	bool query(char letter)
 	{
 		letters.push_back(letter);
-		return search();
+		return trie->search(letters);
 	}
+
+private:
+	Trie *trie;
+	string letters;
 };
 
 /**
