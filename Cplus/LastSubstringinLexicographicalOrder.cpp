@@ -7,27 +7,22 @@ class Solution
 public:
 	string lastSubstring(string s)
 	{
-		int N = s.length();
-		auto iter = max_element(s.begin(), s.end());
-		int res = distance(s.begin(), iter);
-		for (int i = res + 1; i < N; ++i)
+		int N = s.length(), i = 0;
+		for (int j = 1, k = 0; j + k < N;)
 		{
-			if (s[i] == *iter)
+			if (s[i + k] == s[j + k])
+				++k;
+			else if (s[i + k] < s[j + k])
 			{
-				int j = res, k = i;
-				while (i < N && s[++i] == s[++j])
-					;
-				if (i == N)
-					break;
-				if (s[i] > s[j])
-				{
-					res = k;
-					i = k;
-				}
-				else
-					--i;
+				i = j++;
+				k = 0;
+			}
+			else
+			{
+				j += k + 1;
+				k = 0;
 			}
 		}
-		return s.substr(res);
+		return s.substr(i);
 	}
 };
