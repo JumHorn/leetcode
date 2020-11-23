@@ -1,13 +1,7 @@
-#include <queue>
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 using namespace std;
-
-/*
-map reserve trick improved a lot from copying map data in the last version
-*/
 
 class Solution
 {
@@ -15,27 +9,34 @@ public:
 	vector<int> smallestSufficientTeam(vector<string> &req_skills, vector<vector<string>> &people)
 	{
 		int N = req_skills.size();
-		unordered_map<int, vector<int>> res; //{skillmask,people}
-		res.reserve(1 << N);				 // using reserved space, we avoid rehash
-		unordered_map<string, int> skills;   //{skill,bit}
+		vector<vector<int>> dp(1 << N); //{skillmask as index,people as vector<int>}
+		vector<bool> seen(1 << N);
+		unordered_map<string, int> skills; //{skill,bit}
 		for (int i = 0; i < N; ++i)
 			skills[req_skills[i]] = 1 << i;
-		res[0] = {};
+
+		seen[0] = true;
 		for (int i = 0; i < (int)people.size(); ++i)
 		{
 			int pskill = 0;
 			for (auto &str : people[i])
 				pskill |= skills[str];
-			for (auto &iter : res)
+			if (pskill == 0)
+				continue;
+
+			for (int j = (1 << N) - 1; j >= 0; --j)
 			{
-				int mask = iter.first | pskill;
-				if (res.find(mask) == res.end() || res[mask].size() > 1 + iter.second.size())
+				if (!seen[j])
+					continue;
+				int mask = j | pskill;
+				if (!seen[mask] || dp[mask].size() > 1 + dp[j].size())
 				{
-					res[mask] = iter.second;
-					res[mask].push_back(i);
+					seen[mask] = true;
+					dp[mask] = dp[j];
+					dp[mask].push_back(i);
 				}
 			}
 		}
-		return res[(1 << N) - 1];
+		return dp[(1 << N) - 1];
 	}
 };
