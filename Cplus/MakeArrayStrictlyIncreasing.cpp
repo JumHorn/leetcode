@@ -10,13 +10,13 @@ public:
 	int makeArrayIncreasing(vector<int> &arr1, vector<int> &arr2)
 	{
 		set<int> s(arr2.begin(), arr2.end());
-		int n = arr1.size();
-		vector<unordered_map<int, int>> dp(n);
+		int N = arr1.size();
+		vector<unordered_map<int, int>> dp(N); //{last value,operations}
 		dp[0][arr1[0]] = 0;
 		auto iter = s.begin();
 		if (*iter < arr1[0])
 			dp[0][*iter] = 1;
-		for (int i = 1; i < n; ++i)
+		for (int i = 1; i < N; ++i)
 		{
 			for (auto iter : dp[i - 1])
 			{

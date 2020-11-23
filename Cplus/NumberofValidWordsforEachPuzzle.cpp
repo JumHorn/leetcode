@@ -8,9 +8,9 @@ class Solution
 public:
 	vector<int> findNumOfValidWords(vector<string> &words, vector<string> &puzzles)
 	{
-		int n = puzzles.size();
-		vector<int> res(n);
-		unordered_map<int, int> m;
+		int N = puzzles.size();
+		vector<int> res(N);
+		unordered_map<int, int> m; //{mask,count}
 		for (int i = 0; i < (int)words.size(); ++i)
 		{
 			int mask = 0;
@@ -18,7 +18,7 @@ public:
 				mask |= (1 << (words[i][j] - 'a'));
 			++m[mask];
 		}
-		for (int i = 0; i < n; ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			int mask = 0;
 			for (int j = 0; j < (int)puzzles[i].length(); ++j)

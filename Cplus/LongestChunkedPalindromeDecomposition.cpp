@@ -15,7 +15,7 @@ public:
 			return 0;
 		for (int i = right - 1; i * 2 >= left + right; --i)
 		{
-			if (text[left] == text[i] && text.substr(left, right - i) == text.substr(i, right - i))
+			if (text[left] == text[i] && text.compare(left, right - i, text, i, right - i) == 0)
 				return 2 + recursive(text, left + right - i, i);
 		}
 		return 1;
