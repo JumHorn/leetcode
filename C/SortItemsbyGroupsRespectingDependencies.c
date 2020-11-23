@@ -1,41 +1,84 @@
 #include <stdlib.h>
 #include <string.h>
 
-void dfs(int **graph, int graphSize, int *graphColSize, int at, int *res, int *size, int *seen)
+//DynamicArray
+typedef struct DynamicArray
+{
+	int *data;
+	int size;
+	int capacity;
+} DynamicArray;
+
+DynamicArray *arr_init()
+{
+	DynamicArray *arr = (DynamicArray *)malloc(sizeof(DynamicArray));
+	arr->size = 0;
+	arr->capacity = 10;
+	arr->data = (int *)malloc(sizeof(int) * arr->capacity);
+	return arr;
+}
+
+void arr_append(DynamicArray *arr, int val)
+{
+	if (arr->size >= arr->capacity)
+	{
+		arr->capacity += 1000;
+		arr->data = (int *)realloc(arr->data, sizeof(int) * arr->capacity);
+	}
+	arr->data[arr->size++] = val;
+}
+/********end of DynamicArray********/
+
+// create graph
+typedef struct GraphNode
+{
+	int node;
+	struct GraphNode *next;
+} GraphNode;
+
+GraphNode *createNode(int val)
+{
+	GraphNode *node = (GraphNode *)malloc(sizeof(GraphNode));
+	node->node = val;
+	node->next = NULL;
+	return node;
+}
+
+void dfs(GraphNode **graph, int at, int *seen, int *res, int *resSize)
 {
 	if (seen[at] == 1)
 		return;
 	seen[at] = 1;
-	for (int i = 0; i < graphColSize[at]; ++i)
-		dfs(graph, graphSize, graphColSize, graph[at][i], res, size, seen);
-	res[*size] = at;
-	++(*size);
+	for (GraphNode *to = graph[at]; to; to = to->next)
+		dfs(graph, to->node, seen, res, resSize);
+	res[(*resSize)++] = at;
 }
 
 //if items is empty, search all graph
-int *topologicalSort(int **graph, int graphSize, int *graphColSize, int *indgree, int *items, int itemSize)
+int *topologicalSort(GraphNode **graph, int graphSize, int *indgree, int *items, int itemSize)
 {
+	int N = itemSize == 0 ? graphSize : itemSize;
 	int seen[graphSize];
 	memset(seen, 0, sizeof(seen));
-	int *res = (int *)malloc(sizeof(int) * graphSize);
-	memset(res, -1, sizeof(int) * graphSize);
+	int *res = (int *)malloc(sizeof(int) * N);
+	memset(res, -1, sizeof(int) * N);
 	int resSize = 0;
 	if (itemSize == 0)
 	{
-		for (int i = 0; i < graphSize; ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			if (indgree[i] == 0)
-				dfs(graph, graphSize, graphColSize, i, res, &resSize, seen);
+				dfs(graph, i, seen, res, &resSize);
 		}
-		return resSize == graphSize ? res : NULL;
+		return resSize == N ? res : NULL;
 	}
 
 	for (int i = 0; i < itemSize; ++i)
 	{
 		if (indgree[items[i]] == 0)
-			dfs(graph, graphSize, graphColSize, items[i], res, &resSize, seen);
+			dfs(graph, items[i], seen, res, &resSize);
 	}
-	return resSize == itemSize ? res : NULL;
+	return resSize == N ? res : NULL;
 }
 
 /**
@@ -49,64 +92,65 @@ int *sortItems(int n, int m, int *group, int groupSize, int **beforeItems, int b
 			group[i] = m++;
 	}
 
-	int **groupgraph = (int **)malloc(sizeof(int *) * m);
-	for (int i = 0; i < m; ++i)
-		groupgraph[i] = (int *)malloc(sizeof(int) * n);
-	int groupgraphcolsize[m];
-	memset(groupgraphcolsize, 0, sizeof(groupgraphcolsize));
+	GraphNode *groupgraph[m];
+	memset(groupgraph, 0, sizeof(groupgraph));
 	int groupindgree[m];
 	memset(groupindgree, 0, sizeof(groupindgree));
 
-	int **itemgraph = (int **)malloc(sizeof(int *) * n);
-	for (int i = 0; i < n; ++i)
-		itemgraph[i] = (int *)malloc(sizeof(int) * n);
-	int itemgraphcolsize[n];
-	memset(itemgraphcolsize, 0, sizeof(itemgraphcolsize));
+	GraphNode *itemgraph[n];
+	memset(itemgraph, 0, sizeof(itemgraph));
 	int itemindgree[n];
 	memset(itemindgree, 0, sizeof(itemindgree));
+
 	for (int i = 0; i < n; ++i)
 	{
 		for (int j = 0; j < beforeItemsColSize[i]; ++j)
 		{
 			if (group[i] != group[beforeItems[i][j]]) //not in the same group
 			{
-				groupgraph[group[i]][groupgraphcolsize[group[i]]++] = group[beforeItems[i][j]];
+				GraphNode *node = createNode(group[beforeItems[i][j]]);
+				node->next = groupgraph[group[i]];
+				groupgraph[group[i]] = node;
+
 				++groupindgree[group[beforeItems[i][j]]];
 			}
 			else
 			{
-				itemgraph[i][itemgraphcolsize[i]++] = beforeItems[i][j];
+				GraphNode *node = createNode(beforeItems[i][j]);
+				node->next = itemgraph[i];
+				itemgraph[i] = node;
+
 				++itemindgree[beforeItems[i][j]];
 			}
 		}
 	}
-	int *grouporder = topologicalSort(groupgraph, m, groupgraphcolsize, groupindgree, NULL, 0);
+	int *grouporder = topologicalSort(groupgraph, m, groupindgree, NULL, 0);
 	if (!grouporder)
 	{
 		*returnSize = 0;
 		return NULL;
 	}
-	int *res = (int *)malloc(sizeof(int) * n);
-	int **groupitem = (int **)malloc(sizeof(int *) * m);
+
+	*returnSize = n;
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	DynamicArray *groupitem[m];
 	for (int i = 0; i < m; ++i)
-		groupitem[i] = (int *)malloc(sizeof(int) * n);
-	int groupitemcolsize[m];
-	memset(groupitemcolsize, 0, sizeof(groupitemcolsize));
+		groupitem[i] = arr_init();
 	for (int i = 0; i < n; ++i)
-		groupitem[group[i]][groupitemcolsize[group[i]]++] = i;
+		arr_append(groupitem[group[i]], i);
+
 	for (int i = 0, index = 0; i < m; ++i)
 	{
-		if (groupitemcolsize[grouporder[i]] == 0)
+		if (groupitem[grouporder[i]]->size == 0)
 			continue;
-		int *itemorder = topologicalSort(itemgraph, n, itemgraphcolsize, itemindgree, groupitem[grouporder[i]], groupitemcolsize[grouporder[i]]);
+		int *itemorder = topologicalSort(itemgraph, n, itemindgree, groupitem[grouporder[i]]->data, groupitem[grouporder[i]]->size);
 		if (!itemorder)
 		{
 			*returnSize = 0;
 			return NULL;
 		}
-		memcpy(res + index, itemorder, sizeof(int) * groupitemcolsize[grouporder[i]]);
-		index += groupitemcolsize[grouporder[i]];
+		memcpy(res + index, itemorder, sizeof(int) * groupitem[grouporder[i]]->size);
+		index += groupitem[grouporder[i]]->size;
 	}
-	*returnSize = n;
 	return res;
 }
