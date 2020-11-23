@@ -1,4 +1,3 @@
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -7,37 +6,20 @@ class Solution
 public:
 	vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections)
 	{
-		vector<unordered_set<int>> graph(n);
+		vector<vector<int>> graph(n);
 		for (auto &con : connections)
 		{
-			graph[con[0]].insert(con[1]);
-			graph[con[1]].insert(con[0]);
+			graph[con[0]].push_back(con[1]);
+			graph[con[1]].push_back(con[0]);
 		}
 		vector<int> dsc(n), low(n);
 		vector<vector<int>> res;
 		int time = 0;
-		for (int i = 0; i < n; ++i)
-		{
-			if (dsc[i] == 0)
-				dfs(graph, dsc, low, i, time);
-		}
-		for (auto &con : connections)
-		{
-			if (graph[con[0]].find(con[1]) != graph[con[0]].end())
-			{
-				if (low[con[1]] > dsc[con[0]])
-					res.push_back(con);
-			}
-			else
-			{
-				if (low[con[0]] > dsc[con[1]])
-					res.push_back(con);
-			}
-		}
+		dfs(graph, dsc, low, -1, 0, time, res);
 		return res;
 	}
 
-	void dfs(vector<unordered_set<int>> &graph, vector<int> &dsc, vector<int> &low, int at, int &time)
+	void dfs(vector<vector<int>> &graph, vector<int> &dsc, vector<int> &low, int from, int at, int &time, vector<vector<int>> &res)
 	{
 		if (dsc[at] != 0)
 			return;
@@ -46,10 +28,13 @@ public:
 		{
 			if (dsc[to] == 0)
 			{
-				graph[to].erase(at);
-				dfs(graph, dsc, low, to, time);
+				dfs(graph, dsc, low, at, to, time, res);
+				low[at] = min(low[at], low[to]);
+				if (low[to] > dsc[at])
+					res.push_back({at, to});
 			}
-			low[at] = min(low[at], low[to]);
+			else if (from != to)
+				low[at] = min(low[at], dsc[to]);
 		}
 	}
 };

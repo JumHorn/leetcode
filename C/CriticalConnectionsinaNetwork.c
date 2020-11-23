@@ -3,34 +3,45 @@
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int **addOneConnection(int **res, int *size, int a, int b)
+// create graph
+typedef struct GraphNode
 {
-	++*size;
-	res = (int **)realloc(res, *size * sizeof(int *));
-	res[*size - 1] = (int *)malloc(sizeof(int) * 2);
-	res[*size - 1][0] = a;
-	res[*size - 1][1] = b;
-	return res;
+	int node;
+	struct GraphNode *next;
+} GraphNode;
+
+GraphNode *createNode(int val)
+{
+	GraphNode *node = (GraphNode *)malloc(sizeof(GraphNode));
+	node->node = val;
+	node->next = NULL;
+	return node;
 }
 
-void dfs(int **graph, int n, int *dsc, int *low, int parent, int at, int *time, int ***res, int *size)
+void addOneConnection(int a, int b, int **res, int *resSize)
+{
+	res[*resSize] = (int *)malloc(sizeof(int) * 2);
+	res[*resSize][0] = a;
+	res[*resSize][1] = b;
+	++*resSize;
+}
+
+void dfs(GraphNode **graph, int *dsc, int *low, int from, int at, int *time, int **res, int *resSize)
 {
 	if (dsc[at] != 0)
 		return;
 	dsc[at] = low[at] = ++*time;
-	for (int to = 0; to < n; ++to)
+	for (GraphNode *to = graph[at]; to; to = to->next)
 	{
-		if (graph[at][to] == 0)
-			continue;
-		if (dsc[to] == 0)
+		if (dsc[to->node] == 0)
 		{
-			dfs(graph, n, dsc, low, at, to, time, res, size);
-			low[at] = min(low[at], low[to]);
-			if (low[to] > dsc[at])
-				*res = addOneConnection(*res, size, at, to);
+			dfs(graph, dsc, low, at, to->node, time, res, resSize);
+			low[at] = min(low[at], low[to->node]);
+			if (low[to->node] > dsc[at])
+				addOneConnection(at, to->node, res, resSize);
 		}
-		else if (parent != to)
-			low[at] = min(low[at], dsc[to]);
+		else if (from != to->node)
+			low[at] = min(low[at], dsc[to->node]);
 	}
 }
 
@@ -41,25 +52,27 @@ void dfs(int **graph, int n, int *dsc, int *low, int parent, int at, int *time, 
  */
 int **criticalConnections(int n, int **connections, int connectionsSize, int *connectionsColSize, int *returnSize, int **returnColumnSizes)
 {
-	int **graph = (int **)malloc(sizeof(int *) * n);
-	for (int i = 0; i < n; ++i)
-	{
-		graph[i] = (int *)malloc(sizeof(int) * n);
-		memset(graph[i], 0, n * sizeof(int));
-	}
+	GraphNode *graph[n];
+	memset(graph, 0, sizeof(graph));
 	for (int i = 0; i < connectionsSize; ++i)
 	{
-		graph[connections[i][0]][connections[i][1]] = 1;
-		graph[connections[i][1]][connections[i][0]] = 1;
+		GraphNode *node = createNode(connections[i][1]);
+		node->next = graph[connections[i][0]];
+		graph[connections[i][0]] = node;
+		node = createNode(connections[i][0]);
+		node->next = graph[connections[i][1]];
+		graph[connections[i][1]] = node;
 	}
-	int **res = NULL, size = 0, time = 0;
+
+	int **res = (int **)malloc(sizeof(int *) * 100000);
+	int time = 0;
 	int dsc[n], low[n];
 	memset(dsc, 0, sizeof(dsc));
 	memset(low, 0, sizeof(low));
-	dfs(graph, n, dsc, low, -1, 0, &time, &res, &size);
-	*returnSize = size;
-	*returnColumnSizes = (int *)malloc(sizeof(int) * size);
-	for (int i = 0; i < size; ++i)
+	*returnSize = 0;
+	dfs(graph, dsc, low, -1, 0, &time, res, returnSize);
+	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
+	for (int i = 0; i < *returnSize; ++i)
 		(*returnColumnSizes)[i] = 2;
 	return res;
 }
