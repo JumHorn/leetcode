@@ -1,3 +1,5 @@
+#include <map>
+#include <set>
 #include <stack>
 #include <vector>
 using namespace std;
@@ -8,62 +10,44 @@ public:
 	DinnerPlates(int capacity)
 	{
 		c = capacity;
-		s = 0; //size
-		p = 0; //push index
-		v = 0; //pop index
 	}
 
 	void push(int val)
 	{
-		++s;
-		while (p < data.size() && data[p].size() == c)
-			++p;
-		if (p < data.size())
-			data[p].push(val);
-		else
-		{
-			data.emplace_back();
-			data.back().push(val);
-		}
-		if (p > v)
-			v = p;
+		if (available.empty())
+			available.insert(data.size());
+
+		data[*available.begin()].push(val);
+		if (data[*available.begin()].size() == c)
+			available.erase(available.begin());
 	}
 
 	int pop()
 	{
-		if (s == 0)
+		while (!data.empty() && data.rbegin()->second.empty())
+			data.erase(data.rbegin()->first);
+
+		if (data.empty())
 			return -1;
-		--s;
-		int res = -1;
-		while (v >= 0 && data[v].empty())
-			--v;
-		res = data[v].top();
-		data[v].pop();
-		if (p > v)
-			p = v;
-		return res;
+		return popAtStack(data.rbegin()->first);
 	}
 
 	int popAtStack(int index)
 	{
-		int res = -1;
-		if (index < (int)data.size())
-		{
-			if (!data[index].empty())
-			{
-				--s;
-				res = data[index].top();
-				data[index].pop();
-				if (p > index)
-					p = index;
-			}
-		}
-		return res;
+		if (data[index].empty())
+			return -1;
+		int val = data[index].top();
+		data[index].pop();
+		available.insert(index);
+		if (data[index].empty())
+			data.erase(index);
+		return val;
 	}
 
 private:
-	vector<stack<int>> data;
-	int s, c, p, v;
+	int c;
+	map<int, stack<int>> data;
+	set<int> available; //keep indices of all not full stacks.
 };
 
 /**
