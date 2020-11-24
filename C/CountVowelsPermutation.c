@@ -8,18 +8,18 @@ int countVowelPermutation(int n)
 		dp[i] = 1;
 	for (int i = 1; i < n; ++i)
 	{
-		long dp1[5];
-		memcpy(dp1, dp, sizeof(dp));
+		long pre_dp[5];
+		memcpy(pre_dp, dp, sizeof(dp));
 		//a
-		dp[0] = (dp1[1] + dp1[2] + dp1[4]) % MOD;
+		dp[0] = (pre_dp[1] + pre_dp[2] + pre_dp[4]) % MOD;
 		//e
-		dp[1] = (dp1[0] + dp1[2]) % MOD;
+		dp[1] = (pre_dp[0] + pre_dp[2]) % MOD;
 		//i
-		dp[2] = (dp1[1] + dp1[3]) % MOD;
+		dp[2] = (pre_dp[1] + pre_dp[3]) % MOD;
 		//o
-		dp[3] = dp1[2];
+		dp[3] = pre_dp[2];
 		//u
-		dp[4] = (dp1[2] + dp1[3]) % MOD;
+		dp[4] = (pre_dp[2] + pre_dp[3]) % MOD;
 	}
 	int res = 0;
 	for (int i = 0; i < 5; ++i)

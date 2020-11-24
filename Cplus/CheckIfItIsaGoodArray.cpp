@@ -6,21 +6,18 @@ class Solution
 public:
 	bool isGoodArray(vector<int> &nums)
 	{
-		int n = nums.size();
-		int res = nums[0];
-		for (int i = 0; i < n; ++i)
+		int g = nums[0];
+		for (auto n : nums)
 		{
-			res = gcd(nums[i], res);
-			if (res == 1)
+			g = gcd(n, g);
+			if (g == 1)
 				return true;
 		}
 		return false;
 	}
 
-	int gcd(int a, int b)
+	int gcd(int x, int y)
 	{
-		if (b == 0)
-			return a;
-		return gcd(b, a % b);
+		return x == 0 ? y : gcd(y % x, x);
 	}
 };

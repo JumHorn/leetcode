@@ -9,9 +9,9 @@ int palindromePartition(char *s, int k)
 	if (k >= N)
 		return 0;
 	memset(dp, 0, sizeof(dp));
-	for (int n = 0; n < N; ++n)
+	for (int i = N - 1; i >= 0; --i)
 	{
-		for (int i = 0, j = n; j < N; ++i, ++j)
+		for (int j = i; j < N; ++j)
 		{
 			if (i == j)
 				dp[0][i][j] = 0;

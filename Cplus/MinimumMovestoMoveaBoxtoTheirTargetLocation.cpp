@@ -9,13 +9,13 @@ class Solution
 public:
 	int minPushBox(vector<vector<char>> &grid)
 	{
-		int m = grid.size(), n = grid[0].size(), dsti, dstj, pi, pj, bi, bj;
+		int M = grid.size(), N = grid[0].size(), dsti, dstj, pi, pj, bi, bj;
 		set<pair<int, int>> seen;
-		queue<pair<int, int>> q;
+		queue<pair<int, int>> q; //{box position,player postion}
 		// get the position of box player and target
-		for (int i = 0; i < m; ++i)
+		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < n; ++j)
+			for (int j = 0; j < N; ++j)
 			{
 				if (grid[i][j] == 'T')
 				{
@@ -38,37 +38,37 @@ public:
 			}
 		}
 
-		q.push({bi * n + bj, pi * n + pj});
+		q.push({bi * N + bj, pi * N + pj});
 		int res = -1;
 		while (!q.empty())
 		{
-			int size = q.size();
 			++res;
+			int size = q.size();
 			while (--size >= 0)
 			{
-				auto tmp = q.front();
+				auto state = q.front();
 				q.pop();
-				int bx = tmp.first / n, by = tmp.first % n;
-				int px = tmp.second / n, py = tmp.second % n;
+				int bx = state.first / N, by = state.first % N;
+				int px = state.second / N, py = state.second % N;
 				if (bx == dsti && by == dstj)
 					return res;
-				if (seen.find(tmp) != seen.end())
+				if (seen.find(state) != seen.end())
 					continue;
-				seen.insert(tmp);
+				seen.insert(state);
 				grid[bx][by] = 'B';
-				if (bx - 1 >= 0 && bx + 1 < m && grid[bx - 1][by] == '.' && grid[bx + 1][by] == '.')
+				if (bx - 1 >= 0 && bx + 1 < M && grid[bx - 1][by] == '.' && grid[bx + 1][by] == '.')
 				{
 					if (canMoveToPos(grid, px, py, bx + 1, by))
-						q.push({(bx - 1) * n + by, bx * n + by});
+						q.push({(bx - 1) * N + by, bx * N + by});
 					if (canMoveToPos(grid, px, py, bx - 1, by))
-						q.push({(bx + 1) * n + by, bx * n + by});
+						q.push({(bx + 1) * N + by, bx * N + by});
 				}
-				if (by - 1 >= 0 && by + 1 < n && grid[bx][by - 1] == '.' && grid[bx][by + 1] == '.')
+				if (by - 1 >= 0 && by + 1 < N && grid[bx][by - 1] == '.' && grid[bx][by + 1] == '.')
 				{
 					if (canMoveToPos(grid, px, py, bx, by + 1))
-						q.push({bx * n + by - 1, bx * n + by});
+						q.push({bx * N + by - 1, bx * N + by});
 					if (canMoveToPos(grid, px, py, bx, by - 1))
-						q.push({bx * n + by + 1, bx * n + by});
+						q.push({bx * N + by + 1, bx * N + by});
 				}
 				grid[bx][by] = '.';
 			}
@@ -76,37 +76,38 @@ public:
 		return -1;
 	}
 
-	bool canMoveToPos(vector<vector<char>> &grid, int i, int j, int dsti, int dstj)
+	bool canMoveToPos(vector<vector<char>> &grid, int row, int col, int dsti, int dstj)
 	{
-		int m = grid.size(), n = grid[0].size();
-		int direction[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-		if (i == dsti && j == dstj)
+		int M = grid.size(), N = grid[0].size();
+		//board dfs direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		if (row == dsti && col == dstj)
 			return true;
 		unordered_set<int> seen;
 		queue<int> q;
-		q.push(i * n + j);
-		seen.insert(i * n + j);
+		q.push(row * N + col);
+		seen.insert(row * N + col);
 		while (!q.empty())
 		{
 			int size = q.size();
 			while (--size >= 0)
 			{
-				int tmp = q.front();
+				int state = q.front();
 				q.pop();
-				int x = tmp / n, y = tmp % n;
-				for (int d = 0; d < 4; d++)
+				int x = state / N, y = state % N;
+				for (int d = 0; d < 4; ++d)
 				{
-					int dx = x + direction[d][0], dy = y + direction[d][1];
-					if (dx < 0 || dx >= m || dy < 0 || dy >= n)
+					int dx = x + path[d], dy = y + path[d + 1];
+					if (dx < 0 || dx >= M || dy < 0 || dy >= N)
 						continue;
 					if (grid[dx][dy] == '#' || grid[dx][dy] == 'B')
 						continue;
-					if (seen.find(dx * n + dy) != seen.end())
+					if (seen.find(dx * N + dy) != seen.end())
 						continue;
 					if (dx == dsti && dy == dstj)
 						return true;
-					seen.insert(dx * n + dy);
-					q.push(dx * n + dy);
+					seen.insert(dx * N + dy);
+					q.push(dx * N + dy);
 				}
 			}
 		}

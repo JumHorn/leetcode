@@ -17,29 +17,21 @@ private:
 public:
 	int jobScheduling(vector<int> &startTime, vector<int> &endTime, vector<int> &profit)
 	{
-		int n = profit.size();
-		vector<Job> v(n);
-		for (int i = 0; i < n; ++i)
+		int N = profit.size();
+		vector<Job> jobs(N);
+		for (int i = 0; i < N; ++i)
 		{
-			v[i].start = startTime[i];
-			v[i].end = endTime[i];
-			v[i].profit = profit[i];
+			jobs[i].start = startTime[i];
+			jobs[i].end = endTime[i];
+			jobs[i].profit = profit[i];
 		}
-		sort(v.begin(), v.end(), *this);
-		map<int, int> dp; //{endTime,profit}
-		dp[0] = 0;
-		for (int i = 0; i < n; ++i)
+		sort(jobs.begin(), jobs.end(), *this);
+		map<int, int> dp = {{0, 0}}; //{endTime,profit} make sure begin always exist
+		for (auto &job : jobs)
 		{
-			auto iter = dp.upper_bound(v[i].start);
-			if (iter == dp.begin())
-			{
-				if (v[i].profit > dp.rbegin()->second)
-					dp[v[i].end] = v[i].profit;
-				continue;
-			}
-			--iter;
-			if (v[i].profit + iter->second > dp.rbegin()->second)
-				dp[v[i].end] = iter->second + v[i].profit;
+			auto iter = prev(dp.upper_bound(job.start));
+			if (job.profit + iter->second > dp.rbegin()->second)
+				dp[job.end] = iter->second + job.profit;
 		}
 		return dp.rbegin()->second;
 	}

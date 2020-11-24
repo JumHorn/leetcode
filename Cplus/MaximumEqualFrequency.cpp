@@ -22,13 +22,14 @@ public:
 			if (freqfreq.size() == 1)
 			{
 				if (freq.size() == 1 || freq.begin()->second == 1)
-					res = max(res, i + 1);
+					res = i + 1;
 			}
 			else if (freqfreq.size() == 2)
 			{
 				int a = freqfreq.begin()->first, b = (++freqfreq.begin())->first;
-				if (((a == 1 || a - b == 1) && freqfreq[a] == 1) || ((b == 1) || (b - a) == 1) && (freqfreq[b] == 1))
-					res = max(res, i + 1);
+				if (((a == 1 || a - b == 1) && freqfreq[a] == 1) ||
+					((b == 1 || b - a == 1) && freqfreq[b] == 1))
+					res = i + 1;
 			}
 		}
 		return res;

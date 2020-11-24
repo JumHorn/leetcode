@@ -10,34 +10,34 @@ class Solution
 public:
 	int maxScoreWords(vector<string> &words, vector<char> &letters, vector<int> &score)
 	{
-		int n = words.size();
-		vector<int> wordsscore(n);
-		for (int i = 0; i < n; ++i)
+		int N = words.size();
+		vector<int> wordsScore(N);
+		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j < (int)words[i].length(); ++j)
-				wordsscore[i] += score[words[i][j] - 'a'];
+			for (auto c : words[i])
+				wordsScore[i] += score[c - 'a'];
 		}
 		vector<int> letter(26);
-		for (int i = 0; i < (int)letters.size(); ++i)
-			letter[letters[i] - 'a']++;
-		vector<map<vector<int>, int>> dp(n + 1);
+		for (auto c : letters)
+			++letter[c - 'a'];
+		vector<map<vector<int>, int>> dp(N + 1); //{count mask,score}
 		dp[0][vector<int>(26)] = 0;
-		for (int i = 1; i <= n; ++i)
+		for (int i = 0; i < N; ++i)
 		{
-			for (auto iter : dp[i - 1])
+			for (auto &iter : dp[i])
 			{
-				vector<int> v = iter.first;
-				dp[i][iter.first] = iter.second;
+				vector<int> count = iter.first;
+				dp[i + 1][iter.first] = iter.second;
 				int j = 0;
-				for (; j < (int)words[i - 1].length(); ++j)
+				for (; j < (int)words[i].length(); ++j)
 				{
-					int index = words[i - 1][j] - 'a';
-					++v[index];
-					if (v[index] > letter[index])
+					int index = words[i][j] - 'a';
+					++count[index];
+					if (count[index] > letter[index])
 						break;
 				}
-				if (j == (int)words[i - 1].length())
-					dp[i][v] = max(dp[i][v], iter.second + wordsscore[i - 1]);
+				if (j == (int)words[i].length())
+					dp[i + 1][count] = max(dp[i + 1][count], iter.second + wordsScore[i]);
 			}
 		}
 		int res = 0;

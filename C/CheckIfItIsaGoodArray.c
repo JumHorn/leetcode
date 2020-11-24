@@ -7,11 +7,11 @@ int gcd(int x, int y)
 
 bool isGoodArray(int *nums, int numsSize)
 {
-	int last = nums[0];
+	int g = nums[0];
 	for (int i = 0; i < numsSize; ++i)
 	{
-		last = gcd(last, nums[i]);
-		if (last == 1)
+		g = gcd(g, nums[i]);
+		if (g == 1)
 			return true;
 	}
 	return false;
