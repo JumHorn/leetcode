@@ -9,13 +9,13 @@ public:
 	int minFlips(vector<vector<int>> &mat)
 	{
 		unordered_set<int> seen;
-		int m = mat.size(), n = mat[0].size(), matrix = 0;
-		for (int i = 0; i < m; ++i)
+		int M = mat.size(), N = mat[0].size(), matrix = 0;
+		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < n; ++j)
+			for (int j = 0; j < N; ++j)
 			{
 				if (mat[i][j] == 1)
-					matrix = bitFlip(matrix, i * n + j);
+					matrix = bitFlip(matrix, i * N + j);
 			}
 		}
 		if (matrix == 0)
@@ -32,11 +32,11 @@ public:
 			{
 				int top = q.front();
 				q.pop();
-				for (int i = 0; i < m; ++i)
+				for (int i = 0; i < M; ++i)
 				{
-					for (int j = 0; j < n; ++j)
+					for (int j = 0; j < N; ++j)
 					{
-						int state = encodeFlip(top, m, n, i, j);
+						int state = encodeFlip(top, M, N, i, j);
 						if (state == 0)
 							return res;
 						if (seen.find(state) == seen.end())
@@ -51,17 +51,17 @@ public:
 		return -1;
 	}
 
-	int encodeFlip(int mat, int m, int n, int i, int j)
+	int encodeFlip(int mat, int M, int N, int row, int col)
 	{
-		mat = bitFlip(mat, i * n + j);
-		if (i - 1 >= 0)
-			mat = bitFlip(mat, (i - 1) * n + j);
-		if (i + 1 < m)
-			mat = bitFlip(mat, (i + 1) * n + j);
-		if (j - 1 >= 0)
-			mat = bitFlip(mat, i * n + j - 1);
-		if (j + 1 < n)
-			mat = bitFlip(mat, i * n + j + 1);
+		mat = bitFlip(mat, row * N + col);
+		//board dfs direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		for (int i = 0; i < 4; ++i)
+		{
+			int dx = row + path[i], dy = col + path[i + 1];
+			if (dx >= 0 && dx < M && dy >= 0 && dy < N)
+				mat = bitFlip(mat, dx * N + dy);
+		}
 		return mat;
 	}
 
