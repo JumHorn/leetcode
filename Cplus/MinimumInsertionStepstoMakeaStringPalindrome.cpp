@@ -8,22 +8,23 @@ class Solution
 public:
 	int minInsertions(string s)
 	{
-		vector<vector<int>> dp(s.length(), vector<int>(s.length(), -1));
-		return dfs(s, 0, s.length() - 1, dp);
+		int N = s.length();
+		vector<vector<int>> dp(N, vector<int>(N, -1));
+		return memdp(s, 0, N - 1, dp);
 	}
 
-	int dfs(const string& s, int i, int j, vector<vector<int>>& dp)
+	int memdp(const string &s, int left, int right, vector<vector<int>> &dp)
 	{
-		if (i >= j)
+		if (left >= right)
 			return 0;
-		if (dp[i][j] != -1)
-			return dp[i][j];
+		if (dp[left][right] != -1)
+			return dp[left][right];
 		int res = 0;
-		if (s[i] == s[j])
-			res = dfs(s, i + 1, j - 1, dp);
+		if (s[left] == s[right])
+			res = memdp(s, left + 1, right - 1, dp);
 		else
-			res = min(dfs(s, i + 1, j, dp), dfs(s, i, j - 1, dp)) + 1;
-		dp[i][j] = res;
+			res = min(memdp(s, left + 1, right, dp), memdp(s, left, right - 1, dp)) + 1;
+		dp[left][right] = res;
 		return res;
 	}
 };

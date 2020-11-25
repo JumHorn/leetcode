@@ -2,14 +2,14 @@
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int minInsertions(char* s)
+int minInsertions(char *s)
 {
 	int N = strlen(s);
 	int dp[N][N];
 	memset(dp, 0, sizeof(dp));
-	for (int n = 1; n < N; ++n)
+	for (int i = N - 2; i >= 0; --i)
 	{
-		for (int i = 0, j = n; j < N; ++i, ++j)
+		for (int j = i + 1; j < N; ++j)
 		{
 			if (s[i] == s[j])
 				dp[i][j] = dp[i + 1][j - 1];

@@ -6,11 +6,11 @@ class Solution
 {
 	struct info
 	{
-		int i;
-		int j;
+		int x; //pos x
+		int y; //pos y
 		int k;
 		int step;
-		info(int _i = 0, int _j = 0, int _k = 0, int _step = 0) : i(_i), j(_j), k(_k), step(_step)
+		info(int row = 0, int col = 0, int _k = 0, int _step = 0) : x(row), y(col), k(_k), step(_step)
 		{
 		}
 	};
@@ -18,17 +18,17 @@ class Solution
 public:
 	int shortestPath(vector<vector<int>> &grid, int k)
 	{
-		int m = grid.size(), n = grid[0].size();
-		if (k >= m + n - 1)
-			return m + n - 2;
-		vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>((k + 1), 5000)));
+		int M = grid.size(), N = grid[0].size();
+		if (k >= M + N - 1)
+			return M + N - 2;
+		vector<vector<vector<int>>> seen(M, vector<vector<int>>(N, vector<int>((k + 1), 5000)));
 		queue<info> q;
 		q.push(info(0, 0, k, 0));
 		int res = 0;
 		while (!q.empty())
 		{
-			int size = q.size();
 			++res;
+			int size = q.size();
 			while (--size >= 0)
 			{
 				const info top = q.front();
@@ -36,14 +36,14 @@ public:
 				int path[5] = {-1, 0, 1, 0, -1};
 				for (int i = 0; i < 4; ++i)
 				{
-					int dx = top.i + path[i], dy = top.j + path[i + 1];
-					if (dx < 0 || dx >= m || dy < 0 || dy >= n)
+					int dx = top.x + path[i], dy = top.y + path[i + 1];
+					if (dx < 0 || dx >= M || dy < 0 || dy >= N)
 						continue;
 					int dk = top.k - grid[dx][dy];
-					if (dk >= 0 && top.step + 1 < dp[dx][dy][dk])
+					if (dk >= 0 && top.step + 1 < seen[dx][dy][dk])
 					{
-						dp[dx][dy][dk] = top.step + 1;
-						if (dx == m - 1 && dy == n - 1)
+						seen[dx][dy][dk] = top.step + 1;
+						if (dx == M - 1 && dy == N - 1)
 							return res;
 						q.push(info(dx, dy, dk, top.step + 1));
 					}

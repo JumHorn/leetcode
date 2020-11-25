@@ -8,7 +8,7 @@ int *pathsWithMaxScore(char **board, int boardSize, int *returnSize)
 {
 	static const int MOD = 1e9 + 7;
 	int M = boardSize, N = strlen(board[0]);
-	int dp[M][N][2];
+	int dp[M][N][2]; //{score,path count}
 	memset(dp, 0, sizeof(dp));
 	dp[M - 1][N - 1][1] = 1;
 	for (int i = M - 1; i >= 0; --i)
@@ -37,7 +37,7 @@ int *pathsWithMaxScore(char **board, int boardSize, int *returnSize)
 	}
 
 	*returnSize = 2;
-	int *res = (int *)malloc(*returnSize * sizeof(int));
-	memcpy(res, dp[0][0], *returnSize * sizeof(int));
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
+	memcpy(res, dp[0][0], sizeof(int) * (*returnSize));
 	return res;
 }

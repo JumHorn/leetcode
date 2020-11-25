@@ -71,6 +71,7 @@ public:
 			if (digit[result[len - i - 1] - 'A'] != tmp)
 				return false;
 		}
+		//prefix zero check
 		for (auto &word : words)
 		{
 			if (digit[word[0] - 'A'] == 0)

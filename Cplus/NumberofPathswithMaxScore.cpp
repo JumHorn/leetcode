@@ -9,7 +9,7 @@ public:
 	vector<int> pathsWithMaxScore(vector<string> &board)
 	{
 		int M = board.size(), N = board[0].length();
-		vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(2)));
+		vector<vector<vector<int>>> dp(M, vector<vector<int>>(N, vector<int>(2))); //{score,path count}
 		dp[M - 1][N - 1][1] = 1;
 		for (int i = M - 1; i >= 0; --i)
 		{

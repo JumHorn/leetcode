@@ -64,9 +64,9 @@ bool backTracking(char **words, int N, int *wordsColSize, char *result, int resu
 bool isSolvable(char **words, int wordsSize, char *result)
 {
 	int map[26];
+	memset(map, -1, sizeof(map));
 	int wordsColSize[wordsSize];
 	for (int i = 0; i < wordsSize; ++i)
 		wordsColSize[i] = strlen(words[i]);
-	memset(map, -1, sizeof(map));
 	return backTracking(words, wordsSize, wordsColSize, result, strlen(result), 0, 0, map);
 }
