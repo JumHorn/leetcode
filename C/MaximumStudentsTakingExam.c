@@ -22,22 +22,30 @@ int maxStudents(char **seats, int seatsSize, int *seatsColSize)
 				mask[i] |= 1 << j;
 		}
 	}
-	int dp[seatsSize + 1][1 << N];
-	memset(dp, 0, sizeof(dp));
+	int dp[1 << N], dp_pre[1 << N];
+	memset(dp, -1, sizeof(dp));
+	dp[0] = 0;
 	for (int k = 0; k < seatsSize; ++k)
 	{
+		memcpy(dp_pre, dp, sizeof(dp));
 		for (int i = 0; i < 1 << N; ++i)
 		{
-			for (int j = 0; j < 1 << N; ++j)
+			if (dp_pre[i] == -1)
+				continue;
+			for (int j = mask[k]; j > 0; j = ((j - 1) & mask[k]))
 			{
-				if ((j & mask[k]) == j && (j & (j << 1)) == 0 && (i & (j << 1)) == 0 && (i & (j >> 1)) == 0)
-					dp[k + 1][j] = max(dp[k + 1][j], dp[k][i] + bitCount(j));
+				if ((j & (j << 1)) == 0 && (i & (j << 1)) == 0 && (i & (j >> 1)) == 0)
+				{
+					int bits = bitCount(j);
+					dp[j] = max(dp[j], dp_pre[i] + bits);
+				}
 			}
+			dp[0] = max(dp[0], dp_pre[i]);
 		}
 	}
 
 	int res = 0;
 	for (int i = 0; i < 1 << N; ++i)
-		res = max(res, dp[seatsSize][i]);
+		res = max(res, dp[i]);
 	return res;
 }
