@@ -8,32 +8,32 @@ class Solution
 public:
 	int minJumps(vector<int> &arr)
 	{
-		int res = 0, n = arr.size();
-		if (n <= 1)
+		int res = 0, N = arr.size();
+		if (N <= 1)
 			return res;
 		unordered_map<int, vector<int>> m;
-		for (int i = 0; i < n; ++i)
+		for (int i = 0; i < N; ++i)
 			m[arr[i]].push_back(i);
-		vector<int> seen(n);
+		vector<int> seen(N);
 		queue<int> q;
 		q.push(0);
 		seen[0] = 1;
 		while (!q.empty())
 		{
-			int size = q.size();
 			++res;
+			int size = q.size();
 			while (--size >= 0)
 			{
 				int front = q.front();
 				q.pop();
-				if (front == n - 1)
+				if (front == N - 1)
 					return res - 1;
 				if (front - 1 >= 0 && seen[front - 1] == 0)
 				{
 					q.push(front - 1);
 					seen[front - 1] = 1;
 				}
-				if (front + 1 < n && seen[front + 1] == 0)
+				if (front + 1 < N && seen[front + 1] == 0)
 				{
 					q.push(front + 1);
 					seen[front + 1] = 1;

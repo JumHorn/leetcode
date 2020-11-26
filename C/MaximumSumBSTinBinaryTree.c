@@ -11,28 +11,28 @@ struct TreeNode
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-typedef struct pair
+typedef struct tuple
 {
 	bool isBST;
 	int sum;
 	int minval;
 	int maxval;
-} pair;
+} tuple;
 
-pair postorder(struct TreeNode *root, int *maxsum)
+tuple postorder(struct TreeNode *root, int *maxsum)
 {
 	if (!root)
 	{
-		pair res = {true, 0, INT_MAX, INT_MIN};
+		tuple res = {true, 0, INT_MAX, INT_MIN};
 		return res;
 	}
-	pair l = postorder(root->left, maxsum);
-	pair r = postorder(root->right, maxsum);
+	tuple l = postorder(root->left, maxsum);
+	tuple r = postorder(root->right, maxsum);
 	if (l.isBST && r.isBST)
 	{
 		if (root->val > l.maxval && root->val < r.minval)
 		{
-			pair res = {true, root->val + l.sum + r.sum, l.minval, r.maxval};
+			tuple res = {true, root->val + l.sum + r.sum, l.minval, r.maxval};
 			if (!root->left)
 				res.minval = root->val;
 			if (!root->right)
@@ -41,7 +41,7 @@ pair postorder(struct TreeNode *root, int *maxsum)
 			return res;
 		}
 	}
-	pair res = {false, 0, 0, 0};
+	tuple res = {false, 0, 0, 0};
 	return res;
 }
 

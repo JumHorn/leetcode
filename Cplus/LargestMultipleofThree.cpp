@@ -8,13 +8,13 @@ class Solution
 public:
 	string largestMultipleOfThree(vector<int> &digits)
 	{
-		v = vector<int>(10);
+		count = vector<int>(10);
 		sum = 0;
 		string res;
 		int n = digits.size();
 		for (int i = 0; i < n; ++i)
 		{
-			++v[digits[i]];
+			++count[digits[i]];
 			sum += digits[i];
 		}
 
@@ -31,7 +31,7 @@ public:
 
 		for (int i = 9; i >= 0; --i)
 		{
-			while (--v[i] >= 0)
+			while (--count[i] >= 0)
 				res.push_back(i + '0');
 		}
 		if (res.empty())
@@ -43,9 +43,9 @@ public:
 
 	bool f(int index)
 	{
-		if (v[index] > 0)
+		if (count[index] > 0)
 		{
-			--v[index];
+			--count[index];
 			sum -= index % 3;
 		}
 		return sum % 3 == 0;
@@ -53,5 +53,5 @@ public:
 
 private:
 	int sum;
-	vector<int> v;
+	vector<int> count;
 };

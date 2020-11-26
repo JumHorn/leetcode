@@ -27,15 +27,12 @@ int memdp(int *arr, int N, int d, int index, int *dp)
 
 int maxJumps(int *arr, int arrSize, int d)
 {
-	int N = arrSize;
-	int dp[N];
+	int N = arrSize, res = 1, dp[N];
 	memset(dp, 0, sizeof(dp));
-	int res = 1;
 	for (int i = 0; i < N; ++i)
 	{
 		int val = memdp(arr, N, d, i, dp);
-		if (val > res)
-			res = val;
+		res = max(res, val);
 	}
 	return res;
 }

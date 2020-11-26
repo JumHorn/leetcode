@@ -1,13 +1,13 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-static int sum, size, v[10];
+static int sum, size, count[10];
 
 bool f(int index)
 {
-	if (v[index] > 0)
+	if (count[index] > 0)
 	{
-		--v[index];
+		--count[index];
 		--size;
 		sum -= index;
 	}
@@ -16,12 +16,12 @@ bool f(int index)
 
 char *largestMultipleOfThree(int *digits, int digitsSize)
 {
-	memset(v, 0, sizeof(v));
+	memset(count, 0, sizeof(count));
 	sum = 0;
 	size = digitsSize;
 	for (int i = 0; i < digitsSize; ++i)
 	{
-		++v[digits[i]];
+		++count[digits[i]];
 		sum += digits[i];
 	}
 
@@ -41,7 +41,7 @@ char *largestMultipleOfThree(int *digits, int digitsSize)
 	res[size] = '\0';
 	for (int i = 9, j = 0; i >= 0; --i)
 	{
-		while (--v[i] >= 0)
+		while (--count[i] >= 0)
 			res[j++] = i + '0';
 	}
 	if (res[0] == '0')

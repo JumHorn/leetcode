@@ -2,13 +2,15 @@
 #include <climits>
 using namespace std;
 
-//Definition for a binary tree node.
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class Solution
@@ -31,7 +33,7 @@ public:
 
 	BST postOrder(TreeNode *root, int &res)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return {INT_MIN, INT_MAX, 0};
 		BST left = postOrder(root->left, res);
 		BST right = postOrder(root->right, res);
