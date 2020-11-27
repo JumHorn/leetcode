@@ -7,34 +7,21 @@ class Solution
 public:
 	int numberOfArrays(string s, int k)
 	{
-		int n = s.length();
-		if (s.empty() || s[0] == '0')
-			return 0;
-		vector<int> dp(n + 1);
-		dp[0] = 1;
-		for (int i = 0; i < n; ++i)
+		int N = s.length();
+		vector<int> dp(N + 1);
+		dp[N] = 1;
+		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int j = i; j >= 0; --j)
+			if (s[i] == '0')
+				continue;
+			long val = s[i] - '0';
+			for (int j = i; j < N && val <= k; ++j)
 			{
-				if (s[j] == '0')
-					continue;
-				if (i - j + 1 <= 9 && stoi(s.substr(j, i - j + 1)) <= k)
-					dp[i + 1] = (dp[i + 1] + dp[j]) % MOD;
-				else
-					break;
+				dp[i] = (dp[i] + dp[j + 1]) % MOD;
+				val = val * 10 + s[j + 1] - '0';
 			}
-			if (!checkValid(dp, i))
-				return 0;
 		}
-		return dp.back();
-	}
-
-	bool checkValid(vector<int> &dp, int index)
-	{
-		for (int i = index; i >= max(0, index - 9); --i)
-			if (dp[i] != 0)
-				return true;
-		return false;
+		return dp[0];
 	}
 
 private:
