@@ -8,9 +8,10 @@ public:
 	int maxSatisfaction(vector<int> &satisfaction)
 	{
 		sort(satisfaction.begin(), satisfaction.end());
-		int index = binarySearch(satisfaction), n = satisfaction.size();
+		//lower_bound too slow,so I implement binarySearch
+		int index = binarySearch(satisfaction), N = satisfaction.size();
 		int sum = 0, res = 0;
-		for (int i = index; i < n; ++i)
+		for (int i = index; i < N; ++i)
 		{
 			res += satisfaction[i] * (i - index + 1);
 			sum += satisfaction[i];
@@ -35,10 +36,10 @@ public:
 		while (lo < hi)
 		{
 			int mi = (hi - lo) / 2 + lo;
-			if (satisfaction[mi] >= 0)
-				hi = mi;
-			else
+			if (satisfaction[mi] < 0)
 				lo = mi + 1;
+			else
+				hi = mi;
 		}
 		return lo;
 	}

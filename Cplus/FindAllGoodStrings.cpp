@@ -31,7 +31,7 @@ public:
 		int res = 0;
 		char from = low ? s1[n] : 'a';
 		char to = up ? s2[n] : 'z';
-		for (char c = from; c <= to; c++)
+		for (char c = from; c <= to; ++c)
 		{
 			int jump = k;
 			while (jump > 0 && c != evil[jump])

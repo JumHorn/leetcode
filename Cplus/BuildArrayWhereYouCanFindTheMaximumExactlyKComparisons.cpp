@@ -21,7 +21,7 @@ public:
 			return k == 0 ? 1 : 0;
 		if (dp[n][k][val] != -1)
 			return dp[n][k][val];
-		int res = ((long)memdp(n - 1, m, k, val, dp) * (long)val) % MOD;
+		int res = ((long)memdp(n - 1, m, k, val, dp) * val) % MOD;
 		if (k == 0)
 			return res;
 		for (int i = val + 1; i <= m; ++i)

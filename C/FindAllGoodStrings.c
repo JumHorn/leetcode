@@ -12,7 +12,7 @@ int memdp(char *s1, char *s2, char *evil, int n, int k, int i, int j, int up, in
 	char from = low ? s1[i] : 'a';
 	char to = up ? s2[i] : 'z';
 	int res = 0;
-	for (char c = from; c <= to; c++)
+	for (char c = from; c <= to; ++c)
 	{
 		int jump = j;
 		while (jump > 0 && evil[jump] != c)

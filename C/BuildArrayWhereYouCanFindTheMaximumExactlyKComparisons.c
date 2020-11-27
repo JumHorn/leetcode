@@ -13,8 +13,7 @@ int numOfArrays(int n, int m, int k)
 		{
 			for (int l = 1; l <= m; ++l)
 			{
-				for (int t = 1; t <= l; ++t)
-					dp[i][j][l] = (dp[i][j][l] + dp[i - 1][j][l]) % MOD;
+				dp[i][j][l] = (dp[i][j][l] + (long)dp[i - 1][j][l] * l) % MOD;
 				for (int t = l + 1; t <= m && j < k; ++t)
 					dp[i][j + 1][t] = (dp[i][j + 1][t] + dp[i - 1][j][l]) % MOD;
 			}

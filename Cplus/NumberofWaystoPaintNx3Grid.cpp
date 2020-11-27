@@ -1,5 +1,10 @@
+#include <algorithm>
 #include <vector>
 using namespace std;
+
+/*
+general purples algorithm
+*/
 
 class Solution
 {
@@ -29,16 +34,16 @@ public:
 			}
 		}
 		//dp
-		vector<int> dp(size, 1);
+		vector<int> dp(size, 1), next_dp(size);
 		for (int i = 1; i < n; ++i)
 		{
-			vector<int> tmp(size);
+			fill(next_dp.begin(), next_dp.end(), 0);
 			for (int j = 0; j < size; ++j)
 			{
 				for (int k = 0; k < (int)state[j].size(); ++k)
-					tmp[state[j][k]] = (tmp[state[j][k]] + dp[j]) % MOD;
+					next_dp[state[j][k]] = (next_dp[state[j][k]] + dp[j]) % MOD;
 			}
-			dp = tmp;
+			copy(next_dp.begin(), next_dp.end(), dp.begin());
 		}
 		int res = 0;
 		for (auto n : dp)
@@ -50,8 +55,10 @@ private:
 	bool transState(vector<int> &a, vector<int> &b)
 	{
 		for (int i = 0; i < (int)a.size(); ++i)
+		{
 			if (a[i] == b[i])
 				return false;
+		}
 		return true;
 	}
 
