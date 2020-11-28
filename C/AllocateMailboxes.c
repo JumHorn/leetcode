@@ -19,20 +19,20 @@ int minDistance(int *houses, int housesSize, int k)
 	memset(dp, 1 << 6, sizeof(dp));
 	int cost[N][N];
 	memset(cost, 0, sizeof(cost));
-	for (int l = 1; l < N; ++l)
+	for (int i = N - 1; i >= 0; --i)
 	{
-		for (int i = 0, j = l; j < N; ++i, ++j)
+		for (int j = i + 1; j < N; ++j)
 			cost[i][j] = cost[i + 1][j - 1] + houses[j] - houses[i];
 	}
 	//dp
 	for (int i = 0; i <= k; ++i)
 		dp[0][i] = 0;
-	for (int l = 1; l <= k; ++l)
+	for (int l = 0; l < k; ++l)
 	{
-		for (int i = 0; i < N; ++i)
+		for (int j = 0; j < N; ++j)
 		{
-			for (int j = 0; j <= i; ++j)
-				dp[i + 1][l] = min(dp[i + 1][l], dp[j][l - 1] + cost[j][i]);
+			for (int i = 0; i <= j; ++i)
+				dp[j + 1][l + 1] = min(dp[j + 1][l + 1], dp[i][l] + cost[i][j]);
 		}
 	}
 	return dp[N][k];
