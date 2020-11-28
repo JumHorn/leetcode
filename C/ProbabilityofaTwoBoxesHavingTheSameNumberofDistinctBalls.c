@@ -31,8 +31,8 @@ double getProbability(int *balls, int ballsSize)
 	{
 		int b = balls[k];
 		sum += b;
-		double ndp[2 * m + 1][S / 2 + 1];
-		memset(ndp, 0, sizeof(ndp));
+		double next_dp[2 * m + 1][S / 2 + 1];
+		memset(next_dp, 0, sizeof(next_dp));
 		for (int i = 0; i <= b; ++i)
 		{
 			for (int j = 0; j < 2 * m + 1; ++j)
@@ -46,12 +46,12 @@ double getProbability(int *balls, int ballsSize)
 					if (nk <= S / 2 && nr <= S / 2)
 					{
 						int nj = (i == 0) ? j - 1 : (i == b) ? j + 1 : j;
-						ndp[nj][nk] += dp[j][k] * C[b][i];
+						next_dp[nj][nk] += dp[j][k] * C[b][i];
 					}
 				}
 			}
 		}
-		memcpy(dp, ndp, sizeof(dp));
+		memcpy(dp, next_dp, sizeof(dp));
 	}
 	return dp[m][S / 2] / C[S][S / 2];
 }

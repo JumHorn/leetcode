@@ -7,12 +7,12 @@ class Solution
 public:
 	int ways(vector<string> &pizza, int k)
 	{
-		int m = pizza.size(), n = pizza[0].length();
-		vector<vector<vector<int>>> dp(m + 1, vector<vector<int>>(n + 1, vector<int>(k + 1, -1)));
-		vector<vector<int>> count(m + 1, vector<int>(n + 1));
-		for (int i = 0; i < m; ++i)
+		int M = pizza.size(), N = pizza[0].length();
+		vector<vector<vector<int>>> dp(M + 1, vector<vector<int>>(N + 1, vector<int>(k + 1, -1)));
+		vector<vector<int>> count(M + 1, vector<int>(N + 1));
+		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < n; ++j)
+			for (int j = 0; j < N; ++j)
 				count[i + 1][j + 1] = (count[i][j + 1] + count[i + 1][j] - count[i][j] + (pizza[i][j] == 'A' ? 1 : 0));
 		}
 		return memdp(count, 0, 0, k, dp);

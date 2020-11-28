@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,8 +26,8 @@ char *largestNumber(int *cost, int costSize, int target)
 				continue;
 			if (dp[i][0] == '\0' || strlen(dp[i - cost[j]]) >= strlen(dp[i]))
 			{
-				strcpy(dp[i], dp[i - cost[j]]);
-				strcat(dp[i], arr[j]);
+				int size = sprintf(dp[i], "%s", dp[i - cost[j]]);
+				strcpy(&dp[i][size], arr[j]);
 			}
 		}
 		if (dp[i][0] == '\0')
