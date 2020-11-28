@@ -2,81 +2,57 @@
 #include <vector>
 using namespace std;
 
+/*
+dp[m][k] saves number of cases with equal number of colors in both boxes and k balls in the first box
+and dp[m-x][k] saves number of cases where first box has x less colors, and dp[m+x][k] saves number of cases where first box has x more colors
+*/
+
 class Solution
 {
 public:
-	Solution() : cache(50, vector<int>(10, -1))
-	{
-	}
-
 	double getProbability(vector<int> &balls)
 	{
-		int sum = accumulate(balls.begin(), balls.end(), 0);
 		int N = balls.size();
-		vector<int> aBox(N), bBox(N);
-		double all = permutation(balls, sum);
-		double possible = dfs(balls, 0, sum, aBox, bBox);
-		return possible * 1.0 / all;
-	}
+		int S = accumulate(balls.begin(), balls.end(), 0);
 
-	double dfs(vector<int> &ball, int index, int sum, vector<int> &aBox, vector<int> &bBox)
-	{
-		int suma = accumulate(aBox.begin(), aBox.end(), 0);
-		int sumb = accumulate(bBox.begin(), bBox.end(), 0);
-		// invalid split because either `a` or `b` takes up more than half of the balls.
-		if (suma * 2 > sum || sumb * 2 > sum)
-			return 0;
-		int N = ball.size();
-		if (index >= N)
+		//combination table
+		vector<vector<double>> combination(S + 1, vector<double>(S / 2 + 1));
+		combination[0][0] = 1;
+		for (int i = 1; i < S + 1; ++i)
 		{
-			int colorABox = 0, colorBBox = 0;
-			for (int i = 0; i < N; ++i)
+			combination[i][0] = 1;
+			for (int j = 1; j < S / 2 + 1; ++j)
+				combination[i][j] = combination[i - 1][j] + combination[i - 1][j - 1];
+		}
+
+		//dp
+		vector<vector<double>> dp(2 * N + 1, vector<double>(S / 2 + 1));
+		dp[N][0] = 1; //dp begins from this point
+		int sum = 0;
+		for (auto b : balls) //different color balls
+		{
+			sum += b;
+			vector<vector<double>> next_dp(2 * N + 1, vector<double>(S / 2 + 1));
+			for (int i = 0; i <= b; ++i) //distribute balls to each box
 			{
-				colorABox += aBox[i] > 0 ? 1 : 0;
-				colorBBox += bBox[i] > 0 ? 1 : 0;
+				for (int j = 0; j < 2 * N + 1; ++j) //color diff
+				{
+					for (int k = 0; k < S / 2 + 1; ++k) // first box ball count
+					{
+						if (dp[j][k] == 0)
+							continue;
+						int ballCount = k + i;
+						int other = sum - ballCount;
+						if (ballCount <= S / 2 && other <= S / 2)
+						{
+							int colorDiff = (i == 0) ? j - 1 : (i == b) ? j + 1 : j;
+							next_dp[colorDiff][ballCount] += dp[j][k] * combination[b][i];
+						}
+					}
+				}
 			}
-			// invalid split because `a` and `b` don't have the same number of distinct colors.
-			if (colorABox != colorBBox)
-				return 0;
-			return permutation(aBox, sum / 2) * permutation(bBox, sum / 2);
+			dp = next_dp;
 		}
-
-		// try different splits at the `i`-th element, i.e. a[i] + b[i] = A[i]
-		double res = 0;
-		for (int i = 0; i <= ball[index]; ++i)
-		{
-			int a = aBox[index], b = bBox[index];
-			aBox[index] = i;
-			bBox[index] = ball[index] - i;
-			res += dfs(ball, index + 1, sum, aBox, bBox);
-			aBox[index] = a;
-			bBox[index] = b;
-		}
-		return res;
+		return dp[N][S / 2] / combination[S][S / 2];
 	}
-
-	double permutation(vector<int> &arr, int sum)
-	{
-		double res = 1;
-		for (int i = 0; i < (int)arr.size(); ++i)
-		{
-			res *= C(sum, arr[i]);
-			sum -= arr[i];
-		}
-		return res;
-	}
-
-	int C(int n, int m) //combination C(n,m)=C(n-1,m)+C(n-1,m-1)
-	{
-		if (cache[n][m] != -1)
-			return cache[n][m];
-		if (n == m || m == 0)
-			return 1;
-		if (m == 1)
-			return n;
-		return cache[n][m] = C(n - 1, m) + C(n - 1, m - 1);
-	}
-
-private:
-	vector<vector<int>> cache;
 };
