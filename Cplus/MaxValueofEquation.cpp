@@ -8,10 +8,10 @@ class Solution
 public:
 	int findMaxValueOfEquation(vector<vector<int>> &points, int k)
 	{
-		int res = INT_MIN, n = points.size();
+		int res = INT_MIN, N = points.size();
 		deque<int> q;
 		q.push_back(0);
-		for (int i = 1; i < n; ++i)
+		for (int i = 1; i < N; ++i)
 		{
 			while (!q.empty() && points[i][0] - points[q.front()][0] > k)
 				q.pop_front();

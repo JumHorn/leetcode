@@ -9,15 +9,15 @@ public:
 	vector<string> maxNumOfSubstrings(string s)
 	{
 		vector<int> left(26), right(26);
-		int n = s.length();
-		for (int i = 0; i < n; ++i)
+		int N = s.length();
+		for (int i = 0; i < N; ++i)
 			right[s[i] - 'a'] = i;
-		for (int i = n - 1; i >= 0; --i)
+		for (int i = N - 1; i >= 0; --i)
 			left[s[i] - 'a'] = i;
 
 		vector<string> res(1);
-		int last_right = n;
-		for (int i = 0; i < n; ++i)
+		int last_right = N;
+		for (int i = 0; i < N; ++i)
 		{
 			if (i == left[s[i] - 'a'])
 			{

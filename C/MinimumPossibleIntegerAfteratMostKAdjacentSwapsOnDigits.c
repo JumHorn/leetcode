@@ -50,25 +50,25 @@ int cmp(const void *lhs, const void *rhs)
 
 char *minInteger(char *num, int k)
 {
-	int n = strlen(num);
-	if (k >= n * (n - 1) / 2)
+	int N = strlen(num);
+	if (k >= N * (N - 1) / 2)
 	{
-		qsort(num, n, sizeof(char), cmp);
+		qsort(num, N, sizeof(char), cmp);
 		return num;
 	}
-	int N = n + 1, tree[N];
+	int N = N + 1, tree[N];
 	memset(tree, 0, sizeof(tree));
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < N; ++i)
 		update(tree, N, i + 1, 1);
-	int count[10][n], countColSize[10] = {0};
-	for (int i = n - 1; i >= 0; --i)
+	int count[10][N], countColSize[10] = {0};
+	for (int i = N - 1; i >= 0; --i)
 	{
 		int index = num[i] - '0';
 		count[index][countColSize[index]++] = i;
 	}
-	char *res = (char *)malloc(sizeof(char) * (n + 1));
-	res[n] = '\0';
-	int seen[n], resSize = 0;
+	char *res = (char *)malloc(sizeof(char) * (N + 1));
+	res[N] = '\0';
+	int seen[N], resSize = 0;
 	memset(seen, 0, sizeof(seen));
 	bool flag = true;
 	for (int c = k; c > 0 && flag;)
@@ -92,7 +92,7 @@ char *minInteger(char *num, int k)
 			}
 		}
 	}
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < N; ++i)
 	{
 		if (seen[i] == 0)
 			res[resSize++] = num[i];

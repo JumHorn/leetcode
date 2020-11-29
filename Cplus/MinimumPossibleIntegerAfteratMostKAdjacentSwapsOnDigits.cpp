@@ -60,20 +60,20 @@ class Solution
 public:
 	string minInteger(string num, int k)
 	{
-		int n = num.length();
-		if (k >= n * (n - 1) / 2)
+		int N = num.length();
+		if (k >= N * (N - 1) / 2)
 		{
 			sort(num.begin(), num.end());
 			return num;
 		}
-		Fenwick bit(n);
-		for (int i = 0; i < n; ++i)
+		Fenwick bit(N);
+		for (int i = 0; i < N; ++i)
 			bit.update(i, 1);
 		vector<vector<int>> count(10);
-		for (int i = n - 1; i >= 0; --i)
+		for (int i = N - 1; i >= 0; --i)
 			count[num[i] - '0'].push_back(i);
 		string res;
-		vector<int> seen(n);
+		vector<int> seen(N);
 		bool flag = true;
 		for (int c = k; c > 0 && flag;)
 		{
@@ -96,7 +96,7 @@ public:
 				}
 			}
 		}
-		for (int i = 0; i < n; ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			if (seen[i] == 0)
 				res.push_back(num[i]);
