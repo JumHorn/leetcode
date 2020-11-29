@@ -1,44 +1,32 @@
+#include <string.h>
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int func(int* arr, int l, int r)
+int closestToTarget(int *arr, int arrSize, int target)
 {
-	if (r < l)
-		return -1e9;
-	int res = arr[l];
-	for (int i = l + 1; i <= r; ++i)
-		res &= arr[i];
-	return res;
-}
-
-int closestToTarget(int* arr, int arrSize, int target)
-{
-	int res = target + 1e9;
+	int res = abs(arr[0] - target);
+	int valid[20]; //at most 20 values in result set
+	int validSize = 1;
+	valid[0] = arr[0];
 	for (int i = 0; i < arrSize; ++i)
 	{
-		int val = func(arr, i, arrSize - 1);
-		if (val >= target)
-			res = min(res, val - target);
-		else if (arr[i] <= target)
-			res = min(res, target - arr[i]);
-		else
+		int next_valid[20];
+		int size = 1;
+		next_valid[0] = arr[i];
+		res = min(res, fabs(arr[i] - target));
+		for (int j = 0; j < validSize; j++)
 		{
-			//binary search
-			int lo = i, hi = arrSize;
-			while (lo < hi)
-			{
-				int mi = (hi - lo) / 2 + lo;
-				val = func(arr, i, mi);
-				if (val >= target)
-					lo = mi + 1;
-				else
-					hi = mi;
-			}
-			val = func(arr, i, lo - 1);
-			res = min(res, val - target);
-			val = func(arr, i, lo);
-			res = min(res, target - val);
+			next_valid[size++] = valid[j] & arr[i];
+			res = min(res, fabs((valid[j] & arr[i]) - target));
 		}
+		int unique = 0;
+		for (int j = 1; j < size; ++j) //decreasing array unique
+		{
+			if (next_valid[unique] != next_valid[j])
+				next_valid[++unique] = next_valid[j];
+		}
+		validSize = unique + 1;
+		memcpy(valid, next_valid, sizeof(valid));
 	}
 	return res;
 }
