@@ -8,7 +8,6 @@ public:
 	vector<int> countSubgraphsForEachDiameter(int n, vector<vector<int>> &edges)
 	{
 		vector<int> res(n - 1);
-		unordered_set<int> seen; //record subtree which is counted
 		vector<vector<int>> graph(n);
 		for (auto &edge : edges)
 		{
@@ -19,7 +18,7 @@ public:
 		{
 			int seen = ~mask;
 			auto node = getHeight(graph, getNode(mask), seen);
-			if (node.first > 0 && seen == -1)
+			if (node.first > 0 && seen == -1) //ensure all nodes traversed
 				++res[node.first - 1];
 		}
 		return res;
