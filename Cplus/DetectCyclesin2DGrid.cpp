@@ -7,38 +7,41 @@ public:
 	bool containsCycle(vector<vector<char>> &grid)
 	{
 		int M = grid.size(), N = grid[0].size();
-		vector<vector<int>> newgrid(M, vector<int>(N));
-		for (int i = 0; i < M; ++i)
-		{
-			for (int j = 0; j < N; ++j)
-				newgrid[i][j] = grid[i][j] - 'a';
-		}
-		int count = 30, base = 30;
+		vector<vector<int>> seen(M, vector<int>(N));
+		int mark = 1;
 		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; ++j)
 			{
-				if (newgrid[i][j] < 30)
+				if (seen[i][j] == 0)
 				{
-					if (dfs(newgrid, newgrid[i][j], base, base, count, i, j))
+					if (dfs(grid, seen, -1, i, j, grid[i][j], mark))
 						return true;
-					base = ++count;
+					++mark;
 				}
 			}
 		}
 		return false;
 	}
 
-	bool dfs(vector<vector<int>> &grid, int c, int base, int old, int &count, int row, int col)
+	bool dfs(vector<vector<char>> &grid, vector<vector<int>> &seen, int parent, int row, int col, char color, int mark)
 	{
 		int M = grid.size(), N = grid[0].size();
 		if (row < 0 || row >= M || col < 0 || col >= N)
 			return false;
-		if (grid[row][col] >= base && grid[row][col] - old >= 4)
-			return true;
-		if (grid[row][col] != c)
+		if (grid[row][col] != color)
 			return false;
-		grid[row][col] = ++count;
-		return dfs(grid, c, base, grid[row][col], count, row - 1, col) || dfs(grid, c, base, grid[row][col], count, row + 1, col) || dfs(grid, c, base, grid[row][col], count, row, col - 1) || dfs(grid, c, base, grid[row][col], count, row, col + 1);
+		if (seen[row][col] != 0)
+			return seen[row][col] == mark;
+		seen[row][col] = mark;
+		bool res = false;
+		int path[5] = {-1, 0, 1, 0, -1};
+		for (int i = 0; i < 4; ++i)
+		{
+			int x = row + path[i], y = col + path[i + 1];
+			if (parent != x * N + y)
+				res = res || dfs(grid, seen, row * N + col, x, y, color, mark);
+		}
+		return res;
 	}
 };
