@@ -7,75 +7,56 @@ public:
 	int minDays(vector<vector<int>> &grid)
 	{
 		int M = grid.size(), N = grid[0].size();
-		vector<vector<int>> graph(M * N, vector<int>(M * N));
-		int start = -1, count = 0;
+		int land1 = -1, land2 = -1, count = 0;
 		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; ++j)
 			{
 				if (grid[i][j] == 0)
 					continue;
-				start = i * N + j;
+				if (land1 == -1)
+					land1 = i * N + j;
+				else if (land2 == -1)
+					land2 = i * N + j;
 				++count;
-				int path[5] = {-1, 0, 1, 0, -1};
-				for (int k = 0; k < 4; ++k)
+			}
+		}
+		if (count == 1)
+			return 1;
+
+		vector<vector<int>> seen(M, vector<int>(N));
+		if (connectedCount(grid, land1 / N, land1 % N, seen) != count) //already disconnected
+			return 0;
+		for (int i = 0; i < M; ++i)
+		{
+			for (int j = 0; j < N; ++j)
+			{
+				if (grid[i][j] == 1)
 				{
-					int dx = i + path[k], dy = j + path[k + 1];
-					if (dx < 0 || dx >= M || dy < 0 || dy >= N)
-						continue;
-					if (grid[dx][dy] == 0)
-						continue;
-					graph[i * N + j][dx * N + dy] = 1;
-					graph[dx * N + dy][i * N + j] = 1;
+					vector<vector<int>> seen(M, vector<int>(N));
+					grid[i][j] = 0;
+					int land = (land1 == i * N + j ? land2 : land1);
+					if (connectedCount(grid, land / N, land % N, seen) != count - 1) //already disconnected
+						return 1;
+					grid[i][j] = 1;
 				}
 			}
 		}
-		if (start == -1)
-			return 0;
-		vector<int> dsc(M * N), low(M * N), seen(M * N);
-		if (dfs(graph, start, seen) != count)
-			return 0;
-		if (count == 2)
-			return 2;
-		int time = 0;
-		if (dfs(graph, start, dsc, low, time, -1))
-			return 1;
 		return 2;
 	}
 
-	bool dfs(vector<vector<int>> &graph, int at, vector<int> &dsc, vector<int> &low, int &time, int parent)
+	int connectedCount(vector<vector<int>> &grid, int row, int col, vector<vector<int>> &seen)
 	{
-		if (dsc[at] != 0)
-			return false;
-		dsc[at] = low[at] = ++time;
-		for (int to = 0; to < (int)graph[at].size(); ++to)
-		{
-			if (graph[at][to] == 0)
-				continue;
-			if (dsc[to] == 0)
-			{
-				if (dfs(graph, to, dsc, low, time, at))
-					return true;
-				low[at] = min(low[at], low[to]);
-				if (low[to] > dsc[at])
-					return true;
-			}
-			else if (parent != to)
-				low[at] = min(low[at], dsc[to]);
-		}
-		return false;
-	}
-
-	int dfs(vector<vector<int>> &graph, int at, vector<int> &seen)
-	{
-		if (seen[at] == 1)
-			return 0;
-		seen[at] = 1;
+		int M = grid.size(), N = grid[0].size();
+		seen[row][col] = 1;
+		int path[5] = {-1, 0, 1, 0, -1};
 		int res = 1;
-		for (int to = 0; to < (int)graph[at].size(); ++to)
+		for (int i = 0; i < 4; ++i)
 		{
-			if (graph[at][to] != 0)
-				res += dfs(graph, to, seen);
+			int dx = row + path[i], dy = col + path[i + 1];
+			if (dx >= 0 && dx < M && dy >= 0 && dy < N &&
+				grid[dx][dy] != 0 && seen[dx][dy] == 0)
+				res += connectedCount(grid, dx, dy, seen);
 		}
 		return res;
 	}
