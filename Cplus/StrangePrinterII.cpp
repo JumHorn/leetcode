@@ -8,72 +8,54 @@ public:
 	bool isPrintable(vector<vector<int>> &targetGrid)
 	{
 		int M = targetGrid.size(), N = targetGrid[0].size();
-		while (true)
+		vector<vector<int>> rect(61, {M, N, 0, 0});
+		unordered_set<int> color;
+		for (int i = 0; i < M; ++i)
 		{
-			unordered_set<int> turn = getTurn(targetGrid);
-			if (turn.empty())
-				return true;
-			bool success = false;
-			for (auto t : turn)
+			for (int j = 0; j < N; ++j)
 			{
-				int left = N, right = 0, top = 0, bottom = M;
-				for (int i = 0; i < M; ++i)
-				{
-					for (int j = 0; j < N; ++j)
-					{
-						if (targetGrid[i][j] == t)
-						{
-							left = min(left, j);
-							right = max(right, j);
-							top = max(top, i);
-							bottom = min(bottom, i);
-						}
-					}
-				}
-				bool flag = true;
-				for (int i = bottom; i <= top; ++i)
-				{
-					for (int j = left; j <= right; ++j)
-					{
-						if (targetGrid[i][j] != t && targetGrid[i][j] != -1)
-							flag = false;
-					}
-				}
-				if (flag)
-				{
-					success = true;
-					color(targetGrid, t);
-				}
+				int c = targetGrid[i][j];
+				color.insert(c);
+				rect[c][0] = min(rect[c][0], i);
+				rect[c][1] = min(rect[c][1], j);
+				rect[c][2] = max(rect[c][2], i);
+				rect[c][3] = max(rect[c][3], j);
 			}
-			if (success == false)
+		}
+		while (!color.empty())
+		{
+			unordered_set<int> next_color;
+			for (auto c : color)
+			{
+				if (!checkAndColor(targetGrid, rect[c][0], rect[c][1], rect[c][2], rect[c][3], c))
+					next_color.insert(c);
+			}
+			if (next_color.size() == color.size())
 				return false;
+			color.swap(next_color);
 		}
-		return false;
+		return true;
 	}
 
-	void color(vector<vector<int>> &targetGrid, int turn)
+	//if true then clear the color
+	bool checkAndColor(vector<vector<int>> &grid, int left, int bottom, int right, int top, int color)
 	{
-		for (auto &v : targetGrid)
+		for (int i = left; i <= right; ++i)
 		{
-			for (auto &n : v)
+			for (int j = bottom; j <= top; ++j)
 			{
-				if (n == turn)
-					n = -1;
+				if (grid[i][j] != -1 && grid[i][j] != color)
+					return false;
 			}
 		}
-	}
-
-	unordered_set<int> getTurn(vector<vector<int>> &targetGrid)
-	{
-		unordered_set<int> res;
-		for (auto &v : targetGrid)
+		for (int i = left; i <= right; ++i)
 		{
-			for (auto n : v)
+			for (int j = bottom; j <= top; ++j)
 			{
-				if (n != -1)
-					res.insert(n);
+				if (grid[i][j] == color)
+					grid[i][j] = -1;
 			}
 		}
-		return res;
+		return true;
 	}
 };
