@@ -11,9 +11,9 @@ int stoneGameV(int *stoneValue, int stoneValueSize)
 	prefixsum[0] = 0;
 	for (int i = 0; i < N; ++i)
 		prefixsum[i + 1] = prefixsum[i] + stoneValue[i];
-	for (int n = 1; n < N; ++n)
+	for (int i = N - 1; i >= 0; --i)
 	{
-		for (int i = 0, j = n; j < N; ++i, ++j)
+		for (int j = i + 1; j < N; ++j)
 		{
 			for (int k = i; k < j; ++k)
 			{
