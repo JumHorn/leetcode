@@ -41,9 +41,7 @@ public:
 		for (int i = threshold + 1; i <= n; ++i)
 		{
 			for (int j = i * 2, k = 2; j <= n; j = i * (++k))
-			{
 				dsu.Union(i, j);
-			}
 		}
 
 		vector<bool> res;

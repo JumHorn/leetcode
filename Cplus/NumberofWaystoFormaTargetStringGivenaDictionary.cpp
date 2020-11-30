@@ -1,5 +1,4 @@
 #include <string>
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -9,12 +8,11 @@ public:
 	int numWays(vector<string> &words, string target)
 	{
 		int M = target.length(), N = words[0].length();
-		int P = words.size();
-		vector<unordered_map<char, int>> word(N);
+		vector<vector<int>> word(N, vector<int>(26));
 		for (int i = 0; i < (int)words.size(); ++i)
 		{
 			for (int j = 0; j < N; ++j)
-				++word[j][words[i][j]];
+				++word[j][words[i][j] - 'a'];
 		}
 		vector<vector<long>> dp(M + 1, vector<long>(N + 1));
 		for (int j = 0; j <= N; ++j)
@@ -22,16 +20,7 @@ public:
 		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; ++j)
-			{
-				if (word[j].find(target[i]) != word[j].end())
-				{
-					dp[i + 1][j + 1] = (dp[i + 1][j + 1] + dp[i + 1][j] + dp[i][j] * word[j][target[i]] % MOD) % MOD;
-				}
-				else
-				{
-					dp[i + 1][j + 1] = (dp[i + 1][j + 1] + dp[i + 1][j]) % MOD;
-				}
-			}
+				dp[i + 1][j + 1] = (dp[i + 1][j + 1] + dp[i + 1][j] + dp[i][j] * word[j][target[i] - 'a'] % MOD) % MOD;
 		}
 		return dp[M][N];
 	}
