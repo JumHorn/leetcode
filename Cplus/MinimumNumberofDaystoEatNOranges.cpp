@@ -4,20 +4,20 @@ using namespace std;
 class Solution
 {
 public:
-	int memdp(int n, unordered_map<int, int>& cache)
+	int memdp(int n, unordered_map<int, int> &dp)
 	{
 		if (n == 0)
 			return 0;
-		if (cache.find(n) != cache.end())
-			return cache[n];
-		int res = 1 + n % 2 + memdp(n / 2, cache);
-		res = min(res, 1 + n % 3 + memdp(n / 3, cache));
-		return cache[n] = res;
+		if (dp.find(n) != dp.end())
+			return dp[n];
+		int res = 1 + n % 2 + memdp(n / 2, dp);
+		res = min(res, 1 + n % 3 + memdp(n / 3, dp));
+		return dp[n] = res;
 	}
 
 	int minDays(int n)
 	{
-		unordered_map<int, int> cache;
-		return memdp(n, cache) - 1;
+		unordered_map<int, int> dp;
+		return memdp(n, dp) - 1;
 	}
 };

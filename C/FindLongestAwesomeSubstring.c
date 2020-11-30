@@ -3,14 +3,13 @@
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int longestAwesome(char* s)
+int longestAwesome(char *s)
 {
-	int dp[1024], len = strlen(s);
+	int dp[1024], N = strlen(s);
 	dp[0] = -1;
-	for (int i = 1; i < 1024; ++i)
-		dp[i] = len;
+	memset(dp, 1 << 6, sizeof(dp));
 	int res = 0, mask = 0;
-	for (int i = 0; i < len; ++i)
+	for (int i = 0; i < N; ++i)
 	{
 		int bit = s[i] - '0';
 		mask ^= 1 << bit;

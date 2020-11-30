@@ -26,8 +26,8 @@ public:
 
 	int countRoutes(vector<int> &locations, int start, int finish, int fuel)
 	{
-		int n = locations.size();
-		vector<vector<int>> dp(n, vector<int>(fuel + 1, -1));
+		int N = locations.size();
+		vector<vector<int>> dp(N, vector<int>(fuel + 1, -1));
 		return memdp(locations, start, finish, fuel, dp);
 	}
 

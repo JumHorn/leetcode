@@ -7,7 +7,7 @@ public:
 	int minCost(int n, vector<int> &cuts)
 	{
 		int N = cuts.size();
-		vector<vector<int>> dp(N + 1, vector<int>(N + 1, -1));
+		vector<vector<int>> dp(N, vector<int>(N, -1));
 		sort(cuts.begin(), cuts.end());
 		return memdp(cuts, 0, N - 1, 0, n, dp);
 	}
