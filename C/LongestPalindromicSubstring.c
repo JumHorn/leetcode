@@ -3,25 +3,25 @@
 
 char *longestPalindrome(char *s)
 {
-	int n = strlen(s);
-	if (n == 0)
+	int N = strlen(s);
+	if (N == 0)
 		return "";
-	bool dp[n][n];
-	for (int i = 0; i < n; ++i)
+	bool dp[N][N];
+	for (int i = 0; i < N; ++i)
 		dp[i][i] = true;
-	for (int i = 0; i < n - 1; ++i)
+	for (int i = 0; i < N - 1; ++i)
 		dp[i][i + 1] = (s[i] == s[i + 1]);
-	for (int len = 2; len < n; len++)
+	for (int i = N - 3; i >= 0; --i)
 	{
-		for (int i = 0, j = len; j < n; i++, j++)
+		for (int j = i + 2; j < N; ++j)
 			dp[i][j] = (s[i] == s[j] && dp[i + 1][j - 1]);
 	}
 
 	char *res = NULL;
 	int len = 0;
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < N; ++i)
 	{
-		for (int j = i; j < n; ++j)
+		for (int j = i; j < N; ++j)
 		{
 			if (dp[i][j] && len < j - i + 1)
 			{

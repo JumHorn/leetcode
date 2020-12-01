@@ -14,11 +14,9 @@ int threeSumClosest(int *nums, int numsSize, int target)
 {
 	qsort(nums, numsSize, sizeof(int), cmp);
 	int diff = INT_MAX, res = 0;
-	for (int i = 0, pre = INT_MIN; i < numsSize - 2; pre = nums[i++])
+	for (int i = 0; i < numsSize - 2; ++i)
 	{
-		if (nums[i] == pre)
-			continue;
-		//twoSum(nums, numsSize, i + 1, target);
+		//twoSum
 		int j = i + 1, k = numsSize - 1;
 		while (j < k)
 		{
@@ -30,11 +28,7 @@ int threeSumClosest(int *nums, int numsSize, int target)
 				res = sum;
 			}
 			if (sum <= target)
-			{
 				++j;
-				while (j < k && nums[j] == nums[j - 1])
-					++j;
-			}
 			else
 				--k;
 		}

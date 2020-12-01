@@ -8,15 +8,23 @@ class Solution
 public:
 	string longestPalindrome(string s)
 	{
-		int len = s.length();
-		vector<vector<int>> dp(len, vector<int>(len, -1));
-		int m = 0, n = 0;
-		for (int i = 0; i < len; ++i)
+		int N = s.length();
+		vector<vector<bool>> dp(N, vector<bool>(N));
+		for (int i = 0; i < N; ++i)
+			dp[i][i] = true;
+		for (int i = 0; i < N - 1; ++i)
+			dp[i][i + 1] = (s[i] == s[i + 1]);
+		for (int i = N - 3; i >= 0; --i)
 		{
-			for (int j = i; j < len; ++j)
+			for (int j = i + 2; j < N; ++j)
+				dp[i][j] = (s[i] == s[j] && dp[i + 1][j - 1]);
+		}
+
+		int m = 0, n = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			for (int j = i; j < N; ++j)
 			{
-				if (dp[i][j] == -1)
-					memdp(s, i, j, dp);
 				if (dp[i][j] != 0 && j - i > n - m)
 				{
 					m = i;
@@ -25,17 +33,5 @@ public:
 			}
 		}
 		return s.substr(m, n - m + 1);
-	}
-
-	int memdp(const string &s, int first, int last, vector<vector<int>> &dp)
-	{
-		if (first >= last)
-			return dp[first][last] = 1;
-		if (dp[first][last] != -1)
-			return dp[first][last];
-		if (s[first] != s[last])
-			return dp[first][last] = 0;
-		int res = memdp(s, first + 1, last - 1, dp);
-		return dp[first][last] = res;
 	}
 };

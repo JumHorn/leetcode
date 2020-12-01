@@ -43,8 +43,7 @@ int **threeSum(int *nums, int numsSize, int *returnSize, int **returnColumnSizes
 			{
 				addTriplet(triples, returnSize, nums[i], nums[j], nums[k]);
 
-				++j;
-				while (j < k && nums[j] == nums[j - 1])
+				for (++j; j < k && nums[j] == nums[j - 1];) //skip
 					++j;
 			}
 			else if (sum < 0)
@@ -53,13 +52,14 @@ int **threeSum(int *nums, int numsSize, int *returnSize, int **returnColumnSizes
 				--k;
 		}
 	}
+	//malloc res
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
 	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
 	{
-		res[i] = (int *)malloc(sizeof(int) * 3);
-		memcpy(res[i], triples[i], sizeof(int) * 3);
 		(*returnColumnSizes)[i] = 3;
+		res[i] = (int *)malloc(sizeof(int) * (*returnColumnSizes)[i]);
+		memcpy(res[i], triples[i], sizeof(int) * (*returnColumnSizes)[i]);
 	}
 	return res;
 }

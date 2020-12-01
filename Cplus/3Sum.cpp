@@ -23,8 +23,7 @@ public:
 				{
 					res.push_back({nums[i], nums[j], nums[k]});
 
-					++j;
-					while (j < k && nums[j] == nums[j - 1])
+					for (++j; j < k && nums[j] == nums[j - 1];) //skip
 						++j;
 				}
 				else if (sum < 0)

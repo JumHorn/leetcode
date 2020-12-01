@@ -39,7 +39,7 @@ int **fourSum(int *nums, int numsSize, int target, int *returnSize, int **return
 		{
 			if (nums[i] == pre)
 				continue;
-			//twoSum(nums, numsSize, i + 1, -nums[i]);
+			//twoSum
 			int j = i + 1, k = numsSize - 1;
 			while (j < k)
 			{
@@ -48,8 +48,7 @@ int **fourSum(int *nums, int numsSize, int target, int *returnSize, int **return
 				{
 					addTriplet(triples, returnSize, nums[m], nums[i], nums[j], nums[k]);
 
-					++j;
-					while (j < k && nums[j] == nums[j - 1])
+					for (++j; j < k && nums[j] == nums[j - 1];) //skip
 						++j;
 				}
 				else if (sum < target)
@@ -63,9 +62,9 @@ int **fourSum(int *nums, int numsSize, int target, int *returnSize, int **return
 	int **res = (int **)malloc(sizeof(int *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
 	{
-		res[i] = (int *)malloc(sizeof(int) * 4);
-		memcpy(res[i], triples[i], sizeof(int) * 4);
 		(*returnColumnSizes)[i] = 4;
+		res[i] = (int *)malloc(sizeof(int) * (*returnColumnSizes)[i]);
+		memcpy(res[i], triples[i], sizeof(int) * (*returnColumnSizes)[i]);
 	}
 	return res;
 }

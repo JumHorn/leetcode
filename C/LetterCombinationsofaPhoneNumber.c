@@ -1,18 +1,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-void dfs(char **map, char *digits, char *data, int index, int *size, char (*res)[20])
+void dfs(char **map, char *digits, int index, char *instance, char (*res)[20], int *resSize)
 {
 	if (!*digits)
 	{
-		strcpy(res[*size], data);
-		++*size;
+		strcpy(res[*resSize], instance);
+		++*resSize;
 		return;
 	}
 	for (char *p = map[*digits - '0']; *p; ++p)
 	{
-		data[index] = *p;
-		dfs(map, digits + 1, data, index + 1, size, res);
+		instance[index] = *p;
+		dfs(map, digits + 1, index + 1, instance, res, resSize);
 	}
 }
 
@@ -21,21 +21,18 @@ void dfs(char **map, char *digits, char *data, int index, int *size, char (*res)
  */
 char **letterCombinations(char *digits, int *returnSize)
 {
-	static char staticRes[10000][20];
+	static char staticRes[1024][20];
 	char *map[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 	*returnSize = 0;
 	int N = strlen(digits);
 	if (!*digits)
 		return NULL;
-	char data[N + 1];
-	data[N] = '\0';
-	dfs(map, digits, data, 0, returnSize, staticRes);
+	char instance[N + 1];
+	instance[N] = '\0';
+	dfs(map, digits, 0, instance, staticRes, returnSize);
 
 	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (char *)malloc(sizeof(char) * (N + 1));
-		strcpy(res[i], staticRes[i]);
-	}
+		res[i] = strdup(staticRes[i]);
 	return res;
 }

@@ -11,11 +11,9 @@ public:
 	{
 		sort(nums.begin(), nums.end());
 		int res = 0, diff = INT_MAX, N = nums.size();
-		for (int i = 0, pre = INT_MIN; i < N - 2; pre = nums[i++])
+		for (int i = 0; i < N - 2; ++i)
 		{
-			if (nums[i] == pre)
-				continue;
-			//twoSum(nums, N, i + 1, target);
+			//twoSum
 			int j = i + 1, k = N - 1;
 			while (j < k)
 			{
@@ -27,11 +25,7 @@ public:
 					res = sum;
 				}
 				if (sum <= target)
-				{
 					++j;
-					while (j < k && nums[j] == nums[j - 1])
-						++j;
-				}
 				else
 					--k;
 			}

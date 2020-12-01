@@ -22,13 +22,13 @@ public:
 		vector<string> res = {""};
 		for (auto d : digits)
 		{
-			vector<string> old;
+			vector<string> next_res;
 			for (auto c : m[d])
 			{
 				for (auto &str : res)
-					old.push_back(str + c);
+					next_res.push_back(str + c);
 			}
-			res.swap(old);
+			res.swap(next_res);
 		}
 		return res;
 	}
