@@ -1,39 +1,32 @@
+#include <stdlib.h>
+#include <string.h>
 
-void dfs(char *data, int dataSize, int index, int parenthesis, int *size, char (*res)[20])
+void dfs(int n, int mismatch, int index, char *instance, char **res, int *resSize)
 {
-	if (index >= dataSize)
+	if (index >= n)
 	{
-		if (parenthesis == 0)
-		{
-			strcpy(res[*size], data);
-			++*size;
-		}
+		if (mismatch == 0)
+			res[(*resSize)++] = strdup(instance);
 		return;
 	}
-	if (parenthesis > 0)
+	if (mismatch > 0)
 	{
-		data[index] = ')';
-		dfs(data, dataSize, index + 1, parenthesis - 1, size, res);
+		instance[index] = ')';
+		dfs(n, mismatch - 1, index + 1, instance, res, resSize);
 	}
-	data[index] = '(';
-	dfs(data, dataSize, index + 1, parenthesis + 1, size, res);
+	instance[index] = '(';
+	dfs(n, mismatch + 1, index + 1, instance, res, resSize);
 }
+
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
 char **generateParenthesis(int n, int *returnSize)
 {
-	static char staticRes[10000][20];
 	*returnSize = 0;
-	char data[2 * n + 1];
-	data[2 * n] = '\0';
-	dfs(data, 2 * n, 0, 0, returnSize, staticRes);
-
-	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
-	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (char *)malloc(sizeof(char) * (2 * n + 1));
-		strcpy(res[i], staticRes[i]);
-	}
+	char **res = (char **)malloc(sizeof(char *) * 2000);
+	char instance[2 * n + 1];
+	instance[2 * n] = '\0';
+	dfs(2 * n, 0, 0, instance, res, returnSize);
 	return res;
 }

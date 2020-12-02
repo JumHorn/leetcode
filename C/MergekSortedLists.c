@@ -3,10 +3,10 @@
 struct ListNode
 {
 	int val;
-	struct ListNode* next;
+	struct ListNode *next;
 };
 
-struct ListNode* mergeTwoLists(struct ListNode* list0, struct ListNode* list1)
+struct ListNode *mergeTwoLists(struct ListNode *list0, struct ListNode *list1)
 {
 	if (!list0)
 		return list1;
@@ -21,19 +21,19 @@ struct ListNode* mergeTwoLists(struct ListNode* list0, struct ListNode* list1)
 	return list1;
 }
 
-struct ListNode* divide(struct ListNode** lists, int begin, int end)
+struct ListNode *divide(struct ListNode **lists, int first, int last)
 {
-	if (end == begin)
+	if (last == first)
 		return 0;
-	if (end - begin == 1)
-		return lists[begin];
-	int mi = (end - begin) / 2 + begin;
-	struct ListNode* left = divide(lists, begin, mi);
-	struct ListNode* right = divide(lists, mi, end);
+	if (last - first == 1)
+		return lists[first];
+	int mid = (last - first) / 2 + first;
+	struct ListNode *left = divide(lists, first, mid);
+	struct ListNode *right = divide(lists, mid, last);
 	return mergeTwoLists(left, right);
 }
 
-struct ListNode* mergeKLists(struct ListNode** lists, int listsSize)
+struct ListNode *mergeKLists(struct ListNode **lists, int listsSize)
 {
 	return divide(lists, 0, listsSize);
 }

@@ -9,8 +9,7 @@ void reverse(int *arr, int first, int last)
 
 void nextPermutation(int *nums, int numsSize)
 {
-	int i = numsSize;
-	while (--i > 0)
+	for (int i = numsSize - 1; i > 0; --i)
 	{
 		if (nums[i] > nums[i - 1])
 		{

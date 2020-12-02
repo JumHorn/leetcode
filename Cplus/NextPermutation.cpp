@@ -7,8 +7,8 @@ class Solution
 public:
 	void nextPermutation(vector<int> &nums)
 	{
-		int N = nums.size(), i = N;
-		while (--i > 0)
+		int N = nums.size();
+		for (int i = N - 1; i > 0; --i)
 		{
 			if (nums[i] > nums[i - 1])
 			{

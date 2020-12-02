@@ -1,22 +1,22 @@
 #include <stdbool.h>
 
-bool isValid(char* s)
+bool isValid(char *s)
 {
 	int map[128];
 	map[')'] = '(';
 	map['}'] = '{';
 	map[']'] = '[';
-	int i = -1;
-	for (int j = 0; s[j]; ++j)
+	int top = -1; //view s as in-place stack
+	for (int i = 0; s[i]; ++i)
 	{
-		if (s[j] == ')' || s[j] == '}' || s[j] == ']')
+		if (s[i] == ')' || s[i] == '}' || s[i] == ']')
 		{
-			if (i == -1 || s[i] != map[s[j]])
+			if (top == -1 || s[top] != map[s[i]])
 				return false;
-			--i;
+			--top;
 		}
 		else
-			s[++i] = s[j];
+			s[++top] = s[i];
 	}
-	return i == -1;
+	return top == -1;
 }

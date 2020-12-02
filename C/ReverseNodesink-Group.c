@@ -24,10 +24,10 @@ struct ListNode *reverseKGroup(struct ListNode *head, int k)
 		tail = tail->next;
 	if (count == k)
 	{
-		struct ListNode *tmp = reverseKGroup(tail->next, k);
+		struct ListNode *remain = reverseKGroup(tail->next, k);
 		tail->next = 0;
 		res = reverseList(head);
-		head->next = tmp;
+		head->next = remain;
 	}
 	return res;
 }

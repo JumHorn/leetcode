@@ -1,3 +1,4 @@
+#include <stack>
 #include <string>
 #include <unordered_map>
 using namespace std;
@@ -8,18 +9,18 @@ public:
 	bool isValid(string s)
 	{
 		unordered_map<char, char> m = {{')', '('}, {'}', '{'}, {']', '['}};
-		int i = -1;
-		for (int j = 0; j < (int)s.length(); ++j)
+		stack<char> stk;
+		for (auto c : s)
 		{
-			if (s[j] == ')' || s[j] == '}' || s[j] == ']')
+			if (m.find(c) != m.end())
 			{
-				if (i == -1 || s[i] != m[s[j]])
+				if (stk.empty() || stk.top() != m[c])
 					return false;
-				--i;
+				stk.pop();
 			}
 			else
-				s[++i] = s[j];
+				stk.push(c);
 		}
-		return i == -1;
+		return stk.empty();
 	}
 };
