@@ -8,11 +8,11 @@ public:
 	{
 		vector<vector<int>> res;
 		vector<int> data;
-		dfs(res, data, 1, n, k);
+		dfs(1, n, k, data, res);
 		return res;
 	}
 
-	void dfs(vector<vector<int>> &res, vector<int> &data, int start, int n, int k)
+	void dfs(int start, int n, int k, vector<int> &data, vector<vector<int>> &res)
 	{
 		if (k == 0)
 		{
@@ -22,7 +22,7 @@ public:
 		for (int i = start; i <= n - k + 1; ++i)
 		{
 			data.push_back(i);
-			dfs(res, data, i + 1, n, k - 1);
+			dfs(i + 1, n, k - 1, data, res);
 			data.pop_back();
 		}
 	}

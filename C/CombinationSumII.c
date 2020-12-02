@@ -26,20 +26,20 @@ int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize
 }
 /********end of malloc result********/
 
-void addOneResult(int (*staticRes)[30], int *size, int *colSize, int *data, int dataSize)
+void addOneResult(int (*staticRes)[30], int *resSize, int *resColSize, int *data, int dataSize)
 {
-	memcpy(staticRes[*size], data, sizeof(int) * dataSize);
-	colSize[*size] = dataSize;
-	++*size;
+	memcpy(staticRes[*resSize], data, sizeof(int) * dataSize);
+	resColSize[*resSize] = dataSize;
+	++*resSize;
 }
 
-bool dfs(int *candidates, int candidatesSize, int index, int target, int *data, int dataSize, int (*staticRes)[30], int *size, int *colSize)
+bool dfs(int *candidates, int candidatesSize, int index, int target, int *data, int dataSize, int (*staticRes)[30], int *resSize, int *resColSize)
 {
 	if (target < 0)
 		return true;
 	if (target == 0)
 	{
-		addOneResult(staticRes, size, colSize, data, dataSize);
+		addOneResult(staticRes, resSize, resColSize, data, dataSize);
 		return true;
 	}
 	for (int i = index; i < candidatesSize; ++i)
@@ -47,7 +47,7 @@ bool dfs(int *candidates, int candidatesSize, int index, int target, int *data, 
 		if (i != index && candidates[i] == candidates[i - 1]) //remove dumplicate
 			continue;
 		data[dataSize] = candidates[i];
-		if (dfs(candidates, candidatesSize, i + 1, target - candidates[i], data, dataSize + 1, staticRes, size, colSize))
+		if (dfs(candidates, candidatesSize, i + 1, target - candidates[i], data, dataSize + 1, staticRes, resSize, resColSize))
 			break;
 	}
 	return false;

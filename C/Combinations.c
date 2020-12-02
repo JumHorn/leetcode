@@ -15,24 +15,24 @@ int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize
 	return res;
 }
 
-void addOneResult(int (*staticRes)[30], int *size, int *colSize, int *data, int dataSize)
+void addOneResult(int (*staticRes)[30], int *resSize, int *resColSize, int *data, int dataSize)
 {
-	memcpy(staticRes[*size], data, sizeof(int) * dataSize);
-	colSize[*size] = dataSize;
-	++*size;
+	memcpy(staticRes[*resSize], data, sizeof(int) * dataSize);
+	resColSize[*resSize] = dataSize;
+	++*resSize;
 }
 
-void dfs(int start, int k, int n, int *data, int dataSize, int (*staticRes)[30], int *size, int *colSize)
+void dfs(int start, int k, int n, int *data, int dataSize, int (*staticRes)[30], int *resSize, int *resColSize)
 {
 	if (k == 0)
 	{
-		addOneResult(staticRes, size, colSize, data, dataSize);
+		addOneResult(staticRes, resSize, resColSize, data, dataSize);
 		return;
 	}
 	for (int i = start; i <= n - k + 1; ++i)
 	{
 		data[dataSize] = i;
-		dfs(i + 1, k - 1, n, data, dataSize + 1, staticRes, size, colSize);
+		dfs(i + 1, k - 1, n, data, dataSize + 1, staticRes, resSize, resColSize);
 	}
 }
 

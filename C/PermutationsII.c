@@ -35,8 +35,7 @@ void reverse(int *arr, int first, int last)
 
 bool nextPermutation(int *nums, int numsSize)
 {
-	int i = numsSize;
-	while (--i > 0)
+	for (int i = numsSize - 1; i > 0; --i)
 	{
 		if (nums[i] > nums[i - 1])
 		{
@@ -51,11 +50,11 @@ bool nextPermutation(int *nums, int numsSize)
 	return false;
 }
 
-void addOneResult(int (*staticRes)[30], int *size, int *colSize, int *data, int dataSize)
+void addOneResult(int (*staticRes)[30], int *resSize, int *resColSize, int *data, int dataSize)
 {
-	memcpy(staticRes[*size], data, sizeof(int) * dataSize);
-	colSize[*size] = dataSize;
-	++*size;
+	memcpy(staticRes[*resSize], data, sizeof(int) * dataSize);
+	resColSize[*resSize] = dataSize;
+	++*resSize;
 }
 
 /**

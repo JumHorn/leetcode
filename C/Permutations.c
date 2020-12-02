@@ -18,21 +18,21 @@ int **mallocRes(int (*data)[30], int dataSize, int *dataColSize, int *returnSize
 }
 /********end of malloc result********/
 
-void addOneResult(int (*staticRes)[30], int *size, int *colSize, int *data, int dataSize)
+void addOneResult(int (*staticRes)[30], int *resSize, int *resColSize, int *data, int dataSize)
 {
-	memcpy(staticRes[*size], data, sizeof(int) * dataSize);
-	colSize[*size] = dataSize;
-	++*size;
+	memcpy(staticRes[*resSize], data, sizeof(int) * dataSize);
+	resColSize[*resSize] = dataSize;
+	++*resSize;
 }
 
-void dfs(int *nums, int numsSize, int index, int (*staticRes)[30], int *size, int *colSize)
+void dfs(int *nums, int numsSize, int index, int (*staticRes)[30], int *resSize, int *resColSize)
 {
 	if (index >= numsSize)
-		addOneResult(staticRes, size, colSize, nums, numsSize);
+		addOneResult(staticRes, resSize, resColSize, nums, numsSize);
 	for (int i = index; i < numsSize; ++i)
 	{
 		swap(nums[i], nums[index]);
-		dfs(nums, numsSize, index + 1, staticRes, size, colSize);
+		dfs(nums, numsSize, index + 1, staticRes, resSize, resColSize);
 		swap(nums[i], nums[index]);
 	}
 }
