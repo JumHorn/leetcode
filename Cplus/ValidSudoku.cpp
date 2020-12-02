@@ -1,33 +1,38 @@
-#include <unordered_set>
+#include <bitset>
 #include <vector>
 using namespace std;
+
+/*
+bit operation
+we use low 10 bits of a int(at least 4 bit can store 1-9)
+type  row/col/sub  val
+11    1111         1111
+row val encodes 0001 1111 1111
+col val encodes 0010 1111 1111
+sub val encodes 0000 1111 1111(subboard encodes with fixed prefix 1111 0000 0000)
+*/
 
 class Solution
 {
 public:
 	bool isValidSudoku(vector<vector<char>> &board)
 	{
-		for (int k = 0; k < 9; ++k)
+		bitset<1 << 10> bits;
+		for (int i = 0; i < 9; ++i)
 		{
-			int row[9] = {0};
-			for (int j = 0; j < 9; ++j) //check row
+			for (int j = 0; j < 9; ++j)
 			{
-				if (board[k][j] != '.' && ++row[board[k][j] - '1'] > 1)
-					return false;
-			}
-			int col[9] = {0};
-			for (int i = 0; i < 9; ++i) //check col
-			{
-				if (board[i][k] != '.' && ++col[board[i][k] - '1'] > 1)
-					return false;
-			}
-			int sub[9] = {0};
-			for (int i = k / 3 * 3; i < k / 3 * 3 + 3; ++i)
-			{
-				for (int j = k % 3 * 3; j < k % 3 * 3 + 3; ++j)
+				if (board[i][j] != '.')
 				{
-					if (board[i][j] != '.' && ++sub[board[i][j] - '1'] > 1)
+					int val = board[i][j] - '1';
+					int row = (i << 4) | val | (1 << 8);
+					int col = (j << 4) | val | (1 << 9);
+					int sub = ((i / 3 * 3 + j / 3 % 3) << 4) | val;
+					if (bits.test(row) || bits.test(col) || bits.test(sub))
 						return false;
+					bits.set(row);
+					bits.set(col);
+					bits.set(sub);
 				}
 			}
 		}
