@@ -1,5 +1,4 @@
 
-
 double recursive(double x, long n)
 {
 	if (n == 0)

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char* multiply(char* num1, char* num2)
+char *multiply(char *num1, char *num2)
 {
 	int N1 = strlen(num1), N2 = strlen(num2);
 	char mul[N1 + N2 + 1];
@@ -20,11 +20,7 @@ char* multiply(char* num1, char* num2)
 	for (int i = 0; i < N1 + N2; ++i)
 	{
 		if (mul[i] != '0')
-		{
-			char* res = (char*)malloc(sizeof(char) * (N1 + N2 - i + 1));
-			strcpy(res, &mul[i]);
-			return res;
-		}
+			return strdup(&mul[i]);
 	}
 	return "0";
 }
