@@ -11,9 +11,10 @@ public:
 			return res;
 		int M = matrix.size(), N = matrix[0].size();
 		vector<int> range = {0, N, 0, M}; //left,right,bottom,top
-		int i = 0, j = 0, d = 0;
 		vector<vector<int>> path = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 		vector<vector<int>> rangechange = {{1, 0, 0, 0}, {0, 0, 1, 0}, {0, -1, 0, 0}, {0, 0, 0, -1}};
+
+		int i = 0, j = 0, d = 0;
 		for (int k = 0; k < M * N; ++k)
 		{
 			res.push_back(matrix[i][j]);

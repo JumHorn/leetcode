@@ -1,8 +1,10 @@
 #include <limits.h>
 
+//Kadane's Algorithm
+
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int maxSubArray(int* nums, int numsSize)
+int maxSubArray(int *nums, int numsSize)
 {
 	int dp = INT_MIN, res = INT_MIN;
 	for (int i = 0; i < numsSize; ++i)

@@ -14,9 +14,9 @@ int *spiralOrder(int **matrix, int matrixSize, int *matrixColSize, int *returnSi
 	int *res = (int *)malloc(sizeof(int) * (*returnSize));
 
 	int range[] = {0, *matrixColSize, 0, matrixSize}; //left,right,bottom,top
-	int i = 0, j = 0, d = 0;
 	int path[][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 	int rangechange[][4] = {{1, 0, 0, 0}, {0, 0, 1, 0}, {0, -1, 0, 0}, {0, 0, 0, -1}};
+	int i = 0, j = 0, d = 0;
 	for (int k = 0; k < *returnSize; ++k)
 	{
 		res[k] = matrix[i][j];

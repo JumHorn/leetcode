@@ -10,7 +10,7 @@ public:
 	{
 		sort(intervals.begin(), intervals.end());
 		vector<vector<int>> res;
-		for (int i = 0, maxright = INT_MIN; i < intervals.size(); ++i)
+		for (int i = 0, maxright = INT_MIN; i < (int)intervals.size(); ++i)
 		{
 			if (intervals[i][0] > maxright)
 				res.push_back(intervals[i]);
