@@ -1,21 +1,31 @@
+#include <algorithm>
 #include <vector>
 using namespace std;
+
+//three-way partitioning
 
 class Solution
 {
 public:
 	void sortColors(vector<int> &nums)
 	{
-		int count[3] = {0};
-		for (auto n : nums)
-			++count[n];
-		for (int i = 0, j = 0; i < (int)nums.size();)
+		three_way_partitioning(nums, 1, 1);
+	}
+
+	/* sort array into three part
+	[first,mid1)
+	[mid1,mid2]
+	(mid3,last]
+	*/
+	void three_way_partitioning(vector<int> &data, int mid1, int mid2)
+	{
+		int i = 0, j = 0, k = (int)data.size() - 1;
+		while (j <= k)
 		{
-			if (count[j] > 0)
-			{
-				--count[j];
-				nums[i++] = j;
-			}
+			if (data[j] < mid1)
+				swap(data[i++], data[j++]);
+			else if (data[j] > mid2)
+				swap(data[j], data[k--]);
 			else
 				++j;
 		}
