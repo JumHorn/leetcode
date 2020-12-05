@@ -10,30 +10,33 @@ public:
 		for (int i = 0; i < (int)board.size(); ++i)
 		{
 			for (int j = 0; j < (int)board[0].size(); ++j)
-				if (dfs(board, word, 0, i, j))
+			{
+				if (backTracking(board, i, j, word, 0))
 					return true;
+			}
 		}
 		return false;
 	}
 
-	bool dfs(vector<vector<char>> &board, const string &word, int index, int i, int j)
+	bool backTracking(vector<vector<char>> &board, int row, int col, const string &word, int index)
 	{
-		if (board[i][j] != word[index])
-			return false;
-		++index;
+		int M = board.size(), N = board[0].size();
 		if (index >= (int)word.length())
 			return true;
-		char c = board[i][j];
-		board[i][j] = '\0';
-		if (i + 1 < (int)board.size() && dfs(board, word, index, i + 1, j))
-			return true;
-		if (i - 1 >= 0 && dfs(board, word, index, i - 1, j))
-			return true;
-		if (j + 1 < (int)board[0].size() && dfs(board, word, index, i, j + 1))
-			return true;
-		if (j - 1 >= 0 && dfs(board, word, index, i, j - 1))
-			return true;
-		board[i][j] = c;
+		if (row < 0 || row >= M || col < 0 || col >= N)
+			return false;
+		if (word[index] != board[row][col])
+			return false;
+		board[row][col] = ~board[row][col]; //make it negative as seen
+		//board backTracking direction
+		int path[5] = {-1, 0, 1, 0, -1};
+		for (int k = 0; k < 4; ++k)
+		{
+			int dx = row + path[k], dy = col + path[k + 1];
+			if (backTracking(board, dx, dy, word, index + 1))
+				return true;
+		}
+		board[row][col] = ~board[row][col];
 		return false;
 	}
 };

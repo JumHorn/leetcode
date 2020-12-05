@@ -14,8 +14,8 @@ class Solution
 public:
 	ListNode *partition(ListNode *head, int x)
 	{
-		ListNode node1, node2;
-		ListNode *p1 = &node1, *p2 = &node2;
+		ListNode dummy1, dummy2;
+		ListNode *p1 = &dummy1, *p2 = &dummy2;
 		while (head)
 		{
 			if (head->val < x)
@@ -25,7 +25,7 @@ public:
 			head = head->next;
 		}
 		p2->next = nullptr;
-		p1->next = node2.next;
-		return node1.next;
+		p1->next = dummy2.next;
+		return dummy1.next;
 	}
 };

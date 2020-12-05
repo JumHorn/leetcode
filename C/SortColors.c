@@ -1,6 +1,6 @@
 
-
-void sortColors(int* nums, int numsSize)
+// counting sort
+void sortColors(int *nums, int numsSize)
 {
 	int count[3] = {0};
 	for (int i = 0; i < numsSize; ++i)

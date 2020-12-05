@@ -1,6 +1,18 @@
 #include <vector>
 using namespace std;
 
+/*
+// another gray code to decimal always used
+
+int grayCodeToDecimal(int n)
+{
+	int res = 0;
+	for (; n != 0; n >>= 1)
+		res ^= n;
+	return res;
+}
+*/
+
 class Solution
 {
 public:
