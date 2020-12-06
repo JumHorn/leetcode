@@ -7,7 +7,7 @@ int strToInt(char *s, int index, int len)
 {
 	int res = 0;
 	for (int i = 0; i < len; ++i)
-		res = res * 10 + (s[index++] - '0');
+		res = res * 10 + (s[index + i] - '0');
 	return res;
 }
 /**
@@ -18,10 +18,10 @@ char **restoreIpAddresses(char *s, int *returnSize)
 	static char IP[1000][20];
 	memset(IP, 0, sizeof(IP));
 	int size = 0, N = strlen(s);
-	for (int a = 1; a <= 3; a++)
-		for (int b = 1; b <= 3; b++)
-			for (int c = 1; c <= 3; c++)
-				for (int d = 1; d <= 3; d++)
+	for (int a = 1; a <= 3; ++a)
+		for (int b = 1; b <= 3; ++b)
+			for (int c = 1; c <= 3; ++c)
+				for (int d = 1; d <= 3; ++d)
 					if (a + b + c + d == N)
 					{
 						int A = strToInt(s, 0, a);
@@ -40,9 +40,6 @@ char **restoreIpAddresses(char *s, int *returnSize)
 		return NULL;
 	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
-	{
-		res[i] = (char *)malloc(sizeof(char) * 20);
-		strcpy(res[i], IP[i]);
-	}
+		res[i] = strdup(IP[i]);
 	return res;
 }

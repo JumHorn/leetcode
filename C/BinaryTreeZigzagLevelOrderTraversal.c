@@ -33,15 +33,15 @@ void reverse(int *arr, int first, int last)
 	}
 }
 
-void dfs(struct TreeNode *root, int level, int (*staticRes)[300], int *size, int *colSize)
+void preorder(struct TreeNode *root, int level, int (*staticRes)[300], int *size, int *colSize)
 {
 	if (!root)
 		return;
 	if (level + 1 > *size)
 		*size = level + 1;
 	staticRes[level][colSize[level]++] = root->val;
-	dfs(root->left, level + 1, staticRes, size, colSize);
-	dfs(root->right, level + 1, staticRes, size, colSize);
+	preorder(root->left, level + 1, staticRes, size, colSize);
+	preorder(root->right, level + 1, staticRes, size, colSize);
 }
 
 /**
@@ -56,7 +56,7 @@ int **zigzagLevelOrder(struct TreeNode *root, int *returnSize, int **returnColum
 	*returnSize = 0;
 	if (!root)
 		return root;
-	dfs(root, 0, staticRes, returnSize, staticResColSize);
+	preorder(root, 0, staticRes, returnSize, staticResColSize);
 	for (int i = 1; i < *returnSize; i += 2)
 		reverse(staticRes[i], 0, staticResColSize[i] - 1);
 	return mallocRes(staticRes, *returnSize, staticResColSize, returnSize, returnColumnSizes);
