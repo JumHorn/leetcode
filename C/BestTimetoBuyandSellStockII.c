@@ -1,5 +1,4 @@
 
-
 int maxProfit(int *prices, int pricesSize)
 {
 	int res = 0;

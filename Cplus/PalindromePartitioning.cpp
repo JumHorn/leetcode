@@ -1,5 +1,4 @@
 #include <string>
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -12,10 +11,10 @@ public:
 			return {};
 		int N = s.length();
 		vector<vector<bool>> palindrome(N, vector<bool>(N));
-		for (int l = 0; l < N; ++l)
+		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int i = 0, j = l; j < N; ++i, ++j)
-				palindrome[i][j] = s[i] == s[j] && (j - i <= 1 || palindrome[i + 1][j - 1]);
+			for (int j = i; j < N; ++j)
+				palindrome[i][j] = (i == j || (s[i] == s[j] && (i + 1 == j || palindrome[i + 1][j - 1])));
 		}
 		vector<vector<vector<string>>> dp(N + 1);
 		dp[0] = {{}};

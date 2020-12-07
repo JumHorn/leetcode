@@ -13,39 +13,34 @@ char ***mallocRes(char (*data)[1001][101], int dataSize, int *dataColSize, int *
 	{
 		res[i] = (char **)malloc(sizeof(char *) * (*returnColumnSizes)[i]);
 		for (int j = 0; j < (*returnColumnSizes)[i]; ++j)
-		{
-			int n = strlen(data[i][j]);
-			res[i][j] = (char *)malloc(sizeof(char) * (n + 1));
-			strcpy(res[i][j], data[i][j]);
-		}
+			res[i][j] = strdup(data[i][j]);
 	}
 	return res;
 }
 
-void addOneResult(char (*staticRes)[1001][101], int *size, int *colSize, char (*instance)[101], int instanceSize)
+void addOneResult(char (*staticRes)[1001][101], int *resSize, int *colSize, char (*instance)[101], int instanceSize)
 {
 	for (int i = 0; i < instanceSize; ++i)
-		strcpy(staticRes[*size][i], instance[i]);
-	colSize[*size] = instanceSize;
-	++*size;
+		strcpy(staticRes[*resSize][i], instance[i]);
+	colSize[(*resSize)++] = instanceSize;
 }
 
-void dfs(char *s, int len, int index, bool (*dp)[len], char (*instance)[101], int instanceSize, char (*staticRes)[1001][101], int *size, int *colSize)
+void dfs(char *s, int len, int index, bool (*dp)[len], char (*instance)[101], int instanceSize, char (*staticRes)[1001][101], int *resSize, int *colSize)
 {
 	if (index >= len)
-		addOneResult(staticRes, size, colSize, instance, instanceSize);
+		addOneResult(staticRes, resSize, colSize, instance, instanceSize);
 	for (int i = index; i < len; ++i)
 	{
 		if (!dp[index][i])
 			continue;
 		strncpy(instance[instanceSize], &s[index], i - index + 1); //don't auto add '\0' to the result
 		instance[instanceSize][i - index + 1] = '\0';
-		dfs(s, len, i + 1, dp, instance, instanceSize + 1, staticRes, size, colSize);
+		dfs(s, len, i + 1, dp, instance, instanceSize + 1, staticRes, resSize, colSize);
 	}
 }
 
 /**
- * Return an array of arrays of size *returnSize.
+ * Return an array of arrays of resSize *returnSize.
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
@@ -60,10 +55,10 @@ char ***partition(char *s, int *returnSize, int **returnColumnSizes)
 	if (N == 0)
 		return NULL;
 	bool dp[N][N];
-	for (int l = 0; l < N; ++l)
+	for (int i = N - 1; i >= 0; --i)
 	{
-		for (int i = 0, j = l; j < N; ++i, ++j)
-			dp[i][j] = s[i] == s[j] && (j - i <= 1 || dp[i + 1][j - 1]);
+		for (int j = i; j < N; ++j)
+			dp[i][j] = (i == j || (s[i] == s[j] && (i + 1 == j || dp[i + 1][j - 1])));
 	}
 	dfs(s, N, 0, dp, instance, 0, staticRes, returnSize, staticResColSize);
 	return mallocRes(staticRes, *returnSize, staticResColSize, returnSize, returnColumnSizes);
