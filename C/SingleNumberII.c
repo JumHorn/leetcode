@@ -1,5 +1,4 @@
 
-
 int singleNumber(int *nums, int numsSize)
 {
 	int ones = 0, twos = 0;
