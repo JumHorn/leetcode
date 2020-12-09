@@ -1,22 +1,23 @@
+#include <stdbool.h>
 #include <stdlib.h>
 
 //Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
-	struct TreeNode* left;
-	struct TreeNode* right;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
 typedef struct
 {
-	struct TreeNode* stack[1000];
+	struct TreeNode *stack[1000];
 	int top;
 } BSTIterator;
 
-BSTIterator* bSTIteratorCreate(struct TreeNode* root)
+BSTIterator *bSTIteratorCreate(struct TreeNode *root)
 {
-	BSTIterator* iter = (BSTIterator*)malloc(sizeof(BSTIterator));
+	BSTIterator *iter = (BSTIterator *)malloc(sizeof(BSTIterator));
 	iter->top = -1;
 	while (root)
 	{
@@ -27,9 +28,9 @@ BSTIterator* bSTIteratorCreate(struct TreeNode* root)
 }
 
 /** @return the next smallest number */
-int bSTIteratorNext(BSTIterator* obj)
+int bSTIteratorNext(BSTIterator *obj)
 {
-	struct TreeNode* root = obj->stack[obj->top--];
+	struct TreeNode *root = obj->stack[obj->top--];
 	int res = root->val;
 	root = root->right;
 	while (root)
@@ -41,12 +42,12 @@ int bSTIteratorNext(BSTIterator* obj)
 }
 
 /** @return whether we have a next smallest number */
-bool bSTIteratorHasNext(BSTIterator* obj)
+bool bSTIteratorHasNext(BSTIterator *obj)
 {
 	return obj->top != -1;
 }
 
-void bSTIteratorFree(BSTIterator* obj)
+void bSTIteratorFree(BSTIterator *obj)
 {
 	if (obj)
 		free(obj);
@@ -56,8 +57,8 @@ void bSTIteratorFree(BSTIterator* obj)
  * Your BSTIterator struct will be instantiated and called as such:
  * BSTIterator* obj = bSTIteratorCreate(root);
  * int param_1 = bSTIteratorNext(obj);
- 
+
  * bool param_2 = bSTIteratorHasNext(obj);
- 
+
  * bSTIteratorFree(obj);
 */

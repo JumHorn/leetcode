@@ -1,23 +1,19 @@
 #include <string.h>
 
-#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
-
 void trim(char *s)
 {
-	int space = 1;
-	char *p = s, *q = s;
-	while (*p)
+	int space = 1, top = -1;
+	for (int i = 0; s[i]; ++i)
 	{
-		if (*p != ' ' || space == 0)
+		if (s[i] != ' ' || space == 0)
 		{
-			*q++ = *p;
-			space = (*p == ' ' ? 1 : 0);
+			s[++top] = s[i];
+			space = (s[i] == ' ' ? 1 : 0);
 		}
-		++p;
 	}
-	if (q != s && *(q - 1) == ' ')
-		--q;
-	*q = '\0';
+	if (top >= 0 && s[top] == ' ')
+		--top;
+	s[top + 1] = '\0';
 }
 
 void reverse(char *arr, int first, int last)
@@ -39,7 +35,7 @@ char *reverseWords(char *s)
 	{
 		while (s[i] && s[i] != ' ')
 			++i;
-		reverse(s, j, i - 1);
+		reverse(s, j, i - 1); //reverse single word
 		j = i + 1;
 	}
 	return s;

@@ -1,4 +1,8 @@
 
+/*
+Boyer–Moore majority vote algorithm
+*/
+
 int majorityElement(int *nums, int numsSize)
 {
 	int val = 0, count = 0;

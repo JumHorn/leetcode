@@ -12,12 +12,8 @@ public:
 		stringstream ss(s);
 		vector<string> words;
 		string word;
-		while (getline(ss, word, ' '))
-		{
-			if (word.empty())
-				continue;
+		while (ss >> word)
 			words.push_back(word);
-		}
 		reverse(words.begin(), words.end());
 		if (words.empty())
 			return "";

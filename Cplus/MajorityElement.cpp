@@ -2,18 +2,28 @@
 #include <vector>
 using namespace std;
 
+/*
+Boyer–Moore majority vote algorithm
+*/
+
 class Solution
 {
 public:
 	int majorityElement(vector<int> &nums)
 	{
-		int N = nums.size();
-		unordered_map<int, int> m;
+		int val = 0, count = 0;
 		for (auto n : nums)
 		{
-			if (++m[n] * 2 > N)
-				return n;
+			if (val == n)
+				++count;
+			else if (count == 0)
+			{
+				val = n;
+				count = 1;
+			}
+			else
+				--count;
 		}
-		return 0;
+		return val;
 	}
 };
