@@ -2,6 +2,10 @@
 #include <vector>
 using namespace std;
 
+/*
+topological sort BFS implement
+*/
+
 class Solution
 {
 public:

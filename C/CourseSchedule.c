@@ -2,30 +2,35 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct CourseNode
-{
-	int course;
-	struct CourseNode *next;
-} CourseNode;
+/*
+topological sort DFS implement
+*/
 
-CourseNode *createNode(int c)
+// create graph
+typedef struct GraphNode
 {
-	CourseNode *node = (CourseNode *)malloc(sizeof(CourseNode));
+	int node;
+	struct GraphNode *next;
+} GraphNode;
+
+GraphNode *createNode(int val)
+{
+	GraphNode *node = (GraphNode *)malloc(sizeof(GraphNode));
+	node->node = val;
 	node->next = NULL;
-	node->course = c;
 	return node;
 }
 
-bool backTracking(CourseNode **graph, int at, int *seen, int *done)
+bool backTracking(GraphNode **graph, int at, int *seen, int *done)
 {
 	if (seen[at] == 1)
 		return false;
 	if (done[at] == 1)
 		return true;
 	done[at] = seen[at] = 1;
-	for (CourseNode *p = graph[at]; p; p = p->next)
+	for (GraphNode *to = graph[at]; to; to = to->next)
 	{
-		if (!backTracking(graph, p->course, seen, done))
+		if (!backTracking(graph, to->node, seen, done))
 			return false;
 	}
 	seen[at] = 0;
@@ -34,14 +39,14 @@ bool backTracking(CourseNode **graph, int at, int *seen, int *done)
 
 bool canFinish(int numCourses, int **prerequisites, int prerequisitesSize, int *prerequisitesColSize)
 {
-	CourseNode *graph[numCourses];
+	GraphNode *graph[numCourses];
 	memset(graph, 0, sizeof(graph));
 	int done[numCourses], seen[numCourses]; //the node which finish search
 	memset(done, 0, sizeof(done));
 	memset(seen, 0, sizeof(seen));
 	for (int i = 0; i < prerequisitesSize; ++i)
 	{
-		CourseNode *node = createNode(prerequisites[i][1]);
+		GraphNode *node = createNode(prerequisites[i][1]);
 		node->next = graph[prerequisites[i][0]];
 		graph[prerequisites[i][0]] = node;
 	}

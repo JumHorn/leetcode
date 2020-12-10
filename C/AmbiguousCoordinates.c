@@ -8,11 +8,7 @@ char **mallocRes(char (*data)[20], int dataSize, int *returnSize)
 	*returnSize = dataSize;
 	char **res = (char **)malloc(sizeof(char *) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
-	{
-		int n = strlen(data[i]);
-		res[i] = (char *)malloc(sizeof(char) * (n + 1));
-		strcpy(res[i], data[i]);
-	}
+		res[i] = strdup(data[i]);
 	return res;
 }
 

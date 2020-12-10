@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 
 //max heap function series
 void push_heap(int *ptr, int size)

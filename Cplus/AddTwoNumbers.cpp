@@ -1,12 +1,10 @@
-#include <iostream>
-using namespace std;
 
 //Definition for singly-linked list.
 struct ListNode
 {
 	int val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode(int x) : val(x), next(nullptr) {}
 };
 
 class Solution
@@ -14,9 +12,8 @@ class Solution
 public:
 	ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 	{
-		ListNode *dummy = new ListNode(0), *p = dummy;
-		int carry = 0;
-		while (l1 || l2 || carry)
+		ListNode dummy(0), *p = &dummy;
+		for (int carry = 0; l1 || l2 || carry; carry /= 10)
 		{
 			if (l1)
 			{
@@ -30,8 +27,7 @@ public:
 			}
 			p->next = new ListNode(carry % 10);
 			p = p->next;
-			carry /= 10;
 		}
-		return dummy->next;
+		return dummy.next;
 	}
 };
