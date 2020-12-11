@@ -45,7 +45,7 @@ void dfs(char **board, int M, int N, int row, int col, Trie *root, char **words,
 	{ //add result
 		++(*size);
 		*res = addString(*res, size, words[root->index - 1]);
-		root->index = 0;
+		root->index = 0; //avoid duplicate
 	}
 	char old = board[row][col];
 	board[row][col] = ' ';
