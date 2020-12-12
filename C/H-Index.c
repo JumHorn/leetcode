@@ -8,12 +8,12 @@ int cmp(const void *lhs, const void *rhs)
 {
 	if (*(int *)lhs == *(int *)rhs)
 		return 0;
-	return *(int *)lhs < *(int *)rhs ? -1 : 1;
+	return *(int *)lhs < *(int *)rhs ? 1 : -1;
 }
 
 int hIndex(int *citations, int citationsSize)
 {
-	qsort(citations, citationsSize, sizeof(int), cmp);
+	qsort(citations, citationsSize, sizeof(int), cmp); //des
 	int res = 0;
 	for (int i = 0; i < citationsSize; ++i)
 		res = max(res, min(citations[i], i + 1));
