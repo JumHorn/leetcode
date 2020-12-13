@@ -27,10 +27,10 @@ public:
 		queue<TreeNode *> q;
 		q.push(root);
 		string res;
-		bool hash_node = true;
-		while (!q.empty() && hash_node)
+		bool has_node = true;
+		while (!q.empty() && has_node)
 		{
-			hash_node = false;
+			has_node = false;
 			int size = q.size();
 			while (--size >= 0)
 			{
@@ -43,7 +43,7 @@ public:
 					res += "," + to_string(node->val);
 					q.push(node->left);
 					q.push(node->right);
-					hash_node = (hash_node || root->left || root->right);
+					has_node = (has_node || root->left || root->right);
 				}
 			}
 		}
