@@ -15,16 +15,19 @@ public:
 	{
 		if (edges.empty())
 			return {0};
-		vector<unordered_set<int>> graph(n);
+		vector<vector<int>> graph(n);
+		vector<int> indegree(n);
 		for (auto &edge : edges)
 		{
-			graph[edge[0]].insert(edge[1]);
-			graph[edge[1]].insert(edge[0]);
+			graph[edge[0]].push_back(edge[1]);
+			graph[edge[1]].push_back(edge[0]);
+			++indegree[edge[0]];
+			++indegree[edge[1]];
 		}
 		queue<int> leavenode;
 		for (int i = 0; i < n; ++i)
 		{
-			if ((int)graph[i].size() == 1)
+			if (--indegree[i] == 0)
 				leavenode.push(i);
 		}
 		while (n > 2)
@@ -37,8 +40,7 @@ public:
 				leavenode.pop();
 				for (auto child : graph[node])
 				{
-					graph[child].erase(node);
-					if ((int)graph[child].size() == 1)
+					if (--indegree[child] == 0)
 						leavenode.push(child);
 				}
 			}
