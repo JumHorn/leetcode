@@ -11,9 +11,9 @@ public:
 		nums.push_back(1);
 		int N = nums.size();
 		vector<vector<int>> dp(N, vector<int>(N));
-		for (int j = 2; j < N; ++j)
+		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int i = j - 1; i >= 0; --i)
+			for (int j = i + 1; j < N; ++j)
 			{
 				for (int k = i + 1; k < j; ++k)
 					dp[i][j] = max(dp[i][j], nums[i] * nums[k] * nums[j] + dp[i][k] + dp[k][j]);

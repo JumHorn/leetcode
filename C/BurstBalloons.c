@@ -14,9 +14,9 @@ int maxCoins(int *nums, int numsSize)
 	memcpy(&dup[1], nums, sizeof(int) * numsSize);
 	dup[0] = dup[N - 1] = 1;
 	memset(dp, 0, sizeof(dp));
-	for (int j = 2; j < N; ++j)
+	for (int i = N - 1; i >= 0; --i)
 	{
-		for (int i = j - 1; i >= 0; --i)
+		for (int j = i + 1; j < N; ++j)
 		{
 			for (int k = i + 1; k < j; ++k)
 				dp[i][j] = max(dp[i][j], dup[i] * dup[k] * dup[j] + dp[i][k] + dp[k][j]);
