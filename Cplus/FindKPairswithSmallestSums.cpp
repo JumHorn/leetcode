@@ -7,21 +7,21 @@ class Solution
 public:
 	vector<vector<int>> kSmallestPairs(vector<int> &nums1, vector<int> &nums2, int k)
 	{
-		auto f = [=](pair<int, int> &lhs, pair<int, int> &rhs) { return lhs.first + lhs.second < rhs.first + rhs.second; };
+		auto f = [=](pair<int, int> &lhs, pair<int, int> &rhs) {
+			return lhs.first + lhs.second < rhs.first + rhs.second;
+		};
 		priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(f)> q(f);
-		for (int i = 0; i < (int)nums1.size(); ++i)
+		for (auto n1 : nums1)
 		{
-			for (int j = 0; j < (int)nums2.size(); ++j)
+			for (auto n2 : nums2)
 			{
-				if ((int)q.size() < k)
-					q.push({nums1[i], nums2[j]});
-				else
+				if ((int)q.size() >= k)
 				{
-					if (q.top().first + q.top().second <= nums1[i] + nums2[j])
+					if (q.top().first + q.top().second <= n1 + n2)
 						break;
 					q.pop();
-					q.push({nums1[i], nums2[j]});
 				}
+				q.push({n1, n2});
 			}
 		}
 		k = k > (int)q.size() ? q.size() : k;

@@ -8,7 +8,7 @@ void push_heap(int *ptr, int size)
 	if (size <= 1)
 		return;
 	int val = ptr[size - 1], hole = size - 1;
-	for (int i = (hole - 1) >> 1; hole > 0 && val<ptr[i]; i = (hole - 1)>> 1)
+	for (int i = (hole - 1) >> 1; hole > 0 && val < ptr[i]; i = (hole - 1) >> 1)
 	{
 		ptr[hole] = ptr[i];
 		hole = i;
@@ -57,13 +57,13 @@ int cmp(const void *lhs, const void *rhs)
 int maxPerformance(int n, int *speed, int speedSize, int *efficiency, int efficiencySize, int k)
 {
 	static const int MOD = 1e9 + 7;
-	int arr[n][2];	//{efficiency,speed}
+	int arr[n][2]; //{efficiency,speed}
 	for (int i = 0; i < n; ++i)
 	{
 		arr[i][0] = efficiency[i];
 		arr[i][1] = speed[i];
 	}
-	qsort(arr, n, sizeof(arr[0]), cmp);	 //descending
+	qsort(arr, n, sizeof(arr[0]), cmp); //descending
 	long res = 0, sum = 0;
 	int heap[n], heapSize = 0;
 	for (int i = 0; i < n; ++i)

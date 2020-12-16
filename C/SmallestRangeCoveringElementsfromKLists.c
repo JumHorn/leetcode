@@ -17,7 +17,7 @@ void push_heap(tuple *ptr, int size)
 		return;
 	tuple val = ptr[size - 1];
 	int hole = size - 1;
-	for (int i = (hole - 1) >> 1; hole > 0 && val.val<ptr[i].val; i = (hole - 1)>> 1)
+	for (int i = (hole - 1) >> 1; hole > 0 && val.val < ptr[i].val; i = (hole - 1) >> 1)
 	{
 		ptr[hole] = ptr[i];
 		hole = i;

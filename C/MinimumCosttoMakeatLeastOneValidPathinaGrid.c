@@ -13,7 +13,7 @@ void push_heap(pair *ptr, int size)
 		return;
 	pair val = ptr[size - 1];
 	int hole = size - 1;
-	for (int i = (hole - 1) >> 1; hole > 0 && val.cost<ptr[i].cost; i = (hole - 1)>> 1)
+	for (int i = (hole - 1) >> 1; hole > 0 && val.cost < ptr[i].cost; i = (hole - 1) >> 1)
 	{
 		ptr[hole] = ptr[i];
 		hole = i;
@@ -56,8 +56,8 @@ int minCost(int **grid, int gridSize, int *gridColSize)
 {
 	int M = gridSize, N = *gridColSize, heapSize = 0, res = 0, dist[M][N];
 	memset(dist, 1 << 6, sizeof(dist));
-	int path[][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};	 //same as 1,2,3,4
-	pair heap[M * N];									 //{cost,position}
+	int path[][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}}; //same as 1,2,3,4
+	pair heap[M * N];									//{cost,position}
 	heap[heapSize].cost = 0;
 	heap[heapSize].pos = 0;
 	push_heap(heap, ++heapSize);
@@ -68,7 +68,7 @@ int minCost(int **grid, int gridSize, int *gridColSize)
 		pop_heap(heap, heapSize--);
 		int i = top.pos / N, j = top.pos % N;
 		res = top.cost;
-		if (dist[i][j] < res)  //avoid outdated
+		if (dist[i][j] < res) //avoid outdated
 			continue;
 		if (i == M - 1 && j == N - 1)
 			return res;

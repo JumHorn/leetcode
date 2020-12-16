@@ -6,7 +6,7 @@ void push_heap(int *ptr, int size)
 	if (size <= 1)
 		return;
 	int val = ptr[size - 1], hole = size - 1;
-	for (int i = (hole - 1) >> 1; hole > 0 && val<ptr[i]; i = (hole - 1)>> 1)
+	for (int i = (hole - 1) >> 1; hole > 0 && val < ptr[i]; i = (hole - 1) >> 1)
 	{
 		ptr[hole] = ptr[i];
 		hole = i;

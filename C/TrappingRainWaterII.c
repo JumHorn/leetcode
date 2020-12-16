@@ -15,7 +15,7 @@ void push_heap(pair *ptr, int size)
 		return;
 	pair val = ptr[size - 1];
 	int hole = size - 1;
-	for (int i = (hole - 1) >> 1; hole > 0 && val.height<ptr[i].height; i = (hole - 1)>> 1)
+	for (int i = (hole - 1) >> 1; hole > 0 && val.height < ptr[i].height; i = (hole - 1) >> 1)
 	{
 		ptr[hole] = ptr[i];
 		hole = i;

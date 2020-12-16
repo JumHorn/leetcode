@@ -14,9 +14,9 @@ public:
 			dp[i + 1][i + 1] = 0;
 			dp[i][i + 1] = i;
 		}
-		for (int l = 2; l <= n; ++l)
+		for (int i = n - 2; i >= 0; --i)
 		{
-			for (int i = 0, j = l; j <= n; ++i, ++j)
+			for (int j = i + 2; j <= n; ++j)
 			{
 				for (int k = i + 1; k < j; ++k)
 					dp[i][j] = min(dp[i][j], max(dp[i][k - 1], dp[k + 1][j]) + k);
