@@ -1,25 +1,35 @@
 #include <cmath>
-#include <map>
 #include <vector>
 using namespace std;
+
+/*
+Algorithm:
+Reservoir Sampling
+*/
 
 class Solution
 {
 public:
-	Solution(vector<int> &nums)
+	Solution(vector<int> &nums) : data(nums)
 	{
-		for (int i = 0; i < (int)nums.size(); ++i)
-			val_to_index[nums[i]].push_back(i);
 	}
 
 	int pick(int target)
 	{
-		int n = val_to_index[target].size();
-		return val_to_index[target][rand() % n];
+		int count = 0, res = 0;
+		for (int i = 0; i < (int)data.size(); ++i)
+		{
+			if (data[i] == target)
+			{
+				if (rand() % ++count == 0)
+					res = i;
+			}
+		}
+		return res;
 	}
 
 private:
-	map<int, vector<int>> val_to_index;
+	vector<int> data;
 };
 
 /**
