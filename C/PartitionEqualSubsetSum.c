@@ -1,27 +1,7 @@
 #include <stdbool.h>
-#include <stdlib.h>
+#include <string.h>
 
-//integer cmp function
-int cmp(const void *lhs, const void *rhs)
-{
-	if (*(int *)lhs == *(int *)rhs)
-		return 0;
-	return *(int *)lhs < *(int *)rhs ? -1 : 1;
-}
-
-bool backTracking(int *nums, int numsSize, int index, int sum)
-{
-	if (sum == 0)
-		return true;
-	if (sum < 0)
-		return false;
-	for (int i = index; i < numsSize; ++i)
-	{
-		if (backTracking(nums, numsSize, i + 1, sum - nums[i]))
-			return true;
-	}
-	return false;
-}
+//knapsack
 
 bool canPartition(int *nums, int numsSize)
 {
@@ -30,8 +10,14 @@ bool canPartition(int *nums, int numsSize)
 		sum += nums[i];
 	if (sum & 1)
 		return false;
-	qsort(nums, numsSize, sizeof(int), cmp);
-	if (nums[0] * 2 > sum)
-		return false;
-	return backTracking(nums, numsSize, 0, sum / 2);
+	bool dp[sum / 2 + 1][numsSize + 1];
+	memset(dp, 0, sizeof(dp));
+	for (int i = 0; i <= numsSize; ++i)
+		dp[0][i] = true;
+	for (int i = 1; i <= sum / 2; ++i)
+	{
+		for (int j = 0; j < numsSize; ++j)
+			dp[i][j + 1] = dp[i][j] || (nums[j] <= i && dp[i - nums[j]][j]);
+	}
+	return dp[sum / 2][numsSize];
 }
