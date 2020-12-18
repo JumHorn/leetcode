@@ -8,13 +8,13 @@ class Solution
 public:
 	int characterReplacement(string s, int k)
 	{
-		int window = 0, maxcount = 0;
+		int window = 0, maxsame = 0;
 		vector<int> hash(26);
 		for (int i = 0; i < (int)s.length(); ++i)
 		{
 			++hash[s[i] - 'A'];
-			maxcount = max(hash[s[i] - 'A'], maxcount);
-			if (window - maxcount < k)
+			maxsame = max(maxsame, hash[s[i] - 'A']);
+			if (window - maxsame < k)
 				++window;
 			else
 				--hash[s[i - window] - 'A'];

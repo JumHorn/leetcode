@@ -45,11 +45,8 @@ int **reconstructQueue(int **people, int peopleSize, int *peopleColSize, int *re
 		if (people[i][1] < i)
 		{
 			int j = i;
-			while (people[j][1] < j)
-			{
+			for (int j = i; people[j][1] < j; --j)
 				swap(&people[j], &people[j - 1]);
-				--j;
-			}
 		}
 	}
 	return mallocRes(people, peopleSize, peopleColSize, returnSize, returnColumnSizes);
