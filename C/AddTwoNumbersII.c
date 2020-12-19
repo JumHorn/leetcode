@@ -7,17 +7,6 @@ struct ListNode
 	struct ListNode *next;
 };
 
-int listlen(struct ListNode *head)
-{
-	int res = 0;
-	while (head)
-	{
-		++res;
-		head = head->next;
-	}
-	return res;
-}
-
 struct ListNode *createNode(int val)
 {
 	struct ListNode *node = (struct ListNode *)malloc(sizeof(struct ListNode));
@@ -33,26 +22,34 @@ struct ListNode *push_front(struct ListNode *head, int val)
 	return res;
 }
 
+int listlen(struct ListNode *head)
+{
+	int res = 0;
+	for (; head; head = head->next)
+		++res;
+	return res;
+}
+
 struct ListNode *addTwoNumbers(struct ListNode *l1, struct ListNode *l2)
 {
 	if (!(l1 || l2))
 		return NULL;
-	int size1 = listlen(l1), size2 = listlen(l2);
+	int N1 = listlen(l1), N2 = listlen(l2);
 	struct ListNode *res = NULL;
-	while (size1 > 0 && size2 > 0)
+	while (N1 > 0 && N2 > 0)
 	{
 		int sum = 0;
-		if (size1 >= size2)
+		if (N1 >= N2)
 		{
 			sum += l1->val;
 			l1 = l1->next;
-			--size1;
+			--N1;
 		}
-		if (size2 > size1)
+		if (N2 > N1)
 		{
 			sum += l2->val;
 			l2 = l2->next;
-			--size2;
+			--N2;
 		}
 		res = push_front(res, sum);
 	}

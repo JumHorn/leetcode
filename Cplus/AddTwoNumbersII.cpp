@@ -14,11 +14,11 @@ class Solution
 public:
 	ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 	{
-		int size1 = getListSize(l1), size2 = getListSize(l2);
-		if (size1 >= size2)
-			l1 = recursive(l1, size1, l2, size2);
+		int N1 = getListSize(l1), N2 = getListSize(l2);
+		if (N1 >= N2)
+			l1 = recursive(l1, N1, l2, N2);
 		else
-			l1 = recursive(l2, size2, l1, size1);
+			l1 = recursive(l2, N2, l1, N1);
 		if (l1->val < 10)
 			return l1;
 		ListNode *res = new ListNode(1);
@@ -27,15 +27,15 @@ public:
 		return res;
 	}
 
-	ListNode *recursive(ListNode *l1, int size1, ListNode *l2, int size2) //size1 must be bigger than size2
+	ListNode *recursive(ListNode *l1, int N1, ListNode *l2, int N2) //N1 must be bigger than N2
 	{
-		if (size1 == 0)
+		if (N1 == 0)
 			return nullptr;
-		if (size1 > size2)
-			l1->next = recursive(l1->next, size1 - 1, l2, size2);
+		if (N1 > N2)
+			l1->next = recursive(l1->next, N1 - 1, l2, N2);
 		else
 		{
-			l1->next = recursive(l1->next, size1 - 1, l2->next, size2 - 1);
+			l1->next = recursive(l1->next, N1 - 1, l2->next, N2 - 1);
 			l1->val += l2->val;
 		}
 		if (l1->next)
@@ -49,11 +49,8 @@ public:
 	int getListSize(ListNode *head)
 	{
 		int res = 0;
-		while (head)
-		{
+		for (; head; head = head->next)
 			++res;
-			head = head->next;
-		}
 		return res;
 	}
 };

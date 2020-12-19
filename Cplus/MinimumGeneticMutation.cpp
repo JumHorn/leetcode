@@ -9,37 +9,37 @@ class Solution
 public:
 	int minMutation(string start, string end, vector<string> &bank)
 	{
-		unordered_set<string> seen, geneBank(bank.begin(), bank.end());
+		string gene = "ACGT";
+		unordered_set<string> geneBank(bank.begin(), bank.end());
 		queue<string> q;
 		int res = 0;
 		if (geneBank.find(end) == geneBank.end())
 			return -1;
 		q.push(start);
-		seen.insert(start);
+		geneBank.erase(start);
 		while (!q.empty())
 		{
 			++res;
 			int size = q.size();
 			while (--size >= 0)
 			{
-				auto genestr = q.front();
+				auto mutation = q.front();
 				q.pop();
-				char gene[] = "ACGT";
-				for (int i = 0; i < (int)genestr.length(); ++i)
+				for (auto &m : mutation)
 				{
-					char old = genestr[i];
-					for (int j = 0; j < 4; ++j)
+					char old = m;
+					for (auto g : gene)
 					{
-						genestr[i] = gene[j];
-						if (genestr == end)
+						m = g;
+						if (mutation == end)
 							return res;
-						if (seen.find(genestr) == seen.end() && geneBank.find(genestr) != geneBank.end())
+						if (geneBank.find(mutation) != geneBank.end())
 						{
-							seen.insert(genestr);
-							q.push(genestr);
+							geneBank.erase(mutation);
+							q.push(mutation);
 						}
 					}
-					genestr[i] = old;
+					m = old;
 				}
 			}
 		}
