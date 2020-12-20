@@ -56,20 +56,16 @@ int fourSumCount(int *A, int ASize, int *B, int BSize, int *C, int CSize, int *D
 			hash2[i * CSize + j] = C[i] + D[j];
 	}
 	qsort(hash2, size2, sizeof(int), cmp);
-	int res = 0, pre = hash1[0];
+	int res = 0;
 	for (int i = 1, j = 0; i <= size1; ++i)
 	{
-		if (i == size1 || hash1[i] != pre)
+		if (i == size1 || hash1[i] != hash1[j])
 		{
-			int upper = upper_bound(hash2, size2, -pre);
-			int lower = lower_bound(hash2, size2, -pre);
+			int upper = upper_bound(hash2, size2, -hash1[j]);
+			int lower = lower_bound(hash2, size2, -hash1[j]);
 			if (lower != -1)
 				res += (i - j) * (upper - lower);
-			if (i < size1)
-			{
-				pre = hash1[i];
-				j = i;
-			}
+			j = i;
 		}
 	}
 	return res;
