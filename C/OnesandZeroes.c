@@ -1,8 +1,10 @@
 #include <string.h>
 
+//knapsack
+
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int findMaxForm(char** strs, int strsSize, int m, int n)
+int findMaxForm(char **strs, int strsSize, int m, int n)
 {
 	int arr[strsSize][2];
 	memset(arr, 0, sizeof(arr));
