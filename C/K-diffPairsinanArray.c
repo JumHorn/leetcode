@@ -19,8 +19,7 @@ int findPairs(int *nums, int numsSize, int k)
 		if (i != j && nums[i] - nums[j] == k)
 		{
 			++res;
-			++j;
-			while (j < numsSize && nums[j] == nums[j - 1])
+			for (++j; j < numsSize && nums[j] == nums[j - 1];)
 				++j;
 			if (i < j)
 				i = j;
