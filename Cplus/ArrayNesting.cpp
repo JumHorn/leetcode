@@ -16,8 +16,8 @@ public:
 		{
 			if (nums[i] == -1)
 				continue;
-			int index = i, count = 0;
-			while (nums[index] != -1)
+			int count = 0;
+			for (int index = i; nums[index] != -1;)
 			{
 				++count;
 				int next = nums[index];

@@ -3,6 +3,8 @@
 #include <string>
 using namespace std;
 
+// next permutation
+
 class Solution
 {
 public:
@@ -10,8 +12,7 @@ public:
 	{
 		string s = to_string(n);
 		int N = s.length();
-		int i = N;
-		while (--i > 0)
+		for (int i = N - 1; i > 0; --i)
 		{
 			if (s[i] > s[i - 1])
 			{
