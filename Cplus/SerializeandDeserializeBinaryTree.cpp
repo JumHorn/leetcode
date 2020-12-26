@@ -37,17 +37,19 @@ public:
 				TreeNode *node = q.front();
 				q.pop();
 				if (node == nullptr)
-					res += ",n";
+					res += "n,";
 				else //node != nullptr
 				{
-					res += "," + to_string(node->val);
+					res += to_string(node->val) + ",";
 					q.push(node->left);
 					q.push(node->right);
 					has_node = (has_node || root->left || root->right);
 				}
 			}
 		}
-		return res.substr(1);
+		if (res.empty())
+			res.pop_back();
+		return res;
 	}
 
 	// Decodes your encoded data to tree.

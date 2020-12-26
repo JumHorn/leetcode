@@ -16,16 +16,16 @@ public:
 		int n = N / 3 - (N % 3 == 1 ? 1 : 0);
 		string res;
 		for (int i = 0; i < n; ++i)
-			res += "-" + num.substr(i * 3, 3);
+			res += num.substr(i * 3, 3) + "-";
 		if (N % 3 == 1)
 		{
-			res += "-" + num.substr(n * 3, 2);
-			res += "-" + num.substr(n * 3 + 2, 2);
+			res += num.substr(n * 3, 2) + "-";
+			res += num.substr(n * 3 + 2, 2) + "-";
 		}
 		else if (N % 3 == 2)
-		{
-			res += "-" + num.substr(N / 3 * 3, 2);
-		}
-		return res.substr(1);
+			res += num.substr(N / 3 * 3, 2) + "-";
+		if (!res.empty())
+			res.pop_back();
+		return res;
 	}
 };

@@ -12,8 +12,10 @@ public:
 		for (stringstream ss(s); ss >> token;)
 		{
 			reverse(token.begin(), token.end());
-			res += ' ' + token;
+			res += token + ' ';
 		}
-		return res.empty() ? "" : res.substr(1);
+		if (!res.empty())
+			res.pop_back();
+		return res;
 	}
 };

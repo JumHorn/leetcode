@@ -197,8 +197,10 @@ public:
 		for (auto &n : valmap)
 		{
 			for (int i = 0; i < n.second; ++i)
-				res += "*" + n.first;
+				res += n.first + "*";
 		}
-		return res.substr(1);
+		if (!res.empty())
+			res.pop_back();
+		return res;
 	}
 };

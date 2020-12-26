@@ -29,7 +29,9 @@ public:
 	{
 		if (root == nullptr)
 			return "";
-		string compressedtree = to_string(root->val) + ',' + preorder(root->left, dp, res) + ',' + preorder(root->right, dp, res);
+		string compressedtree = to_string(root->val) + ',' +
+								preorder(root->left, dp, res) + ',' +
+								preorder(root->right, dp, res);
 		if (++dp[compressedtree] == 2)
 			res.push_back(root);
 		return compressedtree;
