@@ -1,56 +1,60 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 // Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
-	struct TreeNode* left;
-	struct TreeNode* right;
+	struct TreeNode *left;
+	struct TreeNode *right;
 };
 
-bool isSameTree(struct TreeNode* lhs, struct TreeNode* rhs)
+typedef struct pair
 {
-	if (!lhs && !rhs)
-		return true;
-	if (lhs && rhs)
-		return lhs->val == rhs->val && isSameTree(lhs->left, rhs->left) && isSameTree(lhs->right, rhs->right);
-	return false;
+	char *str;
+	struct TreeNode *node;
+} pair;
+
+//string cmp function
+int cmp(const void *lhs, const void *rhs)
+{
+	return strcmp(((pair *)lhs)->str, ((pair *)rhs)->str);
 }
 
-void preorder(struct TreeNode* root, struct TreeNode** nodes, int* nodesize)
+char *postorder(struct TreeNode *root, pair *nodes, int *nodesize)
 {
 	if (!root)
-		return;
-	nodes[(*nodesize)++] = root;
-	preorder(root->left, nodes, nodesize);
-	preorder(root->right, nodes, nodesize);
+		return "";
+	char *left = postorder(root->left, nodes, nodesize);
+	char *right = postorder(root->right, nodes, nodesize);
+	int l = strlen(left), r = strlen(right);
+	char *res = (char *)malloc(sizeof(char) * (l + r + 10));
+	nodes[*nodesize].node = root;
+	nodes[*nodesize].str = res;
+	sprintf(res, "%d,%s,%s", root->val, left, right);
+	++*nodesize;
+	return res;
 }
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-struct TreeNode** findDuplicateSubtrees(struct TreeNode* root, int* returnSize)
+struct TreeNode **findDuplicateSubtrees(struct TreeNode *root, int *returnSize)
 {
-	struct TreeNode* nodes[10001];
+	pair nodes[10001];
 	int nodesize = 0;
-	preorder(root, nodes, &nodesize);
-	struct TreeNode** res = (struct TreeNode**)malloc(sizeof(struct TreeNode*) * nodesize / 2);
+	postorder(root, nodes, &nodesize);
+	qsort(nodes, nodesize, sizeof(pair), cmp);
+	struct TreeNode **res = (struct TreeNode **)malloc(sizeof(struct TreeNode *) * nodesize / 2);
 	*returnSize = 0;
-	for (int i = 0; i < nodesize - 1; ++i)
+	for (int i = 1, j = 0; i < nodesize; i = j + 1)
 	{
-		int index = i + 1, count = 0;
-		for (int j = i + 1; j < nodesize; ++j)
-		{
-			if (isSameTree(nodes[i], nodes[j]))
-			{
-				if (++count == 1)
-					res[(*returnSize)++] = nodes[i];
-			}
-			else
-				nodes[index++] = nodes[j];
-		}
-		nodesize = index;
+		while (i < nodesize && strcmp(nodes[i - 1].str, nodes[i].str) == 0)
+			++i;
+		if (i - j > 1)
+			res[(*returnSize)++] = nodes[j].node;
+		j = i;
 	}
 	return res;
 }
