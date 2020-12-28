@@ -1,9 +1,9 @@
 #include <stdbool.h>
 
-bool checkValidString(char* s)
+bool checkValidString(char *s)
 {
-	int low = 0, high = 0;  //the number of left bracket in range [low,high]
-	while (*s)
+	int low = 0, high = 0; //the number of left bracket in range [low,high]
+	for (; *s; ++s)
 	{
 		if (*s == '(')
 			++low;
@@ -16,7 +16,6 @@ bool checkValidString(char* s)
 			++high;
 		if (high < 0)
 			return false;
-		++s;
 	}
 	return low == 0;
 }
