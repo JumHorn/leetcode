@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <numeric>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -12,24 +13,33 @@ public:
 		if (sum % k != 0)
 			return false;
 		sum /= k;
-		return backTracking(nums, 0, k, sum, sum);
-	}
-
-	bool backTracking(vector<int> &nums, int index, int k, int sub, int sum)
-	{
-		if (k == 1)
-			return true;
-		if (sub == 0)
-			return backTracking(nums, 0, k - 1, sum, sum);
-		for (int i = index; i < (int)nums.size(); ++i)
+		int N = nums.size();
+		unordered_set<int> subsets;
+		for (int mask = 0; mask < 1 << N; ++mask)
 		{
-			if (nums[i] < 0)
-				continue;
-			nums[i] = -nums[i];
-			if (sub + nums[i] >= 0 && backTracking(nums, i + 1, k, sub + nums[i], sum))
-				return true;
-			nums[i] = -nums[i];
+			int count = 0;
+			for (int bit = 0; bit < N; ++bit)
+			{
+				if (mask & (1 << bit))
+					count += nums[bit];
+			}
+			if (count == sum)
+				subsets.insert(mask);
 		}
-		return false;
+		unordered_set<int> dp = subsets, next_dp;
+		for (int i = 1; i < k; ++i)
+		{
+			for (auto n : subsets)
+			{
+				for (auto m : dp)
+				{
+					if (!(n & m))
+						next_dp.insert(n | m);
+				}
+			}
+			dp.swap(next_dp);
+			next_dp.clear();
+		}
+		return dp.find((1 << N) - 1) != dp.end();
 	}
 };
