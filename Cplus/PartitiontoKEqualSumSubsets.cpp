@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <numeric>
-#include <unordered_set>
 #include <vector>
 using namespace std;
 
@@ -14,32 +13,27 @@ public:
 			return false;
 		sum /= k;
 		int N = nums.size();
-		unordered_set<int> subsets;
+		vector<bool> dp(1 << N);
+		vector<int> total(1 << N);
+		dp[0] = true;
 		for (int mask = 0; mask < 1 << N; ++mask)
 		{
-			int count = 0;
 			for (int bit = 0; bit < N; ++bit)
 			{
-				if (mask & (1 << bit))
-					count += nums[bit];
-			}
-			if (count == sum)
-				subsets.insert(mask);
-		}
-		unordered_set<int> dp = subsets, next_dp;
-		for (int i = 1; i < k; ++i)
-		{
-			for (auto n : subsets)
-			{
-				for (auto m : dp)
+				if (dp[mask])
 				{
-					if (!(n & m))
-						next_dp.insert(n | m);
+					if (!(mask & 1 << bit))
+					{
+						int index = mask | 1 << bit;
+						if (nums[bit] <= sum - total[mask] % sum)
+						{
+							dp[index] = true;
+							total[index] = total[mask] + nums[bit];
+						}
+					}
 				}
 			}
-			dp.swap(next_dp);
-			next_dp.clear();
 		}
-		return dp.find((1 << N) - 1) != dp.end();
+		return dp[(1 << N) - 1];
 	}
 };
