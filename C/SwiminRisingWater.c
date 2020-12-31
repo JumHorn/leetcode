@@ -27,10 +27,10 @@ int swimInWater(int **grid, int gridSize, int *gridColSize)
 	{
 		int mi = (hi - lo) / 2 + lo;
 		memset(seen, 0, sizeof(seen));
-		if (backTracking(grid, gridSize, 0, 0, mi, seen))
-			hi = mi;
-		else
+		if (!backTracking(grid, gridSize, 0, 0, mi, seen))
 			lo = mi + 1;
+		else
+			hi = mi;
 	}
 	return lo;
 }

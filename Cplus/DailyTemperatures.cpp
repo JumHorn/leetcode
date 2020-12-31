@@ -7,9 +7,10 @@ class Solution
 public:
 	vector<int> dailyTemperatures(vector<int> &T)
 	{
-		vector<int> res(T.size());
+		int N = T.size();
+		vector<int> res(N);
 		stack<int> s;
-		for (int i = 0; i < (int)T.size(); ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			while (!s.empty() && T[s.top()] < T[i])
 			{
