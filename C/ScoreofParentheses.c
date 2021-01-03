@@ -2,8 +2,7 @@
 int scoreOfParentheses(char *S)
 {
 	int left = 0, base = 1, res = 0;
-	char *top = S;
-	while (*S)
+	for (char *top = S; *S; ++S)
 	{
 		if (*S == '(')
 		{
@@ -18,7 +17,6 @@ int scoreOfParentheses(char *S)
 			if (S - top == 1)
 				res += base;
 		}
-		++S;
 	}
 	return res;
 }
