@@ -8,7 +8,7 @@ public:
 	int longestMountain(vector<int> &A)
 	{
 		int res = 0, peek, N = A.size();
-		for (int i = 1, j = 0; i < N;)
+		for (int i = 1, j = 0; i < N; j = i - 1)
 		{
 			while (i < N && A[i] > A[i - 1]) //up
 				++i;
@@ -19,7 +19,6 @@ public:
 				res = max(res, i - j);
 			while (i < N && A[i] == A[i - 1]) //skip equal
 				++i;
-			j = i - 1;
 		}
 		return res;
 	}

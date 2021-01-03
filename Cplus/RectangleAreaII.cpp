@@ -13,10 +13,9 @@ class Solution
 public:
 	int rectangleArea(vector<vector<int>> &rectangles)
 	{
-		static const int MOD = 1e9 + 7;
-		unsigned long long res = 0, y = 0;
+		unsigned long long res = 0;
 		sort(rectangles.begin(), rectangles.end(), *this);
-		while (y != INT_MAX)
+		for (unsigned long long y = 0; y >= INT_MAX;)
 		{
 			bool flag = false;
 			unsigned long long x = 0, xlen = 0, ystep = INT_MAX;
@@ -40,9 +39,9 @@ public:
 		return res % MOD;
 	}
 
-	bool operator()(vector<int> &left, vector<int> &right)
+	bool operator()(vector<int> &lhs, vector<int> &rhs)
 	{
-		return left[0] < right[0];
+		return lhs[0] < rhs[0];
 	}
 
 private:
