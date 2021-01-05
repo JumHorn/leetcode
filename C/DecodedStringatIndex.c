@@ -1,5 +1,4 @@
 
-
 char *decodeAtIndex(char *S, int K)
 {
 	long len = 0;
@@ -9,8 +8,8 @@ char *decodeAtIndex(char *S, int K)
 		if (*p <= '9') //is digits
 			len *= *p - '0';
 		else
-			len++;
-		p++;
+			++len;
+		++p;
 	}
 	--p;
 	if (*p > '9') //not digits
