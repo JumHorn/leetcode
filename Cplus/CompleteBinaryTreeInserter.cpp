@@ -1,37 +1,39 @@
-#include <algorithm>
 #include <queue>
 using namespace std;
-//Definition for a binary tree node.
+
+// Definition for a binary tree node.
 struct TreeNode
 {
 	int val;
-	TreeNode* left;
-	TreeNode* right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
 class CBTInserter
 {
 public:
-	CBTInserter(TreeNode* root) : m_root(root)
+	CBTInserter(TreeNode *root) : m_root(root)
 	{
 		m_q.push(root);
 		while (true)
 		{
-			TreeNode* tmp = m_q.front();
-			if (tmp->left == NULL || tmp->right == NULL)
+			TreeNode *tmp = m_q.front();
+			if (tmp->left == nullptr || tmp->right == nullptr)
 				break;
 			m_q.pop();
 			m_q.push(tmp->left);
-			if (tmp->right != NULL)
+			if (tmp->right != nullptr)
 				m_q.push(tmp->right);
 		}
 	}
 
 	int insert(int v)
 	{
-		TreeNode* tmp = m_q.front();
-		if (tmp->left == NULL)
+		TreeNode *tmp = m_q.front();
+		if (tmp->left == nullptr)
 		{
 			tmp->left = new TreeNode(v);
 			return tmp->val;
@@ -43,14 +45,14 @@ public:
 		return tmp->val;
 	}
 
-	TreeNode* get_root()
+	TreeNode *get_root()
 	{
 		return m_root;
 	}
 
 private:
-	TreeNode* m_root;
-	queue<TreeNode*> m_q;
+	TreeNode *m_root;
+	queue<TreeNode *> m_q;
 };
 
 /**

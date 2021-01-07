@@ -1,6 +1,6 @@
 #include <math.h>
 
-int dfs(int* digits, int size, int* arrN, int index)
+int dfs(int *digits, int size, int *arrN, int index)
 {
 	if (index < 0)
 		return 1;
@@ -19,18 +19,14 @@ int dfs(int* digits, int size, int* arrN, int index)
 	return res;
 }
 
-int atMostNGivenDigitSet(char** D, int DSize, int N)
+int atMostNGivenDigitSet(char **D, int DSize, int N)
 {
 	int digits[DSize];
 	for (int i = 0; i < DSize; ++i)
 		digits[i] = D[i][0] - '0';
 	int arrN[10], n = -1;
-	while (N != 0)
-	{
-		++n;
-		arrN[n] = N % 10;
-		N /= 10;
-	}
+	for (; N != 0; N /= 10)
+		arrN[++n] = N % 10;
 	int res = 0;
 	if (n != 0)
 	{
