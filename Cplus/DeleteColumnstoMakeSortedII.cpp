@@ -20,14 +20,13 @@ public:
 				if (A[index.second][j] < A[index.first][j])
 				{
 					flag = true;
+					++res;
 					break;
 				}
 				if (A[index.first][j] == A[index.second][j])
 					nextequal.push_back(index);
 			}
-			if (flag)
-				++res;
-			else
+			if (!flag)
 				equal.swap(nextequal);
 		}
 		return res;
