@@ -18,36 +18,35 @@ public:
 		return res;
 	}
 
-	void divide(vector<pair<int, int>> &arr, vector<pair<int, int>> &dup, int start, int end, int &res)
+	void divide(vector<pair<int, int>> &arr, vector<pair<int, int>> &dup, int first, int last, int &res)
 	{
-		if (end - start <= 1)
+		if (last - first <= 1)
 			return;
-		int mid = start + (end - start) / 2;
-		divide(arr, dup, start, mid, res);
-		divide(arr, dup, mid, end, res);
+		int mid = first + (last - first) / 2;
+		divide(arr, dup, first, mid, res);
+		divide(arr, dup, mid, last, res);
 		int index = 1e9; //min index
-		for (int i = start, j = mid; j < end; ++j)
+		for (int i = first, j = mid; j < last; ++j)
 		{
-			while (i < mid && arr[j].first >= arr[i].first)
-			{
+			for (; i < mid && arr[j].first >= arr[i].first; ++i)
 				index = min(index, arr[i].second);
-				++i;
-			}
 			res = max(res, arr[j].second - index);
 		}
-		merge(arr, dup, start, mid, end);
+		merge(arr, dup, first, mid, last);
 	}
 
-	void merge(vector<pair<int, int>> &arr, vector<pair<int, int>> &dup, int start, int mid, int end)
+	void merge(vector<pair<int, int>> &arr, vector<pair<int, int>> &dup, int first, int mid, int last)
 	{
-		int s = start, m = mid, d = 0, d1 = 0;
-		while (s != mid && m != end)
-			dup[d++] = (arr[s] > arr[m]) ? arr[m++] : arr[s++];
-		while (s != mid)
-			dup[d++] = arr[s++];
-		while (m != end)
-			dup[d++] = arr[m++];
-		while (start != end)
-			arr[start++] = dup[d1++];
+		for (int i = first, j = mid, d = 0; i < mid || j < last;)
+		{
+			if (i == mid)
+				dup[d++] = arr[j++];
+			else if (j == last)
+				dup[d++] = arr[i++];
+			else
+				dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
+		}
+		for (int i = first, j = 0; i < last; ++i, ++j)
+			arr[i] = dup[j];
 	}
 };

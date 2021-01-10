@@ -1,6 +1,5 @@
 
-
-int subarraysDivByK(int* A, int ASize, int K)
+int subarraysDivByK(int *A, int ASize, int K)
 {
 	int hash[10001] = {0};
 	int res = 0, sum = 0;

@@ -1,4 +1,4 @@
-#include <queue>
+#include <algorithm>
 #include <vector>
 using namespace std;
 
@@ -7,15 +7,9 @@ class Solution
 public:
 	vector<vector<int>> kClosest(vector<vector<int>> &points, int K)
 	{
-		priority_queue<pair<int, int>> q;
-		for (int i = 0; i < (int)points.size(); ++i)
-			q.push({-(points[i][0] * points[i][0] + points[i][1] * points[i][1]), i});
-		vector<vector<int>> res(K);
-		for (int i = 0; i < K; ++i)
-		{
-			res[i] = points[q.top().second];
-			q.pop();
-		}
-		return res;
+		nth_element(points.begin(), points.begin() + K, points.end(), [](vector<int> &a, vector<int> &b) {
+			return a[0] * a[0] + a[1] * a[1] < b[0] * b[0] + b[1] * b[1];
+		});
+		return vector<vector<int>>(points.begin(), points.begin() + K);
 	}
 };
