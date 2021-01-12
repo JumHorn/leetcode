@@ -20,9 +20,9 @@ public:
 		for (int i = 0; i < N; ++i)
 			sum[i + 1] = sum[i] + stones[i];
 		vector<vector<int>> dp(N, vector<int>(N));
-		for (int n = K; n <= N; ++n)
+		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int i = 0, j = i + n - 1; j < N; ++i, ++j)
+			for (int j = i + K - 1; j < N; ++j)
 			{
 				dp[i][j] = INT_MAX;
 				for (int k = i; k < j; k += K - 1)

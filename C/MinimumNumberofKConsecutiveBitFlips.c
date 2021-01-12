@@ -7,14 +7,14 @@ int minKBitFlips(int *A, int ASize, int K)
 	for (int i = 0; i < ASize; ++i)
 	{
 		if (flip[i] == 1)
-			flag = 1 - flag;
-		if ((flag == 1 && A[i] == 1) || (flag == 0 && A[i] == 0))
+			flag = 1 ^ flag;
+		if ((flag ^ A[i]) == 0)
 		{
 			++res;
-			flag = 1 - flag;
+			flag = 1 ^ flag;
 			if (i + K > ASize)
 				return -1;
-			flip[i + K] = 1 - flip[i + K];
+			flip[i + K] = 1 ^ flip[i + K];
 		}
 	}
 	return res;

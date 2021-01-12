@@ -19,9 +19,9 @@ int mergeStones(int *stones, int stonesSize, int K)
 		sum[i + 1] = sum[i] + stones[i];
 	int dp[stonesSize][stonesSize];
 	memset(dp, 0, sizeof(dp));
-	for (int n = K; n <= stonesSize; ++n)
+	for (int i = stonesSize - 1; i >= 0; --i)
 	{
-		for (int i = 0, j = i + n - 1; j < stonesSize; ++i, ++j)
+		for (int j = i + K - 1; j < stonesSize; ++j)
 		{
 			dp[i][j] = INT_MAX;
 			for (int k = i; k < j; k += K - 1)
