@@ -8,9 +8,9 @@ public:
 	vector<int> numMovesStonesII(vector<int> &stones)
 	{
 		sort(stones.begin(), stones.end());
-		int i = 0, N = stones.size(), low = N;
+		int N = stones.size(), low = N;
 		int high = max(stones[N - 1] - N + 2 - stones[1], stones[N - 2] - stones[0] - N + 2);
-		for (int j = 0; j < N; ++j)
+		for (int i = 0, j = 0; j < N; ++j)
 		{
 			while (stones[j] - stones[i] >= N)
 				++i;

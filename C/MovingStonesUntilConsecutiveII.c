@@ -17,9 +17,9 @@ int cmp(const void *lhs, const void *rhs)
 int *numMovesStonesII(int *stones, int stonesSize, int *returnSize)
 {
 	qsort(stones, stonesSize, sizeof(int), cmp);
-	int i = 0, N = stonesSize, low = N;
+	int N = stonesSize, low = N;
 	int high = max(stones[N - 1] - N + 2 - stones[1], stones[N - 2] - stones[0] - N + 2);
-	for (int j = 0; j < N; ++j)
+	for (int i = 0, j = 0; j < N; ++j)
 	{
 		while (stones[j] - stones[i] >= N)
 			++i;
