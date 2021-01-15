@@ -1,10 +1,5 @@
 
-void swap(char *lhs, char *rhs)
-{
-	char tmp = *lhs;
-	*lhs = *rhs;
-	*rhs = tmp;
-}
+#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
 int dfs(char *s, int start)
 {
@@ -15,9 +10,9 @@ int dfs(char *s, int start)
 		if (alpha[s[i] - 'A'] != 0)
 			continue;
 		alpha[s[i] - 'A'] = 1;
-		swap(&s[i], &s[start]);
+		swap(s[i], s[start]);
 		res += dfs(s, start + 1);
-		swap(&s[i], &s[start]);
+		swap(s[i], s[start]);
 	}
 	return res;
 }

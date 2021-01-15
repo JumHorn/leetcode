@@ -1,16 +1,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-char* smallestSubsequence(char* text)
+char *smallestSubsequence(char *text)
 {
 	char count[26] = {0}, *p = text;
 	while (*p)
 		++count[*p++ - 'a'];
-	char* stack = (char*)malloc(sizeof(char) * 27);
+	char *stack = (char *)malloc(sizeof(char) * 27);
 	memset(stack, 0, sizeof(char) * 27);
 	int top = -1, seen[26] = {0};
-	p = text;
-	while (*p)
+	for (p = text; *p; ++p)
 	{
 		if (seen[*p - 'a'] == 0)
 		{
@@ -23,7 +22,6 @@ char* smallestSubsequence(char* text)
 			seen[*p - 'a'] = 1;
 		}
 		--count[*p - 'a'];
-		++p;
 	}
 	stack[++top] = '\0';
 	return stack;
