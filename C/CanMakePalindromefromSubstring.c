@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int bitFlip(int num, int bit)
-{
-	return num ^ (1 << bit);
-}
-
 int bitCount(int n)
 {
 	int res = 0;
