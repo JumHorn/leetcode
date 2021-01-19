@@ -1,9 +1,7 @@
 
 long gcd(long x, long y)
 {
-	if (x == 0)
-		return y;
-	return gcd(y % x, x);
+	return x == 0 ? y : gcd(y % x, x);
 }
 
 int nthUglyNumber(int n, int a, int b, int c)

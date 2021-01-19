@@ -38,12 +38,12 @@ class Solution
 public:
 	string smallestStringWithSwaps(string s, vector<vector<int>> &pairs)
 	{
-		DSU dsu(s.length());
+		int N = s.length();
+		DSU dsu(N);
 		for (auto &p : pairs)
 			dsu.Union(p[0], p[1]);
-		vector<int> parent(s.length());
+		vector<int> parent(N);
 		unordered_map<int, string> m; //{parent,char}
-		int N = s.length();
 		for (int i = 0; i < N; ++i)
 		{
 			int p = dsu.Find(i);
