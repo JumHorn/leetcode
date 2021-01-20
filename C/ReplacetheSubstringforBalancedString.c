@@ -24,14 +24,13 @@ int balancedString(char *s)
 	int map[4] = {0}, N = 0;
 	for (; s[N]; ++N)
 		++map[HASH(s[N])];
-	int avg = N / 4, i = 0, res = avg * 3;
+	int avg = N / 4, res = avg * 3;
 	for (int i = 0, j = 0; j < N; ++j)
 	{
-		--map[HASH(s[j])];
-		while (i < N && lowerThanAvg(map, avg))
+		for (--map[HASH(s[j])]; i < N && lowerThanAvg(map, avg); ++i)
 		{
 			res = min(res, j - i + 1);
-			++map[HASH(s[i++])];
+			++map[HASH(s[i])];
 		}
 	}
 	return res;
