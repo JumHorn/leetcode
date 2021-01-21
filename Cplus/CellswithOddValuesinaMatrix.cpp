@@ -7,10 +7,10 @@ public:
 	int oddCells(int n, int m, vector<vector<int>> &indices)
 	{
 		vector<int> row(n), col(m);
-		for (int k = 0; k < indices.size(); ++k)
+		for (auto &index : indices)
 		{
-			++row[indices[k][0]];
-			++col[indices[k][1]];
+			++row[index[0]];
+			++col[index[1]];
 		}
 		int res = 0;
 		for (int i = 0; i < n; ++i)
