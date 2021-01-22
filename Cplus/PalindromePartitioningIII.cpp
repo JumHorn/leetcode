@@ -9,32 +9,25 @@ public:
 	int palindromePartition(string s, int k)
 	{
 		int N = s.length();
-		vector<vector<int>> dp(N, vector<int>(N));
+		if (k >= N)
+			return 0;
+		vector<vector<int>> palindrome(N, vector<int>(N));
 		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int j = i; j < N; ++j)
+			for (int j = i + 1; j < N; ++j)
+				palindrome[i][j] = palindrome[i + 1][j - 1] + (s[i] == s[j] ? 0 : 1);
+		}
+
+		vector<vector<int>> dp(k, vector<int>(N, INT_MAX));
+		copy(palindrome[0].begin(), palindrome[0].end(), dp[0].begin());
+		for (int i = 0; i < k - 1; ++i)
+		{
+			for (int j = 0; j < N; ++j)
 			{
-				if (i == j)
-					dp[i][j] = 0;
-				else
-					dp[i][j] = dp[i + 1][j - 1] + (s[i] == s[j] ? 0 : 1);
+				for (int n = i + 1; n <= j; ++n)
+					dp[i + 1][j] = min(dp[i + 1][j], dp[i][n - 1] + palindrome[n][j]);
 			}
 		}
-		vector<vector<int>> cache(N, vector<int>(k + 1, -1));
-		return memdp(dp, 0, k, cache);
-	}
-
-	int memdp(vector<vector<int>> &dp, int index, int k, vector<vector<int>> &cache)
-	{
-		int N = dp.size();
-		if (k == 1)
-			return dp[index][N - 1];
-		if (cache[index][k] != -1)
-			return cache[index][k];
-		int res = INT_MAX;
-		for (int i = index; i <= N - k; ++i)
-			res = min(res, dp[index][i] + memdp(dp, i + 1, k - 1, cache));
-		cache[index][k] = res;
-		return res;
+		return dp[k - 1][N - 1];
 	}
 };
