@@ -11,7 +11,7 @@ public:
 		int N = nums.size();
 		if (N % k != 0)
 			return false;
-		map<int, int> m;
+		map<int, int> m; //{val,count}
 		for (auto n : nums)
 			++m[n];
 		queue<int> q;

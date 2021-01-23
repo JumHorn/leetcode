@@ -22,7 +22,7 @@ public:
 		copy(palindrome[0].begin(), palindrome[0].end(), dp[0].begin());
 		for (int i = 0; i < k - 1; ++i)
 		{
-			for (int j = 0; j < N; ++j)
+			for (int j = i + 1; j < N; ++j)
 			{
 				for (int n = i + 1; n <= j; ++n)
 					dp[i + 1][j] = min(dp[i + 1][j], dp[i][n - 1] + palindrome[n][j]);
