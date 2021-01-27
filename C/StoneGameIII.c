@@ -11,7 +11,7 @@ char *stoneGameIII(int *stoneValue, int stoneValueSize)
 	for (int i = 0; i < N; ++i)
 		prefixsum[i + 1] = prefixsum[i] + stoneValue[i];
 	int all = prefixsum[N];
-	memset(dp, 1 << 7, sizeof(dp));
+	memset(dp, 1u << 7, sizeof(dp)); //init to 0x80808080 a large minus number
 	dp[N] = 0;
 	for (int i = N - 1; i >= 0; --i)
 	{

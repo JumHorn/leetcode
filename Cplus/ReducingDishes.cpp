@@ -21,7 +21,7 @@ public:
 		if (satisfaction.back() <= 0)
 			return 0;
 		int negsum = 0, minus = 0;
-		while (--index >= 0 && -(negsum + satisfaction[index]) < sum)
+		while (--index >= 0 && -(satisfaction[index] + negsum) < sum)
 		{
 			minus += satisfaction[index] + negsum;
 			negsum += satisfaction[index];

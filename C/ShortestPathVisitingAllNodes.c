@@ -5,7 +5,7 @@
 int shortestPathLength(int **graph, int graphSize, int *graphColSize)
 {
 	int N = graphSize, dp[1 << N][N];
-	memset(dp, (1 << 7) - 1, sizeof(dp));
+	memset(dp, (1u << 7) - 1, sizeof(dp));
 	for (int i = 0; i < N; ++i)
 		dp[1 << i][i] = 0;
 	for (int mask = 0; mask < 1 << N; ++mask)
