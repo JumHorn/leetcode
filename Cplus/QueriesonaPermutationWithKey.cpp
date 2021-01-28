@@ -41,22 +41,22 @@ class Solution
 public:
 	vector<int> processQueries(vector<int> &queries, int m)
 	{
-		int size = queries.size();
-		Fenwick bit(size + m); //binary index tree
+		int N = queries.size();
+		Fenwick bit(N + m); //binary index tree
 		vector<int> res;
 		unordered_map<int, int> indexmap; //{val,index}
 		for (int i = 0; i < m; ++i)
 		{
-			indexmap[i + 1] = i + size;
-			bit.update(i + size, 1);
+			indexmap[i + 1] = i + N;
+			bit.update(i + N, 1);
 		}
 		for (auto n : queries)
 		{
 			int index = indexmap[n];
 			res.push_back(bit.sum(index) - 1);
 			bit.update(index, -1);
-			indexmap[n] = --size;
-			bit.update(size, 1);
+			indexmap[n] = --N;
+			bit.update(N, 1);
 		}
 		return res;
 	}
