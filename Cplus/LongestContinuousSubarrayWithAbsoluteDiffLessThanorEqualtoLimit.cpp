@@ -13,9 +13,10 @@ public:
 		{
 			while (!maxdeque.empty() && nums[i] > maxdeque.back())
 				maxdeque.pop_back();
+			maxdeque.push_back(nums[i]);
+
 			while (!mindeque.empty() && nums[i] < mindeque.back())
 				mindeque.pop_back();
-			maxdeque.push_back(nums[i]);
 			mindeque.push_back(nums[i]);
 			if (maxdeque.front() - mindeque.front() > limit)
 			{

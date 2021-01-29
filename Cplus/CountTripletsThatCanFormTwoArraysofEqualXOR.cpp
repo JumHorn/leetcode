@@ -23,7 +23,8 @@ public:
 		unordered_map<int, int> count, total;
 		for (int i = 0; i <= N; ++i)
 		{
-			res += count[prefix[i]]++ * (i - 1) - total[prefix[i]];
+			res += count[prefix[i]] * (i - 1) - total[prefix[i]];
+			++count[prefix[i]];
 			total[prefix[i]] += i;
 		}
 		return res;

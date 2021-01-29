@@ -8,10 +8,11 @@ int longestSubarray(int *nums, int numsSize, int limit)
 	{
 		while (front1 != rear1 && nums[i] > deque1[(rear1 + 1) % size])
 			rear1 = (rear1 + 1) % size; //pop back
-		while (front2 != rear2 && nums[i] < deque2[(rear2 + 1) % size])
-			rear2 = (rear2 + 1) % size; //pop back
 		deque1[rear1] = nums[i];
 		rear1 = (rear1 - 1 + size) % size; //push back
+
+		while (front2 != rear2 && nums[i] < deque2[(rear2 + 1) % size])
+			rear2 = (rear2 + 1) % size; //pop back
 		deque2[rear2] = nums[i];
 		rear2 = (rear2 - 1 + size) % size; //push back
 		if (deque1[front1] - deque2[front2] > limit)
