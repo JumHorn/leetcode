@@ -14,7 +14,7 @@ int closestToTarget(int *arr, int arrSize, int target)
 		int size = 1;
 		next_valid[0] = arr[i];
 		res = min(res, fabs(arr[i] - target));
-		for (int j = 0; j < validSize; j++)
+		for (int j = 0; j < validSize; ++j)
 		{
 			next_valid[size++] = valid[j] & arr[i];
 			res = min(res, fabs((valid[j] & arr[i]) - target));

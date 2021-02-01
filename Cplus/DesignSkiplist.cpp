@@ -47,7 +47,7 @@ public:
 			if (tmp1->next == NULL)
 				tmp1->next = new LinkedList(i * 1000);
 			tmp1 = tmp1->next;
-			i++;
+			++i;
 		}
 		LinkedList *tmp2 = tmp1->child;
 		if (tmp2 == NULL)
@@ -59,7 +59,7 @@ public:
 			if (tmp2->next == NULL)
 				tmp2->next = new LinkedList(val + i * 100);
 			tmp2 = tmp2->next;
-			i++;
+			++i;
 		}
 		LinkedList *tmp3 = tmp2->child;
 		if (tmp3 == NULL)
@@ -71,7 +71,7 @@ public:
 			if (tmp3->next == NULL)
 				tmp3->next = new LinkedList(val + i * 10);
 			tmp3 = tmp3->next;
-			i++;
+			++i;
 		}
 		LinkedList *tmp4 = tmp3->child;
 		if (tmp4 == NULL)

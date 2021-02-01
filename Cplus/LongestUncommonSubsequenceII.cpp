@@ -59,8 +59,8 @@ public:
 		while (i < lhs.size() && j < rhs.size())
 		{
 			if (lhs[i] == rhs[j])
-				i++;
-			j++;
+				++i;
+			++j;
 		}
 		return i == lhs.size();
 	}

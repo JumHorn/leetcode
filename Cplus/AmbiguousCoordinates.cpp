@@ -28,7 +28,7 @@ public:
 		{
 			int i = 1;
 			while (i < (int)s.length() && s[i] == '0')
-				i++;
+				++i;
 			if (i == (int)s.length() || s.back() == '0')
 				return {};
 			return {"0." + s.substr(1)};
