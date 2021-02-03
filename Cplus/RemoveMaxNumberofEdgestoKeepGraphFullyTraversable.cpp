@@ -55,7 +55,7 @@ public:
 		DSU alice(n + 1), bob(n + 1);
 		for (auto n : type[2])
 		{
-			if (alice.Union(edges[n][1], edges[n][2]) | bob.Union(edges[n][1], edges[n][2]))
+			if (alice.Union(edges[n][1], edges[n][2]) || bob.Union(edges[n][1], edges[n][2]))
 				++edgeAdded;
 		}
 		for (auto n : type[0])

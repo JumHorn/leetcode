@@ -92,7 +92,8 @@ int maxNumEdgesToRemove(int n, int **edges, int edgesSize, int *edgesColSize)
 	DSU *alice = dsu_init(n + 1), *bob = dsu_init(n + 1);
 	for (struct ListNode *node = type[2]; node; node = node->next)
 	{
-		if (dsu_union(alice, edges[node->val][1], edges[node->val][2]) | dsu_union(bob, edges[node->val][1], edges[node->val][2]))
+		if (dsu_union(alice, edges[node->val][1], edges[node->val][2]) ||
+			dsu_union(bob, edges[node->val][1], edges[node->val][2]))
 			++edgeAdded;
 	}
 	for (struct ListNode *node = type[0]; node; node = node->next)
