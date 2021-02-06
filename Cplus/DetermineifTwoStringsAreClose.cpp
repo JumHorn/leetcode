@@ -1,5 +1,4 @@
 #include <string>
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -17,18 +16,14 @@ public:
 			++count1[word1[i] - 'a'];
 			++count2[word2[i] - 'a'];
 		}
-		if (count1 == count2)
-			return true;
 		for (int i = 0; i < 26; ++i)
 		{
-			if (count1[i] != count2[i] && (count1[i] == 0 || count2[i] == 0))
+			if ((count1[i] != 0 && count2[i] == 0) ||
+				(count1[i] == 0 && count2[i] != 0))
 				return false;
 		}
-		unordered_map<int, int> m1, m2;
-		for (auto n : count1)
-			++m1[n];
-		for (auto n : count2)
-			++m2[n];
-		return m1 == m2;
+		sort(count1.begin(), count1.end());
+		sort(count2.begin(), count2.end());
+		return count1 == count2;
 	}
 };
