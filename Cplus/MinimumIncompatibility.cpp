@@ -12,38 +12,37 @@ public:
 		int bits = N / k;
 		int res = 0;
 		sort(nums.begin(), nums.end());
-		unordered_map<int, int> m; //{value,count}
-		for (auto n : nums)
-			++m[n];
-		for (auto n : m)
+		for (int i = 0, j = 0; i <= N; ++i)
 		{
-			if (n.second > k)
-				return -1;
+			if (i == N || nums[i] != nums[j])
+			{
+				if (i - j > k)
+					return -1;
+				j = i;
+			}
 		}
-		vector<int> compat(1 << N, -1); //{mask,diff}
+		vector<int> combo(1 << N, -1); //{mask,diff}
 		for (int i = 0; i < 1 << N; ++i)
 		{
 			if (bitCount(i) == bits && check(nums, i))
-			{
-				compat[i] = diff(nums, i);
-			}
+				combo[i] = diff(nums, i);
 		}
 		vector<vector<int>> dp(k + 1, vector<int>(1 << N, 1e9));
 		dp[0][0] = 0;
-		for (int a = 1; a <= k; ++a)
+		for (int n = 0; n < k; ++n)
 		{
 			for (int i = (1 << N) - 1; i >= 0; --i)
 			{
-				if (dp[a - 1][i] >= 1e9)
+				if (dp[n][i] >= 1e9)
 					continue;
 				int mask = ((~i) & ((1 << N) - 1));
 				for (int j = mask; j > 0; j = ((j - 1) & mask))
 				{
-					if (compat[j] == -1)
+					if (combo[j] == -1)
 						continue;
-					int d = compat[j];
-					if (dp[a - 1][i] + d < dp[a][i | j])
-						dp[a][i | j] = dp[a - 1][i] + d;
+					int d = combo[j];
+					if (dp[n][i] + d < dp[n + 1][i | j])
+						dp[n + 1][i | j] = dp[n][i] + d;
 				}
 			}
 		}
