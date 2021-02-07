@@ -13,7 +13,6 @@ public:
 			return -1;
 		if (nums.back() == x)
 			return N;
-		//nums.push_back(nums.back());
 		int j = N - 1;
 		while (j > 0 && nums[N - 1] - nums[j - 1] <= x)
 			--j;
