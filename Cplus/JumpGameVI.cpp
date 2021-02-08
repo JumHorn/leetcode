@@ -8,7 +8,7 @@ public:
 	int maxResult(vector<int> &nums, int k)
 	{
 		int N = nums.size();
-		deque<pair<int, int>> q;
+		deque<pair<int, int>> q; //{index,score}
 		q.push_back({0, nums[0]});
 		for (int i = 1; i < N; ++i)
 		{
