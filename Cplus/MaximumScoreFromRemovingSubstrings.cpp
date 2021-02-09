@@ -9,16 +9,16 @@ class Solution
 public:
 	int maximumGain(string s, int x, int y)
 	{
-		if (x > y)
-		{
-			reverse(s.begin(), s.end());
-			swap(x, y);
-		}
+		return x <= y ? gain(s, 'a', 'b', x, y) : gain(s, 'b', 'a', y, x);
+	}
+
+	int gain(string &s, char a, char b, int x, int y)
+	{
 		stack<char> stk1, stk2;
 		int res = 0;
 		for (auto c : s)
 		{
-			if (c == 'a' && !stk1.empty() && stk1.top() == 'b') //ba
+			if (c == a && !stk1.empty() && stk1.top() == b) //ba
 			{
 				stk1.pop();
 				res += y;
@@ -32,7 +32,7 @@ public:
 			char c = stk1.top();
 			stk1.pop();
 
-			if (c == 'a' && !stk2.empty() && stk2.top() == 'b')
+			if (c == a && !stk2.empty() && stk2.top() == b)
 			{
 				stk2.pop();
 				res += x;

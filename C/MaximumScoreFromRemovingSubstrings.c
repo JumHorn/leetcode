@@ -2,7 +2,7 @@
 
 #define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
 
-void reverse(char* arr, int first, int last)
+void reverse(char *arr, int first, int last)
 {
 	for (; first < last; ++first, --last)
 	{
@@ -12,19 +12,13 @@ void reverse(char* arr, int first, int last)
 	}
 }
 
-int maximumGain(char* s, int x, int y)
+int gain(char *s, char a, char b, int x, int y)
 {
-	int N = strlen(s);
-	if (x > y)
-	{
-		reverse(s, 0, N - 1);
-		swap(x, y);
-	}
-	int res = 0, top = -1;
+	int N = strlen(s), res = 0, top = -1;
 	char stack[N];
 	for (int i = 0; s[i]; ++i)
 	{
-		if (s[i] == 'a' && top != -1 && stack[top] == 'b')	//ba
+		if (s[i] == a && top != -1 && stack[top] == b) //ba
 		{
 			--top;
 			res += y;
@@ -36,7 +30,7 @@ int maximumGain(char* s, int x, int y)
 	++top;
 	for (int end = top, i = end - 1; i >= 0; --i)
 	{
-		if (stack[i] == 'a' && top != end && stack[top] == 'b')
+		if (stack[i] == a && top != end && stack[top] == b)
 		{
 			++top;
 			res += x;
@@ -45,4 +39,9 @@ int maximumGain(char* s, int x, int y)
 			stack[--top] = stack[i];
 	}
 	return res;
+}
+
+int maximumGain(char *s, int x, int y)
+{
+	return x <= y ? gain(s, 'a', 'b', x, y) : gain(s, 'b', 'a', y, x);
 }
