@@ -18,7 +18,7 @@ public:
 			{
 				int n = pow2 - val;
 				if (n < val)
-					continue;
+					break;
 				if (m.find(n) != m.end())
 				{
 					if (n != val)
