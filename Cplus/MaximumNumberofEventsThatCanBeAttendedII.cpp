@@ -9,33 +9,33 @@ public:
 	int maxValue(vector<vector<int>> &events, int k)
 	{
 		sort(events.begin(), events.end(), *this);
-		int N = events.size(), res = 0, pre = 0;
-		vector<map<int, int>> dp(k); //{end,value}
-		for (auto &e : events)
-		{
-			pre = dp[0][e[1]] = max({dp[0][e[1]], e[2], pre});
-			res = max(res, pre);
-		}
+		int N = events.size();
+		vector<vector<int>> dp(N + 1, vector<int>(k)); //{index,value}
+		for (int i = 0; i < N; ++i)
+			dp[i + 1][0] = max(dp[i][0], events[i][2]);
 
-		for (int i = 1; i < k; ++i)
+		for (int j = 1; j < k; ++j)
 		{
-			for (auto &e : events)
+			for (int i = 0; i < N; ++i)
 			{
-				auto iter = dp[i - 1].lower_bound(e[0]);
-				int pre = 0;
-				if (!dp[i].empty())
-					pre = dp[i].rbegin()->second;
-				if (iter != dp[i - 1].begin())
+				dp[i + 1][j] = max(dp[i + 1][j - 1], dp[i][j]);
+
+				int lo = 0, hi = i;
+				while (lo < hi)
 				{
-					--iter;
-					dp[i][e[1]] = max({dp[i][e[1]], pre, e[2] + iter->second});
+					int mi = (hi - lo) / 2 + lo;
+					if (events[mi][1] < events[i][0])
+						lo = mi + 1;
+					else
+						hi = mi;
 				}
-				else
-					dp[i][e[1]] = max(dp[i][e[1]], pre);
-				res = max(res, dp[i][e[1]]);
+				--lo;
+
+				for (int l = 0; l <= lo; ++l)
+					dp[i + 1][j] = max(dp[i + 1][j], dp[l + 1][j - 1] + events[i][2]);
 			}
 		}
-		return res;
+		return dp[N][k - 1];
 	}
 
 	bool operator()(vector<int> &lhs, vector<int> &rhs)
