@@ -21,28 +21,16 @@ public:
 				break;
 			}
 
-			if (word1[i] > word2[j])
+			int a = word1.compare(i, string::npos, word2, j);
+			if (a >= 0)
 			{
 				res.push_back(word1[i]);
 				++i;
 			}
-			else if (word1[i] < word2[j])
+			else
 			{
 				res.push_back(word2[j]);
 				++j;
-			}
-			else
-			{
-				if (word1.substr(i) + word2.substr(j) > word2.substr(j) + word1.substr(i))
-				{
-					res.push_back(word1[i]);
-					++i;
-				}
-				else
-				{
-					res.push_back(word2[j]);
-					++j;
-				}
 			}
 		}
 		return res;
