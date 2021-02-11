@@ -21,11 +21,11 @@ public:
 		if (root == nullptr)
 			return res;
 		vector<int> instance;
-		dfs(root, sum, instance, res);
+		preorder(root, sum, instance, res);
 		return res;
 	}
 
-	void dfs(TreeNode *root, int sum, vector<int> &instance, vector<vector<int>> &res)
+	void preorder(TreeNode *root, int sum, vector<int> &instance, vector<vector<int>> &res)
 	{
 		if (root == nullptr)
 			return;
@@ -39,8 +39,8 @@ public:
 			return;
 		}
 		instance.push_back(root->val);
-		dfs(root->left, sum - root->val, instance, res);
-		dfs(root->right, sum - root->val, instance, res);
+		preorder(root->left, sum - root->val, instance, res);
+		preorder(root->right, sum - root->val, instance, res);
 		instance.pop_back();
 	}
 };

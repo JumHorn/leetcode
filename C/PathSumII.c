@@ -30,7 +30,7 @@ void addOneResult(int (*staticRes)[1000], int *size, int *colSize, int *data, in
 	++*size;
 }
 
-void dfs(struct TreeNode *root, int sum, int *instance, int instanceSize, int (*staticRes)[1000], int *size, int *colSize)
+void preorder(struct TreeNode *root, int sum, int *instance, int instanceSize, int (*staticRes)[1000], int *size, int *colSize)
 {
 	if (!root)
 		return;
@@ -40,8 +40,8 @@ void dfs(struct TreeNode *root, int sum, int *instance, int instanceSize, int (*
 		addOneResult(staticRes, size, colSize, instance, instanceSize);
 		return;
 	}
-	dfs(root->left, sum - root->val, instance, instanceSize, staticRes, size, colSize);
-	dfs(root->right, sum - root->val, instance, instanceSize, staticRes, size, colSize);
+	preorder(root->left, sum - root->val, instance, instanceSize, staticRes, size, colSize);
+	preorder(root->right, sum - root->val, instance, instanceSize, staticRes, size, colSize);
 	--instanceSize;
 }
 
@@ -55,6 +55,6 @@ int **pathSum(struct TreeNode *root, int sum, int *returnSize, int **returnColum
 	static int staticRes[1000][1000], staticResColSize[1000];
 	int instance[1000];
 	*returnSize = 0;
-	dfs(root, sum, instance, 0, staticRes, returnSize, staticResColSize);
+	preorder(root, sum, instance, 0, staticRes, returnSize, staticResColSize);
 	return mallocRes(staticRes, *returnSize, staticResColSize, returnSize, returnColumnSizes);
 }
