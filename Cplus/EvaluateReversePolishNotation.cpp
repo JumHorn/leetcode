@@ -10,9 +10,9 @@ public:
 	{
 		stack<int> s;
 		int first, second;
-		for (int i = 0; i < (int)tokens.size(); ++i)
+		for (auto &token : tokens)
 		{
-			if (tokens[i] == "+")
+			if (token == "+")
 			{
 				first = s.top();
 				s.pop();
@@ -20,7 +20,7 @@ public:
 				s.pop();
 				s.push(first + second);
 			}
-			else if (tokens[i] == "-")
+			else if (token == "-")
 			{
 				first = s.top();
 				s.pop();
@@ -28,7 +28,7 @@ public:
 				s.pop();
 				s.push(second - first);
 			}
-			else if (tokens[i] == "*")
+			else if (token == "*")
 			{
 				first = s.top();
 				s.pop();
@@ -36,7 +36,7 @@ public:
 				s.pop();
 				s.push(first * second);
 			}
-			else if (tokens[i] == "/")
+			else if (token == "/")
 			{
 				first = s.top();
 				s.pop();
@@ -46,7 +46,7 @@ public:
 			}
 			else
 			{
-				s.push(stoi(tokens[i]));
+				s.push(stoi(token));
 			}
 		}
 		return s.top();
