@@ -10,9 +10,7 @@ public:
 		for (int i = gcd(N1, N2); i > 0; --i)
 		{
 			if (divide(str1, str1.substr(0, i)) && divide(str2, str1.substr(0, i)))
-			{
 				return str1.substr(0, i);
-			}
 		}
 		return "";
 	}
