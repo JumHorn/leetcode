@@ -31,17 +31,14 @@ public:
 		}
 
 		vector<int> res;
-		for (int i = 0; i < N; ++i)
+		for (int i = 0, j = 0; i < N; ++i)
 		{
-			bool flag = true;
-			for (int j = 0; j < N && flag; ++j)
+			for (int j = 0; j < N; ++j)
 			{
-				if (i == j)
-					continue;
-				if ((v[i] & v[j]) == v[i])
-					flag = false;
+				if (i != j && (v[i] & v[j]) == v[i])
+					break;
 			}
-			if (flag)
+			if (j == N)
 				res.push_back(i);
 		}
 		return res;

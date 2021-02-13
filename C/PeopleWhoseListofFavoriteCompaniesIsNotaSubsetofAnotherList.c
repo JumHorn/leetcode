@@ -45,17 +45,15 @@ int *peopleIndexes(char ***favoriteCompanies, int favoriteCompaniesSize, int *fa
 		qsort(favoriteCompanies[i], favoriteCompaniesColSize[i], sizeof(char *), cmp);
 	int *res = (int *)malloc(sizeof(int) * N);
 	*returnSize = 0;
-	for (int i = 0; i < N; ++i)
+	for (int i = 0, j = 0; i < N; ++i)
 	{
-		bool flag = true;
-		for (int j = 0; j < N && flag; ++j)
+		for (j = 0; j < N; ++j)
 		{
-			if (i == j)
-				continue;
-			if (contains(favoriteCompanies[i], favoriteCompaniesColSize[i], favoriteCompanies[j], favoriteCompaniesColSize[j]))
-				flag = false;
+			if (i != j &&
+				contains(favoriteCompanies[i], favoriteCompaniesColSize[i], favoriteCompanies[j], favoriteCompaniesColSize[j]))
+				break;
 		}
-		if (flag)
+		if (j == N)
 			res[(*returnSize)++] = i;
 	}
 	return res;
