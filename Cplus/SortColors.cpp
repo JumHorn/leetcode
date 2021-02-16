@@ -19,8 +19,7 @@ public:
 	*/
 	void three_way_partitioning(vector<int> &data, int mid1, int mid2)
 	{
-		int i = 0, j = 0, k = (int)data.size() - 1;
-		while (j <= k)
+		for (int i = 0, j = 0, k = (int)data.size() - 1; j <= k;)
 		{
 			if (data[j] < mid1)
 				swap(data[i++], data[j++]);
