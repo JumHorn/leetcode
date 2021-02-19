@@ -16,7 +16,7 @@ public:
 	void flatten(TreeNode *root)
 	{
 		TreeNode dummy, *d = &dummy;
-		return preorder(root, d);
+		preorder(root, d);
 	}
 
 	void preorder(TreeNode *root, TreeNode *&pre)
