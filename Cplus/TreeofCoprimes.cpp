@@ -1,3 +1,4 @@
+#include <stack>
 #include <vector>
 using namespace std;
 
@@ -13,29 +14,29 @@ public:
 			graph[edge[0]].push_back({edge[1], nums[edge[1]]});
 			graph[edge[1]].push_back({edge[0], nums[edge[0]]});
 		}
-		vector<pair<int, int>> path;
+		vector<stack<pair<int, int>>> path(51); // {node,level}
 		vector<int> res(N, -1);
-		preorder(graph, nums, -1, 0, path, res);
+		preorder(graph, nums, -1, 0, 0, path, res);
 		return res;
 	}
 
-	void preorder(vector<vector<pair<int, int>>> &graph, vector<int> &nums, int from, int at, vector<pair<int, int>> &path, vector<int> &res)
+	void preorder(vector<vector<pair<int, int>>> &graph, vector<int> &nums, int from, int at, int level, vector<stack<pair<int, int>>> &path, vector<int> &res)
 	{
-		for (auto iter = path.rbegin(); iter != path.rend(); ++iter)
+		for (int i = (int)path.size() - 1, l = -1; i > 0; --i)
 		{
-			if (gcd(iter->second, nums[at]) == 1)
+			if (!path[i].empty() && path[i].top().second > l && gcd(i, nums[at]) == 1)
 			{
-				res[at] = iter->first;
-				break;
+				l = path[i].top().second;
+				res[at] = path[i].top().first;
 			}
 		}
 		for (auto &to : graph[at])
 		{
 			if (to.first != from)
 			{
-				path.push_back({at, nums[at]});
-				preorder(graph, nums, at, to.first, path, res);
-				path.pop_back();
+				path[nums[at]].push({at, level});
+				preorder(graph, nums, at, to.first, level + 1, path, res);
+				path[nums[at]].pop();
 			}
 		}
 	}
