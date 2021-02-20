@@ -16,21 +16,21 @@ public:
 		{
 			map<pair<int, int>, int> data;
 			int vertical = 0; //该点与x轴垂直的直线上有多少个点
-			int slope = 0;	//同斜率的直线点的个数
-			int maxp = 0;	 //最多点数
-			int samep = 1;	//相同点,包含自身
+			int slope = 0;	  //同斜率的直线点的个数
+			int maxp = 0;	  //最多点数
+			int samep = 1;	  //相同点,包含自身
 			for (int j = i + 1; j < N; ++j)
 			{
 				if (points[i] == points[j]) //测试用例的点有重复
-					samep++;
+					++samep;
 				else if (points[i][0] == points[j][0])
-					vertical++;
+					++vertical;
 				else
 				{
 					//long double slope=(points[i][1]-points[j][1])*1.0/(points[i][0]-points[j][0]);//精度不够
 					int a = points[i][1] - points[j][1], b = points[i][0] - points[j][0];
-					int tmp = gcd(a, b);
-					maxp = max(maxp, ++data[{a / tmp, b / tmp}]);
+					int g = gcd(a, b);
+					maxp = max(maxp, ++data[{a / g, b / g}]);
 				}
 			}
 			maxp = max(maxp, vertical) + samep; //同斜率和垂直点中选出最大的点
