@@ -14,6 +14,6 @@ uint32_t reverseBits(uint32_t n)
 {
 	uint32_t res = 0;
 	for (int i = 0; i < 4; ++i)
-		res = (res << 8) + reverseByte((n >> (i * 8)) & 0xff);
+		res = (res << 8) | reverseByte((n >> (i * 8)) & 0xff);
 	return res;
 }

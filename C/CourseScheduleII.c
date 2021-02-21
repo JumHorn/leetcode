@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+topological sort DFS implement
+*/
+
 // create graph
 typedef struct GraphNode
 {
