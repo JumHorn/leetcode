@@ -17,12 +17,12 @@ public:
 	{
 		if (root == nullptr)
 			return 0;
-		int l = heght(root->left);
-		int r = heght(root->right);
+		int l = height(root->left);
+		int r = height(root->right);
 		return (r < l) ? (1 << r) + countNodes(root->left) : (1 << l) + countNodes(root->right);
 	}
 
-	int heght(TreeNode *root)
+	int height(TreeNode *root)
 	{
 		int res = 0;
 		while (root != nullptr)
