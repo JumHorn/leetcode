@@ -1,5 +1,4 @@
 
-
 int lengthOfLIS(int *nums, int numsSize)
 {
 	int size = 0;
