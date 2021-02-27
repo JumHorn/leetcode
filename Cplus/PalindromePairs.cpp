@@ -39,7 +39,7 @@ public:
 
 	bool isPalindrome(const string &word)
 	{
-		for (int i = 0, j = word.length() - 1; i < j; ++i, --j)
+		for (int i = 0, j = (int)word.length() - 1; i < j; ++i, --j)
 		{
 			if (word[i] != word[j])
 				return false;
