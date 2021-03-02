@@ -19,17 +19,16 @@ int **mallocRes(int (*data)[2], int dataSize, int *dataColSize, int *returnSize,
 
 void dfs(int **matrix, int M, int N, int (*color)[N], int row, int col)
 {
+	int path[] = {-1, 0, 1, 0, -1};
 	if (color[row][col] != 0)
 		return;
 	color[row][col] = 1;
-	if (row - 1 >= 0 && matrix[row - 1][col] >= matrix[row][col])
-		dfs(matrix, M, N, color, row - 1, col);
-	if (col - 1 >= 0 && matrix[row][col - 1] >= matrix[row][col])
-		dfs(matrix, M, N, color, row, col - 1);
-	if (row + 1 < M && matrix[row + 1][col] >= matrix[row][col])
-		dfs(matrix, M, N, color, row + 1, col);
-	if (col + 1 < N && matrix[row][col + 1] >= matrix[row][col])
-		dfs(matrix, M, N, color, row, col + 1);
+	for (int k = 0; k < 4; ++k)
+	{
+		int x = row + path[k], y = col + path[k + 1];
+		if (x >= 0 && x < M && y >= 0 && y < N && matrix[x][y] >= matrix[row][col])
+			dfs(matrix, M, N, color, x, y);
+	}
 }
 
 /**
