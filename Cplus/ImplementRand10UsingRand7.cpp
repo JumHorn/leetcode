@@ -29,11 +29,9 @@ public:
 
 	int rand10()
 	{
-		int res;
-		do
-		{
+		int res = 0;
+		while (res == 0)
 			res = quard[rand7() - 1][rand7() - 1];
-		} while (res == 0);
 		return res;
 	}
 

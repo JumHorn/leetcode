@@ -25,10 +25,8 @@ int rand10()
 			{9, 10, 1, 2, 3, 4, 5},
 			{6, 7, 8, 9, 10, 0, 0},
 			{0, 0, 0, 0, 0, 0, 0}};
-	int res;
-	do
-	{
+	int res = 0;
+	while (res == 0)
 		res = board[rand7() - 1][rand7() - 1];
-	} while (res == 0);
 	return res;
 }
