@@ -2,7 +2,7 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-bool PredictTheWinner(int* nums, int numsSize)
+bool PredictTheWinner(int *nums, int numsSize)
 {
 	int prefixsum[numsSize + 1];
 	prefixsum[0] = 0;
@@ -15,7 +15,8 @@ bool PredictTheWinner(int* nums, int numsSize)
 	for (int l = 1; l < numsSize; ++l)
 	{
 		for (int i = 0, j = l; j < numsSize; ++i, ++j)
-			dp[i][j] = max(nums[i] + prefixsum[j + 1] - prefixsum[i + 1] - dp[i + 1][j], nums[j] + prefixsum[j] - prefixsum[i] - dp[i][j - 1]);
+			dp[i][j] = max(nums[i] + prefixsum[j + 1] - prefixsum[i + 1] - dp[i + 1][j],
+						   nums[j] + prefixsum[j] - prefixsum[i] - dp[i][j - 1]);
 	}
 	return dp[0][numsSize - 1] * 2 >= sum;
 }
