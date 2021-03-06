@@ -18,7 +18,7 @@ public:
 					for (auto &iter : hash)
 					{
 						if ((iter.first & (1 << (j - 1))) == 0)
-							next_hash[iter.first | (1 << (j - 1))] += hash[iter.first];
+							next_hash[iter.first | (1 << (j - 1))] += iter.second;
 					}
 				}
 			}
