@@ -20,8 +20,8 @@ public:
 		return res;
 	}
 
-	bool operator()(vector<int> &a, vector<int> &b)
+	bool operator()(vector<int> &lhs, vector<int> &rhs)
 	{
-		return a[1] < b[1];
+		return lhs[1] < rhs[1];
 	}
 };
