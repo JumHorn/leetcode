@@ -15,9 +15,8 @@ public:
 
 	int f(string prefix, string suffix)
 	{
-		auto iter = m_prefix.lower_bound(prefix);
 		int res = -1;
-		for (; iter != m_prefix.end(); ++iter)
+		for (auto iter = m_prefix.lower_bound(prefix); iter != m_prefix.end(); ++iter)
 		{
 			if (!starts_with(iter->first, prefix))
 				break;

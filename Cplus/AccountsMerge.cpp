@@ -58,10 +58,7 @@ public:
 			if (index < (int)res.size())
 				res[index].push_back(iter.first);
 			else
-			{
-				res.push_back({iter.second});
-				res.back().push_back(iter.first);
-			}
+				res.push_back({iter.second, iter.first});
 		}
 		for (auto &account : res)
 			sort(account.begin() + 1, account.end());
