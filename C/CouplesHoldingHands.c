@@ -11,7 +11,7 @@ int minSwapsCouples(int *row, int rowSize)
 		pos[row[i]] = i;
 	}
 
-	for (int i = 0; i < rowSize; ++i)
+	for (int i = 0; i < rowSize; i += 2)
 	{
 		for (int j = couple[pos[couple[row[i]]]]; i != j; j = couple[pos[couple[row[i]]]])
 		{
