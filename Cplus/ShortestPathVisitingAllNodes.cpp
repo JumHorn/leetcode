@@ -9,7 +9,7 @@ public:
 	{
 		int N = graph.size(), res = 0;
 		vector<vector<int>> dp(1 << N, vector<int>(N, N * N));
-		queue<pair<int, int>> q;
+		queue<pair<int, int>> q; //{mask,node}
 		for (int i = 0; i < N; ++i)
 		{
 			q.push({1 << i, i});
@@ -17,18 +17,18 @@ public:
 		}
 		while (!q.empty())
 		{
-			auto node = q.front();
+			auto at = q.front();
 			q.pop();
-			int dist = dp[node.first][node.second];
-			if (node.first == (1 << N) - 1)
+			int dist = dp[at.first][at.second];
+			if (at.first == (1 << N) - 1)
 				return dist;
-			for (int child : graph[node.second])
+			for (int to : graph[at.second])
 			{
-				int cover = (node.first | (1 << child));
-				if (dist + 1 < dp[cover][child])
+				int mask = (at.first | (1 << to));
+				if (dist + 1 < dp[mask][to])
 				{
-					dp[cover][child] = dist + 1;
-					q.push({cover, child});
+					dp[mask][to] = dist + 1;
+					q.push({mask, to});
 				}
 			}
 		}

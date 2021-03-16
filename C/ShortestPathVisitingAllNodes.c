@@ -18,11 +18,11 @@ int shortestPathLength(int **graph, int graphSize, int *graphColSize)
 				int dist = dp[mask][head];
 				for (int i = 0; i < graphColSize[head]; ++i)
 				{
-					int child = graph[head][i];
-					int next_mask = mask | (1 << child);
-					if (dist + 1 < dp[next_mask][child])
+					int to = graph[head][i];
+					int next_mask = mask | (1 << to);
+					if (dist + 1 < dp[next_mask][to])
 					{
-						dp[next_mask][child] = dist + 1;
+						dp[next_mask][to] = dist + 1;
 						if (mask == next_mask)
 							repeat = true;
 					}
