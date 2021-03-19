@@ -1,6 +1,10 @@
 #include <vector>
 using namespace std;
 
+/*
+dp[m][k] m step and k eggs can reach highest
+*/
+
 class Solution
 {
 public:
