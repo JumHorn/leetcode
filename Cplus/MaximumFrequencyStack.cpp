@@ -1,6 +1,6 @@
-#include <map>
 #include <stack>
 #include <unordered_map>
+#include <vector>
 using namespace std;
 
 class FreqStack
@@ -8,11 +8,14 @@ class FreqStack
 public:
 	FreqStack()
 	{
+		data.emplace_back(); // 0 reserved
 	}
 
 	void push(int x)
 	{
 		int f = ++freq[x];
+		if (f >= data.size())
+			data.emplace_back();
 		data[f].push(x);
 		if (f > maxFreq)
 			maxFreq = f;
@@ -29,9 +32,9 @@ public:
 	}
 
 private:
-	int maxFreq;						 //continuous
-	unordered_map<int, stack<int>> data; // {freq ,val stack}
-	unordered_map<int, int> freq;		 // {val ,freq}
+	int maxFreq;				  //continuous
+	vector<stack<int>> data;	  // {freq ,val stack}
+	unordered_map<int, int> freq; // {val ,freq}
 };
 
 /**
