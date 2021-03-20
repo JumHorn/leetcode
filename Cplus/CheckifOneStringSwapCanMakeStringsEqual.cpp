@@ -12,10 +12,10 @@ public:
 		{
 			if (s1[i] != s2[i])
 			{
-				if (w1.length() > 2)
-					return false;
 				w1.push_back(s1[i]);
 				w2.push_back(s2[i]);
+				if (w1.length() > 2)
+					return false;
 			}
 		}
 		if (w1.empty())
