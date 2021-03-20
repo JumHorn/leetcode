@@ -2,6 +2,11 @@
 #include <vector>
 using namespace std;
 
+/*
+let dp[i][j] represents the number of permutation of number 0, 1, ... , i,
+satisfying DI-rule S.substr(0, i), and ending with digit j
+*/
+
 class Solution
 {
 public:
