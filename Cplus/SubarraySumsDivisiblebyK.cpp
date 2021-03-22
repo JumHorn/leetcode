@@ -15,9 +15,9 @@ public:
 		for (auto &n : A)
 		{
 			sum += n;
-			int tmp = sum % K;
-			res += m[tmp];
-			m[tmp] += 1;
+			int remainder = sum % K;
+			res += m[remainder];
+			++m[remainder];
 		}
 		return res;
 	}
