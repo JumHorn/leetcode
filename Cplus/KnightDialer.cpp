@@ -15,8 +15,8 @@ public:
 			vector<int> nextdp(10);
 			for (int j = 0; j < 10; ++j)
 			{
-				for (int k = 0; k < (int)graph[j].size(); ++k)
-					nextdp[graph[j][k]] = (nextdp[graph[j][k]] + dp[j]) % MOD;
+				for (auto k : graph[j])
+					nextdp[k] = (nextdp[k] + dp[j]) % MOD;
 			}
 			dp = nextdp;
 		}

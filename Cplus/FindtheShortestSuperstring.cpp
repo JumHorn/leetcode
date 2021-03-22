@@ -26,7 +26,7 @@ public:
 			{
 				if ((i & (1 << j)) == 0)
 					continue;
-				int pre = i - (1 << j);
+				int pre = i ^ (1 << j);
 				if (pre == 0)
 					dp[i][j] = A[j].length();
 				else
