@@ -34,8 +34,7 @@ int **intervalIntersection(int **A, int ASize, int *AColSize, int **B, int BSize
 		return NULL;
 	}
 	int res[ASize + BSize][2], resColSize[ASize + BSize], resSize = 0;
-	int i = 0, j = 0;
-	while (i < ASize && j < BSize)
+	for (int i = 0, j = 0; i < ASize && j < BSize;)
 	{
 		if (A[i][0] <= B[j][1] && B[j][0] <= A[i][1])
 		{
