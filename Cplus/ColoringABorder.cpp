@@ -13,13 +13,13 @@ public:
 		return grid;
 	}
 
-	bool dfs(vector<vector<int>> &grid, int row, int col, int oldcolor, int color, set<pair<int, int>> &seen)
+	int dfs(vector<vector<int>> &grid, int row, int col, int oldcolor, int color, set<pair<int, int>> &seen)
 	{
 		int M = grid.size(), N = grid[0].size();
 		if (seen.find({row, col}) != seen.end())
-			return true;
+			return 1;
 		if (row < 0 || row >= M || col < 0 || col >= N || grid[row][col] != oldcolor)
-			return false;
+			return 0;
 		seen.insert({row, col});
 		//board dfs direction
 		int path[5] = {-1, 0, 1, 0, -1};
@@ -28,6 +28,6 @@ public:
 			res += dfs(grid, row + path[i], col + path[i + 1], oldcolor, color, seen);
 		if (res < 4)
 			grid[row][col] = color;
-		return true;
+		return 1;
 	}
 };
