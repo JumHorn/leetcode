@@ -31,7 +31,7 @@ public:
 
 private:
 	unordered_map<int, vector<int>> hashmap; //{value,index}
-	vector<int> v;							 //same as arr
+	vector<int> &v;							 //same as arr
 };
 
 /**
