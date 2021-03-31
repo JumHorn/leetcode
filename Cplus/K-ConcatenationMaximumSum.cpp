@@ -16,15 +16,15 @@ public:
 	{
 		int res = 0, dp = 0, N = arr.size();
 		//kadane
-		for (int i = 0; i < min(2, k) * N; ++i)
+		for (int i = 0; i < min(k, 2) * N; ++i)
 		{
 			dp = max(dp, 0) + arr[i % N];
 			res = max(res, dp);
 		}
 		int sum = accumulate(arr.begin(), arr.end(), 0);
-		while (sum > 0 && --k >= 2)
-			res = (res + sum) % MOD;
-		return res;
+		if (sum > 0)
+			res = res + (long)sum * max(k - 2, 0) % MOD;
+		return res % MOD;
 	}
 
 private:
