@@ -27,16 +27,16 @@ public:
 	int maxSumBST(TreeNode *root)
 	{
 		int res = 0;
-		postOrder(root, res);
+		postorder(root, res);
 		return res;
 	}
 
-	BST postOrder(TreeNode *root, int &res)
+	BST postorder(TreeNode *root, int &res)
 	{
 		if (root == nullptr)
 			return {INT_MIN, INT_MAX, 0};
-		BST left = postOrder(root->left, res);
-		BST right = postOrder(root->right, res);
+		BST left = postorder(root->left, res);
+		BST right = postorder(root->right, res);
 		if (left.sum != INT_MAX && right.sum != INT_MAX)
 		{
 			if (root->val > left.max && root->val < right.min)

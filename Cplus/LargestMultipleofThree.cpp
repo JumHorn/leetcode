@@ -11,11 +11,10 @@ public:
 		count = vector<int>(10);
 		sum = 0;
 		string res;
-		int n = digits.size();
-		for (int i = 0; i < n; ++i)
+		for (auto n : digits)
 		{
-			++count[digits[i]];
-			sum += digits[i];
+			++count[n];
+			sum += n;
 		}
 
 		if (sum % 3 == 1)
