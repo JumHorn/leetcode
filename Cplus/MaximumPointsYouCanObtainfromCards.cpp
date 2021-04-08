@@ -6,13 +6,15 @@ class Solution
 public:
 	int maxScore(vector<int> &cardPoints, int k)
 	{
-		int N = cardPoints.size();
-		vector<int> prefixsum(N + 1);
-		for (int i = 0; i < N; ++i)
-			prefixsum[i + 1] = prefixsum[i] + cardPoints[i];
-		int res = 0;
-		for (int i = 0; i <= k; ++i)
-			res = max(res, prefixsum[i] + (prefixsum[N] - prefixsum[N - (k - i)]));
+		int N = cardPoints.size(), sum = 0;
+		for (int i = 0; i < k; ++i)
+			sum += cardPoints[i];
+		int res = sum;
+		for (int i = k - 1; i >= 0; --i)
+		{
+			sum = sum - cardPoints[i] + cardPoints[N - 1 - (k - 1 - i)];
+			res = max(res, sum);
+		}
 		return res;
 	}
 };
