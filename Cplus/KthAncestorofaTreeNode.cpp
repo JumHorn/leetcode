@@ -1,11 +1,10 @@
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class TreeAncestor
 {
 public:
-	TreeAncestor(int n, vector<int> &parent) : m_parent(parent), cache(n, vector<int>(21))
+	TreeAncestor(int n, vector<int> &parent) : cache(n, vector<int>(21))
 	{
 		for (int i = 0; i < n; ++i)
 			cache[i][0] = parent[i];
@@ -36,7 +35,6 @@ public:
 	}
 
 private:
-	vector<int> &m_parent;
 	vector<vector<int>> cache;
 };
 
