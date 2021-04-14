@@ -14,23 +14,20 @@ int cmp(const void *lhs, const void *rhs)
 
 int minCost(int n, int *cuts, int cutsSize)
 {
-	int dp[cutsSize + 2][cutsSize + 2];
+	int N = cutsSize + 2, dp[N][N], cut[N], INF = 1e9;
 	memset(dp, 0, sizeof(dp));
-	int cut[cutsSize + 2];
 	memcpy(&cut[1], cuts, sizeof(int) * cutsSize);
 	cut[0] = 0;
-	cut[cutsSize + 1] = n;
-	qsort(cut, cutsSize + 2, sizeof(int), cmp);
-	for (int i = 0; i < cutsSize; ++i)
-		dp[i + 1][i + 1] = cut[i + 2] - cut[i];
-	for (int i = cutsSize; i > 0; --i)
+	cut[N - 1] = n;
+	qsort(cut, N, sizeof(int), cmp);
+	for (int i = N - 3; i >= 0; --i)
 	{
-		for (int j = i + 1; j <= cutsSize; ++j)
+		for (int j = i + 2; j < N; ++j)
 		{
-			dp[i][j] = INT_MAX;
-			for (int k = i; k <= j; ++k)
-				dp[i][j] = min(dp[i][j], cut[j + 1] - cut[i - 1] + dp[i][k - 1] + dp[k + 1][j]);
+			dp[i][j] = INF;
+			for (int k = i + 1; k < j; ++k)
+				dp[i][j] = min(dp[i][j], cut[j] - cut[i] + dp[i][k] + dp[k][j]);
 		}
 	}
-	return dp[1][cutsSize];
+	return dp[0][N - 1];
 }

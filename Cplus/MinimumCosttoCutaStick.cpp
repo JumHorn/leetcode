@@ -6,23 +6,23 @@ class Solution
 public:
 	int minCost(int n, vector<int> &cuts)
 	{
+		cuts.push_back(0);
+		cuts.push_back(n);
 		int N = cuts.size();
 		vector<vector<int>> dp(N, vector<int>(N, -1));
 		sort(cuts.begin(), cuts.end());
-		return memdp(cuts, 0, N - 1, 0, n, dp);
+		return memdp(cuts, 0, N - 1, dp);
 	}
 
-	int memdp(vector<int> &cuts, int start, int end, int first, int last, vector<vector<int>> &dp)
+	int memdp(vector<int> &cuts, int first, int last, vector<vector<int>> &dp)
 	{
-		if (end - start < 0)
+		if (last - first <= 1)
 			return 0;
-		if (end - start == 0)
-			return last - first;
-		if (dp[start][end] != -1)
-			return dp[start][end];
+		if (dp[first][last] != -1)
+			return dp[first][last];
 		int res = INT_MAX;
-		for (int i = start; i <= end; ++i)
-			res = min(res, memdp(cuts, start, i - 1, first, cuts[i], dp) + memdp(cuts, i + 1, end, cuts[i], last, dp));
-		return dp[start][end] = res + last - first;
+		for (int i = first + 1; i < last; ++i)
+			res = min(res, cuts[last] - cuts[first] + memdp(cuts, first, i, dp) + memdp(cuts, i, last, dp));
+		return dp[first][last] = res;
 	}
 };
