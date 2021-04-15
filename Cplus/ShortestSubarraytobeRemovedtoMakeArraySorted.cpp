@@ -15,7 +15,7 @@ public:
 
 		while (right > left && arr[right - 1] <= arr[right])
 			--right;
-		//merge left,and right
+		//merge left and right
 		int res = min(N - left - 1, right);
 		for (int i = 0, j = right; i <= left && j < N;)
 		{

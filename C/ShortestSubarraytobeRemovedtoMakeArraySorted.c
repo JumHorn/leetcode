@@ -1,7 +1,7 @@
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
-int findLengthOfShortestSubarray(int* arr, int arrSize)
+int findLengthOfShortestSubarray(int *arr, int arrSize)
 {
 	int left = 0, right = arrSize - 1;
 	while (left + 1 < arrSize && arr[left] <= arr[left + 1])
@@ -11,7 +11,7 @@ int findLengthOfShortestSubarray(int* arr, int arrSize)
 
 	while (right > left && arr[right - 1] <= arr[right])
 		--right;
-	//merge left,and right
+	//merge left and right
 	int res = min(arrSize - left - 1, right);
 	for (int i = 0, j = right; i <= left && j < arrSize;)
 	{
