@@ -34,7 +34,7 @@ public:
 
 	bool fullTraversal()
 	{
-		int size = parent.size() - 1;
+		int size = (int)parent.size() - 1;
 		return rank[Find(1)] == size;
 	}
 

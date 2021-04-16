@@ -23,7 +23,7 @@ public:
 			for (int j = i + 1; j < N; ++j)
 				graph[j][i] = graph[i][j] = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
 		}
-		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q; //{weith,node}
+		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q; //{weight,node}
 		vector<int> seen(N);
 		seen[0] = 1;
 		for (int i = 1; i < N; ++i)
