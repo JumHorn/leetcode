@@ -230,6 +230,20 @@ private:
 };
 /********end of Segment Tree********/
 
+//combination table
+void createCombinationTable(int N)
+{
+	vector<vector<int>> combination(N + 1, vector<int>(N + 1));
+	combination[0][0] = 1;
+	for (int i = 1; i <= N; ++i)
+	{
+		combination[i][0] = 1;
+		for (int j = 1; j <= i; ++j)
+			combination[i][j] = combination[i][i - j] = combination[i - 1][j] + combination[i - 1][j - 1];
+	}
+}
+/********combination table********/
+
 //kmp next array
 vector<int> createKMP(string &pattern)
 {

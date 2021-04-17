@@ -13,8 +13,8 @@ public:
 		for (int i = 1; i <= N; ++i)
 		{
 			combination[i][0] = 1;
-			for (int j = 1; j <= N; ++j)
-				combination[i][j] = (combination[i - 1][j] + combination[i - 1][j - 1]) % MOD;
+			for (int j = 1; j <= i; ++j)
+				combination[i][j] = combination[i][i - j] = (combination[i - 1][j] + combination[i - 1][j - 1]) % MOD;
 		}
 		return recursive(nums, combination) - 1;
 	}
