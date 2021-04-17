@@ -52,6 +52,6 @@ public:
 					depth2 = node.second;
 			}
 		}
-		return {max(depth1 + depth2, longestpath), max(depth1, depth2) + 1};
+		return {max(depth1 + depth2, longestpath), depth1 + 1};
 	}
 };

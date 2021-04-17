@@ -67,7 +67,7 @@ bool *areConnected(int n, int threshold, int **queries, int queriesSize, int *qu
 	DSU *dsu = dsu_init(n + 1);
 	for (int i = threshold + 1; i <= n; ++i)
 	{
-		for (int j = i * 2, k = 2; j <= n; j = i * (++k))
+		for (int j = i * 2; j <= n; j += i)
 			dsu_union(dsu, i, j);
 	}
 

@@ -48,12 +48,13 @@ public:
 		int M = matrix.size(), N = matrix[0].size();
 		vector<vector<int>> res(M, vector<int>(N));
 		map<int, vector<int>> m; //{value,{pos}}
-		vector<int> rank(M + N);
 		for (int i = 0; i < M; ++i)
 		{
 			for (int j = 0; j < N; ++j)
 				m[matrix[i][j]].push_back(i * N + j);
 		}
+
+		vector<int> rank(M + N);
 		for (auto &n : m)
 		{
 			vector<int> &pos = n.second;

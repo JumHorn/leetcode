@@ -52,7 +52,7 @@ pair getHeight(GraphNode **graph, int at, int *seen)
 				depth2 = node.depth;
 		}
 	}
-	pair res = {max(depth1 + depth2, longestpath), max(depth1, depth2) + 1};
+	pair res = {max(depth1 + depth2, longestpath), depth1 + 1};
 	return res;
 }
 
