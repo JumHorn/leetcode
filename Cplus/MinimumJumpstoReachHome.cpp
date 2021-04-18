@@ -15,11 +15,12 @@ public:
 		vector<int> seen(5000);
 		q.push({0, 0});
 		seen[0] = 1;
-		int res = 0;
-		for (int res = 0; !q.empty(); ++res)
+		int res = -1;
+		while (!q.empty())
 		{
+			++res;
 			int size = q.size();
-			for (int size = q.size(); size > 0; --size)
+			while (--size >= 0)
 			{
 				int at = q.front().first;
 				int d = q.front().second;

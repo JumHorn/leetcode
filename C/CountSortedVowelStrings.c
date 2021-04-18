@@ -1,6 +1,6 @@
 
 /*
-combination number C(n + 1, 4)
+combination number C(n + 4, 4)
 */
 
 int countVowelStrings(int n)
