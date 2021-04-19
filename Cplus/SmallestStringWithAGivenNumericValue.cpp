@@ -7,17 +7,11 @@ public:
 	string getSmallestString(int n, int k)
 	{
 		string res(n, 'a');
-		for (int i = 0; i < n; ++i)
+		k -= n;
+		for (int i = n - 1; i >= 0 && k > 0; --i)
 		{
-			for (char c = 'a'; c <= 'z'; ++c)
-			{
-				if (k - (c - 'a' + 1) <= ('z' - 'a' + 1) * (n - i - 1))
-				{
-					res[i] = c;
-					k -= (c - 'a' + 1);
-					break;
-				}
-			}
+			res[i] += min(k, 25);
+			k -= min(k, 25);
 		}
 		return res;
 	}

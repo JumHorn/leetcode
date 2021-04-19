@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <unordered_map>
 #include <vector>
 using namespace std;
 
@@ -8,9 +7,7 @@ class Solution
 public:
 	int minimumIncompatibility(vector<int> &nums, int k)
 	{
-		int N = nums.size();
-		int bits = N / k;
-		int res = 0;
+		int N = nums.size(), bits = N / k, INF = 1e9;
 		sort(nums.begin(), nums.end());
 		for (int i = 0, j = 0; i <= N; ++i)
 		{
@@ -22,27 +19,24 @@ public:
 			}
 		}
 		vector<int> combo(1 << N, -1); //{mask,diff}
-		for (int i = 0; i < 1 << N; ++i)
+		for (int mask = 0; mask < 1 << N; ++mask)
 		{
-			if (bitCount(i) == bits && check(nums, i))
-				combo[i] = diff(nums, i);
+			if (bitCount(mask) == bits && check(nums, mask))
+				combo[mask] = diff(nums, mask);
 		}
-		vector<vector<int>> dp(k + 1, vector<int>(1 << N, 1e9));
+		vector<vector<int>> dp(k + 1, vector<int>(1 << N, INF));
 		dp[0][0] = 0;
-		for (int n = 0; n < k; ++n)
+		for (int i = 0; i < k; ++i)
 		{
-			for (int i = (1 << N) - 1; i >= 0; --i)
+			for (int mask = (1 << N) - 1; mask >= 0; --mask)
 			{
-				if (dp[n][i] >= 1e9)
+				if (dp[i][mask] >= INF)
 					continue;
-				int mask = ((~i) & ((1 << N) - 1));
-				for (int j = mask; j > 0; j = ((j - 1) & mask))
+				int m = ((~mask) & ((1 << N) - 1));
+				for (int j = m; j > 0; j = ((j - 1) & m))
 				{
-					if (combo[j] == -1)
-						continue;
-					int d = combo[j];
-					if (dp[n][i] + d < dp[n + 1][i | j])
-						dp[n + 1][i | j] = dp[n][i] + d;
+					if (combo[j] != -1 && dp[i][mask] + combo[j] < dp[i + 1][mask | j])
+						dp[i + 1][mask | j] = dp[i][mask] + combo[j];
 				}
 			}
 		}

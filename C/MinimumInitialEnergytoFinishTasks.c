@@ -17,7 +17,7 @@ int minimumEffort(int **tasks, int tasksSize, int *tasksColSize)
 		if (cur < tasks[i][1])
 		{
 			res += tasks[i][1] - cur;
-			cur += tasks[i][1] - cur;
+			cur = tasks[i][1];
 		}
 		cur -= tasks[i][0];
 	}
