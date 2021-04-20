@@ -22,10 +22,9 @@ public:
 				if (m.find(n) != m.end())
 				{
 					if (n != val)
-						res += (long)m[val] * m[n] % MOD;
+						res = (res + (long)count * m[n]) % MOD;
 					else
-						res += (long)count * (count - 1) / 2 % MOD;
-					res %= MOD;
+						res += (res + (long)count * (count - 1) / 2) % MOD;
 				}
 			}
 		}
