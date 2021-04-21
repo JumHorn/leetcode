@@ -237,8 +237,8 @@ void createCombinationTable(int N)
 	combination[0][0] = 1;
 	for (int i = 1; i <= N; ++i)
 	{
-		combination[i][0] = 1;
-		for (int j = 1; j <= i; ++j)
+		combination[i][0] = combination[i][i] = 1;
+		for (int j = 1; j <= i / 2; ++j)
 			combination[i][j] = combination[i][i - j] = combination[i - 1][j] + combination[i - 1][j - 1];
 	}
 }

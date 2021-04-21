@@ -1,17 +1,5 @@
 #include <string.h>
 
-#define swap(a, b) ((a) != (b) && ((a) ^= (b) ^= (a) ^= (b)))
-
-void reverse(char *arr, int first, int last)
-{
-	for (; first < last; ++first, --last)
-	{
-		char tmp = arr[first];
-		arr[first] = arr[last];
-		arr[last] = tmp;
-	}
-}
-
 int gain(char *s, char a, char b, int x, int y)
 {
 	int N = strlen(s), res = 0, top = -1;

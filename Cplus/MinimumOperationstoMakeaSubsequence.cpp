@@ -16,23 +16,22 @@ public:
 			if (m.find(n) != m.end())
 				index.push_back(m[n]);
 		}
-		int N = index.size();
 		vector<int> LIS;
-		for (int i = 0; i < N; ++i)
+		for (auto n : index)
 		{
 			int lo = 0, hi = LIS.size();
 			while (lo < hi)
 			{
 				int mi = (hi - lo) / 2 + lo;
-				if (LIS[mi] < index[i])
+				if (LIS[mi] < n)
 					lo = mi + 1;
 				else
 					hi = mi;
 			}
 			if (lo == LIS.size())
-				LIS.push_back(index[i]);
+				LIS.push_back(n);
 			else
-				LIS[lo] = index[i];
+				LIS[lo] = n;
 		}
 		return target.size() - LIS.size();
 	}

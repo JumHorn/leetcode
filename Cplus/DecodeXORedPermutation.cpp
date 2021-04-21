@@ -12,7 +12,7 @@ class Solution
 public:
 	vector<int> decode(vector<int> &encoded)
 	{
-		int a1 = 0, xorall = 0, xorodd = 0, N = encoded.size();
+		int xorall = 0, xorodd = 0, N = encoded.size();
 		for (int i = 0; i <= N; ++i)
 		{
 			xorall ^= i;
@@ -20,7 +20,7 @@ public:
 				xorodd ^= encoded[i];
 		}
 		xorall ^= N + 1;
-		a1 = xorall ^ xorodd;
+		int a1 = xorall ^ xorodd;
 		vector<int> res = {a1};
 		for (auto n : encoded)
 			res.push_back(res.back() ^ n);
