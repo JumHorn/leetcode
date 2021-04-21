@@ -22,7 +22,7 @@ public:
 			{
 				dp[i][j] = dp[i - 1][j];
 				for (int m = j; m > 0; m = ((m - 1) & j))
-					dp[i][j] = min(dp[i][j], max(dp[0][m], dp[i - 1][j - m]));
+					dp[i][j] = min(dp[i][j], max(dp[0][m], dp[i - 1][j ^ m]));
 			}
 		}
 		return dp[k - 1][(1 << N) - 1];
