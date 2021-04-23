@@ -2,8 +2,6 @@
 #include <vector>
 using namespace std;
 
-// https://leetcode-cn.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/solution/de-dao-lian-xu-k-ge-1-de-zui-shao-xiang-lpa9i/
-
 class Solution
 {
 public:

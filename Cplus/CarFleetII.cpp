@@ -13,12 +13,10 @@ public:
 		s.push(N - 1);
 		for (int i = N - 2; i >= 0; --i)
 		{
-			while (!s.empty())
+			for (; !s.empty(); s.pop())
 			{
 				//top car fast than current car,may be we can catch up with next
-				if (cars[s.top()][1] >= cars[i][1])
-					s.pop();
-				else
+				if (cars[s.top()][1] < cars[i][1])
 				{
 					//always exist so we can catch up finally
 					if (res[s.top()] < 0)
@@ -26,7 +24,6 @@ public:
 					double distance = res[s.top()] * (cars[i][1] - cars[s.top()][1]);
 					if (distance > cars[s.top()][0] - cars[i][0])
 						break;
-					s.pop(); //we need to catch the next one
 				}
 			}
 			if (!s.empty())

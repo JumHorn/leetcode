@@ -22,7 +22,8 @@ public:
 
 	void preorder(vector<vector<pair<int, int>>> &graph, vector<int> &nums, int from, int at, int level, vector<stack<pair<int, int>>> &path, vector<int> &res)
 	{
-		for (int i = (int)path.size() - 1, l = -1; i > 0; --i)
+		int N = path.size(), l = -1;
+		for (int i = 1; i < N; ++i)
 		{
 			if (!path[i].empty() && path[i].top().second > l && gcd(i, nums[at]) == 1)
 			{
