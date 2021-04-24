@@ -20,8 +20,7 @@ public:
 		int N = nums.size();
 		if (n == 2) //two sum
 		{
-			int i = index, j = N - 1;
-			while (i < j)
+			for (int i = index, j = N - 1; i < j;)
 			{
 				int sum = nums[i] + nums[j];
 				if (sum == target)

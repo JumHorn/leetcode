@@ -35,8 +35,7 @@ int **threeSum(int *nums, int numsSize, int *returnSize, int **returnColumnSizes
 		if (nums[i] == pre)
 			continue;
 		//twoSum(nums, numsSize, i + 1, -nums[i]);
-		int j = i + 1, k = numsSize - 1;
-		while (j < k)
+		for (int j = i + 1, k = numsSize - 1; j < k;)
 		{
 			int sum = nums[i] + nums[j] + nums[k];
 			if (sum == 0)

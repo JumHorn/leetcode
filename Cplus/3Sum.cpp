@@ -15,14 +15,12 @@ public:
 		{
 			if (nums[i] == pre)
 				continue;
-			int j = i + 1, k = N - 1;
-			while (j < k)
+			for (int j = i + 1, k = N - 1; j < k;)
 			{
 				int sum = nums[i] + nums[j] + nums[k];
 				if (sum == 0)
 				{
 					res.push_back({nums[i], nums[j], nums[k]});
-
 					for (++j; j < k && nums[j] == nums[j - 1];) //skip
 						++j;
 				}

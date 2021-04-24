@@ -40,8 +40,7 @@ int **fourSum(int *nums, int numsSize, int target, int *returnSize, int **return
 			if (nums[i] == pre)
 				continue;
 			//twoSum
-			int j = i + 1, k = numsSize - 1;
-			while (j < k)
+			for (int j = i + 1, k = numsSize - 1; j < k;)
 			{
 				int sum = nums[m] + nums[i] + nums[j] + nums[k];
 				if (sum == target)
