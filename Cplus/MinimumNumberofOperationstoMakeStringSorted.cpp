@@ -17,35 +17,34 @@ public:
 		combination[0][0] = 1;
 		for (int i = 1; i <= N; ++i)
 		{
-			combination[i][0] = 1;
-			for (int j = 1; j <= i; ++j)
+			combination[i][0] = combination[i][i] = 1;
+			for (int j = 1; j <= i / 2; ++j)
 				combination[i][j] = combination[i][i - j] = (combination[i - 1][j] + combination[i - 1][j - 1]) % MOD;
 		}
 
 		vector<int> count(26);
 		for (auto c : s)
 			++count[c - 'a'];
-		int res = 0;
+		int res = 0, n = N;
 		for (auto c : s)
 		{
 			for (char a = c - 1; a >= 'a'; --a)
 			{
-				long n = N, m = 1;
+				long k = n - 1, m = 1;
 				if (count[a - 'a'] != 0)
 				{
 					--count[a - 'a'];
-					--n;
 					for (int i = 0; i < 26; ++i)
 					{
-						m = m * (combination[n][count[i]]) % MOD;
-						n -= count[i];
+						m = m * (combination[k][count[i]]) % MOD;
+						k -= count[i];
 					}
 					++count[a - 'a'];
 					res = (res + m) % MOD;
 				}
 			}
 			--count[c - 'a'];
-			--N;
+			--n;
 		}
 		return res;
 	}
