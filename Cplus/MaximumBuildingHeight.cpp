@@ -1,36 +1,32 @@
 #include <algorithm>
-#include <queue>
-#include <unordered_map>
 #include <vector>
 using namespace std;
+
+/*
+max(h1, h2) + (r - l - abs(h1 - h2)) / 2
+equals to
+(r - l + h1 + h2) / 2
+*/
 
 class Solution
 {
 public:
 	int maxBuilding(int n, vector<vector<int>> &restrictions)
 	{
-		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q; //{height,building id}
-		for (auto &r : restrictions)
-			q.push({r[1], r[0]});
-		if (q.empty())
-			return n - 1;
-		int res = 1, height = q.top().first;
-		unordered_map<int, int> buildings; //{building id,height}
-		buildings[1] = 0;
-		while (!q.empty())
+		restrictions.push_back({1, 0});
+		restrictions.push_back({n, n - 1});
+		sort(restrictions.begin(), restrictions.end());
+		int N = restrictions.size();
+		for (int i = 1; i < N; ++i)
+			restrictions[i][1] = min(restrictions[i][1], restrictions[i - 1][1] + restrictions[i][0] - restrictions[i - 1][0]);
+		for (int i = N - 2; i >= 0; --i)
+			restrictions[i][1] = min(restrictions[i][1], restrictions[i + 1][1] + restrictions[i + 1][0] - restrictions[i][0]);
+
+		int res = 0;
+		for (int i = 1; i < N; ++i)
 		{
-			auto top = q.top();
-			q.pop();
-			auto iter = buildings.find(top.second);
-			if (iter != buildings.end())
-				continue;
-			int h = min(top.first, top.second - 1);
-			buildings[top.second] = h;
-			res = max(res, h);
-			if (top.second - 1 > 1 && buildings.find(top.second - 1) == buildings.end())
-				q.push({h + 1, top.second - 1});
-			if (top.second + 1 <= n && buildings.find(top.second + 1) == buildings.end())
-				q.push({h + 1, top.second + 1});
+			int l = restrictions[i - 1][0], r = restrictions[i][0], h1 = restrictions[i - 1][1], h2 = restrictions[i][1];
+			res = max(res, (r - l + h1 + h2) / 2);
 		}
 		return res;
 	}
