@@ -11,7 +11,7 @@ bool queenCheck(int *queen, int row, int column)
 	return true;
 }
 
-int dfs(int *queen, int queenSize, int row)
+int backTracking(int *queen, int queenSize, int row)
 {
 	if (row >= queenSize)
 		return 1;
@@ -21,7 +21,7 @@ int dfs(int *queen, int queenSize, int row)
 		if (queenCheck(queen, row, j))
 		{
 			queen[row] = j;
-			res += dfs(queen, queenSize, row + 1);
+			res += backTracking(queen, queenSize, row + 1);
 		}
 	}
 	return res;
@@ -30,5 +30,5 @@ int dfs(int *queen, int queenSize, int row)
 int totalNQueens(int n)
 {
 	int queen[n]; //record queens in each row
-	return dfs(queen, n, 0);
+	return backTracking(queen, n, 0);
 }

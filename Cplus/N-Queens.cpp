@@ -9,11 +9,11 @@ public:
 	{
 		vector<vector<string>> res;
 		vector<int> queen(n); //record queens in each row
-		dfs(queen, 0, res);
+		backTracking(queen, 0, res);
 		return res;
 	}
 
-	void dfs(vector<int> &queen, int row, vector<vector<string>> &res)
+	void backTracking(vector<int> &queen, int row, vector<vector<string>> &res)
 	{
 		int N = queen.size();
 		if (row >= N) //create queen
@@ -27,7 +27,7 @@ public:
 			if (queenCheck(queen, row, j))
 			{
 				queen[row] = j;
-				dfs(queen, row + 1, res);
+				backTracking(queen, row + 1, res);
 			}
 		}
 	}

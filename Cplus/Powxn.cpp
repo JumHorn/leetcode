@@ -7,8 +7,7 @@ public:
 		if (n == 0)
 			return 1;
 		double res = recursive(x, n / 2);
-		res *= (n % 2 == 0) ? res : x * res;
-		return res;
+		return res * res * (n % 2 == 0 ? 1 : x);
 	}
 
 	double myPow(double x, int n)

@@ -8,10 +8,10 @@ public:
 	int totalNQueens(int n)
 	{
 		vector<int> queen(n); //record queens in each row
-		return dfs(queen, 0);
+		return backTracking(queen, 0);
 	}
 
-	int dfs(vector<int> &queen, int row)
+	int backTracking(vector<int> &queen, int row)
 	{
 		int N = queen.size();
 		if (row >= N)
@@ -22,7 +22,7 @@ public:
 			if (queenCheck(queen, row, j))
 			{
 				queen[row] = j;
-				res += dfs(queen, row + 1);
+				res += backTracking(queen, row + 1);
 			}
 		}
 		return res;

@@ -25,7 +25,7 @@ bool queenCheck(int *queen, int row, int column)
 	return true;
 }
 
-void dfs(int *queen, int queenSize, int row, char ***res, int *resSize)
+void backTracking(int *queen, int queenSize, int row, char ***res, int *resSize)
 {
 	if (row >= queenSize) //create queen
 		res[(*resSize)++] = createQueen(queen, queenSize);
@@ -34,7 +34,7 @@ void dfs(int *queen, int queenSize, int row, char ***res, int *resSize)
 		if (queenCheck(queen, row, j))
 		{
 			queen[row] = j;
-			dfs(queen, queenSize, row + 1, res, resSize);
+			backTracking(queen, queenSize, row + 1, res, resSize);
 		}
 	}
 }
@@ -49,7 +49,7 @@ char ***solveNQueens(int n, int *returnSize, int **returnColumnSizes)
 	int queen[n];
 	*returnSize = 0;
 	char ***res = (char ***)malloc(sizeof(char **) * 1000);
-	dfs(queen, n, 0, res, returnSize);
+	backTracking(queen, n, 0, res, returnSize);
 	*returnColumnSizes = (int *)malloc(sizeof(int) * (*returnSize));
 	for (int i = 0; i < *returnSize; ++i)
 		(*returnColumnSizes)[i] = n;
