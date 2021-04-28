@@ -15,7 +15,7 @@ int largestRectangleArea(int *heights, int heightsSize)
 		stack[++top] = i;
 	}
 
-	for (int right = stack[top] + 1; top != 0; --top)
-		res = max(res, heights[stack[top]] * (right - stack[top - 1] - 1));
+	for (int right = stack[top]; top != 0; --top)
+		res = max(res, heights[stack[top]] * (right - stack[top - 1]));
 	return res;
 }

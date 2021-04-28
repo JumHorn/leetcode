@@ -2,7 +2,7 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int largestRectangleInHistogram(int* heights, int heightsSize)
+int largestRectangleInHistogram(int *heights, int heightsSize)
 {
 	int stack[heightsSize + 1], top = 0, res = 0;
 	stack[0] = -1;
@@ -13,12 +13,12 @@ int largestRectangleInHistogram(int* heights, int heightsSize)
 		stack[++top] = i;
 	}
 
-	for (int right = stack[top] + 1; top != 0; --top)
-		res = max(res, heights[stack[top]] * (right - stack[top - 1] - 1));
+	for (int right = stack[top]; top != 0; --top)
+		res = max(res, heights[stack[top]] * (right - stack[top - 1]));
 	return res;
 }
 
-int maximalRectangle(char** matrix, int matrixSize, int* matrixColSize)
+int maximalRectangle(char **matrix, int matrixSize, int *matrixColSize)
 {
 	if (matrixSize == 0 || *matrixColSize == 0)
 		return 0;

@@ -38,11 +38,11 @@ public:
 			s.push(i);
 		}
 
-		for (int right = s.top() + 1; s.size() > 1u;)
+		for (int right = s.top(); s.size() > 1u;)
 		{
 			int pre = s.top();
 			s.pop();
-			res = max(res, heights[pre] * (right - s.top() - 1));
+			res = max(res, heights[pre] * (right - s.top()));
 		}
 		return res;
 	}
