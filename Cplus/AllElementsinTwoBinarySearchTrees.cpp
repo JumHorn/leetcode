@@ -5,15 +5,15 @@ using namespace std;
 struct TreeNode
 {
 	int val;
-	TreeNode* left;
-	TreeNode* right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
 class Solution
 {
 public:
-	vector<int> getAllElements(TreeNode* root1, TreeNode* root2)
+	vector<int> getAllElements(TreeNode *root1, TreeNode *root2)
 	{
 		vector<int> v1, v2;
 		preorder(root1, v1);
@@ -34,7 +34,7 @@ public:
 		return res;
 	}
 
-	void preorder(TreeNode* root, vector<int>& v)
+	void preorder(TreeNode *root, vector<int> &v)
 	{
 		if (!root)
 			return;

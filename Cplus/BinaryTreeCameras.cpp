@@ -26,7 +26,7 @@ public:
 
 	pair<int, int> postorder(TreeNode *root) //return {nodetype,result count}
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return {2, 0};
 		auto l = postorder(root->left), r = postorder(root->right);
 		int res = l.second + r.second;

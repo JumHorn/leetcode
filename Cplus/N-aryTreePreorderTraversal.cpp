@@ -34,7 +34,7 @@ public:
 
 	void preorder(Node *root, vector<int> &res)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return;
 		res.push_back(root->val);
 		for (int i = 0; i < (int)root->children.size(); ++i)

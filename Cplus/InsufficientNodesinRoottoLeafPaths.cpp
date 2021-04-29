@@ -15,7 +15,7 @@ class Solution
 public:
 	TreeNode *sufficientSubset(TreeNode *root, int limit)
 	{
-		if (root->left == root->right) //root->left==NULL && root->right==NULL
+		if (root->left == root->right) //root->left==nullptr && root->right==nullptr
 			return root->val < limit ? nullptr : root;
 		if (root->left)
 			root->left = sufficientSubset(root->left, limit - root->val);

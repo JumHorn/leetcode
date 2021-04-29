@@ -1,11 +1,9 @@
-#include <algorithm> //for NULL define
-
 //Definition for singly-linked list.
 struct ListNode
 {
 	int val;
 	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
+	ListNode(int x) : val(x), next(nullptr) {}
 };
 
 class Solution
@@ -13,11 +11,11 @@ class Solution
 public:
 	ListNode *reverseList(ListNode *head)
 	{
-		if (head == NULL)
+		if (head == nullptr)
 			return head;
 		ListNode *p = head, *q = head->next;
-		head->next = NULL;
-		while (q != NULL)
+		head->next = nullptr;
+		while (q != nullptr)
 		{
 			ListNode *tmp = q->next;
 			q->next = p;

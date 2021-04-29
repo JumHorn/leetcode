@@ -7,7 +7,7 @@ struct TreeNode
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
 class Solution
@@ -22,18 +22,18 @@ public:
 
 	TreeNode *getXNode(TreeNode *root, int x)
 	{
-		if (root == NULL || root->val == x)
+		if (root == nullptr || root->val == x)
 			return root;
-		TreeNode *res = NULL;
+		TreeNode *res = nullptr;
 		res = getXNode(root->left, x);
-		if (res == NULL)
+		if (res == nullptr)
 			res = getXNode(root->right, x);
 		return res;
 	}
 
 	int nodeCount(TreeNode *root)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return 0;
 		return nodeCount(root->left) + nodeCount(root->right) + 1;
 	}

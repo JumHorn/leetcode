@@ -23,7 +23,7 @@ public:
 
 	int preorder(TreeNode *root, int maxval)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return 0;
 		int res = 0;
 		if (root->val >= maxval)

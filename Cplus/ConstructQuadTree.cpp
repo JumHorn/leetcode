@@ -16,20 +16,20 @@ public:
 	{
 		val = false;
 		isLeaf = false;
-		topLeft = NULL;
-		topRight = NULL;
-		bottomLeft = NULL;
-		bottomRight = NULL;
+		topLeft = nullptr;
+		topRight = nullptr;
+		bottomLeft = nullptr;
+		bottomRight = nullptr;
 	}
 
 	Node(bool _val, bool _isLeaf)
 	{
 		val = _val;
 		isLeaf = _isLeaf;
-		topLeft = NULL;
-		topRight = NULL;
-		bottomLeft = NULL;
-		bottomRight = NULL;
+		topLeft = nullptr;
+		topRight = nullptr;
+		bottomLeft = nullptr;
+		bottomRight = nullptr;
 	}
 
 	Node(bool _val, bool _isLeaf, Node *_topLeft, Node *_topRight, Node *_bottomLeft, Node *_bottomRight)
@@ -70,7 +70,7 @@ public:
 			{
 				root->isLeaf = true;
 				root->val = root->topLeft->val;
-				root->topLeft = root->topRight = root->bottomLeft = root->bottomRight = NULL;
+				root->topLeft = root->topRight = root->bottomLeft = root->bottomRight = nullptr;
 				return root;
 			}
 		}

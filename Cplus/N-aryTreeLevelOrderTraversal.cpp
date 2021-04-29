@@ -29,7 +29,7 @@ public:
 	vector<vector<int>> levelOrder(Node *root)
 	{
 		vector<vector<int>> res;
-		if (root == NULL)
+		if (root == nullptr)
 			return res;
 		queue<Node *> q;
 		q.push(root);

@@ -52,11 +52,8 @@ public:
 	int getSize(ListNode *head)
 	{
 		int res = 0;
-		while (head)
-		{
+		for (; head != nullptr; head = head->next)
 			++res;
-			head = head->next;
-		}
 		return res;
 	}
 };

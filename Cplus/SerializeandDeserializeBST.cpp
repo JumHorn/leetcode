@@ -9,7 +9,7 @@ struct TreeNode
 	int val;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
 class Codec
@@ -18,7 +18,7 @@ public:
 	// Encodes a tree to a single string.
 	string serialize(TreeNode *root)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return "N";
 		return to_string(root->val) + "," + serialize(root->left) + "," + serialize(root->right);
 	}

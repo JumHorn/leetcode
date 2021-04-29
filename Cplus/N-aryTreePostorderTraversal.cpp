@@ -34,7 +34,7 @@ public:
 
 	void postorder(Node *root, vector<int> &res)
 	{
-		if (root == NULL)
+		if (root == nullptr)
 			return;
 		for (int i = 0; i < (int)root->children.size(); ++i)
 			postorder(root->children[i], res);
