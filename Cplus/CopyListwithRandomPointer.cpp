@@ -29,10 +29,7 @@ public:
 		Node *res = new Node(head->val);
 		m[head] = res;
 		for (Node *p = head->next, *q = res; p; p = p->next, q = q->next)
-		{
-			m[p] = new Node(p->val);
-			q->next = m[p];
-		}
+			q->next = m[p] = new Node(p->val);
 		for (Node *p = head, *q = res; p; p = p->next, q = q->next)
 		{
 			if (p->random)

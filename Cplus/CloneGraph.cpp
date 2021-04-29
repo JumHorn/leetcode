@@ -52,8 +52,7 @@ public:
 			auto n = node->neighbors[i];
 			if (seen.find(n) == seen.end())
 			{
-				seen[n] = new Node(n->val);
-				copy->neighbors[i] = seen[n];
+				copy->neighbors[i] = seen[n] = new Node(n->val);
 				dfs(node->neighbors[i], copy->neighbors[i], seen);
 			}
 			else
