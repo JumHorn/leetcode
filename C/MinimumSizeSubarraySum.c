@@ -6,14 +6,14 @@ int minSubArrayLen(int s, int *nums, int numsSize)
 		window += nums[i];
 	if (window < s)
 		return 0;
-	while (window >= s)
-		window -= nums[j++];
-	for (; i < numsSize; ++i)
+	for (; window >= s; ++j)
+		window -= nums[j];
+	for (; i < numsSize; ++i, ++j)
 	{
 		window += nums[i];
-		window -= nums[j++];
+		window -= nums[j];
 		while (window >= s)
-			window -= nums[j++];
+			window -= nums[++j];
 	}
 	return i - j + 1;
 }
