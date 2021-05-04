@@ -12,8 +12,8 @@ public:
 	{
 		if (matrix.empty())
 			return false;
-		int m = matrix.size(), i = 0, j = matrix[0].size() - 1;
-		while (i < m && j >= 0)
+		int N = matrix.size();
+		for (int i = 0, j = (int)matrix[0].size() - 1; i < N && j >= 0;)
 		{
 			if (matrix[i][j] == target)
 				return true;

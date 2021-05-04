@@ -1,6 +1,10 @@
 #include <vector>
 using namespace std;
 
+/*
+Boyer–Moore majority vote algorithm
+*/
+
 class Solution
 {
 public:
