@@ -46,11 +46,8 @@ public:
 			}
 		}
 		vector<int> res;
-		while (!leavenode.empty())
-		{
+		for (; !leavenode.empty(); leavenode.pop())
 			res.push_back(leavenode.front());
-			leavenode.pop();
-		}
 		return res;
 	}
 };
