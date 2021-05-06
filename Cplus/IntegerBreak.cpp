@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 using namespace std;
 
@@ -14,16 +15,11 @@ class Solution
 public:
 	int integerBreak(int n)
 	{
-		if (n < 3)
-			return 1;
-		if (n == 3)
-			return 2;
+		if (n <= 3)
+			return max(n - 1, 1);
 		int res = 1;
-		while (n > 4)
-		{
+		for (; n > 4; n -= 3)
 			res *= 3;
-			n -= 3;
-		}
 		res *= n;
 		return res;
 	}

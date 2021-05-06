@@ -8,11 +8,10 @@ public:
 	{
 		int res = N * max(N - 1, 1) / max(N - 2, 1);
 		N -= 3;
-		while (N > 0)
+		for (; N > 0; N -= 4)
 		{
 			res += N;
 			res -= (N - 1) * max(N - 2, 1) / max(N - 3, 1);
-			N -= 4;
 		}
 		return res;
 	}
