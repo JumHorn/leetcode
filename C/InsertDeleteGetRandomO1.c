@@ -109,8 +109,8 @@ bool randomizedSetInsert(RandomizedSet *obj, int val)
 	HashNode *node = hash_get(val);
 	if (node)
 		return false;
+	hash_set(val, obj->randaccessSize);
 	obj->randaccess[obj->randaccessSize++] = val;
-	hash_set(val, obj->randaccessSize - 1);
 	return true;
 }
 

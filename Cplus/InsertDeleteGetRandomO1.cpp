@@ -16,8 +16,8 @@ public:
 	{
 		if (modify.find(val) != modify.end())
 			return false;
+		modify[val] = randaccess.size();
 		randaccess.push_back(val);
-		modify[val] = randaccess.size() - 1;
 		return true;
 	}
 
@@ -41,7 +41,7 @@ public:
 
 private:
 	vector<int> randaccess;
-	unordered_map<int, int> modify;
+	unordered_map<int, int> modify; //{val,index}
 };
 
 /**
