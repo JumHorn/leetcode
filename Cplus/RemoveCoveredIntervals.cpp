@@ -12,7 +12,7 @@ public:
 		for (int i = 1, j = 0; i < n; ++i)
 		{
 			if (intervals[j][1] >= intervals[i][1])
-				res++;
+				++res;
 			else
 				j = i;
 		}
