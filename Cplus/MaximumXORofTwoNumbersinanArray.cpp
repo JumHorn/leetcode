@@ -14,13 +14,13 @@ public:
 			unordered_set<int> s;
 			for (auto n : nums)
 				s.insert(n & mask);
-			int max = (res | 1 << i);
+			int maxval = (res | 1 << i);
 			for (auto n : s)
 			{
-				int another = n ^ max;
+				int another = n ^ maxval;
 				if (s.find(another) != s.end())
 				{
-					res = max;
+					res = maxval;
 					break;
 				}
 			}

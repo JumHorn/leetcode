@@ -21,14 +21,14 @@ public:
 
 	long countDigits(int n)
 	{
-		long res = 0, base = 1, bit = 1;
+		long res = 0, base = 1, digit = 1;
 		while (n >= base * 10)
 		{
-			res += 9 * base * bit;
+			res += 9 * base * digit;
 			base *= 10;
-			++bit;
+			++digit;
 		}
-		res += (n - base + 1) * bit;
+		res += (n - base + 1) * digit;
 		return res;
 	}
 };

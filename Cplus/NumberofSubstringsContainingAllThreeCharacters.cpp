@@ -7,16 +7,15 @@ class Solution
 public:
 	int numberOfSubstrings(string s)
 	{
-		int res = 0, i = 0, N = s.length();
+		int res = 0, N = s.length();
 		unordered_map<char, int> m; //{char,count}
-		for (int i = 0, j = 0; i < (int)s.length(); ++i)
+		for (int i = 0, j = 0; i < N; ++i)
 		{
 			++m[s[i]];
-			while ((int)m.size() >= 3)
+			for (; (int)m.size() >= 3; ++j)
 			{
 				if (--m[s[j]] == 0)
 					m.erase(s[j]);
-				++j;
 			}
 			res += j;
 		}

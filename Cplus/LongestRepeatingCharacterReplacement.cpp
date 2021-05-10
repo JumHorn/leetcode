@@ -8,17 +8,15 @@ class Solution
 public:
 	int characterReplacement(string s, int k)
 	{
-		int window = 0, maxsame = 0;
+		int i = 0, j = 0, maxsame = 0;
 		vector<int> hash(26);
-		for (int i = 0; i < (int)s.length(); ++i)
+		for (; j < (int)s.length(); ++j)
 		{
-			++hash[s[i] - 'A'];
-			maxsame = max(maxsame, hash[s[i] - 'A']);
-			if (window - maxsame < k)
-				++window;
-			else
-				--hash[s[i - window] - 'A'];
+			++hash[s[j] - 'A'];
+			maxsame = max(maxsame, hash[s[j] - 'A']);
+			if (j - i - maxsame >= k)
+				--hash[s[i++] - 'A'];
 		}
-		return window;
+		return j - i;
 	}
 };
