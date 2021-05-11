@@ -24,8 +24,6 @@ public:
 
 	bool operator()(vector<int> &lhs, vector<int> &rhs)
 	{
-		if (lhs[1] != rhs[1])
-			return lhs[1] < rhs[1];
-		return lhs[0] < rhs[0];
+		return lhs[1] < rhs[1];
 	}
 };
