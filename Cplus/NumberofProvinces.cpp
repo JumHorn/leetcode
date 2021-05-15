@@ -43,12 +43,11 @@ class Solution
 public:
 	int findCircleNum(vector<vector<int>> &M)
 	{
-		int m = M.size();
-		DSU dsu(m);
-		vector<int> group(M.size());
-		for (int i = 0; i < m - 1; ++i)
+		int N = M.size();
+		DSU dsu(N);
+		for (int i = 0; i < N - 1; ++i)
 		{
-			for (int j = i + 1; j < m; ++j)
+			for (int j = i + 1; j < N; ++j)
 			{
 				if (M[i][j] == 1)
 					dsu.Union(i, j);
