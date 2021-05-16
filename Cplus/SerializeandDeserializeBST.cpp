@@ -1,6 +1,6 @@
 #include <sstream>
-#include <stack>
 #include <string>
+#include <vector>
 using namespace std;
 
 //Definition for a binary tree node.
@@ -19,31 +19,34 @@ public:
 	string serialize(TreeNode *root)
 	{
 		if (root == nullptr)
-			return "N";
-		return to_string(root->val) + "," + serialize(root->left) + "," + serialize(root->right);
+			return "";
+		return to_string(root->val) + "," + serialize(root->left) + serialize(root->right);
 	}
 
 	// Decodes your encoded data to tree.
 	TreeNode *deserialize(string data)
 	{
 		stringstream ss(data);
-		return deserialize(ss);
+		vector<int> arr;
+		int val = 0;
+		char delimiter;
+		while (ss >> val)
+		{
+			ss >> delimiter; //ignore .
+			arr.push_back(val);
+		}
+		val = 0;
+		return deserialize(arr, val, INT_MIN, INT_MAX);
 	}
 
-	TreeNode *deserialize(stringstream &data)
+	TreeNode *deserialize(vector<int> &data, int &index, int lower, int upper)
 	{
-		int val;
-		char dot;
-		if (data.peek() == 'N')
-		{
-			data >> dot >> dot;
+		if (index >= (int)data.size() || data[index] < lower || data[index] > upper)
 			return nullptr;
-		}
-		data >> val;
-		data >> dot; //ignore .
+		int val = data[index++];
 		TreeNode *root = new TreeNode(val);
-		root->left = deserialize(data);
-		root->right = deserialize(data);
+		root->left = deserialize(data, index, lower, val);
+		root->right = deserialize(data, index, val, upper);
 		return root;
 	}
 };
