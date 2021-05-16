@@ -7,32 +7,26 @@ class Solution
 public:
 	int sumOfFlooredPairs(vector<int> &nums)
 	{
-		int N = nums.size();
-		sort(nums.begin(), nums.end());
-		long res = 0;
-		for (int i = 0; i < N; ++i)
+		int MAXN = *max_element(nums.begin(), nums.end());
+		vector<int> count(2 * MAXN + 1), prefixsum(2 * MAXN + 2);
+		for (int n : nums)
+			++count[n];
+		for (int i = 0; i < 2 * MAXN; ++i)
+			prefixsum[i + 1] = prefixsum[i] + count[i];
+
+		long long res = 0LL;
+		for (int i = 0; i <= MAXN; ++i)
 		{
-			int j = i + 1, k = 1;
-			for (; nums[i] * (k + 1) <= nums.back(); ++k)
+			if (count[i] == 0)
+				continue;
+			for (int j = i; j <= MAXN; j += i)
 			{
-				auto iter = lower_bound(nums.begin() + j, nums.end(), nums[i] * (k + 1));
-				int n = iter - nums.begin();
-				res = (res + (n - j) * k) % MOD;
-				j = n;
+				int r = j / i, cnt = prefixsum[j + i] - prefixsum[j];
+				res += r * 1LL * cnt * count[i] % MOD;
+				res %= MOD;
 			}
-			res = (res + (N - j) * k) % MOD;
 		}
-		// the equals
-		for (int i = 0, j = 0; i < N;)
-		{
-			j = i + 1;
-			while (j < N && nums[i] == nums[j])
-				++j;
-			if (j - i > 1)
-				res = (res + (j - i) * (j - i - 1) / 2) % MOD;
-			i = j;
-		}
-		return (res + N) % MOD;
+		return res;
 	}
 
 private:
