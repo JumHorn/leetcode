@@ -3,17 +3,14 @@ f means factor
 n=f1*f2*f3***
 the minstep is sum of all factor
 */
+
 int minSteps(int n)
 {
-	int res = 0, factor = 1;
-	while (n > 1)
+	int res = 0;
+	for (int factor = 2; n > 1; ++factor)
 	{
-		++factor;
-		while (n % factor == 0)
-		{
+		for (; n % factor == 0; n /= factor)
 			res += factor;
-			n /= factor;
-		}
 	}
 	return res;
 }

@@ -1,10 +1,9 @@
 
-
-int findNumberOfLIS(int* nums, int numsSize)
+int findNumberOfLIS(int *nums, int numsSize)
 {
 	if (numsSize == 0)
 		return 0;
-	int dp[numsSize][2];  //{LIS,count}
+	int dp[numsSize][2]; //{LIS,count}
 	for (int i = 0; i < numsSize; ++i)
 	{
 		dp[i][0] = dp[i][1] = 1;
