@@ -10,8 +10,8 @@ public:
 		for (int i = 0, j = 0; i < N; ++i)
 		{
 			product *= nums[i];
-			while (j <= i && product >= k)
-				product /= nums[j++];
+			for (; j <= i && product >= k; ++j)
+				product /= nums[j];
 			res += i - j + 1;
 		}
 		return res;
