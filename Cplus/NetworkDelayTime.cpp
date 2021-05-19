@@ -3,6 +3,11 @@
 #include <queue>
 using namespace std;
 
+/*
+Algorithm:
+Bellman Ford
+*/
+
 class Solution
 {
 public:

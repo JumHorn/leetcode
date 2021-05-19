@@ -15,11 +15,11 @@ public:
 		int N = nums.size();
 		if (nums.empty())
 			return 0;
-		map<int, int> dp;
+		map<int, int> earn;
 		for (auto n : nums)
-			dp[n] += n;
-		int a = dp.begin()->second, b = 0;
-		for (auto iter = ++dp.begin(); iter != dp.end(); ++iter)
+			earn[n] += n;
+		int a = earn.begin()->second, b = 0;
+		for (auto iter = ++earn.begin(); iter != earn.end(); ++iter)
 		{
 			auto pre = iter;
 			--pre;
