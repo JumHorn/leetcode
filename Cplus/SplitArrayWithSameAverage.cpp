@@ -6,10 +6,10 @@ using namespace std;
 class Solution
 {
 public:
-	bool splitArraySameAverage(vector<int> &A)
+	bool splitArraySameAverage(vector<int> &nums)
 	{
-		int N = A.size();
-		int sum = accumulate(A.begin(), A.end(), 0);
+		int N = nums.size();
+		int sum = accumulate(nums.begin(), nums.end(), 0);
 		// early pruning
 		bool isPossible = false;
 		for (int i = 1; i <= N / 2 && !isPossible; ++i)
@@ -21,7 +21,7 @@ public:
 			return false;
 		vector<unordered_set<int>> dp(N / 2 + 1);
 		dp[0].insert(0);
-		for (auto n : A)
+		for (auto n : nums)
 		{
 			for (int i = N / 2; i > 0; --i)
 			{

@@ -17,8 +17,7 @@ int numFactoredBinaryTrees(int *A, int ASize)
 	for (int k = 0; k < ASize; ++k)
 	{
 		dp[k] = 1;
-		int i = 0, j = k - 1;
-		while (i <= j)
+		for (int i = 0, j = k - 1; i <= j;)
 		{
 			if ((long)A[i] * A[j] == A[k])
 			{

@@ -12,7 +12,7 @@ public:
 			graph[edge[0]].push_back(edge[1]);
 			graph[edge[1]].push_back(edge[0]);
 		}
-		vector<int> res(N), nodecount(N, 1), seen(N);
+		vector<int> res(N), nodecount(N, 1);
 		res[0] = postorder(graph, -1, 0, nodecount);
 		preorder(graph, nodecount, -1, 0, res);
 		return res;
