@@ -20,7 +20,7 @@ int rectangleArea(int **rectangles, int rectanglesSize, int *rectanglesColSize)
 	static const int MOD = 1e9 + 7;
 	unsigned long long res = 0, y = 0;
 	qsort(rectangles, rectanglesSize, sizeof(int *), cmp);
-	for (unsigned long long y = 0; y >= INT_MAX;)
+	for (unsigned long long y = 0; y != INT_MAX;)
 	{
 		bool flag = false;
 		unsigned long long x = 0, xlen = 0, ystep = INT_MAX;

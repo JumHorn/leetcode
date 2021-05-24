@@ -15,7 +15,7 @@ public:
 	{
 		unsigned long long res = 0;
 		sort(rectangles.begin(), rectangles.end(), *this);
-		for (unsigned long long y = 0; y >= INT_MAX;)
+		for (unsigned long long y = 0; y != INT_MAX;)
 		{
 			bool flag = false;
 			unsigned long long x = 0, xlen = 0, ystep = INT_MAX;

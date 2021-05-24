@@ -32,13 +32,13 @@ public:
 
 	void pushLeft(string &dominoes, int index) //push to first not vertical
 	{
-		while (index >= 0 && dominoes[index] == '.')
-			dominoes[index--] = 'L';
+		for (; index >= 0 && dominoes[index] == '.'; --index)
+			dominoes[index] = 'L';
 	}
 
 	void pushLeft(string &dominoes, int middle, int right) //push to middle
 	{
-		while (middle < right)
-			dominoes[right--] = 'L';
+		for (; middle < right; --right)
+			dominoes[right] = 'L';
 	}
 };

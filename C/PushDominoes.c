@@ -1,19 +1,19 @@
 
-void pushToHead(char* dominoes, int index)  //push to first not vertical
+void pushToHead(char *dominoes, int index) //push to first not vertical
 {
-	while (index >= 0 && dominoes[index] == '.')
-		dominoes[index--] = 'L';
+	for (; index >= 0 && dominoes[index] == '.'; --index)
+		dominoes[index] = 'L';
 }
 
-void pushToMid(char* dominoes, int middle, int right)  //push to middle
+void pushToMid(char *dominoes, int middle, int right) //push to middle
 {
-	while (middle < right)
-		dominoes[right--] = 'L';
+	for (; middle < right; --right)
+		dominoes[right] = 'L';
 }
 
-char* pushDominoes(char* dominoes)
+char *pushDominoes(char *dominoes)
 {
-	int pre = -1;  //pre right
+	int pre = -1; //pre right
 	for (int i = 0; dominoes[i]; ++i)
 	{
 		if (dominoes[i] == 'R')
