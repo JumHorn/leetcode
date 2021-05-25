@@ -18,11 +18,8 @@ public:
 	vector<int> countDigits(unsigned int val)
 	{
 		vector<int> count(10);
-		while (val != 0)
-		{
+		for (; val != 0; val /= 10)
 			++count[val % 10];
-			val /= 10;
-		}
 		return count;
 	}
 };
