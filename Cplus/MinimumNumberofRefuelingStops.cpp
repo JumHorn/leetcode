@@ -11,8 +11,8 @@ public:
 		int res = 0, N = stations.size();
 		for (int i = 0; startFuel < target; ++res)
 		{
-			while (i < N && startFuel >= stations[i][0])
-				q.push(stations[i++][1]);
+			for (; i < N && startFuel >= stations[i][0]; ++i)
+				q.push(stations[i][1]);
 
 			if (q.empty())
 				return -1;

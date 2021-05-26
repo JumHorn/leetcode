@@ -8,9 +8,8 @@ int superEggDrop(int K, int N)
 	int dp[K + 1];
 	memset(dp, 0, sizeof(dp));
 	int m = 0;
-	while (dp[K] < N)
+	for (; dp[K] < N; ++m)
 	{
-		++m;
 		for (int j = K; j > 0; --j)
 			dp[j] = dp[j - 1] + dp[j] + 1;
 	}

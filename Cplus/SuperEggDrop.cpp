@@ -12,11 +12,10 @@ public:
 	{
 		vector<vector<int>> dp(N + 1, vector<int>(K + 1));
 		int m = 0;
-		while (dp[m][K] < N)
+		for (; dp[m][K] < N; ++m)
 		{
-			++m;
 			for (int j = 1; j <= K; ++j)
-				dp[m][j] = dp[m - 1][j - 1] + dp[m - 1][j] + 1;
+				dp[m + 1][j] = dp[m][j - 1] + dp[m][j] + 1;
 		}
 		return m;
 	}
