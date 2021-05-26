@@ -1,3 +1,4 @@
+#include <climits>
 #include <stack>
 using namespace std;
 
@@ -6,14 +7,15 @@ class StockSpanner
 public:
 	StockSpanner()
 	{
+		s.push({-1, INT_MAX});
 		index = 0;
 	}
 
 	int next(int price)
 	{
-		while (!s.empty() && s.top().second <= price)
+		while (s.top().second <= price)
 			s.pop();
-		int res = index - (s.empty() ? -1 : s.top().first);
+		int res = index - s.top().first;
 		s.push({index++, price});
 		return res;
 	}
