@@ -19,12 +19,9 @@ public:
 		{
 			for (int k = 0; k < i; ++k)
 			{
-				int j;
-				for (j = 0; j < M; ++j)
-				{
-					if (A[j][i] < A[j][k])
-						break;
-				}
+				int j = 0;
+				while (j < M && A[j][i] >= A[j][k])
+					++j;
 				if (j == M)
 					dp[i] = max(dp[i], dp[k] + 1);
 			}

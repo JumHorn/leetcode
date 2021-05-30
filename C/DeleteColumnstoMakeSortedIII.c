@@ -2,7 +2,7 @@
 
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 
-int minDeletionSize(char** A, int ASize)
+int minDeletionSize(char **A, int ASize)
 {
 	int N = strlen(A[0]);
 	int dp[N];
@@ -12,12 +12,9 @@ int minDeletionSize(char** A, int ASize)
 	{
 		for (int j = 0; j < i; ++j)
 		{
-			int k;
-			for (k = 0; k < ASize; ++k)
-			{
-				if (A[k][i] < A[k][j])
-					break;
-			}
+			int k = 0;
+			while (k < ASize && A[k][i] >= A[k][j])
+				++k;
 			if (k == ASize)
 				dp[i] = max(dp[i], dp[j] + 1);
 		}
