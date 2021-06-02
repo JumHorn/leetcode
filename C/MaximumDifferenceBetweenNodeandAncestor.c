@@ -29,9 +29,10 @@ pair postorder(struct TreeNode *root, int *diff)
 	pair r = postorder(root->right, diff);
 	pair res = {max(l.big, r.big), min(l.small, r.small)};
 	if (res.big >= res.small)
+	{
 		*diff = max(*diff, abs(res.big - root->val));
-	if (res.big >= res.small)
 		*diff = max(*diff, abs(res.small - root->val));
+	}
 	res.big = max(res.big, root->val);
 	res.small = min(res.small, root->val);
 	return res;

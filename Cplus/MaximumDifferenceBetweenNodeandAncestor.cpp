@@ -31,9 +31,10 @@ public:
 		auto r = postorder(root->right, diff);
 		pair<int, int> res = {max(l.first, r.first), min(l.second, r.second)};
 		if (res.first >= res.second)
+		{
 			diff = max(diff, abs(res.first - root->val));
-		if (res.first >= res.second)
 			diff = max(diff, abs(res.second - root->val));
+		}
 		res.first = max(res.first, root->val);
 		res.second = min(res.second, root->val);
 		return res;
