@@ -7,11 +7,10 @@ int atMostK(int *A, int ASize, int K)
 		if (window[A[i]] == 0)
 			--K;
 		++window[A[i]];
-		while (K < 0)
+		for (; K < 0; ++j)
 		{
 			if (--window[A[j]] == 0)
 				++K;
-			++j;
 		}
 		res += i - j + 1;
 	}

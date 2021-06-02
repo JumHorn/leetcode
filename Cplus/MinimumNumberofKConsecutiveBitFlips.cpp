@@ -6,9 +6,9 @@ class Solution
 public:
 	int minKBitFlips(vector<int> &A, int K)
 	{
-		int res = 0, flip = 0;
-		vector<int> dp(A.size() + 1);
-		for (int i = 0; i <= (int)A.size() - K; ++i)
+		int res = 0, flip = 0, N = A.size();
+		vector<int> dp(N + 1);
+		for (int i = 0; i <= N - K; ++i)
 		{
 			flip += dp[i];
 			if ((A[i] + flip) % 2 == 0)
@@ -18,7 +18,7 @@ public:
 				++res;
 			}
 		}
-		for (int i = A.size() - K + 1; i < (int)A.size(); ++i)
+		for (int i = N - K + 1; i < N; ++i)
 		{
 			flip += dp[i];
 			if ((A[i] + flip) % 2 == 0)
