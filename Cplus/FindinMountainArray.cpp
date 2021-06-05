@@ -45,7 +45,7 @@ public:
 
 	int findInMountainArray(int target, MountainArray &mountainArr)
 	{
-		int hi = mountainArr.length(), lo = 0, peek, len = hi;
+		int N = mountainArr.length(), lo = 0, peek, hi = N;
 		if (hi == 0)
 			return -1;
 		--hi;
@@ -61,6 +61,6 @@ public:
 		int res = upBinarysearch(target, mountainArr, 0, peek);
 		if (res != -1)
 			return res;
-		return downBinarySearch(target, mountainArr, peek + 1, len - 1);
+		return downBinarySearch(target, mountainArr, peek + 1, N - 1);
 	}
 };

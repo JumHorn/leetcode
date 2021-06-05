@@ -43,7 +43,7 @@ int downBinarySearch(int target, MountainArray *m, int lo, int hi)
 
 int findInMountainArray(int target, MountainArray *mountainArr)
 {
-	int hi = length(mountainArr), lo = 0, peek, len = hi;
+	int N = length(mountainArr), lo = 0, peek, hi = N;
 	if (hi == 0)
 		return -1;
 	--hi;
@@ -59,5 +59,5 @@ int findInMountainArray(int target, MountainArray *mountainArr)
 	int res = upBinarysearch(target, mountainArr, 0, peek);
 	if (res != -1)
 		return res;
-	return downBinarySearch(target, mountainArr, peek + 1, len - 1);
+	return downBinarySearch(target, mountainArr, peek + 1, N - 1);
 }
