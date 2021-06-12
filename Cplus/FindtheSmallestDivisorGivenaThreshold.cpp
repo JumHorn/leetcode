@@ -12,7 +12,7 @@ public:
 		while (lo < hi)
 		{
 			int mi = (hi - lo) / 2 + lo;
-			int val = accumulate(nums.begin(), nums.end(), 0, [&](int a, int b) { return a + b / mi + (b % mi ? 1 : 0); });
+			int val = accumulate(nums.begin(), nums.end(), 0, [&](int a, int b) { return a + (b - 1) / mi + 1; });
 			if (val > threshold)
 				lo = mi + 1;
 			else
