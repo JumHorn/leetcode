@@ -28,18 +28,18 @@ class Solution
 public:
 	int maxValueAfterReverse(vector<int> &nums)
 	{
-		int sum = 0, n = nums.size();
-		for (int i = 1; i < n; ++i)
+		int sum = 0, N = nums.size();
+		for (int i = 1; i < N; ++i)
 			sum += abs(nums[i] - nums[i - 1]);
 		int res = sum;
-		for (int i = 1; i < n - 1; ++i)
+		for (int i = 1; i < N - 1; ++i)
 		{
 			res = max(res, sum + abs(nums[i + 1] - nums[0]) - abs(nums[i + 1] - nums[i]));
-			res = max(res, sum + abs(nums[n - 2 - i] - nums[n - 1]) - abs(nums[n - 2 - i] - nums[n - 1 - i]));
+			res = max(res, sum + abs(nums[N - 2 - i] - nums[N - 1]) - abs(nums[N - 2 - i] - nums[N - 1 - i]));
 		}
 		int max1 = INT_MIN, max2 = INT_MIN, max3 = INT_MIN, max4 = INT_MIN;
 		int max5 = INT_MIN, max6 = INT_MIN, max7 = INT_MIN, max8 = INT_MIN;
-		for (int i = 1; i < n - 1; ++i)
+		for (int i = 1; i < N - 1; ++i)
 		{
 			max1 = max(max1, -abs(nums[i] - nums[i - 1]) - nums[i - 1] - nums[i]);
 			max2 = max(max2, -abs(nums[i] - nums[i + 1]) + nums[i] + nums[i + 1]);
