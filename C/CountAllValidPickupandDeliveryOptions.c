@@ -9,10 +9,7 @@ int countOrders(int n)
 {
 	static const int MOD = 1e9 + 7;
 	long res = 1;
-	while (n > 0)
-	{
+	for (; n > 0; --n)
 		res = (res * n * (2 * n - 1)) % MOD;
-		--n;
-	}
 	return res;
 }

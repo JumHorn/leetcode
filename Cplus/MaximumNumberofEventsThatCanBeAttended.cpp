@@ -24,8 +24,8 @@ public:
 		{
 			if (q.empty())
 				d = v[i].first;
-			while (i < N && v[i].first <= d)
-				q.push(v[i++].second);
+			for (; i < N && v[i].first <= d; ++i)
+				q.push(v[i].second);
 			q.pop();
 			++res;
 			++d;

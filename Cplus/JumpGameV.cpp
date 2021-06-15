@@ -19,16 +19,10 @@ public:
 		{
 			int index = v[i].second;
 			int left = index - 1, right = index + 1;
-			while (left >= max(0, index - d) && arr[left] < arr[index])
-			{
+			for (; left >= max(0, index - d) && arr[left] < arr[index]; --left)
 				dp[index] = max(dp[index], dp[left] + 1);
-				--left;
-			}
-			while (right <= min(N - 1, index + d) && arr[right] < arr[index])
-			{
+			for (; right <= min(N - 1, index + d) && arr[right] < arr[index]; ++right)
 				dp[index] = max(dp[index], dp[right] + 1);
-				++right;
-			}
 			res = max(res, dp[index]);
 		}
 		return res;

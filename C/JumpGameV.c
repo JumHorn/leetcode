@@ -8,19 +8,17 @@ int memdp(int *arr, int N, int d, int index, int *dp)
 	int left = index - 1, right = index + 1, left_max = 0, right_max = 0;
 	if (dp[index] != 0)
 		return dp[index];
-	while (left >= max(0, index - d) && arr[left] < arr[index])
+	for (; left >= max(0, index - d) && arr[left] < arr[index]; --left)
 	{
 		if (dp[left] == 0)
 			memdp(arr, N, d, left, dp);
 		left_max = max(left_max, dp[left]);
-		--left;
 	}
-	while (right <= min(N - 1, index + d) && arr[right] < arr[index])
+	for (; right <= min(N - 1, index + d) && arr[right] < arr[index]; ++right)
 	{
 		if (dp[right] == 0)
 			memdp(arr, N, d, right, dp);
 		right_max = max(right_max, dp[right]);
-		++right;
 	}
 	return dp[index] = 1 + max(left_max, right_max);
 }

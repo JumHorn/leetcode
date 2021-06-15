@@ -37,10 +37,10 @@ public:
 		return *max_element(dp.begin(), dp.end());
 	}
 
-	int bitCount(int N)
+	int bitCount(int n)
 	{
 		int res = 0;
-		for (; N != 0; N &= N - 1)
+		for (; n != 0; n &= n - 1)
 			++res;
 		return res;
 	}
