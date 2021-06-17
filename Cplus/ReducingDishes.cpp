@@ -21,7 +21,7 @@ public:
 		if (satisfaction.back() <= 0)
 			return 0;
 		int negsum = 0, minus = 0;
-		while (--index >= 0 && -(satisfaction[index] + negsum) < sum)
+		for (--index; index >= 0 && -(satisfaction[index] + negsum) < sum; --index)
 		{
 			minus += satisfaction[index] + negsum;
 			negsum += satisfaction[index];
@@ -32,7 +32,7 @@ public:
 
 	int binarySearch(vector<int> &satisfaction)
 	{
-		int lo = 0, hi = satisfaction.size() - 1;
+		int lo = 0, hi = (int)satisfaction.size() - 1;
 		while (lo < hi)
 		{
 			int mi = (hi - lo) / 2 + lo;

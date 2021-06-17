@@ -30,11 +30,8 @@ void divide(pair *arr, pair *dup, int first, int last)
 	divide(arr, dup, mid, last);
 	for (int i = first, j = mid, count = 0; i < mid; ++i)
 	{
-		while (j < last && arr[i].val + count >= arr[j].val)
-		{
-			++j;
+		for (; j < last && arr[i].val + count >= arr[j].val; ++j)
 			++count;
-		}
 		arr[i].val += count;
 	}
 	merge(arr, dup, first, mid, last);
