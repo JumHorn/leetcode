@@ -25,21 +25,15 @@ prefix sum:       0 1 1 2 3 4
 int sum(int *tree, int size, int index)
 {
 	int res = 0;
-	while (index > 0)
-	{
+	for (; index > 0; index -= index & -index)
 		res += tree[index];
-		index -= index & -index;
-	}
 	return res;
 }
 
 void update(int *tree, int size, int index, int delta)
 {
-	while (index < size)
-	{
+	for (; index < size; index += index & -index)
 		tree[index] += delta;
-		index += index & -index;
-	}
 }
 
 //cmp function don't consider overflow

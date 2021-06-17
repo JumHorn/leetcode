@@ -31,24 +31,16 @@ public:
 	int sum(int index) const
 	{
 		int res = 0;
-		++index;
-		while (index > 0)
-		{
+		for (++index; index > 0; index -= index & -index)
 			res += tree[index];
-			index -= index & -index;
-		}
 		return res;
 	}
 
 	void update(int index, int delta)
 	{
-		++index;
 		int size = tree.size();
-		while (index < size)
-		{
+		for (++index; index < size; index += index & -index)
 			tree[index] += delta;
-			index += index & -index;
-		}
 	}
 
 private:

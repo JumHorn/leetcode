@@ -9,21 +9,15 @@ Fenwick tree based solution
 int sum(int *tree, int size, int index)
 {
 	int res = 0;
-	while (index > 0)
-	{
+	for (; index > 0; index -= index & -index)
 		res += tree[index];
-		index -= index & -index;
-	}
 	return res;
 }
 
 void update(int *tree, int size, int index, int delta)
 {
-	while (index < size)
-	{
+	for (; index < size; index += index & -index)
 		tree[index] += delta;
-		index += index & -index;
-	}
 }
 /********end of Fenwick tree(BIT)********/
 
