@@ -7,7 +7,7 @@ class Solution
 public:
 	int numberWays(vector<vector<int>> &hats)
 	{
-		int N = hats.size(), hatsType = 41, allmask = (1 << N) - 1;
+		int N = hats.size(), hatsType = 40, allmask = (1 << N) - 1;
 		vector<vector<int>> h2p(hatsType); //hats to people
 		for (int i = 0; i < N; ++i)
 		{
@@ -16,7 +16,7 @@ public:
 		}
 		vector<int> dp(1 << N);
 		dp[0] = 1;
-		for (int bit = 1; bit < hatsType; ++bit)
+		for (int bit = 1; bit <= hatsType; ++bit)
 		{
 			for (int mask = allmask; mask >= 0; --mask)
 			{
