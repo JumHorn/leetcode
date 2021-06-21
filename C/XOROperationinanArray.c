@@ -8,7 +8,7 @@ XOR性质
 
 start^(start+2)^(start+4)^...^(start+n*2)
 先确定最后一位
-在计算前面的值
+再计算前面的值
 start/2^(start/2+1)^(start/2+2)^...
 
 如果 start/2 是偶数，我们只需要看 n 是否是偶数即可：
