@@ -29,10 +29,8 @@ public:
 					else
 						hi = mi;
 				}
-				--lo;
 
-				for (int l = 0; l <= lo; ++l)
-					dp[i + 1][j] = max(dp[i + 1][j], dp[l + 1][j - 1] + events[i][2]);
+				dp[i + 1][j] = max(dp[i + 1][j], dp[lo][j - 1] + events[i][2]);
 			}
 		}
 		return dp[N][k - 1];
