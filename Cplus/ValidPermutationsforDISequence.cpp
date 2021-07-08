@@ -3,8 +3,8 @@
 using namespace std;
 
 /*
-let dp[i][j] represents the number of permutation of number 0, 1, ... , i,
-satisfying DI-rule S.substr(0, i), and ending with digit j
+let dp[i][j] represents index from 0 to i
+satisfying DI-rule S.substr(0, i), and last digits rank in unordered numbers is j
 */
 
 class Solution
