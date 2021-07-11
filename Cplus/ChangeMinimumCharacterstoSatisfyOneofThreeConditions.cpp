@@ -15,28 +15,16 @@ public:
 		for (auto c : b)
 			bmost = max(bmost, ++bcount[c - 'a']);
 		int res = N1 - amost + N2 - bmost;
-		for (char d = 'a'; d < 'z'; ++d)
+		for (int i = 1; i < 26; ++i)
 		{
-			int sum1 = 0, sum2 = 0;
-			for (auto c : a)
-			{
-				if (c > d)
-					++sum1;
-				if (c <= d)
-					++sum2;
-			}
-			for (auto c : b)
-			{
-				if (c <= d)
-					++sum1;
-				if (c > d)
-					++sum2;
-			}
-
-			res = min(res, sum1);
-			res = min(res, sum2);
+			acount[i] += acount[i - 1];
+			bcount[i] += bcount[i - 1];
 		}
-
+		for (int i = 0; i < 25; ++i)
+		{
+			res = min(res, acount[25] - acount[i] + bcount[i]);
+			res = min(res, bcount[25] - bcount[i] + acount[i]);
+		}
 		return res;
 	}
 };
