@@ -13,5 +13,5 @@ int divide(int dividend, int divisor)
 		res += 1u << (i - 1);
 		d -= dv << (i - 1);
 	}
-	return (dividend > 0) == (divisor > 0) ? res : -res;
+	return (dividend ^ divisor) >= 0 ? res : -res;
 }

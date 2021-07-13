@@ -18,6 +18,10 @@
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
+// Bit Twidding Hacks
+// Detect if two integers have opposite signs
+// bool f = ((x ^ y) < 0);
+
 //frequently used items
 #include <stdlib.h>
 #include <string.h>
