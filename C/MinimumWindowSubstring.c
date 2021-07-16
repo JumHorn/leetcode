@@ -11,14 +11,14 @@ char *minWindow(char *s, char *t)
 	{
 		if (--map[s[i] - 'A'] >= 0)
 			--count;
-		while (count == 0)
+		for (; count == 0; ++j)
 		{
 			if (i - j + 1 < window)
 			{
 				start = j;
 				window = i - j + 1;
 			}
-			if (++map[s[j++] - 'A'] > 0)
+			if (++map[s[j] - 'A'] > 0)
 				++count;
 		}
 	}
