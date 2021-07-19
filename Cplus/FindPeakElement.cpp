@@ -6,7 +6,7 @@ class Solution
 public:
 	int findPeakElement(vector<int> &nums)
 	{
-		int lo = 0, hi = nums.size() - 1;
+		int lo = 0, hi = (int)nums.size() - 1;
 		while (lo < hi)
 		{
 			int mi = (hi - lo) / 2 + lo;

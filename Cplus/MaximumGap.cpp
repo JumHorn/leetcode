@@ -41,13 +41,13 @@ public:
 					buckets[index].second = n;
 			}
 		}
-		int tmp = buckets[0].second;
+		int prev = buckets[0].second;
 		for (int i = 1; i < bucketnum; ++i)
 		{
 			if (buckets[i].first == -1)
 				continue;
-			res = max(res, buckets[i].first - tmp);
-			tmp = buckets[i].second;
+			res = max(res, buckets[i].first - prev);
+			prev = buckets[i].second;
 		}
 		return res;
 	}
