@@ -13,8 +13,8 @@ public:
 			if (!prime[i])
 			{
 				++res;
-				for (int j = 1; j * i <= n; ++j)
-					prime[j * i] = true;
+				for (int j = i; j <= n; j += i)
+					prime[j] = true;
 			}
 		}
 		return res;
