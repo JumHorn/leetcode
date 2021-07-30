@@ -13,7 +13,7 @@ public:
 			return 0;
 		vector<int> dp(26);
 		int count, next = -1;
-		for (int i = p.size() - 1; i >= 0; --i)
+		for (int i = (int)p.size() - 1; i >= 0; --i)
 		{
 			if ((p[i] - 'a' + 1) % 26 == next)
 				++count;
