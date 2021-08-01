@@ -1,4 +1,4 @@
-#include <unordered_map>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -6,24 +6,22 @@ class Solution
 public:
 	int countArrangement(int N)
 	{
-		unordered_map<int, int> hash, next_hash; //{mask,count}
-		hash[0] = 1;
+		vector<int> dp(1 << N);
+		dp[0] = 1;
 		for (int i = 1; i <= N; ++i)
 		{
-			next_hash.clear();
-			for (int j = 1; j <= N; ++j)
+			for (int mask = (1 << N) - 1; mask >= 0; --mask)
 			{
-				if (i % j == 0 || j % i == 0)
+				for (int j = 1; j <= N; ++j)
 				{
-					for (auto &iter : hash)
+					if (i % j == 0 || j % i == 0)
 					{
-						if ((iter.first & (1 << (j - 1))) == 0)
-							next_hash[iter.first | (1 << (j - 1))] += iter.second;
+						if ((mask & (1 << (j - 1))) == 0)
+							dp[mask | (1 << (j - 1))] += dp[mask];
 					}
 				}
 			}
-			hash.swap(next_hash);
 		}
-		return hash[(1 << N) - 1];
+		return dp[(1 << N) - 1];
 	}
 };
