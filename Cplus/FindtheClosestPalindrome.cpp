@@ -10,22 +10,22 @@ public:
 	{
 		long num = stoll(n);
 		int N = n.length();
-		n[N / 2 + N % 2] = '\0';
-		long half = stoll(n.substr(0, N / 2 + N % 2));
+		n[(N + 1) / 2] = '\0';
+		long half = stoll(n.substr(0, (N + 1) / 2));
 		long res0 = makePalindrome(half, N % 2);
 		long abs0 = abs(num - res0);
 		if (abs0 == 0)
 			abs0 = LONG_MAX;
 
 		long res1;
-		if (half != pow(10, N / 2 + N % 2) - 1)
+		if (half != pow(10, (N + 1) / 2) - 1)
 			res1 = makePalindrome(half + 1, N % 2);
 		else
 			res1 = pow(10, N) + 1;
 		long abs1 = abs(num - res1);
 
 		long res2;
-		if (half != pow(10, N / 2 + N % 2 - 1))
+		if (half != pow(10, (N + 1) / 2 - 1))
 			res2 = makePalindrome(half - 1, N % 2);
 		else
 			res2 = pow(10, N - 1) - 1;
