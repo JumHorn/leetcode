@@ -1,6 +1,9 @@
 
 /*
-dp[i]-dp[i-1]=1.0/w*(dp[i+w]-dp[i])
+dp[i]= 1.0/W * (dp[i-1] + dp[i-2] + ... + dp[i-W])
+
+dp[i-1]= 1.0/W * (dp[i-2] + dp[i-3] + ... + dp[i-W-1])
+dp[i]-dp[i-1]= 1.0/W * (dp[i-1]-dp[i-W-1])
 */
 
 double new21Game(int N, int K, int W)
