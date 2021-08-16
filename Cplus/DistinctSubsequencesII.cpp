@@ -17,10 +17,10 @@ public:
 			dp[i + 1] = (dp[i] * 2) % MOD;
 			int index = S[i] - 'a';
 			if (last[index] != -1)
-				dp[i + 1] = (MOD + dp[i + 1] - dp[last[index]]) % MOD;
+				dp[i + 1] = (dp[i + 1] - dp[last[index]] + MOD) % MOD;
 			last[index] = i;
 		}
-		return (dp[N] - 1 + MOD) % MOD;
+		return (dp[N] - 1 + MOD) % MOD; //remove empty ""
 	}
 
 private:

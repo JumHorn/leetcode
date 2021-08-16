@@ -60,7 +60,7 @@ public:
 		{
 			s.push(last);
 			int tmp = nodes;
-			nodes -= (1 << last);
+			nodes ^= (1 << last);
 			last = path[tmp][last];
 		}
 		int index, previous = s.top();
