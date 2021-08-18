@@ -21,9 +21,9 @@ public:
 		int left = distributeCoins(root->left);
 		int right = distributeCoins(root->right);
 		--root->val;
-		if (root->left)
+		if (root->left != nullptr)
 			root->val += root->left->val;
-		if (root->right)
+		if (root->right != nullptr)
 			root->val += root->right->val;
 		return left + right + abs(root->val);
 	}

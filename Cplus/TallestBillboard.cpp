@@ -16,9 +16,9 @@ public:
 			unordered_map<int, int> pre_dp(dp);
 			for (auto &n : pre_dp)
 			{
-				dp[n.first + r] = max(dp[n.first + r], pre_dp[n.first]); //add to higher side
+				dp[n.first + r] = max(dp[n.first + r], n.second); //add to higher side
 				int delta = r >= n.first ? n.first : r;
-				dp[abs(n.first - r)] = max(dp[abs(n.first - r)], pre_dp[n.first] + delta); //add to lower side
+				dp[abs(n.first - r)] = max(dp[abs(n.first - r)], n.second + delta); //add to lower side
 			}
 		}
 		return dp[0];
