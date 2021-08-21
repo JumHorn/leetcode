@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stdlib.h>
 
 //Definition for a binary tree node.
@@ -16,18 +17,18 @@ struct TreeNode *createNode(int val)
 	return node;
 }
 
+struct TreeNode *preOrder(int *data, int dataSize, int *index, int rootval)
+{
+	if (*index >= dataSize || data[*index] > rootval)
+		return NULL;
+	struct TreeNode *root = createNode(data[(*index)++]);
+	root->left = preOrder(data, dataSize, index, root->val);
+	root->right = preOrder(data, dataSize, index, rootval);
+	return root;
+}
+
 struct TreeNode *bstFromPreorder(int *preorder, int preorderSize)
 {
-	if (preorderSize == 0)
-		return NULL;
-	struct TreeNode *root = createNode(*preorder);
-	int i;
-	for (i = 1; i < preorderSize; ++i)
-	{
-		if (preorder[0] < preorder[i])
-			break;
-	}
-	root->left = bstFromPreorder(preorder + 1, i - 1);
-	root->right = bstFromPreorder(preorder + i, preorderSize - i);
-	return root;
+	int index = 0;
+	return preOrder(preorder, preorderSize, &index, INT_MAX);
 }

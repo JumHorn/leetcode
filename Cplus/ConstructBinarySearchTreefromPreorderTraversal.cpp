@@ -1,4 +1,5 @@
 #include <climits>
+#include <stack>
 #include <vector>
 using namespace std;
 
@@ -18,17 +19,23 @@ class Solution
 public:
 	TreeNode *bstFromPreorder(vector<int> &preorder)
 	{
-		int index = 0;
-		return preOrder(preorder, index, INT_MAX);
-	}
-
-	TreeNode *preOrder(vector<int> &preorder, int &index, int rootval)
-	{
-		if (index >= (int)preorder.size() || preorder[index] > rootval)
-			return nullptr;
-		TreeNode *root = new TreeNode(preorder[index++]);
-		root->left = preOrder(preorder, index, root->val);
-		root->right = preOrder(preorder, index, rootval);
-		return root;
+		stack<TreeNode *> s;
+		TreeNode *res = new TreeNode(preorder[0]);
+		s.push(res);
+		for (int i = 1; i < (int)preorder.size(); ++i)
+		{
+			TreeNode *node = new TreeNode(preorder[i]), *pre = nullptr;
+			while (!s.empty() && s.top()->val < preorder[i])
+			{
+				pre = s.top();
+				s.pop();
+			}
+			if (pre != nullptr)
+				pre->right = node;
+			else
+				s.top()->left = node;
+			s.push(node);
+		}
+		return res;
 	}
 };
