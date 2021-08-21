@@ -10,11 +10,10 @@ int countTriplets(int *A, int ASize)
 	int res = 0;
 	for (int i = 0; i < ASize; ++i)
 	{
-		for (int j = 0; j < 1 << 16; ++j)
-		{
-			if ((j & A[i]) == 0)
-				res += count[j];
-		}
+		int mask = (((1 << 16) - 1) & (~A[i]));
+		res += count[0];
+		for (int j = mask; j > 0; j = ((j - 1) & mask))
+			res += count[j];
 	}
 	return res;
 }
