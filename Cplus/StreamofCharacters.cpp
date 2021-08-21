@@ -58,19 +58,18 @@ class StreamChecker
 public:
 	StreamChecker(vector<string> &words)
 	{
-		trie = new Trie();
 		for (auto &word : words)
-			trie->insert(word);
+			trie.insert(word);
 	}
 
 	bool query(char letter)
 	{
 		letters.push_back(letter);
-		return trie->search(letters);
+		return trie.search(letters);
 	}
 
 private:
-	Trie *trie;
+	Trie trie;
 	string letters;
 };
 
