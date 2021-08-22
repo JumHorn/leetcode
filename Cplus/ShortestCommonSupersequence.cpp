@@ -20,7 +20,7 @@ public:
 			}
 		}
 		string res(M + N - dp[M][N], ' ');
-		int i = M - 1, j = N - 1, k = res.length() - 1;
+		int i = M - 1, j = N - 1, k = (int)res.length() - 1;
 		while (i >= 0 || j >= 0)
 		{
 			if (i < 0 || j < 0)
