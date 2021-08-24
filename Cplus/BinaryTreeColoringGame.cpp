@@ -17,7 +17,7 @@ public:
 	{
 		TreeNode *node = getXNode(root, x);
 		int left = nodeCount(node->left), right = nodeCount(node->right);
-		return max(max(left, right), n - left - right - 1) * 2 > n;
+		return max({left, right, n - left - right - 1}) * 2 > n;
 	}
 
 	TreeNode *getXNode(TreeNode *root, int x)
