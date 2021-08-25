@@ -21,8 +21,8 @@ public:
 		for (int i = 0; i < N; ++i)
 		{
 			int mask = 0;
-			for (int j = 0; j < (int)puzzles[i].length(); ++j)
-				mask |= (1 << (puzzles[i][j] - 'a'));
+			for (auto c : puzzles[i])
+				mask |= (1 << (c - 'a'));
 			for (int submask = mask; submask != 0; submask = ((submask - 1) & mask)) //loop for all submask
 			{
 				if ((submask & (1 << (puzzles[i][0] - 'a'))) != 0 && m.find(submask) != m.end())
