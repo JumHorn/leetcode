@@ -1,6 +1,11 @@
 #include <vector>
 using namespace std;
 
+/*
+图论中的割点与桥
+articulation point and bridge
+*/
+
 class Solution
 {
 public:
@@ -21,8 +26,6 @@ public:
 
 	void dfs(vector<vector<int>> &graph, vector<int> &dsc, vector<int> &low, int from, int at, int &time, vector<vector<int>> &res)
 	{
-		if (dsc[at] != 0)
-			return;
 		low[at] = dsc[at] = ++time;
 		for (auto to : graph[at])
 		{
