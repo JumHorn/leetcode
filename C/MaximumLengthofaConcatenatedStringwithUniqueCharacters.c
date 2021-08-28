@@ -19,7 +19,10 @@ int maxLength(char **arr, int arrSize)
 		for (int j = 0; arr[i][j]; ++j)
 		{
 			if (mask & (1 << (arr[i][j] - 'a')))
+			{
+				mask = 0;
 				break;
+			}
 			mask |= 1 << (arr[i][j] - 'a');
 		}
 		if (mask == 0)

@@ -21,11 +21,8 @@ public:
 					stk.pop();
 			}
 		}
-		while (!stk.empty())
-		{
+		for (; !stk.empty(); stk.pop())
 			s[stk.top()] = '*';
-			stk.pop();
-		}
 		int j = 0;
 		for (int i = 0; i < N; ++i)
 		{

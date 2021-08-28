@@ -9,11 +9,8 @@ char *minRemoveToMakeValid(char *s)
 		else if (s[i] == ')')
 			top == -1 ? s[i] = '*' : --top;
 	}
-	while (top != -1)
-	{
+	for (; top != -1; --top)
 		s[stack[top]] = '*';
-		--top;
-	}
 	int j = 0;
 	for (int i = 0; s[i]; ++i)
 	{
