@@ -260,3 +260,33 @@ vector<int> createKMP(string &pattern)
 	return next;
 }
 /********end of kmp next array********/
+
+//Fast Walsh Hadamard Transform
+// https://csacademy.com/blog/fast-fourier-transform-and-variations-of-it
+// Please remind that these codes are valid only when degree(P) = N = 2^k
+void fwht_and(vector<int> &v, bool inverse)
+{
+	int N = v.size();
+	for (int m = 1; 2 * m <= N; m *= 2)
+	{
+		for (int i = 0; i < N; i += 2 * m)
+		{
+			for (int j = 0; j < m; ++j)
+			{
+				auto x = v[i + j];
+				auto y = v[i + j + m];
+				if (!inverse)
+				{
+					v[i + j] = y;
+					v[i + j + m] = x + y;
+				}
+				else
+				{
+					v[i + j] = -x + y;
+					v[i + j + m] = x;
+				}
+			}
+		}
+	}
+}
+/********end of Fast Walsh Hadamard Transform********/
