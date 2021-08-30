@@ -21,7 +21,7 @@ public:
 		int M = grid.size(), N = grid[0].size();
 		if (k >= M + N - 1)
 			return M + N - 2;
-		vector<vector<vector<int>>> seen(M, vector<vector<int>>(N, vector<int>((k + 1), 5000)));
+		vector<vector<vector<int>>> seen(M, vector<vector<int>>(N, vector<int>(k + 1, 5000)));
 		queue<info> q;
 		q.push(info(0, 0, k, 0));
 		int res = 0;
