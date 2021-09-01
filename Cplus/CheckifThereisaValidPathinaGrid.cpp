@@ -8,7 +8,7 @@ public:
 	bool hasValidPath(vector<vector<int>> &grid)
 	{
 		int M = grid.size(), N = grid[0].size();
-		int path[][6][2] = {
+		int path[][2][2] = {
 			{{0, -1}, {0, 1}},
 			{{-1, 0}, {1, 0}},
 			{{0, -1}, {1, 0}},
