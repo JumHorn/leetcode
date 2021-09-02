@@ -16,6 +16,7 @@ public:
 			return greedy(b, a, c, bb, aa, cc);
 		if (b < c)
 			return greedy(a, c, b, aa, cc, bb);
+		// a >= b >= c
 		if (b == 0)
 			return string(min(2, a), aa);
 		int use_a = min(2, a), use_b = a - use_a >= b ? 1 : 0;
