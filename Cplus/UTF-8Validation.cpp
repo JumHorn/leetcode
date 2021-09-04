@@ -6,8 +6,8 @@ class Solution
 public:
 	bool validUtf8(vector<int> &data)
 	{
-		int i = 0, len = 0, N = data.size();
-		for (int i = 0, len; i < N; i += len)
+		int len = 0, N = data.size();
+		for (int i = 0; i < N; i += len)
 		{
 			if ((data[i] & HEAD0) == 0)
 				len = 1;

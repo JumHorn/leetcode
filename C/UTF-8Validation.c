@@ -8,8 +8,7 @@
 
 bool validUtf8(int *data, int dataSize)
 {
-	int i = 0, len = 0;
-	while (i < dataSize)
+	for (int i = 0, len = 0; i < dataSize; i += len)
 	{
 		if ((data[i] & HEAD0) == 0)
 			len = 1;
@@ -24,9 +23,10 @@ bool validUtf8(int *data, int dataSize)
 		if (len + i > dataSize)
 			return false;
 		for (int j = i + 1; j < len + i; ++j)
+		{
 			if ((data[j] & HEAD1) != HEAD0)
 				return false;
-		i += len;
+		}
 	}
 	return true;
 }
