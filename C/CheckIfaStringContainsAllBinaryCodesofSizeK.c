@@ -1,10 +1,10 @@
 #include <stdbool.h>
 #include <string.h>
 
-bool hasAllCodes(char* s, int k)
+bool hasAllCodes(char *s, int k)
 {
 	int N = strlen(s);
-	if (k >= N)
+	if ((1 << k) > N - k + 1)
 		return false;
 	unsigned int num = 0;
 	int code[1 << k], count = 0;

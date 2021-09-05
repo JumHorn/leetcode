@@ -32,8 +32,7 @@ public:
 					if (isInCircle(center.second, points[k], r))
 						++b;
 				}
-				res = max(res, a);
-				res = max(res, b);
+				res = max({res, a, b});
 			}
 		}
 		return res;

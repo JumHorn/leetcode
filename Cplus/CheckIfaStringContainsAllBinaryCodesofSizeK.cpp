@@ -7,10 +7,11 @@ class Solution
 public:
 	bool hasAllCodes(string s, int k)
 	{
-		unsigned int num = 0, N = s.length();
-		if (k >= N)
+		int N = s.length();
+		if ((1 << k) > N - k + 1)
 			return false;
 		unordered_set<int> code;
+		unsigned int num = 0;
 		for (int i = 0; i < k; ++i)
 		{
 			num <<= 1;
@@ -23,8 +24,8 @@ public:
 			num <<= 1;
 			if (s[i] == '1')
 				num |= 1;
-			code.insert(num & ((1 << k) - 1));
+			code.insert(num & ((1u << k) - 1));
 		}
-		return code.size() >= (1 << k);
+		return code.size() >= (1u << k);
 	}
 };
