@@ -18,28 +18,28 @@ public:
 		return memdp(count, 0, 0, k, dp);
 	}
 
-	int memdp(vector<vector<int>> &count, int m, int n, int k, vector<vector<vector<int>>> &dp)
+	int memdp(vector<vector<int>> &count, int r, int c, int k, vector<vector<vector<int>>> &dp)
 	{
-		if (dp[m][n][k] != -1)
-			return dp[m][n][k];
-		int row = count.size() - 1, col = count[0].size() - 1;
+		if (dp[r][c][k] != -1)
+			return dp[r][c][k];
+		int row = (int)count.size() - 1, col = (int)count[0].size() - 1;
 		if (k == 1)
-			return existApple(count, m, n, row, col) ? 1 : 0;
-		int res = 0, i = m, j = n;
-		while (i < row && !existApple(count, i, n, i + 1, col))
+			return existApple(count, r, c, row, col) ? 1 : 0;
+		int res = 0, i = r, j = c;
+		while (i < row && !existApple(count, i, c, i + 1, col))
 			++i;
 		for (; i < row; ++i)
-			res = (res + memdp(count, i + 1, n, k - 1, dp)) % MOD;
-		while (j < col && !existApple(count, m, j, row, j + 1))
+			res = (res + memdp(count, i + 1, c, k - 1, dp)) % MOD;
+		while (j < col && !existApple(count, r, j, row, j + 1))
 			++j;
 		for (; j < col; ++j)
-			res = (res + memdp(count, m, j + 1, k - 1, dp)) % MOD;
-		return dp[m][n][k] = res;
+			res = (res + memdp(count, r, j + 1, k - 1, dp)) % MOD;
+		return dp[r][c][k] = res;
 	}
 
 	bool existApple(vector<vector<int>> &count, int row0, int col0, int row1, int col1)
 	{
-		return count[row1][col1] - count[row0][col1] - count[row1][col0] + count[row0][col0] != 0;
+		return count[row1][col1] - count[row0][col1] - count[row1][col0] + count[row0][col0] > 0;
 	}
 
 private:
