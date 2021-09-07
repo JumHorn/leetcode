@@ -14,7 +14,7 @@ public:
 			graph[edges[i][0]].push_back({edges[i][1], succProb[i]});
 			graph[edges[i][1]].push_back({edges[i][0], succProb[i]});
 		}
-		//bfs
+		//dijkstra
 		priority_queue<pair<double, int>> q;
 		vector<int> seen(n);
 		q.push({1.0, start});

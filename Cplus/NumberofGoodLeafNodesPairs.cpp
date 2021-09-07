@@ -17,13 +17,13 @@ class Solution
 public:
 	int countPairs(TreeNode *root, int distance)
 	{
-		int count = 0;
-		postorder(root, distance, count);
-		return count;
+		int res = 0;
+		postorder(root, distance, res);
+		return res;
 	}
 
-	//return type {distance of node count}
-	const vector<int> postorder(TreeNode *root, int distance, int &count)
+	//return type {distance of node res}
+	const vector<int> postorder(TreeNode *root, int distance, int &res)
 	{
 		if (root == nullptr)
 			return vector<int>(distance + 1);
@@ -33,19 +33,19 @@ public:
 			res[1] = 1;
 			return res;
 		}
-		auto &l = postorder(root->left, distance, count);
-		auto &r = postorder(root->right, distance, count);
+		auto &l = postorder(root->left, distance, res);
+		auto &r = postorder(root->right, distance, res);
 		for (int i = 1; i <= distance; ++i)
 		{
 			for (int j = 1; j <= distance; ++j)
 			{
 				if (i + j <= distance)
-					count += l[i] * r[j];
+					res += l[i] * r[j];
 			}
 		}
-		vector<int> res(distance + 1);
+		vector<int> count(distance + 1);
 		for (int i = 1; i < distance; ++i)
-			res[i + 1] = l[i] + r[i];
-		return res;
+			count[i + 1] = l[i] + r[i];
+		return count;
 	}
 };
