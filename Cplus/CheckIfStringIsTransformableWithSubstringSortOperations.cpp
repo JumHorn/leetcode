@@ -8,20 +8,19 @@ public:
 	bool isTransformable(string s, string t)
 	{
 		vector<vector<int>> pos(10);
-		vector<int> used(10);  //used index of pos
-		for (int i = 0; i < (int)s.length(); ++i)
+		for (int i = (int)s.length() - 1; i >= 0; --i)
 			pos[s[i] - '0'].push_back(i);
 		for (auto c : t)
 		{
 			int i = c - '0';
-			if (used[i] >= (int)pos[i].size())
+			if (pos[i].empty())
 				return false;
 			for (int j = 0; j < i; ++j)
 			{
-				if (used[j] < (int)pos[j].size() && pos[j][used[j]] < pos[i][used[i]])
+				if (!pos[j].empty() && pos[j].back() < pos[i].back())
 					return false;
 			}
-			++used[i];
+			pos[i].pop_back();
 		}
 		return true;
 	}

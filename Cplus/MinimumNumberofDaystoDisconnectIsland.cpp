@@ -21,11 +21,11 @@ public:
 				++count;
 			}
 		}
-		if (count == 1)
-			return 1;
+		if (count <= 1)
+			return count;
 
-		vector<vector<int>> seen(M, vector<int>(N));
-		if (connectedCount(grid, land1 / N, land1 % N, seen) != count) //already disconnected
+		markLand(grid, land1 / N, land1 % N);
+		if (countAndRestore(grid) != count) //already disconnected
 			return 0;
 		for (int i = 0; i < M; ++i)
 		{
@@ -33,10 +33,10 @@ public:
 			{
 				if (grid[i][j] == 1)
 				{
-					vector<vector<int>> seen(M, vector<int>(N));
 					grid[i][j] = 0;
 					int land = (land1 == i * N + j ? land2 : land1);
-					if (connectedCount(grid, land / N, land % N, seen) != count - 1) //already disconnected
+					markLand(grid, land / N, land % N);
+					if (countAndRestore(grid) != count - 1) //already disconnected
 						return 1;
 					grid[i][j] = 1;
 				}
@@ -45,19 +45,34 @@ public:
 		return 2;
 	}
 
-	int connectedCount(vector<vector<int>> &grid, int row, int col, vector<vector<int>> &seen)
+	int countAndRestore(vector<vector<int>> &grid)
+	{
+		int res = 0;
+		for (auto &row : grid)
+		{
+			for (auto &n : row)
+			{
+				if (n == 2)
+				{
+					n = 1;
+					++res;
+				}
+			}
+		}
+		return res;
+	}
+
+	void markLand(vector<vector<int>> &grid, int row, int col)
 	{
 		int M = grid.size(), N = grid[0].size();
-		seen[row][col] = 1;
 		int path[5] = {-1, 0, 1, 0, -1};
-		int res = 1;
+		grid[row][col] = 2;
 		for (int i = 0; i < 4; ++i)
 		{
 			int dx = row + path[i], dy = col + path[i + 1];
 			if (dx >= 0 && dx < M && dy >= 0 && dy < N &&
-				grid[dx][dy] != 0 && seen[dx][dy] == 0)
-				res += connectedCount(grid, dx, dy, seen);
+				grid[dx][dy] != 0 && grid[dx][dy] != 2)
+				markLand(grid, dx, dy);
 		}
-		return res;
 	}
 };
