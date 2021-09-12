@@ -1,48 +1,52 @@
-#include <set>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
+	typedef pair<unordered_set<int>, int> Info;
 	vector<int> smallestMissingValueSubtree(vector<int> &parents, vector<int> &nums)
 	{
 		int N = parents.size();
 		vector<vector<int>> graph(N);
-		for (int i = 0; i < N; ++i)
-		{
-			if (parents[i] != -1)
-				graph[parents[i]].push_back(i);
-		}
+		for (int i = 1; i < N; ++i)
+			graph[parents[i]].push_back(i);
 		vector<int> res(N);
-		postorder(graph, 0, -1, nums, res);
+		Info info;
+		postorder(graph, nums, 0, info, res);
 		return res;
 	}
 	// {{numbers in subtree},base}
-	const pair<set<int>, int> postorder(vector<vector<int>> &graph, int at, int from, vector<int> &nums, vector<int> &res)
+	void postorder(vector<vector<int>> &graph, vector<int> &nums, int cur, Info &info, vector<int> &res)
 	{
-		pair<set<int>, int> data;
-		data.first.insert(nums[at]);
-		data.second = 1;
-		for (auto to : graph[at])
+		info.second = 1;
+		if (nums[cur] == 1)
+			++info.second;
+		else
+			info.first.insert(nums[cur]);
+
+		for (auto to : graph[cur])
 		{
-			if (to != from)
-			{
-				auto &p = postorder(graph, to, at, nums, res);
-				data.second = max(data.second, p.second);
-				for (auto n : p.first)
-					data.first.insert(n);
-			}
+			Info data;
+			postorder(graph, nums, to, data, res);
+			merge(info, data);
 		}
-		auto iter = data.first.begin();
-		while (iter != data.first.end() && *iter <= data.second)
+		res[cur] = info.second;
+	}
+
+	// merge rhs to lhs
+	void merge(Info &lhs, Info &rhs)
+	{
+		if (lhs.first.size() < rhs.first.size()) //very important
+			swap(lhs, rhs);
+		lhs.second = max(lhs.second, rhs.second);
+		for (auto n : rhs.first)
 		{
-			auto tmp = iter;
-			++iter;
-			++data.second;
-			data.first.erase(tmp);
+			if (n >= lhs.second)
+				lhs.first.insert(n);
 		}
-		res[at] = data.second;
-		return data;
+		while (lhs.first.find(lhs.second) != lhs.first.end())
+			lhs.first.erase(lhs.second++);
 	}
 };
