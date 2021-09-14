@@ -38,7 +38,7 @@ class Solution
 public:
 	vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>> &edgeList, vector<vector<int>> &queries)
 	{
-		int N = queries.size(), i = 0;
+		int N = queries.size(), j = 0;
 		for (int i = 0; i < N; ++i)
 			queries[i].push_back(i);
 		sort(queries.begin(), queries.end(), *this);
@@ -47,8 +47,8 @@ public:
 		vector<bool> res(N);
 		for (auto &query : queries)
 		{
-			for (; i < (int)edgeList.size() && edgeList[i][2] < query[2]; ++i)
-				dsu.Union(edgeList[i][0], edgeList[i][1]);
+			for (; j < (int)edgeList.size() && edgeList[j][2] < query[2]; ++j)
+				dsu.Union(edgeList[j][0], edgeList[j][1]);
 			res[query[3]] = dsu.Find(query[0]) == dsu.Find(query[1]);
 		}
 		return res;
