@@ -25,16 +25,13 @@ public:
 			{
 				if (k % i == 0)
 				{
-					int y = 0;
-					while (k % i == 0)
-					{
-						++y;
-						k /= i;
-					}
-					sum = sum * C[n + y - 1][y] % MOD;
+					int j = 0;
+					for (; k % i == 0; k /= i)
+						++j;
+					sum = sum * C[n + j - 1][j] % MOD; //combination with repetition
 				}
 			}
-			if (k != 1)
+			if (k != 1) //A primer
 				sum = sum * n % MOD;
 			res.push_back(sum);
 		}
