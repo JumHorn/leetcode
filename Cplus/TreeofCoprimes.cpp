@@ -14,32 +14,38 @@ public:
 			graph[edge[0]].push_back({edge[1], nums[edge[1]]});
 			graph[edge[1]].push_back({edge[0], nums[edge[0]]});
 		}
-		vector<stack<pair<int, int>>> path(51); // {node,level}
+		vector<vector<int>> data(51); // {node,index}
 		vector<int> res(N, -1);
-		preorder(graph, nums, -1, 0, 0, path, res);
+		postorder(graph, nums, -1, 0, data, res);
 		return res;
 	}
 
-	void preorder(vector<vector<pair<int, int>>> &graph, vector<int> &nums, int from, int at, int level, vector<stack<pair<int, int>>> &path, vector<int> &res)
+	void postorder(vector<vector<pair<int, int>>> &graph, vector<int> &nums, int from, int at, vector<vector<int>> &data, vector<int> &res)
 	{
-		int N = path.size(), l = -1;
-		for (int i = 1; i < N; ++i)
-		{
-			if (!path[i].empty() && path[i].top().second > l && gcd(i, nums[at]) == 1)
-			{
-				l = path[i].top().second;
-				res[at] = path[i].top().first;
-			}
-		}
+		int N = data.size();
 		for (auto &to : graph[at])
 		{
 			if (to.first != from)
 			{
-				path[nums[at]].push({at, level});
-				preorder(graph, nums, at, to.first, level + 1, path, res);
-				path[nums[at]].pop();
+				vector<vector<int>> next_data(N);
+				postorder(graph, nums, at, to.first, next_data, res);
+				for (int i = 1; i < N; ++i)
+				{
+					for (auto n : next_data[i])
+						data[i].push_back(n);
+				}
 			}
 		}
+		for (int i = 1; i < N; ++i)
+		{
+			if (gcd(i, nums[at]) == 1)
+			{
+				for (auto n : data[i])
+					res[n] = at;
+				data[i].clear();
+			}
+		}
+		data[nums[at]].push_back(at);
 	}
 
 	int gcd(int x, int y)
