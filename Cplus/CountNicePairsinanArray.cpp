@@ -7,13 +7,10 @@ class Solution
 public:
 	int countNicePairs(vector<int> &nums)
 	{
-		int N = nums.size();
+		int N = nums.size(), res = 0;
 		unordered_map<int, int> m; //{val-reverse(val),count}
 		for (auto n : nums)
-			++m[n - reverse(n)];
-		int res = 0;
-		for (auto &[_, n] : m)
-			res = (res + (long)n * (n - 1) / 2) % MOD;
+			res = (res + m[n - reverse(n)]++) % MOD;
 		return res % MOD;
 	}
 

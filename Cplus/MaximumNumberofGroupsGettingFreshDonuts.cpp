@@ -12,11 +12,8 @@ public:
 		for (auto n : groups)
 		{
 			if (n % batchSize == 0)
-			{
 				++res;
-				continue;
-			}
-			if (freq[batchSize - n % batchSize] > 0)
+			else if (freq[batchSize - n % batchSize] > 0)
 			{
 				--freq[batchSize - n % batchSize];
 				++res;
@@ -25,7 +22,7 @@ public:
 				++freq[n % batchSize];
 		}
 		map<vector<int>, int> dp;
-		return memdp(freq, 0, dp) + freq[0] + res;
+		return memdp(freq, 0, dp) + res;
 	}
 
 	// remainder can be deduced from freq so there is no need to cache remainder parameter
