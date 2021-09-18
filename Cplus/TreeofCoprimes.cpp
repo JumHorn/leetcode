@@ -31,18 +31,14 @@ public:
 				postorder(graph, nums, at, to.first, next_data, res);
 				for (int i = 1; i < N; ++i)
 				{
-					for (auto n : next_data[i])
-						data[i].push_back(n);
+					if (gcd(i, nums[at]) != 1)
+						data[i].insert(data[i].end(), next_data[i].begin(), next_data[i].end());
+					else
+					{
+						for (auto n : next_data[i])
+							res[n] = at;
+					}
 				}
-			}
-		}
-		for (int i = 1; i < N; ++i)
-		{
-			if (gcd(i, nums[at]) == 1)
-			{
-				for (auto n : data[i])
-					res[n] = at;
-				data[i].clear();
 			}
 		}
 		data[nums[at]].push_back(at);
