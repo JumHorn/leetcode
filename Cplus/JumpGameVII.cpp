@@ -1,5 +1,5 @@
-#include <set>
 #include <string>
+#include <vector>
 using namespace std;
 
 class Solution
@@ -7,29 +7,20 @@ class Solution
 public:
 	bool canReach(string s, int minJump, int maxJump)
 	{
-		int N = s.length();
+		int N = s.length(), count = 0;
 		if (s.back() == '1')
 			return false;
-		set<int> pos;
-		pos.insert(0);
-		for (int i = 1; i < N; ++i)
+		vector<int> dp(N);
+		dp[0] = 1;
+		for (int i = minJump; i < N; ++i)
 		{
+			if (i >= maxJump + 1)
+				count -= dp[i - maxJump - 1];
+			if (i >= minJump)
+				count += dp[i - minJump];
 			if (s[i] == '0')
-			{
-				if (i - maxJump <= 0 && i >= minJump)
-					pos.insert(i);
-				else
-				{
-					auto iter = pos.upper_bound(i - minJump);
-					if (iter != pos.begin())
-					{
-						--iter;
-						if (i - *iter <= maxJump)
-							pos.insert(i);
-					}
-				}
-			}
+				dp[i] = (count == 0 ? 0 : 1);
 		}
-		return pos.find(N - 1) != pos.end();
+		return dp.back() != 0;
 	}
 };
