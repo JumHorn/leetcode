@@ -6,22 +6,27 @@ class Solution
 public:
 	vector<int> findPeakGrid(vector<vector<int>> &mat)
 	{
-		int M = mat.size(), N = mat[0].size(), r = 0, c = 0;
-		for (int i = 0; i < N; ++i)
+		int M = mat.size(), N = mat[0].size();
+		int lo = 0, hi = M - 1;
+		while (lo <= hi)
 		{
-			if (mat[0][i] > mat[r][c])
-				c = i;
+			int mi = (hi - lo) / 2 + lo;
+			int max_col = 0;
+			// find max col in mat[mi]
+			for (int j = 0; j < N; ++j)
+			{
+				if (mat[mi][j] > mat[mi][max_col])
+					max_col = j;
+			}
+			if ((mi == 0 || mat[mi][max_col] > mat[mi - 1][max_col]) &&
+				(mi == M - 1 || mat[mi][max_col] > mat[mi + 1][max_col]))
+				return {mi, max_col};
+			// one of the condition in the above if clause
+			if (mi == 0 || mat[mi][max_col] > mat[mi - 1][max_col])
+				lo = mi + 1;
+			else
+				hi = mi - 1;
 		}
-		for (int i = 1; i < M; ++i)
-		{
-			if (mat[i][c] < mat[r][c])
-				break;
-			r = i;
-			if (c > 0 && mat[i][c - 1] > mat[r][c])
-				c = c - 1;
-			else if (c < N - 1 && mat[i][c + 1] > mat[r][c])
-				c = c + 1;
-		}
-		return {r, c};
+		return {-1, -1};
 	}
 };
