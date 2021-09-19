@@ -1,6 +1,11 @@
 #include <vector>
 using namespace std;
 
+/*
+even means the maximum alternating sum ending with a even index
+odd means the maximum alternating sum ending with a odd index
+*/
+
 class Solution
 {
 public:

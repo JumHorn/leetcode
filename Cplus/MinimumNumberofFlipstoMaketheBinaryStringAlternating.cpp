@@ -26,9 +26,7 @@ public:
 
 		int res = min(suffix[0][0], suffix[0][1]);
 		for (int i = 1; i < N; ++i)
-		{
 			res = min({res, suffix[i][0] + prefix[i - 1][1 - N % 2], suffix[i][1] + prefix[i - 1][N % 2]});
-		}
 		return res;
 	}
 };

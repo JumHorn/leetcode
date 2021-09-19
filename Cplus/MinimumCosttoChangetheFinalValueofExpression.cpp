@@ -20,18 +20,18 @@ public:
 				else
 					ops.pop();
 
-				if (ops.size() > 0 && ops.top() != '(')
+				if (!ops.empty() && ops.top() != '(')
 				{
 					auto op = ops.top();
 					ops.pop();
-					auto [p1, q1] = state.top();
+					auto [p0, p1] = state.top();
 					state.pop();
-					auto [p2, q2] = state.top();
+					auto [q0, q1] = state.top();
 					state.pop();
 					if (op == '&')
-						state.push({min(p1, p2), min(q1 + q2, 1 + min(q1, q2))});
+						state.push({min(p0, q0), min(p1 + q1, 1 + min(p1, q1))});
 					else
-						state.push({min(p1 + p2, 1 + min(p1, p2)), min(q1, q2)});
+						state.push({min(p0 + q0, 1 + min(p0, q0)), min(p1, q1)});
 				}
 			}
 			else
