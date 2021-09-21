@@ -2,6 +2,10 @@
 #include <vector>
 using namespace std;
 
+/*
+map[val] openrator [] create non-exist val in map is a waste of time
+*/
+
 class Solution
 {
 public:
@@ -13,7 +17,9 @@ public:
 		for (auto n : nums)
 		{
 			odd += n % 2;
-			res += m[odd - k];
+			auto iter = m.find(odd - k);
+			if (iter != m.end())
+				res += iter->second;
 			++m[odd];
 		}
 		return res;
