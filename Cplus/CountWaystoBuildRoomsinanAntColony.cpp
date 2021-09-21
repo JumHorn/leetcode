@@ -21,6 +21,7 @@ public:
 
 		return postorder(graph, 0, fac, ifac).second;
 	}
+
 	//{node count,combinations for subtree}
 	pair<int, long> postorder(vector<vector<int>> &graph, int at, vector<long long> &fac, vector<long long> &ifac)
 	{
@@ -49,14 +50,6 @@ public:
 		}
 		return res;
 	}
-
-	// int combination(int n, int m)
-	// {
-	// 	long res = 1;
-	// 	for (int i = 1; i <= m; ++i)
-	// 		res = res * (n - m + i) / i % MOD;
-	// 	return res;
-	// }
 
 private:
 	static const int MOD = 1e9 + 7;

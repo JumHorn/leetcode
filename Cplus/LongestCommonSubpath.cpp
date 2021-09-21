@@ -58,7 +58,7 @@ public:
 
 			unordered_set<pair<int, int>, pairhash> s;
 			bool check = true;
-			for (int i = 0; i < N; ++i)
+			for (int i = 0; i < N && check; ++i)
 			{
 				int hash1 = 0, hash2 = 0;
 				// 计算首个长度为 mi 的子数组的哈希值
@@ -83,11 +83,9 @@ public:
 						t.emplace(hash1, hash2);
 				}
 				if (t.empty())
-				{
 					check = false;
-					break;
-				}
-				s = move(t);
+				else
+					s = move(t);
 			}
 
 			if (check)
