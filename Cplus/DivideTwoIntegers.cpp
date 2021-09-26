@@ -21,6 +21,8 @@ public:
 			res |= 1u << i;
 			d -= dv << i;
 		}
+		if (res == INT_MIN)
+			return res;
 		return (dividend ^ divisor) >= 0 ? res : -res;
 	}
 };

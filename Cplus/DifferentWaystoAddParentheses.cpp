@@ -7,13 +7,24 @@ class Solution
 public:
 	vector<int> diffWaysToCompute(string input)
 	{
+		int N = input.length();
+		vector<vector<vector<int>>> dp(N, vector<vector<int>>(N + 1));
+		memdp(input, 0, N, dp);
+		return dp[0][N];
+	}
+
+	void memdp(string &input, int l, int r, vector<vector<vector<int>>> &dp)
+	{
+		if (!dp[l][r].empty())
+			return;
 		vector<int> res;
-		for (int i = 0; i < (int)input.size(); ++i)
+		for (int i = l; i < r; ++i)
 		{
 			if (input[i] == '+' || input[i] == '-' || input[i] == '*')
 			{
-				auto left = diffWaysToCompute(input.substr(0, i));
-				auto right = diffWaysToCompute(input.substr(i + 1));
+				memdp(input, l, i, dp);
+				memdp(input, i + 1, r, dp);
+				auto &left = dp[l][i], &right = dp[i + 1][r];
 				for (auto n : left)
 				{
 					for (auto m : right)
@@ -29,7 +40,7 @@ public:
 			}
 		}
 		if (res.empty())
-			res.push_back(stoi(input));
-		return res;
+			res.push_back(stoi(input.substr(l, r - l)));
+		dp[l][r] = res;
 	}
 };
