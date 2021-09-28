@@ -12,19 +12,21 @@ public:
 
 	int get(int key)
 	{
-		if (m.find(key) == m.end())
+		auto it = m.find(key);
+		if (it == m.end())
 			return -1;
-		int value = m[key]->second;
-		data.erase(m[key]);
+		int value = it->second->second;
+		data.erase(it->second);
 		data.push_front({key, value});
-		m[key] = data.begin();
+		it->second = data.begin();
 		return value;
 	}
 
 	void put(int key, int value)
 	{
-		if (m.find(key) != m.end())
-			data.erase(m[key]);
+		auto it = m.find(key);
+		if (it != m.end())
+			data.erase(it->second);
 		else
 		{
 			if (data.size() >= size)
