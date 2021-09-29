@@ -17,11 +17,7 @@ class BSTIterator
 public:
 	BSTIterator(TreeNode *root)
 	{
-		while (root != nullptr)
-		{
-			s.push(root);
-			root = root->left;
-		}
+		saveToStack(root);
 	}
 
 	/** @return the next smallest number */
@@ -29,14 +25,8 @@ public:
 	{
 		TreeNode *root = s.top();
 		s.pop();
-		int res = root->val;
-		root = root->right;
-		while (root != nullptr)
-		{
-			s.push(root);
-			root = root->left;
-		}
-		return res;
+		saveToStack(root->right);
+		return root->val;
 	}
 
 	/** @return whether we have a next smallest number */
@@ -46,6 +36,12 @@ public:
 	}
 
 private:
+	void saveToStack(TreeNode *root)
+	{
+		for (; root != nullptr; root = root->left)
+			s.push(root);
+	}
+
 	stack<TreeNode *> s;
 };
 

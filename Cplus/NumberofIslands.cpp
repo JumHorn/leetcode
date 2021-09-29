@@ -6,10 +6,10 @@ class Solution
 public:
 	int numIslands(vector<vector<char>> &grid)
 	{
-		int res = 0;
-		for (int i = 0; i < (int)grid.size(); ++i)
+		int res = 0, M = grid.size(), N = grid[0].size();
+		for (int i = 0; i < M; ++i)
 		{
-			for (int j = 0; j < (int)grid[0].size(); ++j)
+			for (int j = 0; j < N; ++j)
 				res += dfs(grid, i, j);
 		}
 		return res;

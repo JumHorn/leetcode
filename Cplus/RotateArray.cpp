@@ -1,6 +1,10 @@
 #include <vector>
 using namespace std;
 
+/*
+交换总次数是由N控制的，一共只需交换N次
+*/
+
 class Solution
 {
 public:
