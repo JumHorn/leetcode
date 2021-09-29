@@ -19,8 +19,8 @@ char *largestNumber(int *nums, int numsSize)
 	qsort(digits, numsSize, sizeof(digits[0]), cmp);
 	char *res = (char *)malloc(sizeof(char) * 1000);
 	res[0] = '\0';
-	for (int i = 0; i < numsSize; ++i)
-		strcat(res, digits[i]);
+	for (int i = 0, resSize = 0; i < numsSize; ++i)
+		resSize += sprintf(&res[resSize], "%s", digits[i]);
 	if (res[0] == '0')
 		res[1] = '\0';
 	return res;

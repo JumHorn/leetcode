@@ -6,23 +6,23 @@ char *recursive(char *s, int *index)
 {
 	char *res = (char *)malloc(sizeof(char) * 2000);
 	memset(res, 0, sizeof(char) * 2000);
-	int i = 0, len = strlen(s);
-	while (*index < len && s[*index] != ']')
+	int resSize = 0;
+	while (s[*index] && s[*index] != ']')
 	{
 		if (!isdigit(s[*index]))
-			strncat(res, &s[(*index)++], 1);
+			res[resSize++] = s[(*index)++];
 		else
 		{
 			int n = 0;
-			while (isdigit(s[*index]))
-				n = n * 10 + s[(*index)++] - '0';
+			for (; isdigit(s[*index]); ++*index)
+				n = n * 10 + s[*index] - '0';
 
 			++*index; //'['
 			char *data = recursive(s, index);
 			++*index; // ']'
 
-			while (--n >= 0)
-				strcat(res, data);
+			for (; n > 0; --n)
+				resSize += sprintf(&res[resSize], "%s", data);
 			//free(data);
 		}
 	}

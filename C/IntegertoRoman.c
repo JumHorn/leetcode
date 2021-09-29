@@ -9,9 +9,10 @@ char *intToRoman(int num)
 	char *I[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
 	char *res = (char *)malloc(sizeof(char) * 17);
 	memset(res, 0, sizeof(char) * 17);
-	strcat(res, M[num / 1000]);
-	strcat(res, C[(num % 1000) / 100]);
-	strcat(res, X[(num % 100) / 10]);
-	strcat(res, I[num % 10]);
+	int resSize = 0;
+	resSize += sprintf(&res[resSize], "%s", M[num / 1000]);
+	resSize += sprintf(&res[resSize], "%s", C[(num % 1000) / 100]);
+	resSize += sprintf(&res[resSize], "%s", X[(num % 100) / 10]);
+	resSize += sprintf(&res[resSize], "%s", I[num % 10]);
 	return res;
 }
