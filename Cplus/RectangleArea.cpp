@@ -19,6 +19,6 @@ public:
 		int intersection = 0;
 		if (E < C && G > A && F < D && H > B)
 			intersection = (min(C, G) - max(A, E)) * (min(D, H) - max(B, F));
-		return area1 + (area2 - intersection);
+		return area1 + (area2 - intersection); //avoid (area1 + area2) integer overflow
 	}
 };

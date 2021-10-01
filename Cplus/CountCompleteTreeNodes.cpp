@@ -25,11 +25,8 @@ public:
 	int height(TreeNode *root)
 	{
 		int res = 0;
-		while (root != nullptr)
-		{
+		for (; root != nullptr; root = root->left)
 			++res;
-			root = root->left;
-		}
 		return res;
 	}
 };

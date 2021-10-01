@@ -1,5 +1,5 @@
-#include <string>
 #include <cmath>
+#include <string>
 using namespace std;
 
 /*
@@ -8,7 +8,7 @@ using namespace std;
 24071 highN=24 lowN=71 factor=100
 digit == 0, count = highN * factor.
 digit == 1, count = highN * factor + lowN + 1.
-digit > 1, count = (highN + 1) * factor.
+digit > 1, count = highN * factor + factor.
 */
 
 class Solution
@@ -17,15 +17,14 @@ public:
 	int countDigitOne(int n)
 	{
 		int res = 0;
-		for (long long m = 1; m <= n; m *= 10)
+		for (long long factor = 1; factor <= n; factor *= 10)
 		{
-			int a = n / m, b = n % m;
+			int a = n / factor, b = n % factor;
+			res += a / 10 * factor;
 			if (a % 10 == 1)
-				res += a / 10 * m + b + 1;
-			else if (a % 10 == 0)
-				res += a / 10 * m;
-			else
-				res += (a / 10 + 1) * m;
+				res += b + 1;
+			else if (a % 10 > 1)
+				res += factor;
 		}
 		return res;
 	}
