@@ -48,16 +48,16 @@ public:
 		int N = nums.size();
 		set<int> s(nums.begin(), nums.end());
 		unordered_map<int, int> m;
-		int mark = 0;
+		int rank = 0;
 		for (auto n : s)
-			m[n] = mark++;
+			m[n] = rank++;
 
 		SegmentTree tree(N);
 		for (auto n : nums)
 		{
-			int pos = m[n];
-			int longest = tree.queryRange(0, pos) + 1;
-			tree.update(pos, longest);
+			rank = m[n];
+			int longest = tree.queryRange(0, rank) + 1;
+			tree.update(rank, longest);
 		}
 		return tree.queryRange(0, N);
 	}
