@@ -16,7 +16,7 @@ public:
 			if (n > one)
 				two = n;
 			else
-				one = min(one, n);
+				one = n;
 		}
 		return false;
 	}

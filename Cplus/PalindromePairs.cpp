@@ -23,13 +23,13 @@ public:
 				if (isPalindrome(head))
 				{
 					reverse(tail.begin(), tail.end());
-					if (m.find(tail) != m.end() && m[tail] != i)
+					if (m.count(tail) != 0 && m[tail] != i)
 						res.push_back({m[tail], i});
 				}
 				if (!tail.empty() && isPalindrome(tail))
 				{
 					reverse(head.begin(), head.end());
-					if (m.find(head) != m.end() && m[head] != i)
+					if (m.count(head) != 0 && m[head] != i)
 						res.push_back({i, m[head]});
 				}
 			}

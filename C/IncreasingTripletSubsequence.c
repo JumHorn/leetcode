@@ -13,7 +13,7 @@ bool increasingTriplet(int *nums, int numsSize)
 		if (nums[i] > one)
 			two = nums[i];
 		else
-			one = min(one, nums[i]);
+			one = nums[i];
 	}
 	return false;
 }
