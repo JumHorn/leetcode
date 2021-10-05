@@ -1,11 +1,15 @@
 
 static const int MOD = 1337;
 
-int powMod(int a, int b) //pow(a,b) with MOD
+int modPow(int x, int n) //pow(x,n) with MOD
 {
-	int res = 1;
-	for (int i = 0; i < b; ++i)
-		res = (res * a) % MOD;
+	long long res = 1;
+	for (int i = n; i > 0; i /= 2)
+	{
+		if (i % 2)
+			res = res * x % MOD;
+		x = x * x % MOD;
+	}
 	return res;
 }
 
@@ -13,7 +17,7 @@ int recursive(int a, int *b, int index)
 {
 	if (index < 0)
 		return 1;
-	return powMod(recursive(a, b, index - 1), 10) * powMod(a, b[index]) % MOD;
+	return modPow(recursive(a, b, index - 1), 10) * modPow(a, b[index]) % MOD;
 }
 
 int superPow(int a, int *b, int bSize)
