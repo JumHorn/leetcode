@@ -22,10 +22,9 @@ public:
 	long countDigits(int n)
 	{
 		long res = 0, base = 1, digit = 1;
-		while (n >= base * 10)
+		for (; n >= base * 10; base *= 10)
 		{
 			res += 9 * base * digit;
-			base *= 10;
 			++digit;
 		}
 		res += (n - base + 1) * digit;

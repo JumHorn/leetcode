@@ -2,12 +2,11 @@
 
 int findNthDigit(int n)
 {
-	long digitsCount = 9, base = 1, digit = 1;
-	while (n > digit * digitsCount)
+	long base = 1, digit = 1;
+	for (int digitsCount = 9; n > digit * digitsCount; digitsCount *= 10)
 	{
 		n -= digit * digitsCount;
 		++digit;
-		digitsCount *= 10;
 		base *= 10;
 	}
 
