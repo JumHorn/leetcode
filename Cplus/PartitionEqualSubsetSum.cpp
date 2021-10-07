@@ -23,7 +23,7 @@ public:
 		for (auto n : nums)
 		{
 			unordered_set<int> next_diff;
-			if (diff.find(sum) != diff.end())
+			if (diff.count(sum) != 0)
 				return true;
 			for (auto d : diff)
 			{
@@ -35,6 +35,6 @@ public:
 			diff = next_diff;
 			sum -= n;
 		}
-		return diff.find(0) != diff.end();
+		return diff.count(0) != 0;
 	}
 };

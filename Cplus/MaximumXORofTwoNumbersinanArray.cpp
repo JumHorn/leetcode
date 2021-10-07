@@ -18,7 +18,7 @@ public:
 			for (auto n : s)
 			{
 				int another = n ^ maxval;
-				if (s.find(another) != s.end())
+				if (s.count(another) != 0)
 				{
 					res = maxval;
 					break;
