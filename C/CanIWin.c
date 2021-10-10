@@ -14,14 +14,13 @@ bool canIWin(int maxChoosableInteger, int desiredTotal)
 	if (M * (M + 1) / 2 == T) //who choose last one wins
 		return M & 1;
 	int dp[1 << M]; // 0 -- invalid; 1 -- lose; 2 -- win
-	dp[0] = 0;
 	//mask 1 bit already choosed, 0 bit not choosed yet
 	for (int mask = (1 << M) - 1; mask >= 0; --mask)
 	{
 		int choosed = 0;
 		for (int bit = 0; bit < M; ++bit)
 		{
-			if (((1 << bit) & mask) == 1)
+			if (((1 << bit) & mask) != 0)
 				choosed += bit + 1;
 		}
 		if (choosed >= desiredTotal) //already game over
