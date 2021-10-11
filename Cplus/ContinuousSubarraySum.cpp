@@ -7,17 +7,18 @@ class Solution
 public:
 	bool checkSubarraySum(vector<int> &nums, int k)
 	{
-		unordered_map<int, int> m; //{value,index}
-		int sum = 0;
+		unordered_map<int, int> m; //{remainder,index}
+		int sum = 0, N = nums.size();
 		m[0] = -1;
-		for (int i = 0; i < (int)nums.size(); ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			sum += nums[i];
 			if (k != 0)
 				sum %= k;
-			if (m.find(sum) != m.end())
+			auto it = m.find(sum);
+			if (it != m.end())
 			{
-				if (i - m[sum] > 1)
+				if (i - it->second > 1)
 					return true;
 			}
 			m.insert({sum, i});

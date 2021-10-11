@@ -7,14 +7,15 @@ class Solution
 public:
 	int findMaxLength(vector<int> &nums)
 	{
-		int res = 0, diff = 0; //count(1)-count(0)
-		unordered_map<int, int> hash;
+		int N = nums.size(), res = 0, diff = 0; //count(1)-count(0)
+		unordered_map<int, int> hash;			//{diff,index}
 		hash[0] = -1;
-		for (int i = 0; i < (int)nums.size(); ++i)
+		for (int i = 0; i < N; ++i)
 		{
 			nums[i] ? ++diff : --diff;
-			if (hash.find(diff) != hash.end())
-				res = max(res, i - hash[diff]);
+			auto it = hash.find(diff);
+			if (it != hash.end())
+				res = max(res, i - it->second);
 			else
 				hash[diff] = i;
 		}
