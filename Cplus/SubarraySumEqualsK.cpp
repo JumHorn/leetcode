@@ -13,8 +13,9 @@ public:
 		for (auto n : nums)
 		{
 			prefixsum += n;
-			if (m.find(prefixsum - k) != m.end())
-				res += m[prefixsum - k];
+			auto it = m.find(prefixsum - k);
+			if (it != m.end())
+				res += it->second;
 			++m[prefixsum];
 		}
 		return res;

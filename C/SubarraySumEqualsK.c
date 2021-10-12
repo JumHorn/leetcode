@@ -1,93 +1,49 @@
 #include <stdlib.h>
 #include <string.h>
 
-// HASH
-#define HASH_TABLE_SIZE (1 << 10)
-typedef struct HashNode
+//divide and conquer
+void merge(int *arr, int *dup, int first, int mid, int last)
 {
-	int key;
-	int value;
-	struct HashNode *next;
-} HashNode;
-
-HashNode *HashTable[HASH_TABLE_SIZE];
-
-void hash_init()
-{
-	memset(HashTable, 0, sizeof(HashTable));
-}
-
-void hash_release()
-{
-	for (int i = 0; i < HASH_TABLE_SIZE; ++i)
+	for (int i = first, j = mid, d = 0; i < mid || j < last;)
 	{
-		HashNode *node = HashTable[i];
-		while (node)
-		{
-			HashNode *deletenode = node;
-			node = node->next;
-			free(deletenode);
-		}
+		if (i == mid)
+			dup[d++] = arr[j++];
+		else if (j == last)
+			dup[d++] = arr[i++];
+		else
+			dup[d++] = (arr[i] > arr[j]) ? arr[j++] : arr[i++];
 	}
+	memcpy(arr + first, dup, sizeof(int) * (last - first));
 }
 
-HashNode *hash_createNode(int key, int value)
+int divide(int *arr, int *dup, int first, int last, int diff)
 {
-	HashNode *node = (HashNode *)malloc(sizeof(HashNode));
-	node->key = key;
-	node->value = value;
-	node->next = NULL;
-	return node;
-}
+	if (last - first < 2)
+		return 0;
+	int mid = (last - first) / 2 + first, res = 0;
+	res += divide(arr, dup, first, mid, diff);
+	res += divide(arr, dup, mid, last, diff);
 
-void hash_set(int key, int value)
-{
-	int bucket = (key & (HASH_TABLE_SIZE - 1));
-	HashNode *head = HashTable[bucket];
-	while (head)
+	for (int i = first, j = mid, k = mid; i < mid; ++i)
 	{
-		if (head->key == key)
-		{
-			head->value = value;
-			return;
-		}
-		head = head->next;
+		while (j < last && arr[j] - arr[i] < diff)
+			++j;
+		while (k < last && arr[k] - arr[i] <= diff)
+			++k;
+		res += k - j;
 	}
-	head = hash_createNode(key, value);
-	head->next = HashTable[bucket];
-	HashTable[bucket] = head;
-}
 
-HashNode *hash_get(int key)
-{
-	int bucket = (key & (HASH_TABLE_SIZE - 1));
-	HashNode *head = HashTable[bucket];
-	while (head)
-	{
-		if (head->key == key)
-			break;
-		head = head->next;
-	}
-	return head;
+	merge(arr, dup, first, mid, last);
+	return res;
 }
-/********end of HASH********/
+/********end of divide and conquer********/
 
 int subarraySum(int *nums, int numsSize, int k)
 {
-	int res = 0, prefixsum = 0;
-	hash_init();
-	hash_set(0, 1);
+	int prefixsum = 0;
+	int arr[numsSize + 1], dup[numsSize + 1];
+	arr[0] = 0;
 	for (int i = 0; i < numsSize; ++i)
-	{
-		prefixsum += nums[i];
-		HashNode *node = hash_get(prefixsum - k);
-		if (node)
-			res += node->value;
-		node = hash_get(prefixsum);
-		if (node)
-			node->value += 1;
-		else
-			hash_set(prefixsum, 1);
-	}
-	return res;
+		arr[i + 1] = arr[i] + nums[i];
+	return divide(arr, dup, 0, numsSize + 1, k);
 }
