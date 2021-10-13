@@ -9,6 +9,7 @@ public:
 		return isSquare(p1, p2, p3, p4) || isSquare(p1, p2, p4, p3) || isSquare(p1, p3, p4, p2);
 	}
 
+	// p1 p4 diagonal
 	bool isSquare(vector<int> &p1, vector<int> &p2, vector<int> &p3, vector<int> &p4)
 	{
 		int a = p2[0] - p1[0], b = p2[1] - p1[1], c = p3[0] - p1[0], d = p3[1] - p1[1];
