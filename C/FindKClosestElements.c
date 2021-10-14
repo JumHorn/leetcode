@@ -1,18 +1,20 @@
 #include <stdlib.h>
 
-//cmp function don't consider overflow
-int cmp(const void* lhs, const void* rhs)
+//integer cmp function
+int cmp(const void *lhs, const void *rhs)
 {
-	return *(int*)lhs - *(int*)rhs;
+	if (*(int *)lhs == *(int *)rhs)
+		return 0;
+	return *(int *)lhs < *(int *)rhs ? -1 : 1;
 }
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* findClosestElements(int* arr, int arrSize, int k, int x, int* returnSize)
+int *findClosestElements(int *arr, int arrSize, int k, int x, int *returnSize)
 {
 	*returnSize = k;
-	int* res = (int*)malloc(sizeof(int) * (*returnSize));
+	int *res = (int *)malloc(sizeof(int) * (*returnSize));
 	int lo = 0, hi = arrSize;
 	while (lo < hi)
 	{
@@ -36,10 +38,10 @@ int* findClosestElements(int* arr, int arrSize, int k, int x, int* returnSize)
 			++hi;
 		}
 	}
-	while (k > 0 && lo >= 0)
-		res[--k] = arr[lo--];
-	while (k > 0 && hi < arrSize)
-		res[--k] = arr[hi++];
+	for (; k > 0 && lo >= 0; --lo)
+		res[--k] = arr[lo];
+	for (; k > 0 && hi < arrSize; ++hi)
+		res[--k] = arr[hi];
 	qsort(res, *returnSize, sizeof(int), cmp);
 	return res;
 }

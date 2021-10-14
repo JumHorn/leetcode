@@ -5,11 +5,9 @@ using namespace std;
 
 /*
 user defined comp must meets the requirement comp(a,b)=true then must comp(b,a)=false
-*/
-
-/*
 heap comp is quiet different from sort
 */
+
 class Solution
 {
 public:
