@@ -22,11 +22,12 @@ public:
 		}
 
 		vector<int> res(3);
-		for (int i = 2, j = N - 1; i >= 0; --i, j -= k)
+		for (int i = 2, j = N - 1; i >= 0; --i)
 		{
 			while (dp[i + 1][j] == dp[i + 1][j + 1])
 				--j;
-			res[i] = j - k + 1;
+			j -= k;
+			res[i] = j + 1;
 		}
 		return res;
 	}

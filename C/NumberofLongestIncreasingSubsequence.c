@@ -17,9 +17,7 @@ int findNumberOfLIS(int *nums, int numsSize)
 					dp[i][1] = dp[j][1];
 				}
 				else if (dp[i][0] == dp[j][0] + 1)
-				{
 					dp[i][1] += dp[j][1];
-				}
 			}
 		}
 	}

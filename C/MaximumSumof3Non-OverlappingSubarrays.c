@@ -22,11 +22,12 @@ int *maxSumOfThreeSubarrays(int *nums, int numsSize, int k, int *returnSize)
 
 	*returnSize = 3;
 	int *res = (int *)malloc(sizeof(int) * (*returnSize));
-	for (int i = 3, j = numsSize; i >= 1; --i, j -= k)
+	for (int i = 3, j = numsSize; i >= 1; --i)
 	{
 		while (dp[j][i] == dp[j - 1][i])
 			--j;
-		res[i - 1] = j - k;
+		j -= k;
+		res[i - 1] = j;
 	}
 	return res;
 }

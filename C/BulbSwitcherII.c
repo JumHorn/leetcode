@@ -9,6 +9,6 @@ int flipLights(int n, int m)
 	if (m == 1)
 		return n + 1;
 	if (m == 2)
-		return n == 1 ? 2 : n == 2 ? 4 : 7;
-	return n == 1 ? 2 : n == 2 ? 4 : 8;
+		return n <= 2 ? (1 << n) : 7;
+	return 1 << n;
 }
