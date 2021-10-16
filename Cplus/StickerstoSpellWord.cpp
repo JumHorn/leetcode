@@ -21,9 +21,7 @@ public:
 				{
 					for (int i = 0; i < N; ++i)
 					{
-						if (((next_mask >> i) & 1) == 1)
-							continue;
-						if (c == target[i])
+						if ((next_mask & (1 << i)) == 0 && c == target[i])
 						{
 							next_mask |= 1u << i;
 							break;

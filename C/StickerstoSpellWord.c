@@ -17,9 +17,7 @@ int minStickers(char **stickers, int stickersSize, char *target)
 			{
 				for (int k = 0; k < N; ++k)
 				{
-					if (((next_mask >> k) & 1) == 1)
-						continue;
-					if (target[k] == stickers[i][j])
+					if ((next_mask & (1 << k)) == 0 && target[k] == stickers[i][j])
 					{
 						next_mask |= 1u << k;
 						break;
