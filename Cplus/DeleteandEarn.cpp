@@ -19,10 +19,8 @@ public:
 		for (auto n : nums)
 			earn[n] += n;
 		int a = earn.begin()->second, b = 0;
-		for (auto iter = ++earn.begin(); iter != earn.end(); ++iter)
+		for (auto iter = ++earn.begin(), pre = earn.begin(); iter != earn.end(); ++iter, ++pre)
 		{
-			auto pre = iter;
-			--pre;
 			if (iter->first == pre->first + 1)
 			{
 				int tmp = max(a, b + iter->second);

@@ -19,7 +19,7 @@ public:
 			if (i == j)
 				res.push_back(i + 1);
 		}
-		for (int i = res.size() - 1; i > 0; --i)
+		for (int i = (int)res.size() - 1; i > 0; --i)
 			res[i] -= res[i - 1];
 		return res;
 	}
