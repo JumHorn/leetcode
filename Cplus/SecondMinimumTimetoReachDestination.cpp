@@ -16,35 +16,26 @@ public:
 
 		priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q; //{time,node}
 		q.push({0, 1});
+		int res = -1;
 		vector<vector<int>> seen(n + 1);
 		while (!q.empty())
 		{
 			auto [t, node] = q.top();
 			q.pop();
 
-			if (seen[node].size() >= 2)
-				continue;
-
-			int val = t;
-			if (t % (2 * change) >= change)
-				val = (t + 2 * change - 1) / (2 * change) * (2 * change);
-
-			if (node == n)
-			{
-				if (seen[node].empty() || seen[node][0] != t)
-					seen[node].push_back(t);
-				else
-					continue;
-			}
-			else
-			{
-				if (seen[node].empty() || seen[node][0] != val)
-					seen[node].push_back(val);
-				else
-					continue;
-			}
 			for (auto to : graph[node])
-				q.push({val + time, to});
+			{
+				if (seen[to].size() >= 2)
+					continue;
+				int val = t + time;
+				if (t / change % 2)
+					val += change - t % change;
+				if (seen[to].empty() || seen[to][0] != val)
+				{
+					q.push({val, to});
+					seen[to].push_back(val);
+				}
+			}
 		}
 		return seen[n][1];
 	}
