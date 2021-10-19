@@ -42,7 +42,7 @@ class Solution
 public:
 	vector<int> hitBricks(vector<vector<int>> &grid, vector<vector<int>> &hits)
 	{
-		int M = grid.size(), N = grid[0].size();
+		int M = grid.size(), N = grid[0].size(), H = hits.size();
 		vector<vector<int>> old_grid = grid;
 		DSU dsu(M * N + 1);
 		for (auto &hit : hits)
@@ -64,8 +64,8 @@ public:
 			}
 		}
 
-		vector<int> res(hits.size());
-		for (int i = hits.size() - 1; i >= 0; --i)
+		vector<int> res(H);
+		for (int i = H - 1; i >= 0; --i)
 		{
 			int r = hits[i][0];
 			int c = hits[i][1];
