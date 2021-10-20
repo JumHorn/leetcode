@@ -10,7 +10,7 @@ public:
 		if (dp[target] > 0)
 			return dp[target];
 		int n = floor(log2(target)) + 1;
-		if ((1 << n) == target + 1)
+		if ((1 << n) - 1 == target)
 			dp[target] = n; //一直加速正好到达终点
 		else
 		{

@@ -39,8 +39,9 @@ public:
 			if (from != to) //don't go back to parent
 			{
 				res += postorder(graph, at, to, nodecount);
-				nodecount[at] += nodecount[to];
 				res += nodecount[to];
+
+				nodecount[at] += nodecount[to];
 			}
 		}
 		return res;
