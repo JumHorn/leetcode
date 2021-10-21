@@ -7,7 +7,7 @@ class Solution
 public:
 	int shortestPathLength(vector<vector<int>> &graph)
 	{
-		int N = graph.size(), res = 0;
+		int N = graph.size();
 		vector<vector<int>> dp(1 << N, vector<int>(N, N * N));
 		queue<pair<int, int>> q; //{mask,node}
 		for (int i = 0; i < N; ++i)
@@ -32,6 +32,6 @@ public:
 				}
 			}
 		}
-		return res;
+		return -1;
 	}
 };
