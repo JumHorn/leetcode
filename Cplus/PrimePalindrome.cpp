@@ -8,25 +8,22 @@ public:
 	int primePalindrome(int N)
 	{
 		string s = to_string(N);
-		int len = s.length();
-		string half = s.substr(0, (len + 1) / 2);
-		int odd = len % 2, num = stoi(half);
-		len = half.length();
-		while (true)
+		int len = (s.length() + 1) / 2, odd = s.length() % 2;
+		for (int num = stoi(s.substr(0, len));; ++num)
 		{
 			string half = to_string(num);
-			if (len != (int)half.length())
+			int halflen = half.length();
+			if (len != halflen)
 			{
-				len = half.length() - odd;
+				len = halflen - odd;
 				half = half.substr(0, len);
 				odd = 1 - odd;
 			}
-			string last = half.substr(0, half.length() - odd);
+			string last = half.substr(0, halflen - odd);
 			reverse(last.begin(), last.end());
 			int res = stoi(half + last);
 			if (res >= N && isPrimer(res))
 				return res;
-			++num;
 		}
 		return 0;
 	}
