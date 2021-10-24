@@ -14,27 +14,28 @@ public:
 	{
 		int N = S.length();
 		vector<vector<int>> dp(N + 1, vector<int>(N + 1));
-		dp[0][0] = 1;
-		for (int i = 1; i <= N; ++i)
+		for (int i = 0; i <= N; ++i)
+			dp[0][i] = 1;
+		for (int i = 0; i < N; ++i)
 		{
-			for (int j = 0; j <= i; ++j)
+			if (S[i] == 'D')
 			{
-				if (S[i - 1] == 'D')
+				for (int j = 0; j <= N - i; ++j)
 				{
-					for (int k = j; k < i; ++k)
-						dp[i][j] = (dp[i][j] + dp[i - 1][k]) % MOD;
+					for (int k = j + 1; k <= N - i; ++k)
+						dp[i + 1][j] = (dp[i + 1][j] + dp[i][k]) % MOD;
 				}
-				else
+			}
+			else
+			{
+				for (int j = 0; j <= N - i; ++j)
 				{
-					for (int k = 0; k < j; ++k)
-						dp[i][j] = (dp[i][j] + dp[i - 1][k]) % MOD;
+					for (int k = 0; k <= j; ++k)
+						dp[i + 1][j] = (dp[i + 1][j] + dp[i][k]) % MOD;
 				}
 			}
 		}
-		int res = 0;
-		for (int i = 0; i <= N; ++i)
-			res = (res + dp[N][i]) % MOD;
-		return res;
+		return dp[N][0];
 	}
 
 private:
