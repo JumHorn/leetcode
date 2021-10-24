@@ -8,9 +8,6 @@ public:
 	int atMostNGivenDigitSet(vector<string> &D, int N)
 	{
 		int res = 0, n = D.size();
-		vector<char> v(n);
-		for (int i = 0; i < n; ++i)
-			v[i] = D[i][0];
 		string str = to_string(N);
 		int len = str.length();
 		for (int i = 1; i < len; ++i)
@@ -18,10 +15,10 @@ public:
 		for (int i = 0; i < len; ++i)
 		{
 			int j = 0;
-			while (j < n && v[j] < str[i])
+			while (j < n && D[j][0] < str[i])
 				++j;
 			res += j * repeatA(len - i - 1, n);
-			if (j >= n || v[j] != str[i])
+			if (j >= n || D[j][0] != str[i])
 				break;
 			if (i == len - 1)
 				++res;

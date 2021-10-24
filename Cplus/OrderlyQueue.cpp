@@ -14,25 +14,24 @@ public:
 			return S;
 		}
 
-		auto iter = min_element(S.begin(), S.end());
-		int d = distance(S.begin(), iter);
-		for (int j = 0; j < N; ++j)
+		int d = min_element(S.begin(), S.end()) - S.begin();
+		for (int j = d + 1; j < N; ++j)
 		{
-			if (j != d && S[j] == S[d])
+			if (S[j] == S[d])
 			{
 				if (minReverse(S, N, j, d))
 					d = j;
 			}
 		}
-		strReverse(S, 0, d);
+		strRotate(S, d);
 		return S;
 	}
 
-	void strReverse(string &s, int i, int d)
+	void strRotate(string &s, int pivot)
 	{
-		string tmp(s.substr(i, d - i));
-		copy(s.begin() + d, s.end(), s.begin() + i);
-		copy(tmp.begin(), tmp.end(), s.begin() + i + s.length() - d);
+		reverse(s.begin(), s.begin() + pivot);
+		reverse(s.begin() + pivot, s.end());
+		reverse(s.begin(), s.end());
 	}
 
 	bool minReverse(const string &s, int n, int i, int j)
