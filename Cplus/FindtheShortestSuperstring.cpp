@@ -65,11 +65,9 @@ public:
 		}
 		int index, previous = s.top();
 		string res = A[previous];
-		s.pop();
-		while (!s.empty())
+		for (s.pop(); !s.empty(); s.pop())
 		{
 			index = s.top();
-			s.pop();
 			res += A[index].substr(A[index].length() - graph[previous][index]);
 			previous = index;
 		}
@@ -87,6 +85,6 @@ public:
 			if (i == N)
 				break;
 		}
-		return b.length() - a.length() + k;
+		return b.length() - N + k;
 	}
 };

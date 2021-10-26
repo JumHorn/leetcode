@@ -44,9 +44,10 @@ public:
 			// j: start of window
 			for (int j = max(0, i - M + 1); j <= min(N - M, i); ++j)
 			{
-				if (todo[j].find(i) != todo[j].end())
+				auto it = todo[j].find(i);
+				if (it != todo[j].end())
 				{
-					todo[j].erase(i);
+					todo[j].erase(it);
 					if (todo[j].empty())
 					{
 						res.push_back(j);

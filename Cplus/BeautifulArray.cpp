@@ -33,7 +33,7 @@ public:
 				if (n * 2 <= N)
 					next.push_back(n * 2);
 			}
-			res = next;
+			res.swap(next);
 		}
 		return res;
 	}
