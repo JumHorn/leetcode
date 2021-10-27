@@ -9,7 +9,7 @@ class Solution
 public:
 	int tallestBillboard(vector<int> &rods)
 	{
-		unordered_map<int, int> dp; //{diff,height}
+		unordered_map<int, int> dp; //{diff,height of short rod}
 		dp[0] = 0;
 		for (auto r : rods)
 		{

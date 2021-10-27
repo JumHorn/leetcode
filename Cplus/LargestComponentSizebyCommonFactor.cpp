@@ -54,24 +54,29 @@ public:
 		unordered_map<int, int> factor;
 		for (int i = 0; i < N; ++i)
 		{
+			auto it = factor.find(A[i]);
+			if (it == factor.end())
+				factor[A[i]] = i;
+			else
+				dsu.Union(i, it->second);
+
 			for (int j = 2; j * j <= A[i]; ++j)
 			{
 				if (A[i] % j == 0)
 				{
-					if (factor.find(j) == factor.end())
+					it = factor.find(j);
+					if (it == factor.end())
 						factor[j] = i;
 					else
-						dsu.Union(i, factor[j]);
-					if (factor.find(A[i] / j) == factor.end())
+						dsu.Union(i, it->second);
+
+					it = factor.find(A[i] / j);
+					if (it == factor.end())
 						factor[A[i] / j] = i;
 					else
-						dsu.Union(i, factor[A[i] / j]);
+						dsu.Union(i, it->second);
 				}
 			}
-			if (factor.find(A[i]) == factor.end())
-				factor[A[i]] = i;
-			else
-				dsu.Union(i, factor[A[i]]);
 		}
 		return dsu.getMaxCluster();
 	}

@@ -14,11 +14,12 @@ public:
 		for (int i = 1; i < N; ++i)
 		{
 			int data = compress(cells);
+			auto it = m.find(data);
 			if (m.find(data) != m.end())
 			{
 				N = N - i;
-				int T = state.size() - m[data];
-				int finalindex = m[data] + N % T;
+				int T = state.size() - it->second;
+				int finalindex = (it->second + N % T) % T;
 				return uncompress(state[finalindex]);
 			}
 			else
