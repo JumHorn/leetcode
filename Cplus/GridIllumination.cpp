@@ -31,9 +31,10 @@ public:
 				{
 					for (int j = y - 1; j <= y + 1; ++j)
 					{
-						if (s.find({i, j}) != s.end())
+						auto it = s.find({i, j});
+						if (it != s.end())
 						{
-							s.erase({i, j});
+							s.erase(it);
 							--xmap[i];
 							--ymap[j];
 							--d0map[i + j];
