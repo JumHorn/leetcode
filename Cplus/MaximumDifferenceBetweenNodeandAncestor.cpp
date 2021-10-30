@@ -19,24 +19,19 @@ public:
 	int maxAncestorDiff(TreeNode *root)
 	{
 		int res = 0;
-		postorder(root, res);
+		preorder(root, root->val, root->val, res);
 		return res;
 	}
 
-	pair<int, int> postorder(struct TreeNode *root, int &diff)
+	void preorder(TreeNode *root, int maxval, int minval, int &diff)
 	{
 		if (root == nullptr)
-			return {INT_MIN, INT_MAX};
-		auto l = postorder(root->left, diff);
-		auto r = postorder(root->right, diff);
-		pair<int, int> res = {max(l.first, r.first), min(l.second, r.second)};
-		if (res.first >= res.second)
-		{
-			diff = max(diff, abs(res.first - root->val));
-			diff = max(diff, abs(res.second - root->val));
-		}
-		res.first = max(res.first, root->val);
-		res.second = min(res.second, root->val);
-		return res;
+			return;
+		diff = max(diff, abs(root->val - maxval));
+		diff = max(diff, abs(root->val - minval));
+		maxval = max(maxval, root->val);
+		minval = min(minval, root->val);
+		preorder(root->left, maxval, minval, diff);
+		preorder(root->right, maxval, minval, diff);
 	}
 };
