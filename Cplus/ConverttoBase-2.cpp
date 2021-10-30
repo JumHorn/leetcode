@@ -14,15 +14,20 @@ class Solution
 public:
 	string baseNeg2(int N)
 	{
+		return toNegativeBase(N, -2);
+	}
+
+	string toNegativeBase(int n, int negBase)
+	{
 		string res;
-		while (N != 0)
+		while (n != 0)
 		{
-			int remainder = N % -2;
-			N /= -2;
+			int remainder = n % negBase;
+			n /= negBase;
 			if (remainder < 0)
 			{
-				remainder += 2;
-				++N;
+				remainder -= negBase;
+				++n;
 			}
 			res = to_string(remainder) + res;
 		}
