@@ -24,7 +24,9 @@ public:
 				for (int k = 0; k < M; ++k)
 				{
 					add += matrix[k][j] - (i > 0 ? matrix[k][i - 1] : 0);
-					res += m[add - target];
+					auto it = m.find(add - target);
+					if (it != m.end())
+						res += it->second;
 					++m[add];
 				}
 			}
