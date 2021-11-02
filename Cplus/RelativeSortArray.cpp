@@ -12,14 +12,16 @@ public:
 		int N = arr2.size();
 		for (int i = 0; i < N; ++i)
 			m[arr2[i]] = i;
-		auto lambda = [&](int lhs, int rhs) {
-			if (m.find(lhs) == m.end() && m.find(rhs) == m.end())
+		auto lambda = [&](int lhs, int rhs)
+		{
+			auto it1 = m.find(lhs), it2 = m.find(rhs);
+			if (it1 == m.end() && it2 == m.end())
 				return lhs < rhs;
-			if (m.find(lhs) == m.end())
+			if (it1 == m.end())
 				return false;
-			if (m.find(rhs) == m.end())
+			if (it2 == m.end())
 				return true;
-			return m[lhs] < m[rhs];
+			return it1->second < it2->second;
 		};
 		sort(arr1.begin(), arr1.end(), lambda);
 		return arr1;
