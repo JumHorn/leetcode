@@ -17,19 +17,20 @@ class Solution
 public:
 	int stoneGameII(vector<int> &piles)
 	{
-		int N = piles.size();
-		vector<vector<int>> dp(N + 1, vector<int>(N + 1));
-		vector<int> suffixsum(N + 1, 0);
-		for (int i = N - 1; i >= 0; --i)
-			suffixsum[i] = suffixsum[i + 1] + piles[i];
-		for (int i = 0; i <= N; ++i)
-			dp[i][N] = suffixsum[i];
+		int N = piles.size(), suffixsum = 0;
+		vector<vector<int>> dp(N, vector<int>(N + 1));
 		for (int i = N - 1; i >= 0; --i)
 		{
-			for (int j = N - 1; j >= 1; --j)
+			suffixsum += piles[i];
+			for (int j = 1; j <= N; ++j)
 			{
-				for (int X = 1; X <= 2 * j && i + X <= N; ++X)
-					dp[i][j] = max(dp[i][j], suffixsum[i] - dp[i + X][max(j, X)]);
+				if (i + 2 * j >= N)
+					dp[i][j] = suffixsum;
+				else
+				{
+					for (int X = 1; X <= 2 * j; ++X)
+						dp[i][j] = max(dp[i][j], suffixsum - dp[i + X][max(j, X)]);
+				}
 			}
 		}
 		return dp[0][1];
