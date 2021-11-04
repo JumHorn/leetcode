@@ -11,11 +11,11 @@ public:
 		int N = puzzles.size();
 		vector<int> res(N);
 		unordered_map<int, int> m; //{mask,count}
-		for (int i = 0; i < (int)words.size(); ++i)
+		for (auto &word : words)
 		{
 			int mask = 0;
-			for (int j = 0; j < (int)words[i].length(); ++j)
-				mask |= (1 << (words[i][j] - 'a'));
+			for (auto c : word)
+				mask |= (1 << (c - 'a'));
 			++m[mask];
 		}
 		for (int i = 0; i < N; ++i)
@@ -25,7 +25,7 @@ public:
 				mask |= (1 << (c - 'a'));
 			for (int submask = mask; submask != 0; submask = ((submask - 1) & mask)) //loop for all submask
 			{
-				if ((submask & (1 << (puzzles[i][0] - 'a'))) != 0 && m.find(submask) != m.end())
+				if ((submask & (1 << (puzzles[i][0] - 'a'))) != 0 && m.count(submask) != 0)
 					res[i] += m[submask];
 			}
 		}
