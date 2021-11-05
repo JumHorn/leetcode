@@ -11,28 +11,20 @@ public:
 		int N = s.length();
 		for (int i = 0, j = 0; i < N; i = j)
 		{
-			j = i + 1;
-			while (j < N && s[i] == s[j])
+			for (j = i + 1; j < N && s[i] == s[j];)
 				++j;
-			if (stk.empty() || stk.top().first != s[i])
+			int count = j - i;
+			if (!stk.empty() && stk.top().first == s[i])
 			{
-				if ((j - i) % k != 0)
-					stk.push({s[i], (j - i) % k});
+				count += stk.top().second;
+				stk.pop();
 			}
-			else
-			{
-				if ((j - i + stk.top().second) % k != 0)
-					stk.top().second = (j - i + stk.top().second) % k;
-				else
-					stk.pop();
-			}
+			if (count % k != 0)
+				stk.push({s[i], count % k});
 		}
 		string res;
-		while (!stk.empty())
-		{
+		for (; !stk.empty(); stk.pop())
 			res = string(stk.top().second, stk.top().first) + res;
-			stk.pop();
-		}
 		return res;
 	}
 };
