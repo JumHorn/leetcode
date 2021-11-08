@@ -23,7 +23,7 @@ public:
 					second = arr[i - 1][j];
 			}
 			for (int j = 0; j < N; ++j)
-				arr[i][j] += j == firstindex ? second : first;
+				arr[i][j] += (j == firstindex ? second : first);
 		}
 		int res = INT_MAX;
 		for (int j = 0; j < N; ++j)
