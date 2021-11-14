@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <queue>
+#include <set>
 #include <vector>
 using namespace std;
 
@@ -8,47 +8,37 @@ class Solution
 public:
 	int maxTaskAssign(vector<int> &tasks, vector<int> &workers, int pills, int strength)
 	{
-		int res = 0, N = tasks.size(), M = workers.size();
-		sort(tasks.begin(), tasks.end(), greater<int>());
+		sort(tasks.begin(), tasks.end());
 		sort(workers.begin(), workers.end(), greater<int>());
-		priority_queue<int> q, nopill;
-		for (int i = 0, j = 0; j < M && (i < N || !nopill.empty()); ++i)
+		int lo = 0, hi = min(workers.size(), tasks.size()) + 1;
+		while (lo < hi)
 		{
-			while (pills > 0 && !nopill.empty() && workers[j] + strength < nopill.top())
-				nopill.pop();
-			if (pills > 0 && !nopill.empty() && workers[j] + strength >= nopill.top())
-			{
-				++res;
-				q.push(workers[j]);
-				++j;
-				--pills;
-				if (i != N)
-					--i;
-				continue;
-			}
-			if (i >= N)
-				break;
-
-			if (workers[j] >= tasks[i])
-			{
-				++res;
-				++j;
-			}
-			else if (pills > 0 && workers[j] + strength >= tasks[i])
-			{
-				++res;
-				q.push(workers[j]);
-				++j;
-				--pills;
-			}
-			else if (!q.empty() && q.top() >= tasks[i])
-			{
-				++pills;
-				q.pop();
-			}
+			int mi = (hi - lo) / 2 + lo;
+			if (check(tasks, workers, mi, pills, strength))
+				lo = mi + 1;
 			else
-				nopill.push(tasks[i]);
+				hi = mi;
 		}
-		return res;
+		return lo - 1;
+	}
+
+	bool check(vector<int> &tasks, vector<int> &workers, int index, int pills, int strength)
+	{
+		multiset<int> worker(workers.begin(), workers.begin() + index);
+		for (int i = index - 1; i >= 0; --i)
+		{
+			auto it = --worker.end();
+			if (tasks[i] > *it)
+			{
+				if (pills <= 0)
+					return false;
+				it = worker.lower_bound(tasks[i] - strength);
+				if (it == worker.end())
+					return false;
+				--pills;
+			}
+			worker.erase(it);
+		}
+		return true;
 	}
 };
