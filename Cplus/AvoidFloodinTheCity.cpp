@@ -22,9 +22,10 @@ public:
 			else
 			{
 				res[i] = -1;
-				if (fulllake.find(rains[i]) != fulllake.end())
+				auto it = fulllake.find(rains[i]);
+				if (it != fulllake.end())
 				{
-					auto iter = s.lower_bound(fulllake[rains[i]]);
+					auto iter = s.lower_bound(it->second);
 					if (iter == s.end())
 						return {};
 					res[*iter] = rains[i];
