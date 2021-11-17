@@ -7,21 +7,21 @@ class Solution
 public:
 	int maxNonOverlapping(vector<int> &nums, int target)
 	{
-		unordered_set<int> m;
+		unordered_set<int> s;
 		int N = nums.size(), prefixsum = 0, res = 0;
-		m.insert(0);
+		s.insert(0);
 		for (int i = 0; i < N; ++i)
 		{
 			prefixsum += nums[i];
-			if (m.find(prefixsum - target) != m.end())
+			if (s.find(prefixsum - target) != s.end())
 			{
 				++res;
-				m.clear();
-				m.insert(0);
+				s.clear();
+				s.insert(0);
 				prefixsum = 0;
 			}
 			else
-				m.insert(prefixsum);
+				s.insert(prefixsum);
 		}
 		return res;
 	}
