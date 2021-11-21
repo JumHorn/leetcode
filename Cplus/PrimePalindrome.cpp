@@ -7,23 +7,17 @@ class Solution
 public:
 	int primePalindrome(int N)
 	{
-		string s = to_string(N);
-		int len = (s.length() + 1) / 2, odd = s.length() % 2;
-		for (int num = stoi(s.substr(0, len));; ++num)
+		for (int len = 1;; ++len)
 		{
-			string half = to_string(num);
-			int halflen = half.length();
-			if (len != halflen)
+			int x = pow(10, (len - 1) / 2), y = pow(10, (len + 1) / 2);
+			for (int i = x; i < y; ++i)
 			{
-				len = halflen - odd;
-				half = half.substr(0, len);
-				odd = 1 - odd;
+				long long val = i;
+				for (int j = len % 2 == 1 ? i / 10 : i; j > 0; j /= 10)
+					val = val * 10 + j % 10;
+				if (val >= N && isPrimer(val))
+					return val;
 			}
-			string last = half.substr(0, halflen - odd);
-			reverse(last.begin(), last.end());
-			int res = stoi(half + last);
-			if (res >= N && isPrimer(res))
-				return res;
 		}
 		return 0;
 	}
