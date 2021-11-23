@@ -13,8 +13,9 @@ public:
 		vector<int> index;
 		for (auto n : arr)
 		{
-			if (m.find(n) != m.end())
-				index.push_back(m[n]);
+			auto it = m.find(n);
+			if (it != m.end())
+				index.push_back(it->second);
 		}
 		vector<int> LIS;
 		for (auto n : index)
