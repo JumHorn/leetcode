@@ -21,8 +21,7 @@ public:
 				break;
 			}
 
-			int a = word1.compare(i, string::npos, word2, j);
-			if (a >= 0)
+			if (word1.compare(i, string::npos, word2, j) >= 0)
 			{
 				res.push_back(word1[i]);
 				++i;

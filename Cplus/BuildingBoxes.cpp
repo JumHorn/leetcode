@@ -10,22 +10,18 @@ public:
 	int minimumBoxes(int n)
 	{
 		int sum = 0, floor = 0, addition = 0;
-		while (sum < n)
+		for (; sum < n; sum += floor)
 		{
 			++addition;
 			floor += addition;
-			sum += floor;
 		}
 		if (sum == n)
 			return floor;
 		sum -= floor;
 		floor -= addition;
 		addition = 0;
-		while (sum < n)
-		{
+		for (; sum < n; sum += addition)
 			++addition;
-			sum += addition;
-		}
 		return floor + addition;
 	}
 };
