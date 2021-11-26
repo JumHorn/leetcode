@@ -21,6 +21,8 @@ public:
 			return dp[n][first][second];
 		int half = n / 2, halfmask = (1 << half) - 1;
 		pair<int, int> res = {INT_MAX, INT_MIN};
+
+		// simulate all situations using mask
 		for (int right = halfmask; right >= 0; --right)
 		{
 			int newmask = right;
@@ -30,20 +32,25 @@ public:
 					newmask |= (1 << (n - k - 1));
 			}
 
+			// automatically advances to the next round
 			if (n % 2 == 1)
 				newmask |= (1 << (n / 2));
 
+			// let first advances to the next round
 			if ((newmask & (1 << first)) == 0)
 			{
 				newmask |= (1 << first);
 				newmask ^= (1 << (n - first - 1));
 			}
+
+			// let second advances to the next round
 			if ((newmask & (1 << second)) == 0)
 			{
 				newmask |= (1 << second);
 				newmask ^= (1 << (n - second - 1));
 			}
 
+			// find next postion of first and second player
 			int i = -1, j = -1, index = -1;
 			for (int k = 0; k < n; ++k)
 			{
@@ -56,9 +63,9 @@ public:
 						j = index;
 				}
 			}
-			auto tmp = memdp((n + 1) / 2, i, j, dp);
-			res.first = min(res.first, tmp.first + 1);
-			res.second = max(res.second, tmp.second + 1);
+			auto val = memdp((n + 1) / 2, i, j, dp);
+			res.first = min(res.first, val.first + 1);
+			res.second = max(res.second, val.second + 1);
 		}
 		return dp[n][first][second] = res;
 	}
