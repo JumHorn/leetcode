@@ -2,10 +2,11 @@
 #include <vector>
 using namespace std;
 
+//DSU minimum version
 class DSU
 {
 public:
-	DSU(int size) : parent(size), rank(size, 1)
+	DSU(int size) : parent(size)
 	{
 		for (int i = 0; i < size; ++i)
 			parent[i] = i;
@@ -20,29 +21,22 @@ public:
 
 	bool Union(int x, int y)
 	{
-		int xr = Find(x), yr = Find(y);
-		if (xr == yr)
+		int xp = Find(x), yp = Find(y);
+		if (xp == yp)
 			return false;
-		parent[yr] = xr;
-		rank[xr] += rank[yr];
+		parent[yp] = xp;
 		return true;
 	}
 
 	void Unset(int x)
 	{
 		parent[x] = x;
-		rank[x] = 1;
-	}
-
-	int Count(int x)
-	{
-		return rank[Find(x)];
 	}
 
 private:
 	vector<int> parent;
-	vector<int> rank;
 };
+/********end of DSU minimum version********/
 
 class Solution
 {
