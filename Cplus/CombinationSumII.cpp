@@ -16,17 +16,18 @@ public:
 
 	void dfs(vector<int> &candidates, int index, int target, vector<int> &data, vector<vector<int>> &res)
 	{
-		if (target < 0)
-			return;
-		if (target == 0)
-		{
-			res.push_back(data);
-			return;
-		}
 		for (int i = index; i < (int)candidates.size(); ++i)
 		{
 			if (i != index && candidates[i] == candidates[i - 1]) //remove dumplicate
 				continue;
+			if (target - candidates[i] < 0)
+				break;
+			if (target - candidates[i] == 0)
+			{
+				res.push_back(data);
+				res.back().push_back(candidates[i]);
+				break;
+			}
 			data.push_back(candidates[i]);
 			dfs(candidates, i + 1, target - candidates[i], data, res);
 			data.pop_back();
