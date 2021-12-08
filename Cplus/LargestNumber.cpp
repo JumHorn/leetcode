@@ -8,10 +8,9 @@ class Solution
 public:
 	string largestNumber(vector<int> &nums)
 	{
-		int N = nums.size();
-		vector<string> v(nums.size());
-		for (int i = 0; i < N; ++i)
-			v[i] = to_string(nums[i]);
+		vector<string> v;
+		for (auto n : nums)
+			v.push_back(to_string(n));
 		sort(v.begin(), v.end(), *this);
 		string res;
 		for (auto &str : v)
