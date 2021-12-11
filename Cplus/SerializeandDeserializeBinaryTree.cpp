@@ -47,7 +47,7 @@ public:
 				}
 			}
 		}
-		if (res.empty())
+		if (!res.empty())
 			res.pop_back();
 		return res;
 	}
