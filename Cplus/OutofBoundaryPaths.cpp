@@ -4,11 +4,11 @@ using namespace std;
 class Solution
 {
 public:
-	int findPaths(int m, int n, int N, int i, int j)
+	int findPaths(int m, int n, int maxMove, int startRow, int startColumn)
 	{
-		vector<vector<vector<int>>> dp(N + 1, vector<vector<int>>(m, vector<int>(n)));
+		vector<vector<vector<int>>> dp(maxMove + 1, vector<vector<int>>(m, vector<int>(n)));
 		int res = 0;
-		for (int t = 0; t < N; ++t) //each turn
+		for (int t = 0; t < maxMove; ++t) //each turn
 		{
 			for (int row = 0; row < m; ++row)
 			{
@@ -27,7 +27,7 @@ public:
 				}
 			}
 		}
-		return dp[N][i][j];
+		return dp[maxMove][startRow][startColumn];
 	}
 
 private:

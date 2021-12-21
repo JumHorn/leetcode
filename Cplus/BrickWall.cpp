@@ -9,7 +9,7 @@ public:
 	int leastBricks(vector<vector<int>> &wall)
 	{
 		unordered_map<int, int> m; //{edge,edge count}
-		int res = wall.size(), N = wall.size();
+		int N = wall.size(), res = N;
 		for (auto &row : wall)
 		{
 			int prefixsum = 0;

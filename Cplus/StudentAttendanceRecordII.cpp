@@ -2,6 +2,18 @@
 #include <vector>
 using namespace std;
 
+/*
+state (absent,late)
+
+		 A		P		L
+(0,0)	(1,0)	(0,0)	(0,1)
+(0,1)	(1,0)	(0,0)	(0,2)
+(0,2)	(1,0)	(0,0)	X
+(1,0)	X		(1,0)	(1,1)
+(1,1)	X		(1,0)	(1,2)
+(1,2)	X		(1,0)	X
+*/
+
 class Solution
 {
 public:
