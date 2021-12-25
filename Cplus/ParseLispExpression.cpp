@@ -1,3 +1,4 @@
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -8,140 +9,66 @@ class Solution
 public:
 	int evaluate(string expression)
 	{
-		if (expression.empty())
-			return 0;
-		vector<unordered_map<string, int>> variables;
-		return recursion(expression, variables);
-	}
-
-	int recursion(const string expression, vector<unordered_map<string, int>> &variables)
-	{
-		variables.emplace_back();
-		int res = 0, N = expression.length();
-		for (int i = 0, j = 0; i < N; i = j)
+		variables.clear();
+		vector<string> tokens = {""};
+		stack<vector<string>> stk;
+		for (auto c : expression)
 		{
-			if (expression[i] == '(')
+			if (c == '(')
 			{
-				j = matchParethesis(expression, i);
-				res = recursion(expression.substr(i + 1, j - i - 1), variables);
-				break;
+				variables.emplace_back();
+				if (tokens[0] == "let")
+					calculate(tokens);
+				stk.push(tokens);
+				tokens = {""};
 			}
-			j = jumpToSpace(expression, j);
-			string exp = expression.substr(i, j - i);
-			i = j = skipSpace(expression, j + 1);
-			if (exp == "let")
+			else if (c == ')')
 			{
-				while (j < N)
-				{
-					if (expression[i] == '(')
-					{
-						j = matchParethesis(expression, i);
-						res = recursion(expression.substr(i + 1, j - i - 1), variables);
-						i = j = skipSpace(expression, j + 1);
-					}
-					else
-					{
-						j = jumpToSpace(expression, j);
-						string valname = expression.substr(i, j - i);
-						if (j >= N - 1)
-						{
-							res = getVariableValue(valname, variables);
-							i = j = skipSpace(expression, j + 1);
-							break;
-						}
-						i = j = skipSpace(expression, j + 1);
-						if (expression[i] == '(')
-						{
-							j = matchParethesis(expression, i);
-							variables.back()[valname] = recursion(expression.substr(i + 1, j - i - 1), variables);
-						}
-						else
-						{
-							j = jumpToSpace(expression, j);
-							variables.back()[valname] = getVariableValue(expression.substr(i, j - i), variables);
-						}
-						i = j = skipSpace(expression, j + 1);
-					}
-				}
+				string val = calculate(tokens);
+				variables.pop_back();
+				tokens = stk.top();
+				stk.pop();
+				tokens.back() += val;
 			}
+			else if (c == ' ')
+				tokens.push_back("");
 			else
-			{
-				int lhs, rhs;
-				if (expression[i] == '(')
-				{
-					j = matchParethesis(expression, i);
-					lhs = recursion(expression.substr(i + 1, j - i - 1), variables);
-				}
-				else
-				{
-					j = jumpToSpace(expression, j);
-					lhs = getVariableValue(expression.substr(i, j - i), variables);
-				}
-
-				i = j = skipSpace(expression, j + 1);
-				if (expression[i] == '(')
-				{
-					j = matchParethesis(expression, i);
-					rhs = recursion(expression.substr(i + 1, j - i - 1), variables);
-				}
-				else
-				{
-					j = jumpToSpace(expression, j);
-					rhs = getVariableValue(expression.substr(i, j - i), variables);
-				}
-
-				if (exp == "add")
-					res = lhs + rhs;
-				else if (exp == "mult")
-					res = lhs * rhs;
-				i = j = skipSpace(expression, j + 1);
-			}
+				tokens.back().push_back(c);
 		}
-		variables.pop_back();
-		return res;
+		return stoi(getVariable(tokens[0]));
 	}
 
-	int getVariableValue(const string &variable, vector<unordered_map<string, int>> &variables)
+	string calculate(vector<string> &tokens)
 	{
-		int res = 0;
-		if (isdigit(variable[0]) || variable[0] == '-')
-			res = stoi(variable);
-		else
+		auto &db = variables.back(); //variable database
+		if (tokens[0] == "let")
 		{
-			for (int i = variables.size() - 1; i >= 0; --i)
+			for (int i = 1; i < (int)tokens.size() - 1; i += 2)
 			{
-				if (variables[i].find(variable) != variables[i].end())
-				{
-					res = variables[i][variable];
-					break;
-				}
+				if (!tokens[i + 1].empty())
+					db[tokens[i]] = tokens[i + 1];
 			}
+			return getVariable(tokens.back());
 		}
-		return res;
+
+		// add/mult
+		int a = stoi(getVariable(tokens[1])), b = stoi(getVariable(tokens[2]));
+		return (tokens[0] == "add") ? to_string(a + b) : to_string(a * b);
 	}
 
-	int jumpToSpace(const string &str, int index)
+	string getVariable(const string &var)
 	{
-		index = str.find(' ', index);
-		return index == -1 ? str.length() : index;
-	}
-
-	int skipSpace(const string &str, int index)
-	{
-		index = str.find_first_not_of(' ', index); //skip space
-		return index == -1 ? str.length() : index;
-	}
-
-	int matchParethesis(const string &str, int index)
-	{
-		int parenthesis = 1;
-		for (++index; parenthesis != 0; ++index)
+		if (isdigit(var[0]) || var[0] == '-')
+			return var;
+		for (int i = (int)variables.size() - 1; i >= 0; --i)
 		{
-			if (str[index] == '(')
-				++parenthesis;
-			else if (str[index] == ')')
-				--parenthesis;
+			auto it = variables[i].find(var);
+			if (it != variables[i].end())
+				return it->second;
 		}
-		return index - 1;
+		return var;
 	}
+
+private:
+	vector<unordered_map<string, string>> variables;
 };
