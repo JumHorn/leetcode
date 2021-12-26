@@ -46,7 +46,7 @@ public:
 			for (int i = 1; i < (int)tokens.size() - 1; i += 2)
 			{
 				if (!tokens[i + 1].empty())
-					db[tokens[i]] = tokens[i + 1];
+					db[tokens[i]] = getVariable(tokens[i + 1]);
 			}
 			return getVariable(tokens.back());
 		}
