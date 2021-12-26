@@ -1,4 +1,4 @@
-#include <set>
+#include <algorithm>
 #include <vector>
 using namespace std;
 
@@ -7,37 +7,36 @@ class Solution
 public:
 	vector<int> recoverArray(vector<int> &nums)
 	{
-		multiset<int> s(nums.begin(), nums.end());
-		int smallest = *s.begin();
-		for (auto it = ++s.begin(); it != s.end(); ++it)
+		sort(nums.begin(), nums.end());
+		int N = nums.size(), smallest = nums[0];
+		for (auto n : nums)
 		{
-			int k = (*it - smallest) / 2; //try each possible k
-			if (k > 0 && smallest + k == *it - k)
+			int k = (n - smallest) / 2; //try each possible k
+			if (k > 0 && smallest + k == n - k)
 			{
-				auto dup = s;
-				vector<int> res;
-				while (!dup.empty())
+				vector<int> res, seen(N);
+				for (int i = 0, j = 0; j < N; ++i)
 				{
-					auto it0 = dup.begin();
-					int n = *it0;
-					dup.erase(it0);
-					auto it1 = dup.find(n + 2 * k);
-					if (it1 == dup.end())
-						break;
-					dup.erase(it1);
-					res.push_back(n + k);
+					if (seen[i])
+						continue;
+					for (; j < N && !seen[i]; ++j)
+					{
+						if (nums[i] + 2 * k < nums[j])
+						{
+							j = N; //to jump outter for loop
+							break;
+						}
+						if (nums[i] + 2 * k == nums[j])
+						{
+							seen[i] = seen[j] = true;
+							res.push_back(nums[i] + k);
+						}
+					}
 				}
-				if (dup.empty())
+				if (res.size() == N / 2)
 					return res;
 			}
 		}
 		return {};
 	}
 };
-
-int main()
-{
-	vector<int> v = {2, 10, 6, 4, 8, 12};
-	Solution().recoverArray(v);
-	return 0;
-}
