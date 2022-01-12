@@ -1,43 +1,38 @@
+#include <limits.h>
+
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 
 int maxDistance(int **grid, int gridSize, int *gridColSize)
 {
 	int res = 0, N = gridSize;
-	int size = N * N + 1, queue[size], front = 0, rear = 0;
+	//down right
 	for (int i = 0; i < N; ++i)
 	{
 		for (int j = 0; j < N; ++j)
 		{
 			if (grid[i][j] == 1)
-			{
-				queue[rear] = i * N + j;
-				rear = (rear - 1 + size) % size; //push back
-			}
+				continue;
+			grid[i][j] = INT_MAX;
+			if (i > 0)
+				grid[i][j] = min(grid[i][j], grid[i - 1][j] + 1);
+			if (j > 0)
+				grid[i][j] = min(grid[i][j], grid[i][j - 1] + 1);
 		}
 	}
-	int s = (front - rear + size) % size; //size
-	if (s == N * N)
-		return -1;
-	while (front != rear)
+	//up left
+	for (int i = N - 1; i >= 0; --i)
 	{
-		++res;
-		int s = (front - rear + size) % size; //size
-		while (--s >= 0)
+		for (int j = N - 1; j >= 0; --j)
 		{
-			//board dfs direction
-			int path[5] = {-1, 0, 1, 0, -1};
-			int x = queue[front] / N, y = queue[front] % N;
-			front = (front - 1 + size) % size; //pop front
-			for (int i = 0; i < 4; ++i)
-			{
-				int dx = x + path[i], dy = y + path[i + 1];
-				if (dx >= 0 && dx < N && dy >= 0 && dy < N && grid[dx][dy] == 0)
-				{
-					grid[dx][dy] = res;
-					queue[rear] = dx * N + dy;
-					rear = (rear - 1 + size) % size; //push back
-				}
-			}
+			if (grid[i][j] == 1)
+				continue;
+			if (i < N - 1)
+				grid[i][j] = min(grid[i][j], grid[i + 1][j] + 1);
+			if (j < N - 1)
+				grid[i][j] = min(grid[i][j], grid[i][j + 1] + 1);
+			res = max(res, grid[i][j]);
 		}
 	}
-	return res - 1;
+	return res == INT_MAX ? -1 : res - 1;
 }
