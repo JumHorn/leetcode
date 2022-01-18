@@ -19,11 +19,10 @@ public:
 
 	bool backTracking(vector<string> &words, string &result, vector<int> &digit, vector<int> &used, int index, int carry)
 	{
-		int len = result.size();
-		for (int i = index; i <= 7; ++i)
+		int N = result.size();
+		for (int i = index; i < N; ++i)
 		{
-			int tmp = 0;
-			bool flag = false;
+			int sum = 0;
 			for (auto &word : words)
 			{
 				int n = word.size();
@@ -45,30 +44,23 @@ public:
 					}
 					return false;
 				}
-				tmp += digit[word[n - i - 1] - 'A'];
-				flag = true;
+				sum += digit[word[n - i - 1] - 'A'];
 			}
-			if (i >= (int)result.size())
+			sum += carry;
+			carry = sum / 10;
+			sum %= 10;
+			if (digit[result[N - i - 1] - 'A'] == -1)
 			{
-				if (flag)
+				if (used[sum] != -1)
 					return false;
-				break;
-			}
-			tmp += carry;
-			carry = tmp / 10;
-			tmp %= 10;
-			if (digit[result[len - i - 1] - 'A'] == -1)
-			{
-				if (used[tmp] != -1)
-					return false;
-				digit[result[len - i - 1] - 'A'] = tmp;
-				used[tmp] = 0;
+				digit[result[N - i - 1] - 'A'] = sum;
+				used[sum] = 0;
 				if (backTracking(words, result, digit, used, i + 1, carry))
 					return true;
-				used[tmp] = -1;
-				digit[result[len - i - 1] - 'A'] = -1;
+				used[sum] = -1;
+				digit[result[N - i - 1] - 'A'] = -1;
 			}
-			if (digit[result[len - i - 1] - 'A'] != tmp)
+			if (digit[result[N - i - 1] - 'A'] != sum)
 				return false;
 		}
 		//prefix zero check
