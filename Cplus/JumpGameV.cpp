@@ -18,10 +18,9 @@ public:
 		for (int i = 0; i < N; ++i)
 		{
 			int index = v[i].second;
-			int left = index - 1, right = index + 1;
-			for (; left >= max(0, index - d) && arr[left] < arr[index]; --left)
+			for (int left = index - 1; left >= max(0, index - d) && arr[left] < arr[index]; --left)
 				dp[index] = max(dp[index], dp[left] + 1);
-			for (; right <= min(N - 1, index + d) && arr[right] < arr[index]; ++right)
+			for (int right = index + 1; right <= min(N - 1, index + d) && arr[right] < arr[index]; ++right)
 				dp[index] = max(dp[index], dp[right] + 1);
 			res = max(res, dp[index]);
 		}
