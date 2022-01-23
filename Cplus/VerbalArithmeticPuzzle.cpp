@@ -66,10 +66,10 @@ public:
 		//prefix zero check
 		for (auto &word : words)
 		{
-			if (digit[word[0] - 'A'] == 0)
+			if (word.length() > 1 && digit[word[0] - 'A'] == 0)
 				return false;
 		}
-		if (digit[result[0] - 'A'] == 0)
+		if (result.length() > 1 && digit[result[0] - 'A'] == 0)
 			return false;
 		return carry == 0;
 	}
