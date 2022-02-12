@@ -40,7 +40,7 @@ public:
 	}
 
 private:
-	list<pair<int, int>> data;
+	list<pair<int, int>> data; //{key,value}
 	unordered_map<int, list<pair<int, int>>::iterator> m;
 	int size;
 };

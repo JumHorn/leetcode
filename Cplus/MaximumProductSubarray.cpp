@@ -23,7 +23,7 @@ public:
 		{
 			prefixproduct = (prefixproduct != 0 ? prefixproduct : 1) * nums[i];
 			suffixproduct = (suffixproduct != 0 ? suffixproduct : 1) * nums[N - 1 - i];
-			res = max(res, max(prefixproduct, suffixproduct));
+			res = max({res, prefixproduct, suffixproduct});
 		}
 		return res;
 	}
