@@ -27,7 +27,7 @@ public:
 				while ((*node)->left)
 					node = &(*node)->left;
 				root->val = (*node)->val;
-				*node = (*node)->right;
+				*node = (*node)->right; //memory leak
 			}
 		}
 		else if (root->val > key)
