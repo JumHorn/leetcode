@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <queue>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -26,6 +27,33 @@ int generatePalindrome()
 		}
 	}
 }
+
+//dijkstra
+vector<int> dijkstra(vector<vector<pair<int, int>>> &graph, int source)
+{
+	int N = graph.size();
+	vector<int> distance(N, INT_MAX);
+	distance[source] = 0;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q; //{distance,node}
+	q.push({0, source});
+	while (!q.empty())
+	{
+		auto top = q.top();
+		q.pop();
+		if (top.first > distance[top.second])
+			continue;
+		for (auto [node, weight] : graph[top.second])
+		{
+			if (weight + top.first < distance[node])
+			{
+				distance[node] = weight + top.first;
+				q.push({distance[node], node});
+			}
+		}
+	}
+	return distance;
+}
+/********end of dijkstra********/
 
 //DSU minimum version
 class DSU
