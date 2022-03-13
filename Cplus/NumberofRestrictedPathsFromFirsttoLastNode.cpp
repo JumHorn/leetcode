@@ -45,6 +45,8 @@ public:
 		{
 			auto top = q.top();
 			q.pop();
+			if (top.first > distance[top.second])
+				continue;
 			for (auto [node, weight] : graph[top.second])
 			{
 				if (weight + top.first < distance[node])
