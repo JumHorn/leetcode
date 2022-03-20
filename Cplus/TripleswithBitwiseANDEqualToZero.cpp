@@ -5,24 +5,44 @@ using namespace std;
 class Solution
 {
 public:
-	int countTriplets(vector<int> &A)
+	//Fast Walsh Hadamard Transform
+	// Please remind that these codes are valid only when degree(P) = N = 2^k
+	void fwht_and(vector<int> &v, bool inverse)
 	{
-		int N = A.size();
-		unordered_map<int, int> m;
-		for (int i = 0; i < N; ++i)
+		int N = v.size();
+		for (int m = 1; 2 * m <= N; m *= 2)
 		{
-			for (int j = 0; j < N; ++j)
-				++m[A[i] & A[j]];
-		}
-		int res = 0;
-		for (int i = 0; i < N; ++i)
-		{
-			for (auto n : m)
+			for (int i = 0; i < N; i += 2 * m)
 			{
-				if ((A[i] & n.first) == 0)
-					res += n.second;
+				for (int j = 0; j < m; ++j)
+				{
+					auto x = v[i + j];
+					auto y = v[i + j + m];
+					if (!inverse)
+					{
+						v[i + j] = y;
+						v[i + j + m] = x + y;
+					}
+					else
+					{
+						v[i + j] = -x + y;
+						v[i + j + m] = x;
+					}
+				}
 			}
 		}
-		return res;
+	}
+	/********end of Fast Walsh Hadamard Transform********/
+
+	int countTriplets(vector<int> &A)
+	{
+		vector<int> v(1 << 16);
+		for (auto n : A)
+			++v[n];
+		fwht_and(v, false);
+		for (auto &n : v)
+			n = n * n * n;
+		fwht_and(v, true);
+		return v[0];
 	}
 };
