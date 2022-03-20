@@ -9,21 +9,12 @@ int maxWidthRamp(int *A, int ASize)
 	{
 		if (A[i] < A[stack[top]])
 			stack[++top] = i;
-		else if (A[i] >= A[0])
-			res = max(res, i - 0);
-		else
-		{
-			int lo = 0, hi = top;
-			while (lo < hi)
-			{
-				int mi = (hi - lo) / 2 + lo;
-				if (A[stack[mi]] > A[i])
-					lo = mi + 1;
-				else
-					hi = mi;
-			}
-			res = max(res, i - stack[lo]);
-		}
+	}
+	for (int i = ASize - 1; i >= 0; --i)
+	{
+		while (top != -1 && A[i] >= A[stack[top]])
+			--top;
+		res = max(res, i - stack[top + 1]);
 	}
 	return res;
 }
