@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 using namespace std;
 
 class Skiplist
@@ -6,144 +7,91 @@ class Skiplist
 public:
 	Skiplist()
 	{
-		root = new LinkedList(0);
-		// root->child = new LinkedList(0);
-		// root->child->child = new LinkedList(0);
+		sentinel = new SkiplistNode(0);
 	}
 
 	bool search(int target)
 	{
-		LinkedList *tmp1 = root;
-		while (tmp1 != nullptr && target - tmp1->val >= 1000)
-			tmp1 = tmp1->next;
-		if (tmp1 == nullptr)
-			return false;
-		LinkedList *tmp2 = tmp1->child;
-		while (tmp2 != nullptr && target - tmp2->val >= 100)
-			tmp2 = tmp2->next;
-		if (tmp2 == nullptr)
-			return false;
-		LinkedList *tmp3 = tmp2->child;
-		while (tmp3 != nullptr && target - tmp3->val >= 10)
-			tmp3 = tmp3->next;
-		if (tmp3 == nullptr)
-			return false;
-		LinkedList *tmp4 = tmp3->child;
-		while (tmp4 != nullptr)
+		SkiplistNode *node = sentinel;
+		for (int i = SKIPLIST_MAXLEVEL - 1; i >= 0; --i)
 		{
-			if (tmp4->val == target)
-				return true;
-			tmp4 = tmp4->next;
+			while (node->level[i] != nullptr && node->level[i]->val < target)
+				node = node->level[i];
 		}
-		return false;
+		return node->level[0] != nullptr && node->level[0]->val == target;
 	}
 
 	void add(int num)
 	{
-		int i = 1;
-		LinkedList *tmp1 = root;
-		while (num >= i * 1000)
+		SkiplistNode *node[SKIPLIST_MAXLEVEL + 1]; //search path for every level node
+		node[SKIPLIST_MAXLEVEL] = sentinel;
+		for (int i = SKIPLIST_MAXLEVEL - 1; i >= 0; --i)
 		{
-			if (tmp1->next == nullptr)
-				tmp1->next = new LinkedList(i * 1000);
-			tmp1 = tmp1->next;
-			++i;
+			node[i] = node[i + 1];
+			while (node[i]->level[i] != nullptr && node[i]->level[i]->val < num)
+				node[i] = node[i]->level[i];
 		}
-		LinkedList *tmp2 = tmp1->child;
-		if (tmp2 == nullptr)
-			tmp2 = tmp1->child = new LinkedList(tmp1->val);
-		int val = tmp1->val;
-		i = 1;
-		while (num >= val + i * 100)
-		{
-			if (tmp2->next == nullptr)
-				tmp2->next = new LinkedList(val + i * 100);
-			tmp2 = tmp2->next;
-			++i;
-		}
-		LinkedList *tmp3 = tmp2->child;
-		if (tmp3 == nullptr)
-			tmp3 = tmp2->child = new LinkedList(tmp2->val);
-		val = tmp3->val;
-		i = 1;
-		while (num >= val + i * 10)
-		{
-			if (tmp3->next == nullptr)
-				tmp3->next = new LinkedList(val + i * 10);
-			tmp3 = tmp3->next;
-			++i;
-		}
-		LinkedList *tmp4 = tmp3->child;
-		if (tmp4 == nullptr)
-		{
-			tmp3->child = new LinkedList(num);
+		//already exist
+		if (node[0]->level[0] != nullptr && node[0]->level[0]->val == num)
 			return;
-		}
-		if (tmp4->val >= num)
+		int level = randomLevel();
+		SkiplistNode *new_node = new SkiplistNode(num);
+		for (int i = 0; i < level; ++i)
 		{
-			LinkedList *newhead = new LinkedList(num);
-			newhead->next = tmp4;
-			tmp3->child = newhead;
-			return;
+			new_node->level[i] = node[i]->level[i];
+			node[i]->level[i] = new_node;
 		}
-		while (tmp4->next != nullptr)
-		{
-			if (num <= tmp4->next->val)
-				break;
-			tmp4 = tmp4->next;
-		}
-		LinkedList *newnode = new LinkedList(num);
-		newnode->next = tmp4->next;
-		tmp4->next = newnode;
 	}
 
 	bool erase(int num)
 	{
-		LinkedList *tmp1 = root;
-		while (tmp1 != nullptr && num - tmp1->val >= 1000)
-			tmp1 = tmp1->next;
-		if (tmp1 == nullptr)
-			return false;
-		LinkedList *tmp2 = tmp1->child;
-		while (tmp2 != nullptr && num - tmp2->val >= 100)
-			tmp2 = tmp2->next;
-		if (tmp2 == nullptr)
-			return false;
-		LinkedList *tmp3 = tmp2->child;
-		while (tmp3 != nullptr && num - tmp3->val >= 10)
-			tmp3 = tmp3->next;
-		if (tmp3 == nullptr)
-			return false;
-		LinkedList *tmp4 = tmp3->child;
-		if (tmp4 == nullptr)
-			return false;
-		if (tmp4->val == num)
+		SkiplistNode *node[SKIPLIST_MAXLEVEL + 1]; //search path for every level node
+		node[SKIPLIST_MAXLEVEL] = sentinel;
+		for (int i = SKIPLIST_MAXLEVEL - 1; i >= 0; --i)
 		{
-			tmp3->child = tmp4->next;
-			return true;
+			node[i] = node[i + 1];
+			while (node[i]->level[i] != nullptr && node[i]->level[i]->val < num)
+				node[i] = node[i]->level[i];
 		}
-		while (tmp4->next != nullptr)
-		{
-			if (tmp4->next->val == num)
-			{
-				tmp4->next = tmp4->next->next;
-				return true;
-			}
-			tmp4 = tmp4->next;
-		}
-		return false;
+		//not exist
+		if (node[0]->level[0] != nullptr && node[0]->level[0]->val != num)
+			return false;
+		SkiplistNode *remove_node = node[0]->level[0];
+		for (int i = 0; i < SKIPLIST_MAXLEVEL && remove_node->level[i] != nullptr; ++i)
+			node[i]->level[i] = remove_node->level[i];
+		return true;
 	}
 
 private:
-	struct LinkedList
+	static const int SKIPLIST_MAXLEVEL = 4;
+	//Definition for skip list node.
+	struct SkiplistNode
 	{
 		int val;
-		LinkedList *next;
-		LinkedList *child;
-		LinkedList(int v) : val(v), next(nullptr), child(nullptr) {}
+		//可以按需求分配，即当randomLevel()得出结果时再分配
+		//SkiplistNode *level;
+		SkiplistNode *level[SKIPLIST_MAXLEVEL];
+		SkiplistNode(int x) : val(x), level()
+		{
+			for (int i = 0; i < SKIPLIST_MAXLEVEL; ++i)
+				level[i] = nullptr;
+		}
 	};
 
-	LinkedList *root;
+	SkiplistNode *sentinel; //first node without data
+	int size;				//node count of the skiplist
+
+private:
+	/* Returns a random level for the new skiplist node.
+ 	 * The return value is a powerlaw-alike distribution where higher
+ 	 * levels are less likely to be returned. from redis source code*/
+	int randomLevel()
+	{
+		int level = 1;
+		while ((random() & 0xFFFF) < (0.25 * 0xFFFF))
+			level += 1;
+		return (level < SKIPLIST_MAXLEVEL) ? level : SKIPLIST_MAXLEVEL;
+	}
 };
 
 /**
