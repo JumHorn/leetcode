@@ -25,21 +25,25 @@ public:
 			}
 			bit.push_back(mask);
 		}
-		unordered_set<int> dp;
-		dp.insert(0);
-		dp.insert(bit[0]);
-		for (int i = 1; i < N; ++i)
-		{
-			unordered_set<int> pre_dp = dp;
-			for (auto n : pre_dp)
-			{
-				if ((n & bit[i]) == 0)
-					dp.insert(n | bit[i]);
-			}
-		}
 		int res = 0;
-		for (auto n : dp)
-			res = max(res, bitCount(n));
+		for (int mask = (1 << N) - 1; mask > 0; --mask)
+		{
+			int allmask = 0;
+			for (int i = 0; i < N; ++i)
+			{
+				if (((1 << i) & mask))
+				{
+					if (allmask & bit[i])
+					{
+						allmask = -1;
+						break;
+					}
+					allmask |= bit[i];
+				}
+			}
+			if (allmask != -1)
+				res = max(res, bitCount(allmask));
+		}
 		return res;
 	}
 

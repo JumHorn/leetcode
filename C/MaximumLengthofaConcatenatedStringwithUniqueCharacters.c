@@ -12,6 +12,7 @@ int bitCount(int n)
 
 int maxLength(char **arr, int arrSize)
 {
+	// increasing val in maskArr
 	int maskArr[1 << 16] = {0}, maskArrSize = 1, res = 0;
 	for (int i = 0; i < arrSize; ++i)
 	{
@@ -27,8 +28,7 @@ int maxLength(char **arr, int arrSize)
 		}
 		if (mask == 0)
 			continue;
-		int N = maskArrSize;
-		for (int j = 0; j < N; ++j)
+		for (int j = 0; j < maskArrSize; ++j)
 		{
 			if ((mask & maskArr[j]) == 0)
 			{
