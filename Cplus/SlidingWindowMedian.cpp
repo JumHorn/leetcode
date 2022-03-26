@@ -7,10 +7,8 @@ class Solution
 public:
 	vector<double> medianSlidingWindow(vector<int> &nums, int k)
 	{
-		multiset<int> s;
 		vector<double> res;
-		for (int i = 0; i < k; ++i)
-			s.insert(nums[i]);
+		multiset<int> s(nums.begin(), nums.begin() + k);
 		multiset<int>::iterator mid = next(s.begin(), k / 2);
 		for (int i = k;; ++i)
 		{
