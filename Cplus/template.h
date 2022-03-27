@@ -12,7 +12,7 @@ int gcd(int x, int y)
 	return x == 0 ? y : gcd(y % x, x);
 }
 
-// palinrome generator
+// palindrome generator
 int generatePalindrome()
 {
 	for (int len = 1;; ++len)
