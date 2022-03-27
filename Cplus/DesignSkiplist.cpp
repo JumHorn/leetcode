@@ -31,9 +31,9 @@ public:
 			while (node[i]->level[i] != nullptr && node[i]->level[i]->val < num)
 				node[i] = node[i]->level[i];
 		}
-		//already exist
-		if (node[0]->level[0] != nullptr && node[0]->level[0]->val == num)
-			return;
+		// already exist check
+		// if (node[0]->level[0] != nullptr && node[0]->level[0]->val == num)
+		// 	return;
 		int level = randomLevel();
 		SkiplistNode *new_node = new SkiplistNode(num);
 		for (int i = 0; i < level; ++i)
@@ -54,10 +54,10 @@ public:
 				node[i] = node[i]->level[i];
 		}
 		//not exist
-		if (node[0]->level[0] != nullptr && node[0]->level[0]->val != num)
+		if (node[0]->level[0] == nullptr || node[0]->level[0]->val != num)
 			return false;
 		SkiplistNode *remove_node = node[0]->level[0];
-		for (int i = 0; i < SKIPLIST_MAXLEVEL && remove_node->level[i] != nullptr; ++i)
+		for (int i = 0; i < SKIPLIST_MAXLEVEL && node[i]->level[i] == remove_node; ++i)
 			node[i]->level[i] = remove_node->level[i];
 		return true;
 	}
