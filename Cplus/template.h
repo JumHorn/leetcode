@@ -28,6 +28,33 @@ int generatePalindrome()
 	}
 }
 
+// pow with mod
+long long modPow(long long x, int n)
+{
+	static const int MOD = 1e9 + 7;
+	long long res = 1;
+	for (auto i = n; i > 0; i /= 2)
+	{
+		if (i % 2)
+			res = res * x % MOD;
+		x = x * x % MOD;
+	}
+	return res;
+}
+
+// factorial stuff
+void produceFactorial(int n)
+{
+	static const int MOD = 1e9 + 7;
+	// Pre-process fac and inverse fac.
+	vector<long long> fac(n + 1, 1), ifac(n + 1, 1);
+	for (int i = 2; i <= n; ++i)
+	{
+		fac[i] = fac[i - 1] * i % MOD;
+		ifac[i] = modPow(fac[i], MOD - 2);
+	}
+}
+
 //dijkstra
 vector<int> dijkstra(vector<vector<pair<int, int>>> &graph, int source)
 {
