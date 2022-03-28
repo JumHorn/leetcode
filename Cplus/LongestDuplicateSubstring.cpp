@@ -32,15 +32,15 @@ public:
 		unordered_map<long, vector<int>> m; //{hash,index}
 		long hash = 0, p = 1;
 		for (int i = 0; i < len; ++i)
+		{
 			hash = (hash * PRIMER + S[i]) % MOD;
-		for (int i = 0; i < len - 1; ++i)
 			p = p * PRIMER % MOD;
-		m[hash].push_back(0);
+		}
 
+		m[hash].push_back(0);
 		for (int i = len; i < (int)S.length(); ++i)
 		{
-			hash = (hash - (S[i - len]) * p % MOD + MOD) % MOD;
-			hash = (hash * PRIMER + S[i]) % MOD;
+			hash = (hash * PRIMER + S[i] - (S[i - len]) * p % MOD + MOD) % MOD;
 			if (m.find(hash) != m.end())
 			{
 				for (auto index : m[hash])
