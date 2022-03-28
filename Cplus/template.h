@@ -313,7 +313,7 @@ struct SegmentNode
 {
 	int data;
 
-	SegmentNode(int val) : data(val)
+	SegmentNode(int val = 0) : data(val)
 	{
 	}
 
@@ -462,3 +462,105 @@ void fwht_and(vector<int> &v, bool inverse)
 	}
 }
 /********end of Fast Walsh Hadamard Transform********/
+
+//suffix array
+
+/*
+	sa[i] the ith rank's index
+	rank[i] the ith index's rank
+
+	1. sa[rank[i]]=i the i means index
+	2 .rank[sa[i]]=i the i means rank
+
+	3. lcp[i] >= lcp[i-1]-1
+*/
+
+struct SuffixArray
+{
+	int index;
+	int currank;
+	int nextrank;
+
+	bool operator<(const SuffixArray &other) const
+	{
+		if (currank != other.currank)
+			return currank < other.currank;
+		return nextrank < other.nextrank;
+	}
+};
+
+//return the ith rank's index as Suffix Array
+vector<int> generateSuffixArray(vector<int> &data)
+{
+	int N = data.size();
+	vector<SuffixArray> sa(N);
+	//init
+	for (int i = 0; i < N - 1; ++i)
+	{
+		sa[i].index = i;
+		sa[i].currank = data[i];
+		sa[i].nextrank = data[i + 1];
+	}
+	sa[N - 1].index = N - 1;
+	sa[N - 1].currank = data[N - 1] - 'a';
+	sa[N - 1].nextrank = -1;
+	sort(sa.begin(), sa.end());
+
+	vector<int> rank(N);
+	for (int k = 4; k < 2 * N; k *= 2)
+	{
+		int rank_count = 0;
+		int pre_rank = sa[0].currank;
+		sa[0].currank = rank_count;
+		rank[sa[0].index] = 0;
+		//update rank
+		for (int i = 1; i < N; ++i)
+		{
+			if (sa[i].currank == pre_rank && sa[i].nextrank == sa[i - 1].nextrank)
+				sa[i].currank = rank_count;
+			else
+			{
+				pre_rank = sa[i].currank;
+				sa[i].currank = ++rank_count;
+			}
+			rank[sa[i].index] = i;
+		}
+		for (int i = 0; i < N; ++i)
+		{
+			int nextindex = sa[i].index + k / 2;
+			sa[i].nextrank = (nextindex < N) ? sa[rank[nextindex]].currank : -1;
+		}
+		sort(sa.begin(), sa.end());
+	}
+
+	vector<int> res;
+	for (auto n : sa)
+		res.push_back(n.index);
+	return res;
+}
+
+// return lcp array
+vector<int> generateLcpFromSuffixArray(string &str, vector<int> &sa)
+{
+	int N = str.length();
+	//lcp[i] is lcp of sa[i] and sa[i + 1],the last one is 0
+	vector<int> lcp(N), rank(N);
+	for (int i = 0; i < N; ++i)
+		rank[sa[i]] = i;
+	for (int i = 0, k = 0; i < N; ++i)
+	{
+		if (rank[i] == N - 1)
+			lcp[rank[i]] = k = 0;
+		else
+		{
+			int j = sa[rank[i] + 1];
+			while (i + k < N && j + k < N && str[i + k] == str[j + k])
+				++k;
+			lcp[rank[i]] = k;
+			if (k > 0)
+				--k;
+		}
+	}
+	return lcp;
+}
+/********end of suffix array********/
