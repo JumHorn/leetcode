@@ -28,7 +28,7 @@ public:
 		vector<vector<int>> dp(N + 2, vector<int>(n + 1));
 		for (int i = 0, k = first; k < last; ++i, ++k)
 		{
-			for (int j = 0; j < n; ++j)
+			for (int j = 0; j < n && j <= i; ++j)
 				dp[i + 2][j + 1] = max(dp[i + 1][j + 1], slice[k] + dp[i][j]);
 		}
 		return dp[N + 1][n];
