@@ -19,15 +19,14 @@ GraphNode *createNode(int val)
 /********end of create graph********/
 
 // no apple return -1,hash apple return time needed
-int postorder(GraphNode **graph, int at, int *seen, bool *hasApple)
+int postorder(GraphNode **graph, int at, int from, bool *hasApple)
 {
 	int res = 0;
-	seen[at] = 1;
 	for (GraphNode *to = graph[at]; to; to = to->next)
 	{
-		if (seen[to->node] == 1)
+		if (to->node == from)
 			continue;
-		int time = postorder(graph, to->node, seen, hasApple);
+		int time = postorder(graph, to->node, at, hasApple);
 		if (time >= 0)
 			res += time + 2;
 	}
@@ -47,8 +46,6 @@ int minTime(int n, int **edges, int edgesSize, int *edgesColSize, bool *hasApple
 		node->next = graph[edges[i][1]];
 		graph[edges[i][1]] = node;
 	}
-	int seen[n];
-	memset(seen, 0, sizeof(seen));
-	int res = postorder(graph, 0, seen, hasApple);
+	int res = postorder(graph, 0, -1, hasApple);
 	return res >= 0 ? res : 0;
 }
