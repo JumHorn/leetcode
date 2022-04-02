@@ -490,7 +490,7 @@ struct SuffixArray
 };
 
 //return the ith rank's index as Suffix Array
-vector<int> generateSuffixArray(vector<int> &data)
+vector<int> generateSuffixArray(string &data)
 {
 	int N = data.size();
 	vector<SuffixArray> sa(N);
