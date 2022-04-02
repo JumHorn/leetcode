@@ -490,7 +490,7 @@ struct SuffixArray
 };
 
 //return the ith rank's index as Suffix Array
-vector<int> generateSuffixArray(vector<int> &data)
+vector<int> generateSuffixArray(string &data)
 {
 	int N = data.size();
 	vector<SuffixArray> sa(N);
@@ -502,7 +502,7 @@ vector<int> generateSuffixArray(vector<int> &data)
 		sa[i].nextrank = data[i + 1];
 	}
 	sa[N - 1].index = N - 1;
-	sa[N - 1].currank = data[N - 1] - 'a';
+	sa[N - 1].currank = data[N - 1];
 	sa[N - 1].nextrank = -1;
 	sort(sa.begin(), sa.end());
 
