@@ -89,8 +89,8 @@ char *longestDupSubstring(char *S)
 		}
 	}
 	//calc result
-	int len = lcp[0], index = 0;
-	for (int i = 1; i < N; ++i)
+	int len = lcp[0], index = sa[0].index;
+	for (int i = 1; i < N - 1; ++i)
 	{
 		if (lcp[i] > len)
 		{
