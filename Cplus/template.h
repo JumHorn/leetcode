@@ -463,7 +463,7 @@ void fwht_and(vector<int> &v, bool inverse)
 }
 /********end of Fast Walsh Hadamard Transform********/
 
-//suffix array
+//suffix array (SAIS)
 
 /*
 	sa[i] the ith rank's index
@@ -474,93 +474,143 @@ void fwht_and(vector<int> &v, bool inverse)
 
 	3. lcp[i] >= lcp[i-1]-1
 */
-
-struct SuffixArray
+class SuffixArray
 {
-	int index;
-	int currank;
-	int nextrank;
+private:
+	using size_type = unsigned;
+	using pointer = size_type *;
+	using const_pointer = const size_type *;
+	std::unique_ptr<size_type[]> data;
 
-	bool operator<(const SuffixArray &other) const
+public:
+	// suffix array
+	pointer sa;
+	// rank
+	pointer rank;
+	// longest common prefix
+	pointer lcp;
+	// max longest common prefix
+	template <typename S>
+	static bool substring_equal(const S &s, size_type p1, size_type p2, size_type len)
 	{
-		if (currank != other.currank)
-			return currank < other.currank;
-		return nextrank < other.nextrank;
+		for (size_type i = 0; i < len; ++i)
+			if (s[p1 + i] != s[p2 + i])
+				return false;
+		return true;
 	}
-};
 
-//return the ith rank's index as Suffix Array
-vector<int> generateSuffixArray(string &data)
-{
-	int N = data.size();
-	vector<SuffixArray> sa(N);
-	//init
-	for (int i = 0; i < N - 1; ++i)
+	template <typename S>
+	static void induced_sort(
+		const S &s,
+		pointer sa,
+		bool *type,
+		pointer pos,
+		pointer lbuk,
+		pointer sbuk,
+		size_type n,
+		size_type m,
+		size_type n0)
 	{
-		sa[i].index = i;
-		sa[i].currank = data[i];
-		sa[i].nextrank = data[i + 1];
+		std::fill_n(sa, n, 0);
+		lbuk[0] = 0;
+		for (size_type i = 1; i < m; ++i)
+			lbuk[i] = sbuk[i - 1];
+		for (size_type i = n0; i-- > 0;)
+			sa[--sbuk[s[pos[i]]]] = pos[i];
+		sbuk[m - 1] = n;
+		for (size_type i = 1; i < m; ++i)
+			sbuk[i - 1] = lbuk[i];
+		sa[lbuk[s[n - 1]]++] = n - 1;
+		for (size_type i = 0; i < n; ++i)
+			if (sa[i] > 0 && !type[sa[i] - 1])
+				sa[lbuk[s[sa[i] - 1]]++] = sa[i] - 1;
+		lbuk[0] = 0;
+		for (size_type i = 1; i < m; ++i)
+			lbuk[i] = sbuk[i - 1];
+		for (size_type i = n; i-- > 0;)
+			if (sa[i] > 0 && type[sa[i] - 1])
+				sa[--sbuk[s[sa[i] - 1]]] = sa[i] - 1;
 	}
-	sa[N - 1].index = N - 1;
-	sa[N - 1].currank = data[N - 1];
-	sa[N - 1].nextrank = -1;
-	sort(sa.begin(), sa.end());
 
-	vector<int> rank(N);
-	for (int k = 4; k < 2 * N; k *= 2)
+	template <typename S>
+	static void sais(
+		const S &s,
+		pointer sa,
+		bool *type,
+		pointer len,
+		pointer pos,
+		pointer lbuk,
+		pointer sbuk,
+		size_type n,
+		size_type m)
 	{
-		int rank_count = 0;
-		int pre_rank = sa[0].currank;
-		sa[0].currank = rank_count;
-		rank[sa[0].index] = 0;
-		//update rank
-		for (int i = 1; i < N; ++i)
+		type[n - 1] = false;
+		for (size_type i = n - 1; i-- > 0;)
+			type[i] = s[i] != s[i + 1] ? s[i] < s[i + 1] : type[i + 1];
+		size_type n0 = 0;
+		for (size_type i = 1; i < n; ++i)
+			if (!type[i - 1] && type[i])
+				pos[n0++] = i;
+		std::fill_n(len, n, 0);
+		for (size_type p = n - 1, i = n0; i-- > 0; p = pos[i])
+			len[pos[i]] = p - pos[i] + 1;
+		std::fill_n(sbuk, m, 0);
+		for (size_type i = 0; i < n; ++i)
+			++sbuk[s[i]];
+		for (size_type i = 1; i < m; ++i)
+			sbuk[i] += sbuk[i - 1];
+		induced_sort(s, sa, type, pos, lbuk, sbuk, n, m, n0);
+		sbuk[m - 1] = n;
+		for (size_type i = 1; i < m; ++i)
+			sbuk[i - 1] = lbuk[i];
+		size_type m0 = -1;
+		size_type ppos = -1, plen = 0;
+		for (size_type i = 0; i < n; ++i)
 		{
-			if (sa[i].currank == pre_rank && sa[i].nextrank == sa[i - 1].nextrank)
-				sa[i].currank = rank_count;
-			else
-			{
-				pre_rank = sa[i].currank;
-				sa[i].currank = ++rank_count;
-			}
-			rank[sa[i].index] = i;
+			if (len[sa[i]] == 0)
+				continue;
+			if (len[sa[i]] != plen || !substring_equal(s, sa[i], ppos, plen))
+				++m0;
+			plen = len[sa[i]];
+			len[sa[i]] = m0;
+			ppos = sa[i];
 		}
-		for (int i = 0; i < N; ++i)
-		{
-			int nextindex = sa[i].index + k / 2;
-			sa[i].nextrank = (nextindex < N) ? sa[rank[nextindex]].currank : -1;
-		}
-		sort(sa.begin(), sa.end());
-	}
-
-	vector<int> res;
-	for (auto n : sa)
-		res.push_back(n.index);
-	return res;
-}
-
-// return lcp array
-vector<int> generateLcpFromSuffixArray(string &str, vector<int> &sa)
-{
-	int N = str.length();
-	//lcp[i] is lcp of sa[i] and sa[i + 1],the last one is 0
-	vector<int> lcp(N), rank(N);
-	for (int i = 0; i < N; ++i)
-		rank[sa[i]] = i;
-	for (int i = 0, k = 0; i < N; ++i)
-	{
-		if (rank[i] == N - 1)
-			lcp[rank[i]] = k = 0;
+		pointer s0 = sa;
+		pointer sa0 = sa + n0;
+		for (size_type i = 0; i < n0; ++i)
+			s0[i] = len[pos[i]];
+		if (++m0 < n0)
+			sais(s0, sa0, type + n, len, pos + n0, lbuk, lbuk + n0, n0, m0);
 		else
+			for (size_type i = 0; i < n0; ++i)
+				sa0[s0[i]] = i;
+		for (size_type i = 0; i < n0; ++i)
+			pos[i + n0] = pos[sa0[i]];
+		induced_sort(s, sa, type, pos + n0, lbuk, sbuk, n, m, n0);
+	}
+
+	SuffixArray(const std::string &s, size_type n, size_type m)
+		: data(std::make_unique<size_type[]>(3 * n)), sa(data.get()), rank(sa + n), lcp(rank + n)
+	// , max_lcp_pos(n)
+	{
+		const auto type = std::make_unique<bool[]>(2 * n);
+		const auto lbuk = std::make_unique<size_type[]>(std::max(n, m));
+		const auto sbuk = std::make_unique<size_type[]>(m);
+		sais(s, sa, type.get(), rank, lcp, lbuk.get(), sbuk.get(), n, m);
+		// kaisa
+		for (size_type i = 0; i < n; ++i)
+			rank[sa[i]] = i;
+		for (size_type k = 0, i = 0; i < n; ++i)
 		{
-			int j = sa[rank[i] + 1];
-			while (i + k < N && j + k < N && str[i + k] == str[j + k])
-				++k;
-			lcp[rank[i]] = k;
+			if (rank[i] == 0)
+				continue;
 			if (k > 0)
 				--k;
+			size_type j = sa[rank[i] - 1];
+			while (i + k < n && j + k < n && s[i + k] == s[j + k])
+				++k;
+			lcp[rank[i]] = k;
 		}
 	}
-	return lcp;
-}
+};
 /********end of suffix array********/
