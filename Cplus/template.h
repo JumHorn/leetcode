@@ -633,7 +633,6 @@ public:
 
 	SuffixArray(const std::string &s, size_type n, size_type m)
 		: data(std::make_unique<size_type[]>(3 * n)), sa(data.get()), rank(sa + n), lcp(rank + n)
-	// , max_lcp_pos(n)
 	{
 		const auto type = std::make_unique<bool[]>(2 * n);
 		const auto lbuk = std::make_unique<size_type[]>(std::max(n, m));
