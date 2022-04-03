@@ -55,6 +55,19 @@ void produceFactorial(int n)
 	}
 }
 
+//combination table
+void createCombinationTable(int N)
+{
+	vector<vector<int>> combination(N + 1, vector<int>(N + 1));
+	combination[0][0] = 1;
+	for (int i = 1; i <= N; ++i)
+	{
+		combination[i][0] = combination[i][i] = 1;
+		for (int j = 1; j <= i / 2; ++j)
+			combination[i][j] = combination[i][i - j] = combination[i - 1][j] + combination[i - 1][j - 1];
+	}
+}
+
 //dijkstra
 vector<int> dijkstra(vector<vector<pair<int, int>>> &graph, int source)
 {
@@ -402,20 +415,6 @@ private:
 };
 /********end of Segment Tree Template********/
 
-//combination table
-void createCombinationTable(int N)
-{
-	vector<vector<int>> combination(N + 1, vector<int>(N + 1));
-	combination[0][0] = 1;
-	for (int i = 1; i <= N; ++i)
-	{
-		combination[i][0] = combination[i][i] = 1;
-		for (int j = 1; j <= i / 2; ++j)
-			combination[i][j] = combination[i][i - j] = combination[i - 1][j] + combination[i - 1][j - 1];
-	}
-}
-/********combination table********/
-
 //kmp next array
 vector<int> createKMP(string &pattern)
 {
@@ -451,6 +450,30 @@ vector<int> z_function(const string &s)
 	return z;
 }
 /********end of z-function********/
+
+//manacher
+vector<int> manacher(string &s)
+{
+	int N = s.length();
+	vector<int> radius(N, 1);
+	int center = 1;	   //the center of the right most radius
+	int maxradius = 1; //the right most pos of the right most radius can reach
+	for (int i = 2; i < N; ++i)
+	{
+		if (i < maxradius)
+			radius[i] = min(radius[2 * center - i], maxradius - i);
+		while (s[i + radius[i]] == s[i - radius[i]]) ////with the added $,out of range avoided
+			++radius[i];
+
+		if (radius[i] + i > maxradius) //change center and the maxradius
+		{
+			maxradius = radius[i] + i;
+			center = i;
+		}
+	}
+	return radius;
+}
+/********end of manacher********/
 
 //Fast Walsh Hadamard Transform
 // https://csacademy.com/blog/fast-fourier-transform-and-variations-of-it
