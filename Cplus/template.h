@@ -655,3 +655,103 @@ public:
 	}
 };
 /********end of suffix array********/
+
+//max-flow (dinic algorithm)
+class MaxFlow
+{
+public:
+	MaxFlow(int n, int s, int t) : start(s), target(t)
+	{
+		//node numbered from 0 to n-1
+		graph = vector<vector<pair<int, int>>>(n, vector<pair<int, int>>(n, {-1, -1}));
+		layer = vector<int>(n);
+	}
+
+	void addEdge(int from, int to, int capacity, int flow = 0)
+	{
+		//residual graph we dont care about current flow
+		graph[from][to] = {capacity, capacity};
+		graph[to][from] = {capacity, 0};
+	}
+
+	int dinic()
+	{
+		int N = graph.size();
+		max_flow = 0;
+		while (bfs())
+			max_flow += dfs(start, INT_MAX);
+		return max_flow;
+	}
+
+private:
+	// create layer for each node
+	bool bfs()
+	{
+		fill(layer.begin(), layer.end(), -1);
+		queue<int> q;
+		q.push(start);
+		layer[start] = 0;
+		int l = 0, N = graph.size();
+		bool res = false;
+		while (!q.empty())
+		{
+			int size = q.size();
+			++l;
+			while (--size >= 0)
+			{
+				int at = q.front();
+				q.pop();
+				for (int to = 0; to < N; ++to)
+				{
+					if (graph[at][to].second > 0 && layer[to] == -1)
+					{
+						layer[to] = l;
+						if (to != target)
+							q.push(to);
+						else
+							res = true;
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	//寻找增广链(augmenting path)并更新剩余图(residual graph)
+	int dfs(int at, int minflow)
+	{
+		if (minflow == 0)
+			return 0;
+		if (at == target)
+			return minflow;
+		int N = graph.size(), res = 0;
+		for (int to = 0; to < N; ++to)
+		{
+			if (graph[at][to].second > 0 && layer[at] + 1 == layer[to])
+			{
+				int flow = dfs(to, min(minflow, graph[at][to].second));
+
+				//update residual graph
+				graph[at][to].second -= flow;
+				graph[to][at].second += flow;
+
+				minflow -= flow;
+				res += flow;
+			}
+		}
+		return res;
+	}
+
+private:
+	//start node
+	int start;
+	//target node
+	int target;
+	// max flow
+	int max_flow;
+	//adjacency matrix pair<int, int>{capacity, flow}
+	vector<vector<pair<int, int>>> graph;
+	//min distance from start to current node
+	vector<int> layer;
+};
+/********end of max flow********/
