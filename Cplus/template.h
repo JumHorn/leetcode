@@ -331,7 +331,7 @@ struct SegmentNode
 	}
 
 	// most important merge part
-	SegmentNode &operator+(SegmentNode &other)
+	SegmentNode operator+(SegmentNode &other)
 	{
 	}
 };
