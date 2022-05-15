@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <climits>
+#include <set>
 #include <unordered_map>
 #include <vector>
 using namespace std;
@@ -13,9 +14,9 @@ improved with segment tree on x coordinate compression
 //user defined data
 struct SegmentNode
 {
-	long long x_width_sum;
+	long long x_width_sum; // if count>0 x_width_sum is calculated
+	int left, right;	   //range [left,right]
 	int count;
-	int left, right; //range [left,right]
 
 	SegmentNode(int val = 0)
 	{
@@ -23,36 +24,34 @@ struct SegmentNode
 	}
 
 	// most important merge part
-	SegmentNode operator+(SegmentNode &other)
-	{
-		SegmentNode res;
-		res.x_width_sum = x_width_sum + other.x_width_sum;
-		res.left = left;
-		res.right = other.right;
-		return res;
-	}
+	// SegmentNode operator+(SegmentNode &other)
+	// {
+	// 	SegmentNode res;
+	// 	res.x_width_sum = x_width_sum + other.x_width_sum;
+	// 	return res;
+	// }
 };
 
 class SegmentTree
 {
 public:
-	SegmentTree(int size, vector<int> &x) : tree(4 * size), x_val(x)
+	SegmentTree(vector<int> &x) : tree(8 * (x.size() + 1)), x_val(x)
 	{
-		int N = tree.size() >> 2;
+		int N = x_val.size() - 1;
 		build_tree(0, N, ROOT_ID); //build [left,right] for each node
 	}
 
 	//update index with value val
 	void update(int index1, int index2, int val)
 	{
-		int N = tree.size() >> 2;
+		int N = x_val.size() - 1;
 		update_tree(index1, index2, val, 0, N, ROOT_ID);
 	}
 
 	//[first,last] query range
 	long long queryRange(int first, int last)
 	{
-		int N = tree.size() >> 2;
+		int N = x_val.size() - 1;
 		return query_tree(0, N, first, last, ROOT_ID);
 	}
 
@@ -75,9 +74,10 @@ private:
 		build_tree(mid, R, right_node);
 	}
 
+	// [L,R] included
 	void update_tree(int index1, int index2, int val, int L, int R, int root)
 	{
-		if (index1 >= index2 || R - L <= 1)
+		if (index1 >= index2)
 			return;
 		int left_node = root << 1, right_node = root << 1 | 1;
 
@@ -91,9 +91,9 @@ private:
 		}
 
 		if (tree[root].count > 0)
-			tree[root].x_width_sum = x_val[index2] - x_val[index1];
+			tree[root].x_width_sum = x_val[R] - x_val[L];
 		else
-			tree[root] = tree[left_node] + tree[right_node];
+			tree[root].x_width_sum = tree[left_node].x_width_sum + tree[right_node].x_width_sum;
 	}
 
 	long long query_tree(int L, int R, int first, int last, int root)
@@ -123,7 +123,7 @@ public:
 	int rectangleArea(vector<vector<int>> &rectangles)
 	{
 		const int OPEN = 1, CLOSE = -1;
-		vector<int> x_val;				 //set of x asix value
+		set<int> x;						 //unique x value
 		unordered_map<int, int> x_index; //{x value,index of x in x_val}
 		vector<vector<int>> rect;
 		for (auto &r : rectangles)
@@ -131,17 +131,16 @@ public:
 			int x1 = r[0], y1 = r[1], x2 = r[2], y2 = r[3];
 			rect.push_back({y1, OPEN, x1, x2});
 			rect.push_back({y2, CLOSE, x1, x2});
-			x_val.push_back(x1);
-			x_val.push_back(x2);
+			x.insert(x1);
+			x.insert(x2);
 		}
-		sort(rect.begin(), rect.end()); //sort by y(rect[0]) values
-		sort(x_val.begin(), x_val.end());
+		sort(rect.begin(), rect.end());		   //sort by y(rect[0]) values
+		vector<int> x_val(x.begin(), x.end()); //set of x asix value
 		for (int i = 0; i < (int)x_val.size(); ++i)
 			x_index.insert({x_val[i], i});
-		int N = x_index.size(); //count without duplicates
 
 		long long res = 0, cur_y = rect[0][0];
-		SegmentTree sgtree(N, x_val);
+		SegmentTree sgtree(x_val);
 		for (auto &r : rect)
 		{
 			int y = r[0], type = r[1], x1 = r[2], x2 = r[3];
