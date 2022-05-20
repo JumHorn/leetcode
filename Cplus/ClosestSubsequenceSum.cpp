@@ -32,12 +32,16 @@ public:
 
 	void combinationSum(vector<int> &nums, int index, int last, long val, vector<long> &sum)
 	{
-		if (index >= last)
+		int size = last - index; //size<=20 2^20=1024*1024
+		for (int mask = 0; mask < 1 << size; ++mask)
 		{
+			int val = 0;
+			for (int i = 0; i < size; ++i)
+			{
+				if ((mask >> i) & 1)
+					val += nums[index + i];
+			}
 			sum.push_back(val);
-			return;
 		}
-		combinationSum(nums, index + 1, last, val, sum);
-		combinationSum(nums, index + 1, last, val + nums[index], sum);
 	}
 };
