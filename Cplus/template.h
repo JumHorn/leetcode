@@ -755,3 +755,40 @@ private:
 	vector<int> layer;
 };
 /********end of max flow********/
+
+// geometry stuff
+
+bool collinear(vector<int> &pointA, vector<int> &pointB, vector<int> &pointC)
+{
+	return (long long)(pointA[0] - pointB[0]) * (pointA[1] - pointC[1]) !=
+		   (long long)(pointA[0] - pointC[0]) * (pointA[1] - pointB[1]);
+}
+
+//the distance from point (x,y) to line (x1,y1) (x2,y2)
+double pointToLine(int x, int y, int x1, int y1, int x2, int y2)
+{
+	int a = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2); //line square
+	int b = (x - x1) * (x2 - x1) + (y - y1) * (y2 - y1);   //vector a*b
+	if (a == 0)
+		return sqrt(b);
+	double t = b * 1.0 / a;
+	if (t < 0)
+		t = 0;
+	else if (t > 1)
+		t = 1;
+	double distance = ((x - x1) - t * (x2 - x1)) * ((x - x1) - t * (x2 - x1)) +
+					  ((y - y1) - t * (y2 - y1)) * ((y - y1) - t * (y2 - y1));
+	return sqrt(distance);
+}
+
+// cross product
+int crossProduct(vector<int> &pointA, vector<int> &pointB, vector<int> &pointC)
+{
+	int x1 = pointB[0] - pointA[0];
+	int y1 = pointB[1] - pointA[1];
+	int x2 = pointC[0] - pointA[0];
+	int y2 = pointC[1] - pointA[1];
+	return x1 * y2 - x2 * y1;
+}
+
+/********end of geometry********/
