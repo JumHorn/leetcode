@@ -760,7 +760,7 @@ private:
 
 bool collinear(vector<int> &pointA, vector<int> &pointB, vector<int> &pointC)
 {
-	return (long long)(pointA[0] - pointB[0]) * (pointA[1] - pointC[1]) !=
+	return (long long)(pointA[0] - pointB[0]) * (pointA[1] - pointC[1]) ==
 		   (long long)(pointA[0] - pointC[0]) * (pointA[1] - pointB[1]);
 }
 
