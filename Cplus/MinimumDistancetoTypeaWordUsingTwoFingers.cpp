@@ -10,25 +10,16 @@ class Solution
 public:
 	int minimumDistance(string word)
 	{
-		vector<vector<vector<int>>> dp(word.size(), vector<vector<int>>(26, vector<int>(26, -1)));
-		int res = INT_MAX;
-		for (int i = 0; i < 26; ++i)
+		int N = word.size(), alldist = 0;
+		vector<int> dp(26);
+		for (int i = 0; i < N - 1; ++i)
 		{
+			int a = word[i] - 'A', b = word[i + 1] - 'A';
 			for (int j = 0; j < 26; ++j)
-				res = min(res, memdp(word, 0, i, j, dp));
+				dp[a] = max(dp[a], dp[j] + distance(a, b) - distance(j, b));
+			alldist += distance(a, b);
 		}
-		return res;
-	}
-
-	int memdp(const string &word, int index, int finger1, int finger2, vector<vector<vector<int>>> &dp)
-	{
-		if (index >= (int)word.size())
-			return 0;
-		if (dp[index][finger1][finger2] != -1)
-			return dp[index][finger1][finger2];
-		return dp[index][finger1][finger2] =
-				   min(distance(finger1, word[index] - 'A') + memdp(word, index + 1, word[index] - 'A', finger2, dp),
-					   distance(finger2, word[index] - 'A') + memdp(word, index + 1, finger1, word[index] - 'A', dp));
+		return alldist - *max_element(dp.begin(), dp.end());
 	}
 
 	int distance(int pos1, int pos2)
