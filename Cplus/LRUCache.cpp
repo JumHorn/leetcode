@@ -16,9 +16,8 @@ public:
 		if (it == m.end())
 			return -1;
 		int value = it->second->second;
-		data.erase(it->second);
-		data.push_front({key, value});
-		it->second = data.begin();
+		//Transfers elements to head
+		data.splice(data.begin(), data, it->second);
 		return value;
 	}
 
@@ -26,14 +25,16 @@ public:
 	{
 		auto it = m.find(key);
 		if (it != m.end())
-			data.erase(it->second);
-		else
 		{
-			if (data.size() >= size)
-			{
-				m.erase(data.back().first);
-				data.pop_back();
-			}
+			it->second->second = value;
+			data.splice(data.begin(), data, it->second);
+			return;
+		}
+
+		if (data.size() >= size)
+		{
+			m.erase(data.back().first);
+			data.pop_back();
 		}
 		data.push_front({key, value});
 		m[key] = data.begin();
