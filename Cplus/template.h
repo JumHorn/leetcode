@@ -1,5 +1,7 @@
 #include <algorithm>
+#include <iostream>
 #include <queue>
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -10,6 +12,14 @@ using namespace std;
 int gcd(int x, int y)
 {
 	return x == 0 ? y : gcd(y % x, x);
+}
+
+int bitCount(int n)
+{
+	int res = 0;
+	for (; n != 0; n &= n - 1)
+		++res;
+	return res;
 }
 
 // palindrome generator
@@ -180,6 +190,86 @@ void divide(vector<int> &arr, vector<int> &dup, int first, int last)
 	merge(arr, dup, first, mid, last);
 }
 /********end of divide and conquer********/
+
+//binary tree traversal
+namespace traversal
+{
+	struct TreeNode
+	{
+		int val;
+		TreeNode *left;
+		TreeNode *right;
+	};
+
+	void preorder(TreeNode *root)
+	{
+		if (root == nullptr)
+			return;
+		stack<TreeNode *> s;
+		TreeNode *cur;
+		s.push(root);
+		while (!s.empty())
+		{
+			cur = s.top();
+			s.pop();
+			//PreOrder processing
+			cout << cur->val << " ";
+			if (cur->right != nullptr)
+				s.push(cur->right);
+			if (cur->left != nullptr)
+				s.push(cur->left);
+		}
+	}
+
+	void inorder(TreeNode *root)
+	{
+		stack<TreeNode *> s;
+		TreeNode *cur = root;
+		while (cur || !s.empty())
+		{
+			if (cur != nullptr)
+			{
+				s.push(cur);
+				cur = cur->left;
+			}
+			else
+			{
+				cur = s.top();
+				s.pop();
+				//InOrder processing
+				cout << cur->val << " ";
+				cur = cur->right;
+			}
+		}
+	}
+
+	void postorder(TreeNode *root)
+	{
+		stack<TreeNode *> s;
+		TreeNode *cur = root, *pre = root;
+		s.push(root);
+		while (!s.empty())
+		{
+			cur = s.top();
+			if ((cur->left == nullptr && cur->right == nullptr) || (cur->left == pre || cur->right == pre))
+			{
+				//PostOrderProcessing
+				cout << cur->val << " ";
+				pre = cur;
+				s.pop();
+			}
+			else
+			{
+				if (cur->right != nullptr)
+					s.push(cur->right);
+				if (cur->left != nullptr)
+					s.push(cur->left);
+			}
+		}
+	}
+
+} // end of namespace traversal
+/********end of binary tree traversal********/
 
 //Trie
 class Trie
