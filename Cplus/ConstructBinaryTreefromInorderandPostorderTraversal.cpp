@@ -17,24 +17,18 @@ class Solution
 public:
 	TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder)
 	{
-		return recursive(inorder, 0, inorder.size(), postorder, 0, postorder.size());
+		int in = (int)inorder.size() - 1, post = (int)postorder.size() - 1;
+		return recursive(inorder, in, postorder, post, INT_MIN);
 	}
 
-	//[first,last)
-	TreeNode *recursive(vector<int> &inorder, int infirst, int inlast, vector<int> &postorder, int postfirst, int postlast)
+	TreeNode *recursive(vector<int> &inorder, int &in, vector<int> &postorder, int &post, int stop)
 	{
-		if (infirst >= inlast)
+		if (in < 0 || inorder[in] == stop)
 			return nullptr;
-		int mi, len;
-		for (mi = infirst; mi < inlast; ++mi)
-		{
-			if (postorder[postlast - 1] == inorder[mi])
-				break;
-		}
-		len = mi - infirst;
-		TreeNode *root = new TreeNode(postorder[postlast - 1]);
-		root->left = recursive(inorder, infirst, mi, postorder, postfirst, postfirst + len);
-		root->right = recursive(inorder, mi + 1, inlast, postorder, postfirst + len, postlast - 1);
+		TreeNode *root = new TreeNode(postorder[post--]);
+		root->right = recursive(inorder, in, postorder, post, root->val);
+		--in;
+		root->left = recursive(inorder, in, postorder, post, stop);
 		return root;
 	}
 };
