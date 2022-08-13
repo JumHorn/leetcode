@@ -4,79 +4,43 @@ using namespace std;
 class SegmentTree
 {
 public:
-	SegmentTree(int size) : tree(4 * size)
+	SegmentTree(int n) : data(2 * n)
 	{
 	}
 
-	SegmentTree(vector<int> &data) : tree(data.size() << 2)
+	SegmentTree(vector<int> &v) : data(2 * v.size())
 	{
-		build_tree(data, 0, data.size(), ROOT_ID);
+		int n = v.size();
+		for (int i = 0; i < n; ++i)
+			data[i + n] = v[i];
+		for (int i = n - 1; i > 0; --i)
+			data[i] = data[i << 1] + data[i << 1 | 1];
 	}
 
 	//update index with value val
 	void update(int index, int val)
 	{
-		int N = tree.size() >> 2;
-		update_tree(index, val, 0, N, ROOT_ID);
+		int n = data.size() / 2, delta = val - data[index + n];
+		for (index += n; index > 0; index >>= 1)
+			data[index] += delta;
 	}
 
-	//[first,last) query range first included and last not included
-	int queryRange(int first, int last)
+	//[start,end) query range start included and end not included
+	int queryRange(int start, int end)
 	{
-		int N = tree.size() >> 2;
-		return query_tree(0, N, first, last, ROOT_ID);
-	}
-
-private:
-	// [L,R) means data range
-	void build_tree(vector<int> &data, int L, int R, int root)
-	{
-		if (R - L <= 1)
+		int n = data.size() / 2, res = 0;
+		for (int l = start + n, r = end + n; l < r; l >>= 1, r >>= 1)
 		{
-			tree[root] = data[L];
-			return;
+			if (l & 1)
+				res += data[l++];
+			if (r & 1)
+				res += data[--r];
 		}
-		int mid = (R - L) / 2 + L;
-		int left_node = root << 1, right_node = root << 1 | 1;
-		build_tree(data, L, mid, left_node);
-		build_tree(data, mid, R, right_node);
-		tree[root] = tree[left_node] + tree[right_node];
-	}
-
-	void update_tree(int index, int val, int L, int R, int root)
-	{
-		if (R - L <= 1)
-		{
-			tree[root] = val;
-			return;
-		}
-		int mid = (R - L) / 2 + L;
-		int left_node = root << 1, right_node = root << 1 | 1;
-		if (index < mid)
-			update_tree(index, val, L, mid, left_node);
-		else
-			update_tree(index, val, mid, R, right_node);
-
-		tree[root] = tree[left_node] + tree[right_node];
-	}
-
-	int query_tree(int L, int R, int first, int last, int root)
-	{
-		if (R <= first || L >= last)
-			return 0;
-		if (L >= first && R <= last)
-			return tree[root];
-		int mid = (R - L) / 2 + L;
-		int left_node = root << 1, right_node = root << 1 | 1;
-		int res = 0;
-		res += query_tree(L, mid, first, last, left_node);
-		res += query_tree(mid, R, first, last, right_node);
 		return res;
 	}
 
 private:
-	vector<int> tree;			  //tree data with 0 index reserved
-	static const int ROOT_ID = 1; //use 1 as the root index
+	vector<int> data; //tree data with 0 index reserved
 };
 
 class NumArray
@@ -86,14 +50,14 @@ public:
 	{
 	}
 
-	void update(int index, int val)
+	void update(int i, int val)
 	{
-		tree.update(index, val);
+		tree.update(i, val);
 	}
 
-	int sumRange(int left, int right)
+	int sumRange(int i, int j)
 	{
-		return tree.queryRange(left, right + 1);
+		return tree.queryRange(i, j + 1);
 	}
 
 private:
