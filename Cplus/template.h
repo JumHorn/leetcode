@@ -105,6 +105,29 @@ vector<int> dijkstra(vector<vector<pair<int, int>>> &graph, int source)
 }
 /********end of dijkstra********/
 
+//topological sort
+bool topologicalSort(vector<vector<int>> &graph, vector<int> &indegree, vector<int> &tp_order)
+{
+	int N = indegree.size();
+	for (int i = 0; i < N; ++i)
+	{
+		if (indegree[i] == 0)
+			tp_order.push_back(i);
+	}
+	// tp_order size changes
+	for (int i = 0; i < (int)tp_order.size(); ++i)
+	{
+		int cur = tp_order[i];
+		for (auto next : graph[cur])
+		{
+			if (--indegree[next] == 0)
+				tp_order.push_back(next);
+		}
+	}
+	return tp_order.size() == N;
+}
+/********end of topological sort********/
+
 //DSU minimum version
 class DSU
 {
