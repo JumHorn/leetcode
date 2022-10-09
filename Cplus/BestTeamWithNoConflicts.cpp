@@ -12,7 +12,7 @@ public:
 		vector<pair<int, int>> v;
 		for (int i = 0; i < N; ++i)
 			v.push_back({ages[i], scores[i]});
-		sort(v.begin(), v.end(), greater<int>());
+		sort(v.begin(), v.end(), greater<>());
 		vector<int> dp(N);
 		for (int i = 0; i < N; ++i)
 		{
