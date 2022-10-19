@@ -9,14 +9,10 @@ public:
 		a %= 1337;
 		if (a == 0)
 			return 0;
-		return recursive(a, b, b.size() - 1);
-	}
-
-	int recursive(int a, vector<int> &b, int index)
-	{
-		if (index < 0)
-			return 1;
-		return modPow(recursive(a, b, index - 1), 10) * modPow(a, b[index]) % MOD;
+		int res = 1;
+		for (auto n : b)
+			res = modPow(res, 10) * modPow(a, n) % MOD;
+		return res;
 	}
 
 	int modPow(int x, int n) //pow(x,n) with MOD
