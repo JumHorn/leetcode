@@ -18,18 +18,17 @@ public:
 		dp[0] = true;
 		for (int mask = 0; mask < 1 << N; ++mask)
 		{
+			if (!dp[mask])
+				continue;
 			for (int bit = 0; bit < N; ++bit)
 			{
-				if (dp[mask])
+				if (!(mask & 1 << bit))
 				{
-					if (!(mask & 1 << bit))
+					int index = mask | 1 << bit;
+					if (nums[bit] <= sum - total[mask] % sum)
 					{
-						int index = mask | 1 << bit;
-						if (nums[bit] <= sum - total[mask] % sum)
-						{
-							dp[index] = true;
-							total[index] = total[mask] + nums[bit];
-						}
+						dp[index] = true;
+						total[index] = total[mask] + nums[bit];
 					}
 				}
 			}
