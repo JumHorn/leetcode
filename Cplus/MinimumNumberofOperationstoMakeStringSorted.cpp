@@ -1,3 +1,4 @@
+#include <cstring> //for memset
 #include <string>
 #include <vector>
 using namespace std;
