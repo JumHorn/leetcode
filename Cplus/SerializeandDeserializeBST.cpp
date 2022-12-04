@@ -1,3 +1,4 @@
+#include <climits>
 #include <sstream>
 #include <string>
 #include <vector>
