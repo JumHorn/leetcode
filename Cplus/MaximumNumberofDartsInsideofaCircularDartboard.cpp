@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <vector>
 using namespace std;
@@ -22,7 +23,7 @@ public:
 			{
 				if (hypot(points[i][0] - points[j][0], points[i][1] - points[j][1]) - 2 * r > PRECIOUSE)
 					continue;
-				//calc two circle center
+				// calc two circle center
 				auto center = getCircleCenter(points[i], points[j], r);
 				int a = 0, b = 0;
 				for (int k = 0; k < N; ++k)

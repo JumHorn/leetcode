@@ -1,12 +1,12 @@
+#include <algorithm>
 #include <climits>
-#include <numeric>
 #include <vector>
 using namespace std;
 
 class Solution
 {
 public:
-	int maxDotProduct(vector<int>& nums1, vector<int>& nums2)
+	int maxDotProduct(vector<int> &nums1, vector<int> &nums2)
 	{
 		int max1 = *max_element(nums1.begin(), nums1.end());
 		int min2 = *min_element(nums2.begin(), nums2.end());
@@ -20,7 +20,7 @@ public:
 		return memdp(nums1, 0, nums2, 0, dp);
 	}
 
-	int memdp(vector<int>& nums1, int index1, vector<int>& nums2, int index2, vector<vector<int>>& dp)
+	int memdp(vector<int> &nums1, int index1, vector<int> &nums2, int index2, vector<vector<int>> &dp)
 	{
 		if (index1 >= (int)nums1.size() || index2 >= (int)nums2.size())
 			return 0;
