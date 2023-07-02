@@ -11,7 +11,7 @@ int countPrimes(int n)
 		if (!prime[i])
 		{
 			++res;
-			for (int j = i; j <= n; j += i)
+			for (int j = i + i; j <= n; j += i)
 				prime[j] = true;
 		}
 	}
