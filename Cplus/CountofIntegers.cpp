@@ -7,7 +7,7 @@ class Solution
 public:
 	int count(string s1, string s2, int min_sum, int max_sum)
 	{
-		int dp[410][23][2][2] = {0};
+		int dp[410][24][2][2] = {0};
 		int size = max(s1.size(), s2.size());
 		// add prefix zero to s1,s2
 		s1 = string(size - s1.size(), '0') + s1;
