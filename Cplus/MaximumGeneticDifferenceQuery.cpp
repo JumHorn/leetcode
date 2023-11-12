@@ -1,12 +1,12 @@
 #include <vector>
 using namespace std;
 
-//Trie
+// Trie
 class Trie
 {
 	struct TreeNode
 	{
-		int count; //number of words ends with this node
+		int count; // number of words ends with this node
 		vector<TreeNode *> nodes;
 
 		TreeNode() : count(0), nodes(2, nullptr) {}
@@ -40,7 +40,7 @@ public:
 			if (!node->nodes[index])
 				break;
 			if (--node->nodes[index]->count == 0)
-				node->nodes[index] = nullptr; //memory leak
+				node->nodes[index] = nullptr; // memory leak
 			node = node->nodes[index];
 		}
 	}
@@ -49,7 +49,7 @@ public:
 	{
 		TreeNode *node = root;
 		int res = 0;
-		for (int i = 31; i >= 0; --i)
+		for (int i = 31; i >= 0 && node != nullptr; --i)
 		{
 			int index = ((num >> i) & 1);
 			if (node->nodes[1 - index])
